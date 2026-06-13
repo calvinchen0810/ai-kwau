@@ -98,70 +98,70 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
   .ev-tx .en{font-size:11px;}
 
   /* S4 — Loop Diagram */
-  #s4{flex-direction:column;background:var(--navy);}
+  #s4{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s4 .s-top{padding:24px 44px 0;}
-  #s4 .s-top .slide-title{color:#fff;font-size:30px;}
-  #s4 .s-top .slide-title .en{font-size:13px;color:rgba(255,255,255,.35);}
+  #s4 .s-top .slide-title{color:var(--navy);font-size:30px;}
+  #s4 .s-top .slide-title .en{font-size:13px;color:var(--muted);}
   #s4 .loop-wrap{flex:1;display:flex;flex-direction:column;padding:8px 36px 10px;gap:0;}
   #s4 .loop-row{display:flex;align-items:stretch;gap:0;flex:1.4;}
 
   /* Node card */
-  .lnode{flex:1;display:flex;flex-direction:column;background:rgba(255,255,255,.04);border:1px solid rgba(0,180,216,.25);border-radius:14px;padding:16px 18px;gap:8px;position:relative;}
-  .lnode.active{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.6);}
+  .lnode{flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(0,119,182,.18);border-radius:14px;padding:16px 18px;gap:8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .lnode.active{background:rgba(0,180,216,.07);border-color:rgba(0,180,216,.45);}
   .lnode-head{display:flex;align-items:center;gap:10px;}
   .lnode-icon{font-size:26px;flex-shrink:0;}
-  .lnode-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff;line-height:1.2;}
-  .lnode-en{font-family:'Sora',sans-serif;font-size:10px;font-weight:600;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;opacity:.7;}
-  .lnode-body{font-size:12px;color:rgba(255,255,255,.55);line-height:1.55;}
+  .lnode-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--navy);line-height:1.2;}
+  .lnode-en{font-family:'Sora',sans-serif;font-size:10px;font-weight:600;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;opacity:.8;}
+  .lnode-body{font-size:12px;color:var(--muted);line-height:1.55;}
   .lnode-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
-  .lpill{font-family:'Sora',sans-serif;font-size:10px;font-weight:600;background:rgba(0,180,216,.2);color:var(--cyanl);padding:3px 10px;border-radius:20px;border:1px solid rgba(0,180,216,.3);}
-  .lpill.gold{background:rgba(246,174,45,.2);color:var(--gold);border-color:rgba(246,174,45,.35);}
-  .lpill.green{background:rgba(6,214,160,.15);color:#06d6a0;border-color:rgba(6,214,160,.3);}
-  .ai-badge{position:absolute;top:12px;right:14px;font-family:'Sora',sans-serif;font-size:9px;font-weight:800;color:var(--cyan);background:rgba(0,180,216,.15);border:1px solid rgba(0,180,216,.3);padding:2px 8px;border-radius:20px;letter-spacing:1px;}
+  .lpill{font-family:'Sora',sans-serif;font-size:10px;font-weight:600;background:rgba(0,180,216,.1);color:var(--accent);padding:3px 10px;border-radius:20px;border:1px solid rgba(0,180,216,.25);}
+  .lpill.gold{background:rgba(246,174,45,.15);color:var(--goldd);border-color:rgba(246,174,45,.3);}
+  .lpill.green{background:rgba(6,214,160,.1);color:#059669;border-color:rgba(6,214,160,.3);}
+  .ai-badge{position:absolute;top:12px;right:14px;font-family:'Sora',sans-serif;font-size:9px;font-weight:800;color:var(--accent);background:rgba(0,119,182,.1);border:1px solid rgba(0,119,182,.2);padding:2px 8px;border-radius:20px;letter-spacing:1px;}
 
   /* Arrow between nodes */
   .larr{display:flex;align-items:center;justify-content:center;width:44px;flex-shrink:0;flex-direction:column;gap:2px;}
-  .larr-line{color:var(--cyan);font-size:22px;opacity:.6;}
-  .larr-label{font-family:'Sora',sans-serif;font-size:9px;color:rgba(0,180,216,.5);letter-spacing:.5px;text-align:center;}
+  .larr-line{color:var(--accent);font-size:22px;opacity:.7;}
+  .larr-label{font-family:'Sora',sans-serif;font-size:9px;color:var(--muted);letter-spacing:.5px;text-align:center;}
 
   /* Feedback loop row */
   .loop-feedback{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 0 2px;}
-  .loop-fb-line{flex:1;height:2px;background:linear-gradient(90deg,transparent,rgba(0,180,216,.4),transparent);border-radius:2px;}
-  .loop-fb-text{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:rgba(0,180,216,.6);letter-spacing:.5px;white-space:nowrap;}
-  .loop-fb-arrow{font-size:14px;color:rgba(0,180,216,.5);}
+  .loop-fb-line{flex:1;height:2px;background:linear-gradient(90deg,transparent,rgba(0,119,182,.25),transparent);border-radius:2px;}
+  .loop-fb-text{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.5px;white-space:nowrap;}
+  .loop-fb-arrow{font-size:14px;color:var(--accent);}
 
   /* S4b Decision Split */
-  #s4b{flex-direction:column;background:var(--navy);}
+  #s4b{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s4b .s-top{padding:22px 44px 0;}
-  #s4b .s-top .slide-title{color:#fff;font-size:28px;}
+  #s4b .s-top .slide-title{color:var(--navy);font-size:28px;}
+  #s4b .s-top .slide-title .en{font-size:12px;color:var(--muted);}
   #s4b .split-wrap{flex:1;display:flex;padding:10px 32px 14px;gap:0;}
   .split-half{flex:1;display:flex;flex-direction:column;gap:7px;padding:0 12px;}
-  .split-divider{width:1px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.12),transparent);position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0 4px;}
-  .split-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-family:'Sora',sans-serif;font-size:9px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:8px;text-align:center;line-height:1.6;position:absolute;}
+  .split-divider{width:1px;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.1),transparent);position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0 4px;}
+  .split-badge{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);color:var(--muted);font-family:'Sora',sans-serif;font-size:9px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:8px;text-align:center;line-height:1.6;position:absolute;}
   .half-header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;margin-bottom:2px;}
-  .half-header.cyan{background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.35);}
-  .half-header.gold{background:rgba(246,174,45,.1);border:1px solid rgba(246,174,45,.35);}
+  .half-header.cyan{background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);}
+  .half-header.gold{background:rgba(246,174,45,.12);border:1px solid rgba(246,174,45,.35);}
   .half-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;}
-  .half-title.cyan{color:var(--cyan);}
-  .half-title.gold{color:var(--gold);}
-  .half-sub{font-size:11px;color:rgba(255,255,255,.4);}
-  .iv-row{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:8px;background:rgba(255,255,255,.04);border-left:3px solid rgba(0,180,216,.5);}
-  .iv-num{font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:18px;}
-  .iv-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;line-height:1.25;flex:1;}
-  .iv-en{font-size:9px;color:rgba(0,180,216,.6);display:block;font-weight:400;font-family:'Sora',sans-serif;}
-  .iv-trigger{font-family:'Sora',sans-serif;font-size:9px;color:rgba(0,180,216,.7);white-space:nowrap;background:rgba(0,180,216,.1);padding:2px 7px;border-radius:8px;flex-shrink:0;}
-  .iv-row.always{border-left-color:rgba(6,214,160,.6);}
-  .iv-row.always .iv-num{color:#06d6a0;}
-  .iv-row.always .iv-en{color:rgba(6,214,160,.6);}
-  .iv-row.always .iv-trigger{color:#06d6a0;background:rgba(6,214,160,.1);}
-  .iv-row.l3{border-left-color:rgba(6,214,160,.4);}
-  .iv-row.l3 .iv-num{color:#06d6a0;}
-  .iv-row.l3 .iv-trigger{color:#06d6a0;background:rgba(6,214,160,.1);}
-  .fg-card{flex:1;background:rgba(246,174,45,.07);border:1px solid rgba(246,174,45,.3);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:9px;}
-  .fg-headline{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:var(--gold);line-height:1.2;}
-  .fg-point{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.65);line-height:1.5;}
-  .fg-dot{color:var(--gold);flex-shrink:0;}
-  .fg-trigger{padding:10px 14px;background:rgba(255,200,0,.06);border:1px solid rgba(255,200,0,.2);border-radius:9px;}
+  .half-title.cyan{color:var(--accent);}
+  .half-title.gold{color:var(--goldd);}
+  .half-sub{font-size:11px;color:var(--muted);}
+  .iv-row{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:8px;background:#fff;border-left:3px solid rgba(0,180,216,.5);box-shadow:0 1px 3px rgba(0,0,0,.05);}
+  .iv-num{font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--accent);min-width:18px;}
+  .iv-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--navy);line-height:1.25;flex:1;}
+  .iv-en{font-size:9px;color:var(--muted);display:block;font-weight:400;font-family:'Sora',sans-serif;}
+  .iv-trigger{font-family:'Sora',sans-serif;font-size:9px;color:var(--accent);white-space:nowrap;background:rgba(0,119,182,.08);padding:2px 7px;border-radius:8px;flex-shrink:0;}
+  .iv-row.always{border-left-color:rgba(5,150,105,.6);}
+  .iv-row.always .iv-num{color:#059669;}
+  .iv-row.always .iv-en{color:rgba(5,150,105,.7);}
+  .iv-row.always .iv-trigger{color:#059669;background:rgba(6,214,160,.08);}
+  .iv-row.l3{border-left-color:rgba(5,150,105,.5);}
+  .iv-row.l3 .iv-num{color:#059669;}
+  .iv-row.l3 .iv-trigger{color:#059669;background:rgba(6,214,160,.08);}
+  .iv-row.gold{border-left-color:rgba(201,146,42,.6);}
+  .iv-row.gold .iv-num{color:var(--goldd);}
+  .iv-row.gold .iv-en{color:rgba(201,146,42,.7);}
+  .iv-row.gold .iv-trigger{color:var(--goldd);background:rgba(246,174,45,.1);}
 
   /* S5 Journey */
   #s5{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
@@ -410,12 +410,24 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
                   <div class="lnode-en">Perceive</div>
                 </div>
               </div>
-              <div class="lnode-body">Webcam 即時偵測，同時累積視線熱力圖</div>
-              <div class="lnode-pills">
-                <div class="lpill">👁️ 眼球位置</div>
-                <div class="lpill">🧑 臉部距離</div>
-                <div class="lpill" style="background:rgba(255,200,0,.15);color:#ffd166;border-color:rgba(255,200,0,.3);">🗺️ 視線熱力圖</div>
-                <div class="lpill" style="background:rgba(6,214,160,.12);color:#06d6a0;border-color:rgba(6,214,160,.3);">📊 信心度評分</div>
+              <div class="lnode-body" style="margin-bottom:8px;">Webcam 即時偵測，同時累積視線熱力圖</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);">
+                  <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);">👁️ 眼球位置</div>
+                  <div class="lnode-body">WebGazer.js · 精度 ±50–150px</div>
+                </div>
+                <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);">
+                  <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);">🧑 臉部距離</div>
+                  <div class="lnode-body">MediaPipe Face · 靠近 &lt;45cm 切換策略</div>
+                </div>
+                <div style="padding:6px 10px;background:rgba(246,174,45,.1);border-radius:8px;border-left:3px solid rgba(201,146,42,.45);">
+                  <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);">🗺️ 視線熱力圖</div>
+                  <div class="lnode-body">累積建立個人視野地圖，越用越準</div>
+                </div>
+                <div style="padding:6px 10px;background:rgba(6,214,160,.08);border-radius:8px;border-left:3px solid rgba(5,150,105,.45);">
+                  <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#059669;">📊 信心度評分</div>
+                  <div class="lnode-body">座標跳動標準差推算，決定注視圓圈樣式</div>
+                </div>
               </div>
             </div>
 
@@ -435,13 +447,13 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
                 </div>
               </div>
               <div class="lnode-body" style="margin:6px 0 10px;">兩條軌道並行，決定採用哪種介入路徑</div>
-              <div style="padding:9px 11px;background:rgba(0,180,216,.1);border-radius:9px;border:1px solid rgba(0,180,216,.3);margin-bottom:8px;">
-                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:5px;">⚡ 即時訊號</div>
-                <div class="lnode-body">停留門檻觸發介入<br><span style="color:rgba(0,180,216,.6);">門檻依成效自動個人化調整</span></div>
+              <div style="padding:9px 11px;background:rgba(0,180,216,.08);border-radius:9px;border:1px solid rgba(0,180,216,.25);margin-bottom:8px;">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px;">⚡ 即時訊號</div>
+                <div class="lnode-body">停留門檻觸發介入<br><span style="color:var(--accent);">門檻依成效自動個人化調整</span></div>
               </div>
-              <div style="padding:9px 11px;background:rgba(255,200,0,.08);border-radius:9px;border:1px solid rgba(255,200,0,.3);">
-                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#ffd166;margin-bottom:5px;">🗺️ 累積推斷</div>
-                <div class="lnode-body">視野地圖冷區偵測<br><span style="color:rgba(255,200,0,.6);">→ 分叉決定策略路徑（詳見下頁）</span></div>
+              <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:5px;">🗺️ 累積推斷</div>
+                <div class="lnode-body">視野地圖冷區偵測<br><span style="color:var(--goldd);">→ 分叉決定策略路徑（詳見下頁）</span></div>
               </div>
             </div>
 
@@ -460,15 +472,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
                 </div>
               </div>
               <div class="lnode-body" style="margin:6px 0 10px;">依判斷結果走不同介入路徑</div>
-              <div style="padding:9px 11px;background:rgba(0,180,216,.08);border-radius:9px;border:1px solid rgba(0,180,216,.2);margin-bottom:8px;">
-                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:5px;">👁 看得到區域</div>
+              <div style="padding:9px 11px;background:rgba(0,119,182,.07);border-radius:9px;border:1px solid rgba(0,119,182,.2);margin-bottom:8px;">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px;">👁 看得到區域</div>
                 <div class="lnode-body">漸進疊加 ◎ ①②③④⑤</div>
               </div>
-              <div style="padding:9px 11px;background:rgba(255,200,0,.08);border-radius:9px;border:1px solid rgba(255,200,0,.3);margin-bottom:10px;">
-                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#ffd166;margin-bottom:5px;">🗺️ 視野缺損區</div>
+              <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);margin-bottom:10px;">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:5px;">🗺️ 視野缺損區</div>
                 <div class="lnode-body">✦ 焦點牽引</div>
               </div>
-              <div style="font-family:'Sora',sans-serif;font-size:10px;color:rgba(0,180,216,.45);text-align:right;letter-spacing:.5px;">詳見下頁 →</div>
+              <div style="font-family:'Sora',sans-serif;font-size:10px;color:var(--muted);text-align:right;letter-spacing:.5px;">詳見下頁 →</div>
             </div>
 
           </div>
@@ -539,7 +551,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
           </div>
 
           <!-- Right: Can't See -->
-          <div class="split-half" style="justify-content:center;">
+          <div class="split-half">
             <div class="half-header gold">
               <div style="font-size:22px;">🗺️</div>
               <div>
@@ -547,17 +559,35 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
                 <div class="half-sub">AI 推斷長期冷區 → 改用焦點牽引</div>
               </div>
             </div>
-            <div class="fg-card">
-              <div style="font-size:32px;">✦</div>
-              <div class="fg-headline">視野邊界<br>脈動光點</div>
-              <div style="font-size:11px;color:rgba(246,174,45,.6);font-family:'Sora',sans-serif;letter-spacing:1px;">Boundary Pulse Guide</div>
-              <div class="fg-point"><span class="fg-dot">·</span>在視野可及邊界放脈動光點 + 箭頭</div>
-              <div class="fg-point"><span class="fg-dot">·</span>不移動元件，不破壞頁面排版</div>
-              <div class="fg-point"><span class="fg-dot">·</span>引導用戶主動轉移視線到目標</div>
+            <div class="iv-row gold">
+              <div class="iv-num">◎</div>
+              <div class="iv-title">焦點牽引<span class="iv-en">視野缺損區專用 · 與對比強化互斥</span></div>
+              <div class="iv-trigger">常駐</div>
             </div>
-            <div class="fg-trigger">
-              <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:rgba(246,174,45,.7);letter-spacing:1px;margin-bottom:5px;">🧊 觸發條件</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.55;">視野地圖長期冷區偵測<br>GMM 密度估計 → 推斷視野缺損象限<br>→ 切換至焦點牽引（非對比強化）</div>
+            <div class="iv-row gold">
+              <div class="iv-num">①</div>
+              <div class="iv-title">冷區偵測<span class="iv-en">GMM 密度估計 · 象限長期無停留 → 推斷缺損</span></div>
+              <div class="iv-trigger">自動觸發</div>
+            </div>
+            <div class="iv-row gold">
+              <div class="iv-num">②</div>
+              <div class="iv-title">脈動光點<span class="iv-en">在視野可及邊界閃爍，吸引注意力</span></div>
+              <div class="iv-trigger">視覺引導</div>
+            </div>
+            <div class="iv-row gold">
+              <div class="iv-num">③</div>
+              <div class="iv-title">方向箭頭<span class="iv-en">指向目標元件，告知用戶「那裡有東西」</span></div>
+              <div class="iv-trigger">方向指引</div>
+            </div>
+            <div class="iv-row gold">
+              <div class="iv-num">④</div>
+              <div class="iv-title">零排版干擾<span class="iv-en">不移動任何元件，不改變頁面結構</span></div>
+              <div class="iv-trigger">非侵入式</div>
+            </div>
+            <div class="iv-row gold">
+              <div class="iv-num">⑤</div>
+              <div class="iv-title">持續學習<span class="iv-en">視線移到目標後記錄成效，更新視野地圖</span></div>
+              <div class="iv-trigger">回饋迴圈</div>
             </div>
           </div>
 
