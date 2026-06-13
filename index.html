@@ -166,7 +166,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
   /* S5 Journey */
   #s5{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s5 .s-top{padding:28px 48px 8px;}
-  #s5 .journey{flex:1;display:flex;align-items:flex-start;padding:0 38px 24px;gap:0;}
+  #s5 .journey{flex:1;display:flex;align-items:center;padding:0 38px 20px;gap:0;}
   .j-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 6px;}
   .j-step:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:22px;font-size:22px;color:var(--cyan);font-family:'Sora',sans-serif;z-index:2;}
   .j-icon{width:74px;height:74px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;border:3px solid var(--cyan);flex-shrink:0;}
@@ -396,7 +396,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
       <div class="slide" id="s4">
         <div class="s-top">
           <div class="step-badge">2 · Proposed Solution</div>
-          <div class="slide-title">瀏覽器插件 ── 持續學習的感知迴圈<span class="en">Browser Extension — Active Perception Loop</span></div>
+          <div class="slide-title">瀏覽器擴充功能 ── 持續學習的感知迴圈<span class="en">Browser Extension — Active Perception Loop</span></div>
         </div>
         <div class="loop-wrap">
           <div class="loop-row">
@@ -426,7 +426,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
                 </div>
                 <div style="padding:6px 10px;background:rgba(6,214,160,.08);border-radius:8px;border-left:3px solid rgba(5,150,105,.45);">
                   <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#059669;">📊 信心度評分</div>
-                  <div class="lnode-body">座標跳動標準差推算，決定注視圓圈樣式</div>
+                  <div class="lnode-body">精確→注視圓圈實線填色倒數；跳動過大→虛線縮小，讓用戶知道系統目前看不準</div>
                 </div>
               </div>
             </div>
@@ -525,18 +525,18 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
             </div>
             <div class="iv-row">
               <div class="iv-num">②</div>
+              <div class="iv-title">語音朗讀<span class="iv-en">Web Speech API · mouseover 先驗證，再接視線觸發</span></div>
+              <div class="iv-trigger">長停留</div>
+            </div>
+            <div class="iv-row">
+              <div class="iv-num">③</div>
               <div class="iv-title">L1 文字層<span class="iv-en">字色加深 · font-weight 加粗 · 行距加大</span></div>
               <div class="iv-trigger">短停留</div>
             </div>
             <div class="iv-row">
-              <div class="iv-num">③</div>
-              <div class="iv-title">L2 元件層<span class="iv-en">按鈕邊框 · 點擊區域 padding 放大</span></div>
-              <div class="iv-trigger">中停留</div>
-            </div>
-            <div class="iv-row">
               <div class="iv-num">④</div>
-              <div class="iv-title">語音朗讀<span class="iv-en">Web Speech API · 啟動時 L1/L2 退讓</span></div>
-              <div class="iv-trigger">長停留</div>
+              <div class="iv-title">L2 元件層<span class="iv-en">按鈕邊框 · 點擊區域 padding 放大 · MutationObserver</span></div>
+              <div class="iv-trigger">中停留</div>
             </div>
             <div class="iv-row l3">
               <div class="iv-num">⑤</div>
@@ -566,23 +566,23 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
             </div>
             <div class="iv-row gold">
               <div class="iv-num">①</div>
-              <div class="iv-title">冷區偵測<span class="iv-en">GMM 密度估計 · 象限長期無停留 → 推斷缺損</span></div>
-              <div class="iv-trigger">自動觸發</div>
-            </div>
-            <div class="iv-row gold">
-              <div class="iv-num">②</div>
-              <div class="iv-title">脈動光點<span class="iv-en">在視野可及邊界閃爍，吸引注意力</span></div>
+              <div class="iv-title">脈動光點<span class="iv-en">在視野可及邊界閃爍，最易實作的視覺元件</span></div>
               <div class="iv-trigger">視覺引導</div>
             </div>
             <div class="iv-row gold">
-              <div class="iv-num">③</div>
-              <div class="iv-title">方向箭頭<span class="iv-en">指向目標元件，告知用戶「那裡有東西」</span></div>
+              <div class="iv-num">②</div>
+              <div class="iv-title">方向箭頭<span class="iv-en">如汽車盲點警示燈，在視野邊緣亮燈提示目標方向</span></div>
               <div class="iv-trigger">方向指引</div>
             </div>
             <div class="iv-row gold">
-              <div class="iv-num">④</div>
+              <div class="iv-num">③</div>
               <div class="iv-title">零排版干擾<span class="iv-en">不移動任何元件，不改變頁面結構</span></div>
               <div class="iv-trigger">非侵入式</div>
+            </div>
+            <div class="iv-row gold">
+              <div class="iv-num">④</div>
+              <div class="iv-title">冷區偵測<span class="iv-en">GMM 密度估計 · 象限長期無停留 → 推斷缺損</span></div>
+              <div class="iv-trigger">自動觸發</div>
             </div>
             <div class="iv-row gold">
               <div class="iv-num">⑤</div>
@@ -700,7 +700,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
         </div>
         <div class="s-right">
           <div class="sum-item"><div class="ic">🎯</div><div class="tx"><strong>Problem：</strong>5 種視覺情境 × 5 大痛點，來自真實用戶訪談</div></div>
-          <div class="sum-item"><div class="ic">🤖</div><div class="tx"><strong>Solution：</strong>瀏覽器插件，不改使用習慣，即時強化網頁 UI</div></div>
+          <div class="sum-item"><div class="ic">🤖</div><div class="tx"><strong>Solution：</strong>瀏覽器擴充功能，不改使用習慣，即時強化網頁 UI</div></div>
           <div class="sum-item"><div class="ic">🗺️</div><div class="tx"><strong>UX Flow：</strong>校準一次，AI 持續適配，自然互動</div></div>
           <div class="sum-item"><div class="ic">📈</div><div class="tx"><strong>Impact：</strong>Curb-Cut Effect 延伸至 80% 用戶</div></div>
           <div class="sum-item"><div class="ic">🏆</div><div class="tx"><strong>Differentiation：</strong>主動感知 vs 被動工具 · HP 預裝 Webcam · 本地 AI 隱私 · 59% 未被滿足市場</div></div>
@@ -944,7 +944,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
     </div>
     <div class="m-list">
       <div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Problem：</strong>5 種視覺情境 × 5 大痛點，真實訪談</div></div>
-      <div class="m-sum"><div class="m-si">🤖</div><div class="m-st"><strong>Solution：</strong>瀏覽器插件，不改使用習慣，即時強化網頁 UI</div></div>
+      <div class="m-sum"><div class="m-si">🤖</div><div class="m-st"><strong>Solution：</strong>瀏覽器擴充功能，不改使用習慣，即時強化網頁 UI</div></div>
       <div class="m-sum"><div class="m-si">🗺️</div><div class="m-st"><strong>UX Flow：</strong>校準一次，AI 持續適配，語音即時提醒</div></div>
       <div class="m-sum"><div class="m-si">📈</div><div class="m-st"><strong>Impact：</strong>Curb-Cut 延伸至日常大眾情境</div></div>
       <div class="m-sum"><div class="m-si">🏆</div><div class="m-st"><strong>HP 差異化：</strong>主動感知 vs 被動工具 · 預裝 Webcam · 本地 AI · 59% 未被滿足用戶</div></div>
