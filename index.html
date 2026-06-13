@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Kwau — Midterm Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1f3c;--blue:#1a3a6b;
+  --cyan:#00b4d8;--cyanl:#90e0ef;--cyanp:#caf0f8;
+  --accent:#0077b6;--white:#fff;--bg:#f4f6fa;
+  --gold:#f6ae2d;--goldd:#c9922a;
+  --text:#1a1a2e;--muted:#4a5568;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
+.en{font-family:'Sora',sans-serif;font-weight:300;opacity:.6;display:block;}
+
+/* TOOLBAR */
+#toolbar{background:var(--navy);display:flex;align-items:center;padding:0 16px;height:44px;gap:10px;position:sticky;top:0;z-index:300;border-bottom:1px solid rgba(0,180,216,.2);}
+.logo{font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--cyan);}
+.spacer{flex:1;}
+.counter{font-size:12px;color:rgba(255,255,255,.4);font-family:'Sora',sans-serif;}
+.tbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:5px 13px;border-radius:5px;font-size:12px;cursor:pointer;}
+.tbtn.primary{background:var(--cyan);border-color:var(--cyan);color:var(--navy);font-weight:600;}
+
+/* ════ DESKTOP ════ */
+@media(min-width:700px){
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+  #mobile-view{display:none;}
+  #stage{flex:1;position:relative;overflow:hidden;}
+  #slide-row{position:absolute;inset:0;}
+  #slide-wrapper{position:absolute;inset:0;overflow:hidden;}
+  .scaler{position:absolute;inset:0;width:960px;height:540px;transform-origin:top left;}
+  .slide{position:absolute;inset:0;display:none;background:var(--white);}
+  .slide.active{display:flex;}
+  .snav{position:absolute;top:50%;transform:translateY(-50%);z-index:50;width:52px;height:52px;border-radius:50%;background:rgba(13,31,60,.7);color:#fff;border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s;}
+  .snav:hover{background:rgba(0,119,182,.9);}
+  #btn-prev{left:12px;}#btn-next{right:12px;}
+  #nav-bar{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;z-index:50;}
+  #dots{display:flex;gap:7px;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  .dot.active{background:#fff;width:28px;border-radius:5px;}
+
+  /* shared */
+  .tag{display:inline-block;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);padding:5px 14px;border-radius:20px;margin-bottom:16px;}
+  .step-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;background:var(--cyan);padding:5px 14px;border-radius:20px;margin-bottom:14px;}
+  .slide-title{font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:var(--navy);line-height:1.15;margin-bottom:8px;}
+  .slide-title .en{font-size:17px;margin-top:4px;}
+  .slide-sub{font-size:15px;color:var(--muted);line-height:1.6;font-weight:300;}
+  .slide-sub .en{font-size:13px;margin-top:2px;}
+  .s-left{width:55%;padding:46px 48px;display:flex;flex-direction:column;justify-content:center;}
+  .s-right{width:45%;display:flex;align-items:center;justify-content:center;position:relative;}
+
+  /* S1 Cover */
+  #s1{background:var(--navy);flex-direction:row;}
+  #s1 .s-left{padding:54px 56px;}
+  #s1 .brand{font-family:'Sora',sans-serif;font-size:68px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1;margin-bottom:6px;}
+  #s1 .brand span{color:var(--cyan);}
+  #s1 .tagline{font-size:16px;color:var(--cyanl);margin-bottom:5px;}
+  #s1 .tagline-en{font-family:'Sora',sans-serif;font-size:13px;color:rgba(144,224,239,.6);margin-bottom:30px;}
+  #s1 .agenda{display:flex;flex-direction:column;gap:8px;}
+  #s1 .ag-item{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.75);}
+  #s1 .ag-num{font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:var(--cyan);width:22px;}
+  #s1 .ag-item .en2{font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.35);margin-left:6px;}
+  #s1 .s-right{background:linear-gradient(135deg,#0096c7,#023e8a);flex-direction:column;}
+  #s1 .eye-svg{width:240px;height:240px;}
+  #s1 .eye-cap{color:rgba(255,255,255,.35);font-size:10px;font-family:'Sora',sans-serif;letter-spacing:3px;margin-top:12px;}
+
+  /* S2 Problem: users */
+  #s2{flex-direction:column;}
+  #s2 .s-top{padding:30px 48px 12px;}
+  #s2 .grid{display:grid;grid-template-columns:repeat(5,1fr);flex:1;padding:0 38px 34px;}
+  .a-card{margin:6px;padding:22px 16px;border-radius:14px;display:flex;flex-direction:column;gap:9px;}
+  .a-card .icon{font-size:32px;}
+  .a-card .pct{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--accent);line-height:1;}
+  .a-card .name{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--navy);line-height:1.35;}
+  .a-card .name .en{font-size:12px;margin-top:4px;color:var(--muted);}
+  .a-card.c1{background:#e8f4fd;}.a-card.c2{background:#fef3e2;}.a-card.c3{background:#e8fdf5;}.a-card.c4{background:#fde8f5;}.a-card.c5{background:#f0e8fd;}
+
+  /* S3 Problem: pains */
+  #s3{flex-direction:row;}
+  #s3 .s-left{width:38%;background:var(--navy);padding:48px 38px;}
+  #s3 .s-left .slide-title{color:#fff;font-size:34px;}
+  #s3 .s-left .slide-title .en{font-size:16px;color:rgba(255,255,255,.4);}
+  #s3 .s-left .slide-sub{color:rgba(255,255,255,.55);font-size:14px;}
+  #s3 .s-left .slide-sub .en{font-size:12px;}
+  #s3 .s-right{width:62%;padding:28px 38px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+  .pain-item{display:flex;align-items:center;gap:17px;padding:14px 19px;border-radius:12px;background:var(--bg);border-left:5px solid var(--cyan);}
+  .pain-num{font-family:'Sora',sans-serif;font-size:24px;font-weight:800;color:var(--cyan);min-width:64px;}
+  .pain-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.2;}
+  .pain-title .en{font-size:12px;color:var(--muted);margin-top:2px;}
+  .ev-box{display:flex;align-items:center;gap:14px;margin-top:14px;padding:12px 16px;background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);border-radius:11px;}
+  .ev-num{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--cyan);line-height:1;white-space:nowrap;}
+  .ev-tx{font-size:13px;color:rgba(255,255,255,.8);line-height:1.45;}
+  .ev-tx strong{color:var(--cyanl);}
+  .ev-tx .en{font-size:11px;}
+
+  /* S4 — Loop Diagram */
+  #s4{flex-direction:column;background:var(--navy);}
+  #s4 .s-top{padding:24px 44px 0;}
+  #s4 .s-top .slide-title{color:#fff;font-size:30px;}
+  #s4 .s-top .slide-title .en{font-size:13px;color:rgba(255,255,255,.35);}
+  #s4 .loop-wrap{flex:1;display:flex;flex-direction:column;padding:8px 36px 10px;gap:0;}
+  #s4 .loop-row{display:flex;align-items:stretch;gap:0;flex:1.4;}
+
+  /* Node card */
+  .lnode{flex:1;display:flex;flex-direction:column;background:rgba(255,255,255,.04);border:1px solid rgba(0,180,216,.25);border-radius:14px;padding:16px 18px;gap:8px;position:relative;}
+  .lnode.active{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.6);}
+  .lnode-head{display:flex;align-items:center;gap:10px;}
+  .lnode-icon{font-size:26px;flex-shrink:0;}
+  .lnode-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:#fff;line-height:1.2;}
+  .lnode-en{font-family:'Sora',sans-serif;font-size:10px;font-weight:600;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;opacity:.7;}
+  .lnode-body{font-size:12px;color:rgba(255,255,255,.55);line-height:1.55;}
+  .lnode-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+  .lpill{font-family:'Sora',sans-serif;font-size:10px;font-weight:600;background:rgba(0,180,216,.2);color:var(--cyanl);padding:3px 10px;border-radius:20px;border:1px solid rgba(0,180,216,.3);}
+  .lpill.gold{background:rgba(246,174,45,.2);color:var(--gold);border-color:rgba(246,174,45,.35);}
+  .lpill.green{background:rgba(6,214,160,.15);color:#06d6a0;border-color:rgba(6,214,160,.3);}
+  .ai-badge{position:absolute;top:12px;right:14px;font-family:'Sora',sans-serif;font-size:9px;font-weight:800;color:var(--cyan);background:rgba(0,180,216,.15);border:1px solid rgba(0,180,216,.3);padding:2px 8px;border-radius:20px;letter-spacing:1px;}
+
+  /* Arrow between nodes */
+  .larr{display:flex;align-items:center;justify-content:center;width:44px;flex-shrink:0;flex-direction:column;gap:2px;}
+  .larr-line{color:var(--cyan);font-size:22px;opacity:.6;}
+  .larr-label{font-family:'Sora',sans-serif;font-size:9px;color:rgba(0,180,216,.5);letter-spacing:.5px;text-align:center;}
+
+  /* Feedback loop row */
+  .loop-feedback{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 0 2px;}
+  .loop-fb-line{flex:1;height:2px;background:linear-gradient(90deg,transparent,rgba(0,180,216,.4),transparent);border-radius:2px;}
+  .loop-fb-text{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:rgba(0,180,216,.6);letter-spacing:.5px;white-space:nowrap;}
+  .loop-fb-arrow{font-size:14px;color:rgba(0,180,216,.5);}
+
+  /* S5 Journey */
+  #s5{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s5 .s-top{padding:28px 48px 8px;}
+  #s5 .journey{flex:1;display:flex;align-items:flex-start;padding:0 38px 24px;gap:0;}
+  .j-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 6px;}
+  .j-step:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:22px;font-size:22px;color:var(--cyan);font-family:'Sora',sans-serif;z-index:2;}
+  .j-icon{width:74px;height:74px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;border:3px solid var(--cyan);flex-shrink:0;}
+  .j-step.gold .j-icon{border-color:var(--gold);}
+  .j-name{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.25;}
+  .j-name .en{font-size:11px;color:var(--muted);margin-top:2px;}
+  .j-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+  .j-detail{font-size:11px;color:var(--accent);background:rgba(0,119,182,.07);border:1px solid rgba(0,119,182,.2);border-radius:8px;padding:5px 10px;line-height:1.5;text-align:center;margin-top:6px;width:100%;}
+
+  /* S6 Value Curb-Cut */
+  #s6{flex-direction:column;}
+  #s6 .s-top{padding:28px 48px 10px;background:linear-gradient(90deg,#0d1f3c,#1a3a6b);}
+  #s6 .s-top .slide-title{color:#fff;font-size:32px;}
+  #s6 .s-top .slide-title .en{font-size:15px;color:rgba(255,255,255,.4);}
+  #s6 .s-top .slide-sub{color:rgba(255,255,255,.55);font-size:13px;}
+  #s6 .cards-row{display:flex;flex:1;padding:16px 38px 32px;}
+  .e-card{flex:1;margin:0 6px;padding:20px 16px;border-radius:12px;background:var(--bg);display:flex;flex-direction:column;gap:7px;border-top:4px solid var(--cyan);}
+  .e-card .icon{font-size:26px;}
+  .e-card .name{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--navy);line-height:1.3;}
+  .e-card .name .en{font-size:11px;color:var(--muted);margin-top:2px;}
+
+  /* S7 Competitors */
+  #s7{flex-direction:column;}
+  #s7 .s-top{padding:28px 48px 10px;}
+  #s7 .comp-wrap{flex:1;display:flex;padding:0 38px 30px;gap:14px;}
+  #s7 .comp-table{flex:1.4;display:flex;flex-direction:column;gap:8px;justify-content:center;}
+  .comp-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:11px;background:var(--bg);}
+  .comp-name{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--navy);min-width:160px;}
+  .comp-name .en{font-size:10px;color:var(--muted);}
+  .comp-gap{font-size:13px;color:var(--muted);line-height:1.4;}
+  #s7 .hp-box{flex:1;background:var(--navy);border-radius:14px;padding:26px 24px;display:flex;flex-direction:column;justify-content:center;gap:14px;}
+  .hp-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--cyan);}
+  .hp-item{display:flex;gap:10px;align-items:flex-start;}
+  .hp-item .ic{font-size:17px;min-width:22px;}
+  .hp-item .tx{font-size:13px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .hp-item .tx strong{color:var(--cyanl);}
+
+  /* S8 Closing */
+  #s8{flex-direction:row;background:var(--navy);}
+  #s8 .s-left{width:50%;padding:50px 48px;}
+  #s8 .slide-title{color:#fff;font-size:36px;}
+  #s8 .slide-title .en{font-size:16px;color:rgba(255,255,255,.4);}
+  #s8 .slide-sub{color:rgba(255,255,255,.55);font-size:14px;margin-top:8px;}
+  #s8 .cta{margin-top:26px;display:inline-block;padding:14px 22px;background:var(--cyan);border-radius:11px;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);}
+  #s8 .s-right{width:50%;padding:34px;display:flex;flex-direction:column;justify-content:center;gap:11px;}
+  .sum-item{display:flex;gap:13px;padding:13px 17px;background:rgba(255,255,255,.06);border-radius:11px;border-left:4px solid var(--cyan);}
+  .sum-item .ic{font-size:19px;min-width:24px;}
+  .sum-item .tx{font-size:14px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .sum-item .tx strong{color:var(--cyan);font-family:'Sora',sans-serif;}
+}
+
+/* ════ MOBILE ════ */
+@media(max-width:699px){
+  #stage{display:none;}
+  #mobile-view{display:block;padding:14px 14px 56px;}
+  .mc{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 22px rgba(0,0,0,.12);margin-bottom:16px;}
+  .mh{padding:22px 18px 18px;}
+  .mh.dark{background:var(--navy);}
+  .mh.light{background:var(--bg);}
+  .mh.grad{background:linear-gradient(135deg,#0d1f3c,#1a3a6b);}
+  .m-tag{display:inline-block;font-family:'Sora',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(0,180,216,.15);border:1px solid rgba(0,180,216,.35);padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+  .m-tag.lt{color:var(--accent);background:rgba(0,119,182,.1);border-color:rgba(0,119,182,.3);}
+  .m-title{font-family:'Sora',sans-serif;font-size:clamp(24px,6.5vw,30px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px;}
+  .m-title.dk{color:var(--navy);}
+  .m-title span{color:var(--cyan);}
+  .m-en{font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,15px);font-weight:300;color:rgba(255,255,255,.5);margin-bottom:5px;}
+  .m-en.dk{color:var(--muted);}
+  .m-sub{font-size:clamp(14px,3.8vw,16px);color:rgba(255,255,255,.65);line-height:1.5;}
+  .m-sub.dk{color:var(--muted);}
+  .m-list{display:flex;flex-direction:column;gap:9px;padding:14px;}
+  .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;}
+  .m-ac{padding:15px;border-radius:12px;}
+  .m-ac.c1{background:#e8f4fd;}.m-ac.c2{background:#fef3e2;}.m-ac.c3{background:#e8fdf5;}.m-ac.c4{background:#fde8f5;}.m-ac.c5{background:#f0e8fd;}
+  .m-ac .icon{font-size:24px;margin-bottom:4px;}
+  .m-ac .mpct{font-family:'Sora',sans-serif;font-size:clamp(22px,6vw,28px);font-weight:800;color:var(--accent);line-height:1;margin-bottom:5px;}
+  .m-ac .name{font-family:'Sora',sans-serif;font-size:clamp(14px,3.8vw,16px);font-weight:700;color:var(--navy);}
+  .m-ac .name .en{font-size:clamp(11px,3vw,12px);color:var(--muted);margin-top:3px;}
+  .m-pain{display:flex;align-items:center;gap:13px;padding:13px 15px;background:var(--bg);border-radius:11px;border-left:4px solid var(--cyan);}
+  .m-pn{font-family:'Sora',sans-serif;font-size:clamp(19px,5.2vw,23px);font-weight:800;color:var(--cyan);min-width:58px;}
+  .m-ev{display:flex;align-items:center;gap:8px;font-size:clamp(13px,3.6vw,15px);color:rgba(255,255,255,.8);margin-top:7px;}
+  .m-evn{font-family:'Sora',sans-serif;font-size:clamp(18px,5vw,22px);font-weight:800;color:var(--cyan);}
+  .m-pt{font-family:'Sora',sans-serif;font-size:clamp(15px,4.2vw,18px);font-weight:700;color:var(--navy);}
+  .m-pt .en{font-size:clamp(11px,3vw,13px);color:var(--muted);margin-top:2px;}
+  .m-feat{background:var(--navy);border-radius:12px;padding:15px;position:relative;overflow:hidden;margin-bottom:9px;}
+  .m-feat:last-child{margin-bottom:0;}
+  .m-feat::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--cyan);}
+  .m-frow{display:flex;align-items:center;gap:10px;margin-bottom:5px;}
+  .m-ficon{font-size:22px;}
+  .m-fname{font-family:'Sora',sans-serif;font-size:clamp(15px,4vw,17px);font-weight:700;color:#fff;}
+  .m-ftag{font-size:clamp(11px,3vw,13px);color:var(--cyan);font-family:'Sora',sans-serif;font-weight:600;margin-left:auto;}
+  .m-fen{font-size:clamp(12px,3.2vw,14px);color:rgba(255,255,255,.5);font-family:'Sora',sans-serif;}
+  /* journey mobile */
+  .m-jstep{display:flex;gap:14px;padding:13px 15px;background:var(--bg);border-radius:12px;margin-bottom:9px;align-items:center;}
+  .m-jstep:last-child{margin-bottom:0;}
+  .m-jicon{width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+  .m-jstep.gold .m-jicon{border-color:var(--gold);}
+  .m-jname{font-family:'Sora',sans-serif;font-size:clamp(14px,3.8vw,16px);font-weight:700;color:var(--navy);}
+  .m-jname .en{font-size:clamp(11px,3vw,12px);color:var(--muted);margin-top:2px;}
+  .m-jdesc{font-size:clamp(12px,3.3vw,14px);color:var(--muted);line-height:1.45;margin-top:2px;}
+  /* ext */
+  .m-ext{background:var(--bg);border-radius:12px;padding:15px;border-top:4px solid var(--cyan);margin-bottom:9px;}
+  .m-ext:last-child{margin-bottom:0;}
+  .m-ei{font-size:24px;margin-bottom:6px;}
+  .m-en2{font-family:'Sora',sans-serif;font-size:clamp(14px,3.9vw,16px);font-weight:700;color:var(--navy);}
+  .m-en2 .en{font-size:clamp(11px,3vw,12px);color:var(--muted);margin-top:2px;}
+  /* competitor */
+  .m-comp{display:flex;flex-direction:column;gap:4px;padding:13px 15px;background:var(--bg);border-radius:11px;margin-bottom:9px;}
+  .m-comp:last-child{margin-bottom:0;}
+  .m-cname{font-family:'Sora',sans-serif;font-size:clamp(14px,3.9vw,16px);font-weight:700;color:var(--navy);}
+  .m-cgap{font-size:clamp(12px,3.4vw,14px);color:var(--muted);line-height:1.45;}
+  .m-hp{background:var(--navy);border-radius:12px;padding:16px;margin:0 14px 14px;}
+  .m-hpt{font-family:'Sora',sans-serif;font-size:clamp(15px,4.2vw,18px);font-weight:800;color:var(--cyan);margin-bottom:10px;}
+  .m-hpi{display:flex;gap:10px;margin-bottom:9px;align-items:flex-start;}
+  .m-hpi:last-child{margin-bottom:0;}
+  .m-hpi .ic{font-size:17px;min-width:22px;}
+  .m-hpi .tx{font-size:clamp(13px,3.5vw,15px);color:rgba(255,255,255,.85);line-height:1.5;}
+  .m-hpi .tx strong{color:var(--cyanl);}
+  /* summary */
+  .m-sum{display:flex;gap:12px;background:rgba(0,180,216,.07);border-radius:11px;padding:13px 15px;border-left:4px solid var(--cyan);margin-bottom:9px;}
+  .m-sum:last-child{margin-bottom:0;}
+  .m-si{font-size:19px;min-width:24px;}
+  .m-st{font-size:clamp(13px,3.7vw,15px);color:var(--text);line-height:1.55;}
+  .m-st strong{color:var(--accent);font-family:'Sora',sans-serif;}
+  .m-cta{margin:4px 14px 14px;padding:15px;background:var(--cyan);border-radius:12px;font-family:'Sora',sans-serif;font-size:clamp(15px,4vw,17px);font-weight:700;color:var(--navy);text-align:center;}
+  /* agenda */
+  .m-ag{display:flex;gap:11px;padding:10px 16px;align-items:center;border-bottom:1px solid rgba(0,0,0,.05);}
+  .m-ag:last-child{border-bottom:none;}
+  .m-agn{font-family:'Sora',sans-serif;font-size:clamp(14px,3.8vw,16px);font-weight:800;color:var(--cyan);min-width:24px;}
+  .m-agt{font-size:clamp(14px,3.8vw,16px);color:var(--text);}
+  .m-agt .en{font-size:clamp(11px,3vw,12px);color:var(--muted);}
+}
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span class="logo">AI Kwau · Midterm</span>
+  <span class="counter" id="counter">1 / 8</span>
+  <div class="spacer"></div>
+  <button class="tbtn" onclick="saveHTML()">💾 另存</button>
+  <button class="tbtn primary" onclick="exportClean()">📤 匯出</button>
+</div>
+
+<!-- DESKTOP -->
+<div id="stage">
+  <div id="slide-row">
+    <div id="slide-wrapper">
+      <div class="scaler" id="scaler">
+
+      <!-- S1 Cover + Agenda -->
+      <div class="slide active" id="s1">
+        <div class="s-left">
+          <div class="tag">Midterm Workshop · 期中報告</div>
+          <div class="brand">AI<span>·</span>Kwau</div>
+          <div class="tagline">愛看有 ── Webcam × AI，讓每一台 PC 看懂你的視野</div>
+          <div class="tagline-en">See what you need — AI vision accessibility for every PC</div>
+          <div class="agenda">
+            <div class="ag-item"><span class="ag-num">01</span>問題定義<span class="en2">Problem Statement</span></div>
+            <div class="ag-item"><span class="ag-num">02</span>解決方案<span class="en2">Proposed Solution</span></div>
+            <div class="ag-item"><span class="ag-num">03</span>使用者體驗流程<span class="en2">User Experience Flow</span></div>
+            <div class="ag-item"><span class="ag-num">04</span>價值與影響<span class="en2">Value &amp; Impact</span></div>
+            <div class="ag-item"><span class="ag-num">05</span>競品分析<span class="en2">Competitor Study</span></div>
+          </div>
+        </div>
+        <div class="s-right">
+          <svg class="eye-svg" viewBox="0 0 200 200">
+            <defs><radialGradient id="eg" cx="50%" cy="50%"><stop offset="0%" stop-color="#00b4d8" stop-opacity=".3"/><stop offset="100%" stop-color="#023e8a" stop-opacity="0"/></radialGradient></defs>
+            <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(0,180,216,.12)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(0,180,216,.18)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="50" fill="none" stroke="rgba(0,180,216,.28)" stroke-width="1.5"/>
+            <ellipse cx="100" cy="100" rx="80" ry="36" fill="none" stroke="rgba(0,180,216,.5)" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="28" fill="url(#eg)" stroke="rgba(0,180,216,.6)" stroke-width="2"/>
+            <circle cx="100" cy="100" r="12" fill="rgba(0,180,216,.4)" stroke="#00b4d8" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="4" fill="#00b4d8"/>
+            <path d="M60 60 Q100 20 140 60" fill="none" stroke="#00b4d8" stroke-width="1.5" stroke-dasharray="3,4" opacity=".6"/>
+            <path d="M20 20L20 34M20 20L34 20" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+            <path d="M180 20L166 20M180 20L180 34" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+            <path d="M20 180L20 166M20 180L34 180" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+            <path d="M180 180L166 180M180 180L180 166" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+          </svg>
+          <div class="eye-cap">GAZE TRACKING AI</div>
+        </div>
+      </div>
+
+      <!-- S2 Problem: 20% target users -->
+      <div class="slide" id="s2">
+        <div class="s-top">
+          <div class="step-badge">1 · Problem Statement</div>
+          <div class="slide-title">20% 目標用戶：視力障礙 PC 使用者<span class="en">Target Users — Five Visual Conditions · Survey n=17</span></div>
+        </div>
+        <div class="grid">
+          <div class="a-card c3"><div class="icon">🌫️</div><div class="pct">53%</div><div class="name">亮度下降/霧化<span class="en">Overall dimness / fog</span></div></div>
+          <div class="a-card c2"><div class="icon">🔭</div><div class="pct">41%</div><div class="name">周邊視野缺損<span class="en">Peripheral loss (tunnel vision)</span></div></div>
+          <div class="a-card c5"><div class="icon">📖</div><div class="pct">35%</div><div class="name">閱讀文字困難<span class="en">Reading difficulty</span></div></div>
+          <div class="a-card c1"><div class="icon">🔵</div><div class="pct">24%</div><div class="name">中央視野模糊<span class="en">Central vision blur</span></div></div>
+          <div class="a-card c4"><div class="icon">💡</div><div class="pct">24%</div><div class="name">光敏感或眩光<span class="en">Light sensitivity / glare</span></div></div>
+        </div>
+      </div>
+
+      <!-- S3 Problem: pain points from interviews -->
+      <div class="slide" id="s3">
+        <div class="s-left">
+          <div class="step-badge">1 · Problem Statement</div>
+          <div class="slide-title" style="color:#fff;">問卷實證五大痛點<span class="en" style="color:rgba(255,255,255,.4);">Five Pain Points — Survey Evidence (n=17)</span></div>
+          <div class="slide-sub">現有 PC 介面從未為視力受損者設計<span class="en">PC interfaces were never designed for vision-impaired users</span></div>
+          <div class="ev-box">
+            <div class="ev-num">59%</div>
+            <div class="ev-tx">受訪者<strong>未使用任何輔助工具</strong><span class="en" style="opacity:.5;">have never used any assistive tool</span></div>
+          </div>
+          <div class="ev-box">
+            <div class="ev-num">3.4<span style="font-size:14px;">/5</span></div>
+            <div class="ev-tx">平均 PC 使用體驗分數<span class="en" style="opacity:.5;">average PC experience score</span></div>
+          </div>
+        </div>
+        <div class="s-right">
+          <div style="width:100%;display:flex;flex-direction:column;gap:10px;padding:28px 38px;">
+            <div class="pain-item"><div class="pain-num">71%</div><div class="pain-title">長時間使用容易眼睛疲勞<span class="en">Eye fatigue from extended use</span></div></div>
+            <div class="pain-item"><div class="pain-num">65%</div><div class="pain-title">文字太小難以閱讀<span class="en">Text too small to read</span></div></div>
+            <div class="pain-item"><div class="pain-num">47%</div><div class="pain-title">畫面對比度不足，難以辨識<span class="en">Insufficient contrast</span></div></div>
+            <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">滑鼠游標難以追蹤定位<span class="en">Cursor hard to track</span></div></div>
+            <div class="pain-item"><div class="pain-num">18%</div><div class="pain-title">找不到想點的按鈕或連結<span class="en">Can't locate buttons / links</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4 Solution -->
+      <div class="slide" id="s4">
+        <div class="s-top">
+          <div class="step-badge">2 · Proposed Solution</div>
+          <div class="slide-title">瀏覽器插件 ── 持續學習的感知迴圈<span class="en">Browser Extension — Active Perception Loop</span></div>
+        </div>
+        <div class="loop-wrap">
+          <div class="loop-row">
+
+            <!-- Node 1: Perceive -->
+            <div class="lnode" style="flex:0.85;">
+              <div class="lnode-head">
+                <div class="lnode-icon">📷</div>
+                <div>
+                  <div class="lnode-title">感知</div>
+                  <div class="lnode-en">Perceive</div>
+                </div>
+              </div>
+              <div class="lnode-body">Webcam 即時偵測，同時累積視線熱力圖</div>
+              <div class="lnode-pills">
+                <div class="lpill">👁️ 眼球位置</div>
+                <div class="lpill">🧑 臉部距離</div>
+                <div class="lpill" style="background:rgba(255,200,0,.15);color:#ffd166;border-color:rgba(255,200,0,.3);">🗺️ 視線熱力圖</div>
+                <div class="lpill" style="background:rgba(6,214,160,.12);color:#06d6a0;border-color:rgba(6,214,160,.3);">📊 信心度評分</div>
+              </div>
+            </div>
+
+            <!-- Arrow 1 -->
+            <div class="larr">
+              <div class="larr-line">→</div>
+            </div>
+
+            <!-- Node 2: Decide — TWO COLUMNS -->
+            <div class="lnode active" style="flex:1.4;padding:12px 14px;">
+              <div class="ai-badge">AI</div>
+              <div class="lnode-head" style="margin-bottom:8px;">
+                <div class="lnode-icon">🤖</div>
+                <div>
+                  <div class="lnode-title">判斷</div>
+                  <div class="lnode-en">Decide</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;flex:1;">
+                <!-- Left: Realtime -->
+                <div style="flex:1;background:rgba(0,180,216,.12);border-radius:9px;padding:9px 10px;border:1px solid rgba(0,180,216,.3);">
+                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">即時訊號 · 依成效自動調整</div>
+                  <div class="lpill" style="margin-bottom:4px;font-size:10px;">👁 移動中 → 游標跟隨</div>
+                  <div class="lpill" style="margin-bottom:4px;font-size:10px;">⏱ 停留達門檻 → 對比強化</div>
+                  <div class="lpill green" style="margin-bottom:4px;font-size:10px;">⏱ 繼續停留 → 語音朗讀</div>
+                  <div class="lpill green" style="margin-bottom:4px;font-size:10px;">🔁 掃視異常 → 積極介入</div>
+                  <div class="lpill gold" style="font-size:10px;">⚠️ 靠近偵測 → 暫停切換</div>
+                  <div style="font-size:10px;color:rgba(0,180,216,.7);margin-top:7px;line-height:1.5;">門檻非固定值<br>依介入成效<br>個人化調整</div>
+                </div>
+                <!-- Right: Accumulated -->
+                <div style="flex:1;background:rgba(255,200,0,.08);border-radius:9px;padding:9px 10px;border:1px solid rgba(255,200,0,.3);">
+                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:#ffd166;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">累積推斷</div>
+                  <div class="lpill" style="background:rgba(255,200,0,.15);color:#ffd166;border-color:rgba(255,200,0,.3);margin-bottom:4px;font-size:10px;">🗺️ 視野地圖統計分析</div>
+                  <div class="lpill" style="background:rgba(255,200,0,.15);color:#ffd166;border-color:rgba(255,200,0,.3);font-size:10px;">🧊 長期冷區 → 視野缺損</div>
+                  <div style="font-size:10px;color:rgba(255,200,0,.7);margin-top:7px;line-height:1.4;">↓ 看不到那裡<br>→ 焦點牽引（非對比）<br>兩者互斥</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arrow 2 -->
+            <div class="larr">
+              <div class="larr-line">→</div>
+            </div>
+
+            <!-- Node 3: Act — TWO COLUMNS -->
+            <div class="lnode" style="flex:1.3;padding:12px 14px;">
+              <div class="lnode-head" style="margin-bottom:8px;">
+                <div class="lnode-icon">✨</div>
+                <div>
+                  <div class="lnode-title">介入</div>
+                  <div class="lnode-en">Act</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;flex:1;">
+                <!-- Left: priority stack -->
+                <div style="flex:1;background:rgba(0,180,216,.08);border-radius:9px;padding:9px 10px;border:1px solid rgba(0,180,216,.2);">
+                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">看得到 · 漸進疊加</div>
+                  <div class="lpill" style="margin-bottom:1px;font-size:10px;background:rgba(6,214,160,.12);color:#06d6a0;border-color:rgba(6,214,160,.3);">◎ 注視圓圈 — 常駐</div>
+                  <div style="font-size:9px;color:rgba(6,214,160,.6);margin:0 0 4px 4px;line-height:1.45;">信心高→實線填色倒數<br>信心低→虛線縮小提示</div>
+                  <div class="lpill" style="margin-bottom:3px;font-size:10px;">① 🖱️ 智慧游標 — 常駐</div>
+                  <div class="lpill" style="margin-bottom:1px;font-size:10px;">② 🎨 L1 文字層 — 短停留</div>
+                  <div style="font-size:9px;color:rgba(0,180,216,.5);margin:0 0 3px 4px;">字色加深 · 加粗 · 行距加大</div>
+                  <div class="lpill" style="margin-bottom:1px;font-size:10px;">③ 🎨 L2 元件層 — 中停留</div>
+                  <div style="font-size:9px;color:rgba(0,180,216,.5);margin:0 0 3px 4px;">按鈕邊框 · 點擊區域放大</div>
+                  <div class="lpill" style="margin-bottom:3px;font-size:10px;">④ 🗣️ 語音朗讀 — 長停留</div>
+                  <div class="lpill green" style="margin-bottom:1px;font-size:10px;">⑤ 🎨 L3 全頁結構 — 掃視異常</div>
+                  <div style="font-size:9px;color:rgba(6,214,160,.55);margin:0 0 3px 4px;">WCAG AA 全頁套用</div>
+                  <div style="font-size:9px;color:rgba(0,180,216,.55);margin-top:4px;line-height:1.4;">觸發時機依成效自動調整<br>語音啟動時 L1/L2 退讓</div>
+                </div>
+                <!-- Right: Focus guide -->
+                <div style="flex:1;background:rgba(255,200,0,.08);border-radius:9px;padding:9px 10px;border:1px solid rgba(255,200,0,.3);">
+                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:#ffd166;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">看不到 · 焦點牽引</div>
+                  <div class="lpill" style="background:rgba(255,200,0,.18);color:#ffd166;border-color:rgba(255,200,0,.4);font-size:10px;font-weight:700;margin-bottom:4px;">✦ 視野邊界脈動光點</div>
+                  <div style="font-size:10px;color:rgba(255,200,0,.7);margin-top:4px;line-height:1.5;">不移動元件<br>不破壞頁面排版<br>引導視線主動移過去</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Feedback Loop -->
+          <div class="loop-feedback" style="padding:6px 0 0;">
+            <div class="loop-fb-arrow">↙</div>
+            <div class="loop-fb-line"></div>
+            <div class="loop-fb-text">🔄 &nbsp;介入後觀察視線是否移到目標元件 · 依成效自動調整觸發門檻 · 越用越準</div>
+            <div class="loop-fb-line"></div>
+            <div class="loop-fb-arrow">↗</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5 UX Journey -->
+      <div class="slide" id="s5">
+        <div class="s-top">
+          <div class="step-badge">3 · User Experience Flow</div>
+          <div class="slide-title" style="font-size:30px;">使用者旅程地圖<span class="en">User Journey Map</span></div>
+        </div>
+        <div class="journey">
+          <div class="j-step">
+            <div class="j-icon">🏭</div>
+            <div class="j-name">預裝出貨<span class="en">Pre-installed</span></div>
+            <div class="j-desc">開機即用<br>無需額外安裝</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">🎯</div>
+            <div class="j-name">首次校準<span class="en">One-time Setup</span></div>
+            <div class="j-desc">視線 9 點校準<br>僅需執行一次</div>
+            <div class="j-detail">🗺️ 視野掃描測試<br>建立初版視野地圖</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">🌐</div>
+            <div class="j-name">正常瀏覽<span class="en">Browse Normally</span></div>
+            <div class="j-desc">AI 背景持續感知<br>不改變使用習慣</div>
+            <div class="j-detail">🗺️ 持續修正<br>視野地圖精度</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">✨</div>
+            <div class="j-name">即時強化<span class="en">Auto-Enhance</span></div>
+            <div class="j-desc">對比強化 · 智慧游標<br>語音朗讀 · 焦點牽引</div>
+            <div class="j-detail" style="border-color:#ffd166;color:#c9922a;background:rgba(255,200,0,.08);">✦ 視野缺損區<br>改用焦點牽引</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6 Value: Curb-Cut -->
+      <div class="slide" id="s6">
+        <div class="s-top">
+          <div class="step-badge" style="background:var(--gold);">4 · Value &amp; Impact</div>
+          <div class="slide-title">Curb-Cut Effect ── 從 20% 延伸到日常大眾<span class="en">The same solution works for everyday users — not just vision-impaired</span></div>
+        </div>
+        <div class="cards-row">
+          <div class="e-card">
+            <div class="icon">☀️</div>
+            <div class="name">螢幕反光 / 眩光<span class="en">Screen glare &amp; reflections</span></div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px;">亮度下降/霧化、對比消失，文字變得難以辨識 ── 跟亮度下降/霧化的視障體驗完全相同</div>
+          </div>
+          <div class="e-card">
+            <div class="icon">🌞</div>
+            <div class="name">戶外強日光下看螢幕<span class="en">Outdoor bright sunlight</span></div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px;">霧感、看不清文字，需要用手遮光才能閱讀 ── 跟霧感視障者的日常一模一樣</div>
+          </div>
+          <div class="e-card">
+            <div class="icon">😵</div>
+            <div class="name">久看螢幕眼睛疲勞<span class="en">Eye fatigue from long screen time</span></div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px;">短暫模糊、聚焦困難，視線難以停留在小字上 ── 71% 視障受訪者的最大痛點，一般人也會遇到</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S7 Competitors -->
+      <div class="slide" id="s7">
+        <div class="s-top">
+          <div class="step-badge">5 · Competitor Study</div>
+          <div class="slide-title" style="font-size:30px;">競品分析與 HP 差異化優勢<span class="en">Competitive Landscape &amp; HP's Differentiation</span></div>
+        </div>
+        <div class="comp-wrap">
+          <div class="comp-table">
+            <div class="comp-row">
+              <div class="comp-name">Windows 放大鏡 / 朗讀<span class="en">Magnifier / Narrator</span></div>
+              <div class="comp-gap">被動工具，需手動操作，不會主動適應視野狀況</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-name">Windows 高對比模式<span class="en">High Contrast Mode</span></div>
+              <div class="comp-gap">顏色改變幅度過大，對 20% 輕微視力障礙者反而造成視覺混亂</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-name">眼動儀<span class="en">Eye trackers</span></div>
+              <div class="comp-gap">專用硬體數萬元，主打遊戲與研究市場</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-name">ZoomText<span class="en">Screen magnifier</span></div>
+              <div class="comp-gap">年費昂貴（數百美元），僅放大畫面，無視線感知能力</div>
+            </div>
+          </div>
+          <div class="hp-box">
+            <div class="hp-title">HP 優勢 · HP Strengths</div>
+            <div style="margin-bottom:10px;padding:10px 14px;background:rgba(0,180,216,.15);border-radius:10px;border-left:3px solid var(--cyan);">
+              <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-bottom:3px;">主動感知 vs 被動工具</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.5;">競品需要用戶手動觸發 ── AI Kwau 持續感知視線、自動判斷、主動介入，這是根本性的差異</div>
+            </div>
+            <div class="hp-item"><div class="ic">📷</div><div class="tx"><strong>內建 Webcam 出貨：</strong>每台 HP PC 自帶感測器，零增量硬體成本</div></div>
+            <div class="hp-item"><div class="ic">🔒</div><div class="tx"><strong>本地 AI 運算：</strong>視線資料不上雲保護隱私，且本地推論無需支付 API token 費用</div></div>
+            <div class="hp-item"><div class="ic">📊</div><div class="tx"><strong>未被滿足的潛在市場：</strong>59% 用戶從未使用任何輔助工具，HP 內建提供開箱即用差異化</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S8 Closing -->
+      <div class="slide" id="s8">
+        <div class="s-left">
+          <div class="tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary · 總結</div>
+          <div class="slide-title">AI Kwau<br>愛看有<span class="en">Let every PC see what you need</span></div>
+          <div class="slide-sub">從 20% 視障用戶的真實痛點出發，<br>用零硬體成本的 AI 方案，<br>最終惠及 80% 的所有 PC 使用者<span class="en">From real pain points to universal benefit</span></div>
+          <div class="cta">Q &amp; A</div>
+        </div>
+        <div class="s-right">
+          <div class="sum-item"><div class="ic">🎯</div><div class="tx"><strong>Problem：</strong>5 種視覺情境 × 5 大痛點，來自真實用戶訪談</div></div>
+          <div class="sum-item"><div class="ic">🤖</div><div class="tx"><strong>Solution：</strong>瀏覽器插件，不改使用習慣，即時強化網頁 UI</div></div>
+          <div class="sum-item"><div class="ic">🗺️</div><div class="tx"><strong>UX Flow：</strong>校準一次，AI 持續適配，自然互動</div></div>
+          <div class="sum-item"><div class="ic">📈</div><div class="tx"><strong>Impact：</strong>Curb-Cut Effect 延伸至 80% 用戶</div></div>
+          <div class="sum-item"><div class="ic">🏆</div><div class="tx"><strong>Differentiation：</strong>主動感知 vs 被動工具 · HP 預裝 Webcam · 本地 AI 隱私 · 59% 未被滿足市場</div></div>
+        </div>
+      </div>
+
+      </div><!-- /scaler -->
+    </div><!-- /slide-wrapper -->
+    <button class="snav" id="btn-prev" onclick="prev()">&#8592;</button>
+    <button class="snav" id="btn-next" onclick="next()">&#8594;</button>
+    <div id="nav-bar"><div id="dots"></div></div>
+  </div><!-- /slide-row -->
+</div><!-- /stage -->
+
+<!-- MOBILE -->
+<div id="mobile-view">
+
+  <div class="mc">
+    <div class="mh dark">
+      <div class="m-tag">Midterm Workshop · 期中報告</div>
+      <div class="m-title">AI<span>·</span>Kwau</div>
+      <div class="m-en">See what you need — for every PC</div>
+      <div class="m-sub">愛看有 ── Webcam × AI，讓每一台 PC 看懂你的視野</div>
+    </div>
+    <div style="padding:6px 0;">
+      <div class="m-ag"><div class="m-agn">01</div><div class="m-agt">問題定義<span class="en">Problem Statement</span></div></div>
+      <div class="m-ag"><div class="m-agn">02</div><div class="m-agt">解決方案<span class="en">Proposed Solution</span></div></div>
+      <div class="m-ag"><div class="m-agn">03</div><div class="m-agt">使用者體驗流程<span class="en">User Experience Flow</span></div></div>
+      <div class="m-ag"><div class="m-agn">04</div><div class="m-agt">價值與影響<span class="en">Value &amp; Impact</span></div></div>
+      <div class="m-ag"><div class="m-agn">05</div><div class="m-agt">競品分析<span class="en">Competitor Study</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh light">
+      <div class="m-tag lt">1 · Problem Statement</div>
+      <div class="m-title dk">20% 目標用戶</div>
+      <div class="m-en dk">Five Visual Conditions</div>
+      <div class="m-sub dk">視力障礙 PC 使用者的五種視覺情境</div>
+    </div>
+    <div class="m-grid">
+      <div class="m-ac c3"><div class="icon">🌫️</div><div class="mpct">53%</div><div class="name">亮度下降/霧化<span class="en">Overall dimness / fog</span></div></div>
+      <div class="m-ac c2"><div class="icon">🔭</div><div class="mpct">41%</div><div class="name">周邊視野缺損<span class="en">Tunnel vision</span></div></div>
+      <div class="m-ac c5"><div class="icon">📖</div><div class="mpct">35%</div><div class="name">閱讀文字困難<span class="en">Reading difficulty</span></div></div>
+      <div class="m-ac c1"><div class="icon">🔵</div><div class="mpct">24%</div><div class="name">中央視野模糊<span class="en">Central vision blur</span></div></div>
+      <div class="m-ac c4"><div class="icon">💡</div><div class="mpct">24%</div><div class="name">光敏感或眩光<span class="en">Light sensitivity</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh dark">
+      <div class="m-tag">1 · Problem Statement</div>
+      <div class="m-title">問卷實證五大痛點</div>
+      <div class="m-en">Survey Evidence (n=17)</div>
+      <div class="m-ev"><span class="m-evn">59%</span> 未使用任何輔助工具</div>
+      <div class="m-ev"><span class="m-evn">3.4/5</span> 平均 PC 使用體驗</div>
+    </div>
+    <div class="m-list">
+      <div class="m-pain"><div class="m-pn">71%</div><div class="m-pt">長時間使用眼睛疲勞<span class="en">Eye fatigue</span></div></div>
+      <div class="m-pain"><div class="m-pn">65%</div><div class="m-pt">文字太小難以閱讀<span class="en">Text too small</span></div></div>
+      <div class="m-pain"><div class="m-pn">47%</div><div class="m-pt">畫面對比度不足<span class="en">Low contrast</span></div></div>
+      <div class="m-pain"><div class="m-pn">24%</div><div class="m-pt">游標難以追蹤定位<span class="en">Cursor hard to track</span></div></div>
+      <div class="m-pain"><div class="m-pn">18%</div><div class="m-pt">找不到想點的按鈕<span class="en">Can't locate buttons</span></div></div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh dark">
+      <div class="m-tag">2 · Proposed Solution</div>
+      <div class="m-title">主動感知系統架構</div>
+      <div class="m-en">Browser Extension · No habit change</div>
+      <div class="m-sub" style="font-size:clamp(12px,3.2vw,14px);margin-top:4px;">感知 → 判斷 → 介入，三層架構</div>
+    </div>
+    <div class="m-list">
+      <div style="padding:10px 14px 4px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">📷 感知輸入</div>
+      <div class="m-feat" style="margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">👁️</div><div class="m-fname">眼球位置追蹤</div><div class="m-ftag">WebGazer.js</div></div>
+        <div class="m-fen">臉部距離偵測 · MediaPipe Face</div>
+      </div>
+      <div style="padding:10px 14px 4px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">🤖 AI 判斷層</div>
+      <div class="m-feat" style="margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">🔦</div><div class="m-fname">聚焦範圍偵測</div><div class="m-ftag">依成效自動調整</div></div>
+        <div class="m-fen">停留門檻非固定值，由依成效自動調整依介入成效個人化調整</div>
+      </div>
+      <div class="m-feat" style="margin-bottom:4px;border-left:4px solid var(--gold);">
+        <div class="m-frow"><div class="m-ficon">⚠️</div><div class="m-fname">靠近 &lt;45cm 切換策略</div></div>
+        <div class="m-fen">視線焦慮偵測：同區掃視 &gt;3 次積極介入</div>
+      </div>
+      <div style="padding:10px 14px 4px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">✨ 介入輸出 · 漸進疊加</div>
+      <div class="m-feat" style="margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">🖱️</div><div class="m-fname">① 智慧游標 — 常駐</div></div>
+        <div class="m-fen">放大光暈 + 靜止脈動，一直開著</div>
+      </div>
+      <div class="m-feat" style="margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">🎨</div><div class="m-fname">② 對比強化 L1 — 文字層</div></div>
+        <div class="m-fen">字色加深 · 加粗 · 行距加大（短停留）</div>
+      </div>
+      <div class="m-feat" style="margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">🎨</div><div class="m-fname">③ 對比強化 L2 — 元件層</div></div>
+        <div class="m-fen">按鈕邊框加粗 · 點擊區域放大（中停留）</div>
+      </div>
+      <div class="m-feat" style="margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">🗣️</div><div class="m-fname">④ 語音朗讀 — 長停留觸發</div></div>
+        <div class="m-fen">啟動時 L1/L2 退讓</div>
+      </div>
+      <div class="m-feat" style="margin-bottom:4px;border-left:4px solid #06d6a0;">
+        <div class="m-frow"><div class="m-ficon">🎨</div><div class="m-fname" style="color:#06d6a0;">⑤ 對比強化 L3 — 全頁結構</div></div>
+        <div class="m-fen">掃視異常時啟動 · WCAG AA 全頁套用</div>
+      </div>
+      <div class="m-feat" style="border-left:4px solid #ffd166;margin-bottom:4px;">
+        <div class="m-frow"><div class="m-ficon">✦</div><div class="m-fname" style="color:#ffd166;">焦點牽引 — 視野缺損專用</div></div>
+        <div class="m-fen">與對比強化互斥 · 在可視邊界放脈動光點引導</div>
+      </div>
+      <div style="margin:4px 0 0;padding:11px 13px;background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.25);border-radius:10px;">
+        <div style="font-family:'Sora',sans-serif;font-size:clamp(12px,3.2vw,13px);font-weight:700;color:#ffd166;margin-bottom:3px;">🗺️ 視野冷區偵測</div>
+        <div style="font-size:clamp(11px,3vw,12px);color:rgba(0,0,0,.55);line-height:1.5;">若某象限長期無停留紀錄，AI 推斷為視野缺損區，改用焦點牽引而非對比強化</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh light">
+      <div class="m-tag lt">3 · User Experience Flow</div>
+      <div class="m-title dk">使用者旅程</div>
+      <div class="m-en dk">Five Steps · No Habit Change</div>
+    </div>
+    <div class="m-list">
+      <div class="m-jstep"><div class="m-jicon">🏭</div><div><div class="m-jname">預裝出貨<span class="en">Pre-installed</span></div><div class="m-jdesc">開機即用，無需額外安裝</div></div></div>
+      <div class="m-jstep"><div class="m-jicon">🎯</div><div>
+        <div class="m-jname">首次校準<span class="en">One-time Setup</span></div>
+        <div class="m-jdesc">視線 9 點校準，僅需執行一次</div>
+        <div style="font-size:clamp(11px,3vw,12px);color:var(--accent);background:rgba(0,119,182,.07);border:1px solid rgba(0,119,182,.2);border-radius:7px;padding:4px 9px;margin-top:4px;line-height:1.5;">🗺️ 視野掃描測試 · 建立初版視野地圖</div>
+      </div></div>
+      <div class="m-jstep"><div class="m-jicon">🌐</div><div>
+        <div class="m-jname">正常瀏覽<span class="en">Browse Normally</span></div>
+        <div class="m-jdesc">AI 背景持續感知，不改變使用習慣</div>
+        <div style="font-size:clamp(11px,3vw,12px);color:var(--accent);background:rgba(0,119,182,.07);border:1px solid rgba(0,119,182,.2);border-radius:7px;padding:4px 9px;margin-top:4px;line-height:1.5;">🗺️ 持續修正視野地圖精度</div>
+      </div></div>
+      <div class="m-jstep"><div class="m-jicon">✨</div><div>
+        <div class="m-jname">即時強化<span class="en">Auto-Enhance</span></div>
+        <div class="m-jdesc">對比強化 · 智慧游標 · 語音朗讀 · 焦點牽引</div>
+        <div style="font-size:clamp(11px,3vw,12px);color:#c9922a;background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.3);border-radius:7px;padding:4px 9px;margin-top:4px;line-height:1.5;">✦ 視野缺損區改用焦點牽引</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh grad">
+      <div class="m-tag">4 · Value &amp; Impact</div>
+      <div class="m-title">Curb-Cut Effect</div>
+      <div class="m-en">From 20% to Everyday Users</div>
+      <div class="m-sub">同一套解法，日常大眾也會遇到一樣的問題</div>
+    </div>
+    <div class="m-list">
+      <div class="m-ext">
+        <div class="m-ei">☀️</div>
+        <div class="m-en2">螢幕反光 / 眩光<span class="en">Screen glare &amp; reflections</span></div>
+        <div style="font-size:clamp(12px,3.2vw,13px);color:var(--muted);line-height:1.5;margin-top:4px;">亮度下降/霧化、對比消失 ── 與視障體驗相同</div>
+      </div>
+      <div class="m-ext">
+        <div class="m-ei">🌞</div>
+        <div class="m-en2">戶外強日光下看螢幕<span class="en">Outdoor bright sunlight</span></div>
+        <div style="font-size:clamp(12px,3.2vw,13px);color:var(--muted);line-height:1.5;margin-top:4px;">霧感、看不清文字 ── 與霧感視障者日常一模一樣</div>
+      </div>
+      <div class="m-ext">
+        <div class="m-ei">😵</div>
+        <div class="m-en2">久看螢幕眼睛疲勞<span class="en">Eye fatigue</span></div>
+        <div style="font-size:clamp(12px,3.2vw,13px);color:var(--muted);line-height:1.5;margin-top:4px;">短暫模糊、聚焦困難 ── 71% 視障受訪者最大痛點，一般人也會遇到</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh light">
+      <div class="m-tag lt">5 · Competitor Study</div>
+      <div class="m-title dk">競品分析</div>
+      <div class="m-en dk">Competitive Landscape</div>
+    </div>
+    <div class="m-list">
+      <div class="m-comp"><div class="m-cname">Windows 放大鏡 / 朗讀</div><div class="m-cgap">被動工具，不會主動適應視野狀況</div></div>
+      <div class="m-comp"><div class="m-cname">Windows 高對比模式</div><div class="m-cgap">顏色改變幅度過大，對輕微視力障礙者反而造成視覺混亂</div></div>
+      <div class="m-comp"><div class="m-cname">眼動儀</div><div class="m-cgap">專用硬體數萬元，主打遊戲市場</div></div>
+      <div class="m-comp"><div class="m-cname">ZoomText</div><div class="m-cgap">年費昂貴，僅放大畫面，無視線感知</div></div>
+    </div>
+    <div class="m-hp">
+      <div class="m-hpt">HP 優勢 · HP Strengths</div>
+      <div style="margin-bottom:10px;padding:10px 12px;background:rgba(0,180,216,.15);border-radius:9px;border-left:3px solid var(--cyan);">
+        <div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,15px);font-weight:800;color:#fff;margin-bottom:3px;">主動感知 vs 被動工具</div>
+        <div style="font-size:clamp(12px,3.2vw,13px);color:rgba(255,255,255,.65);line-height:1.5;">競品需手動觸發 ── AI Kwau 持續感知、自動判斷、主動介入</div>
+      </div>
+      <div class="m-hpi"><div class="ic">📷</div><div class="tx"><strong>內建 Webcam 出貨：</strong>零增量硬體成本</div></div>
+      <div class="m-hpi"><div class="ic">🔒</div><div class="tx"><strong>本地 AI 運算：</strong>視線資料不上雲，且無需支付 API token 費用</div></div>
+      <div class="m-hpi"><div class="ic">📊</div><div class="tx"><strong>未被滿足市場：</strong>59% 用戶從未使用輔助工具，HP 內建提供開箱即用差異化</div></div>
+    </div>
+  </div>
+
+  <div class="mc">
+    <div class="mh dark">
+      <div class="m-tag">Summary · 總結</div>
+      <div class="m-title">AI Kwau 愛看有</div>
+      <div class="m-en">Let every PC see what you need</div>
+      <div class="m-sub">從 20% 真實痛點出發，惠及 80% 所有使用者</div>
+    </div>
+    <div class="m-list">
+      <div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Problem：</strong>5 種視覺情境 × 5 大痛點，真實訪談</div></div>
+      <div class="m-sum"><div class="m-si">🤖</div><div class="m-st"><strong>Solution：</strong>瀏覽器插件，不改使用習慣，即時強化網頁 UI</div></div>
+      <div class="m-sum"><div class="m-si">🗺️</div><div class="m-st"><strong>UX Flow：</strong>校準一次，AI 持續適配，語音即時提醒</div></div>
+      <div class="m-sum"><div class="m-si">📈</div><div class="m-st"><strong>Impact：</strong>Curb-Cut 延伸至日常大眾情境</div></div>
+      <div class="m-sum"><div class="m-si">🏆</div><div class="m-st"><strong>HP 差異化：</strong>主動感知 vs 被動工具 · 預裝 Webcam · 本地 AI · 59% 未被滿足用戶</div></div>
+    </div>
+    <div class="m-cta">Q &amp; A</div>
+  </div>
+
+</div><!-- /mobile-view -->
+
+<script>
+let cur=0,total=8;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=(()=>{const n=i;return()=>goTo(n);})();
+  dotsEl.appendChild(d);
+}
+const slides=document.querySelectorAll('#scaler .slide');
+const getDots=()=>document.querySelectorAll('#dots .dot');
+function goTo(n){
+  slides[cur].classList.remove('active');
+  getDots()[cur].classList.remove('active');
+  cur=Math.max(0,Math.min(total-1,n));
+  slides[cur].classList.add('active');
+  getDots()[cur].classList.add('active');
+  document.getElementById('counter').textContent=(cur+1)+' / '+total;
+}
+function prev(){goTo(cur-1);}
+function next(){goTo(cur+1);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'){e.preventDefault();prev();}
+  if(e.key==='ArrowRight'){e.preventDefault();next();}
+},true);
+
+function scaleSlide(){
+  const row=document.getElementById('slide-row');
+  const s=document.getElementById('scaler');
+  if(!row||!s)return;
+  const cw=row.offsetWidth,ch=row.offsetHeight;
+  if(!cw||!ch)return;
+  const sc=Math.min(cw/960,ch/540);
+  s.style.transform=`scale(${sc})`;
+  s.style.left=Math.round((cw-960*sc)/2)+'px';
+  s.style.top=Math.round((ch-540*sc)/2)+'px';
+}
+window.addEventListener('resize',scaleSlide);
+requestAnimationFrame(()=>requestAnimationFrame(scaleSlide));
+
+let tx=0;
+const sw=document.getElementById('slide-wrapper');
+sw.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sw.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>40){dx<0?next():prev();}
+},{passive:true});
+
+function saveHTML(){
+  const c=document.cloneNode(true);
+  dl('ai-kwau-midterm.html','<!DOCTYPE html>\n'+c.documentElement.outerHTML);
+}
+function exportClean(){
+  const c=document.cloneNode(true);
+  c.querySelector('#toolbar')?.remove();
+  c.querySelector('#mobile-view')?.remove();
+  const st=c.querySelector('style');
+  st.textContent+=`
+    @media(min-width:700px){
+      body{overflow:auto!important;height:auto!important;}
+      #stage{position:static!important;height:auto!important;}
+      #slide-row{position:static!important;}
+      #slide-wrapper{position:static!important;}
+      .snav{display:none!important;}
+      #nav-bar{display:none!important;}
+      .scaler{position:static!important;transform:none!important;width:960px!important;height:auto!important;}
+      .slide{position:relative!important;display:flex!important;width:960px!important;height:540px!important;page-break-after:always;margin-bottom:2px;}
+    }`;
+  dl('ai-kwau-midterm-export.html','<!DOCTYPE html>\n'+c.documentElement.outerHTML);
+}
+function dl(name,content){
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent(content);
+  a.download=name;a.click();
+}
+</script>
+</body>
+</html>
