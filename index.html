@@ -130,6 +130,39 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
   .loop-fb-text{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:rgba(0,180,216,.6);letter-spacing:.5px;white-space:nowrap;}
   .loop-fb-arrow{font-size:14px;color:rgba(0,180,216,.5);}
 
+  /* S4b Decision Split */
+  #s4b{flex-direction:column;background:var(--navy);}
+  #s4b .s-top{padding:22px 44px 0;}
+  #s4b .s-top .slide-title{color:#fff;font-size:28px;}
+  #s4b .split-wrap{flex:1;display:flex;padding:10px 32px 14px;gap:0;}
+  .split-half{flex:1;display:flex;flex-direction:column;gap:7px;padding:0 12px;}
+  .split-divider{width:1px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.12),transparent);position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0 4px;}
+  .split-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-family:'Sora',sans-serif;font-size:9px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:8px;text-align:center;line-height:1.6;position:absolute;}
+  .half-header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;margin-bottom:2px;}
+  .half-header.cyan{background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.35);}
+  .half-header.gold{background:rgba(246,174,45,.1);border:1px solid rgba(246,174,45,.35);}
+  .half-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;}
+  .half-title.cyan{color:var(--cyan);}
+  .half-title.gold{color:var(--gold);}
+  .half-sub{font-size:11px;color:rgba(255,255,255,.4);}
+  .iv-row{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:8px;background:rgba(255,255,255,.04);border-left:3px solid rgba(0,180,216,.5);}
+  .iv-num{font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:18px;}
+  .iv-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;line-height:1.25;flex:1;}
+  .iv-en{font-size:9px;color:rgba(0,180,216,.6);display:block;font-weight:400;font-family:'Sora',sans-serif;}
+  .iv-trigger{font-family:'Sora',sans-serif;font-size:9px;color:rgba(0,180,216,.7);white-space:nowrap;background:rgba(0,180,216,.1);padding:2px 7px;border-radius:8px;flex-shrink:0;}
+  .iv-row.always{border-left-color:rgba(6,214,160,.6);}
+  .iv-row.always .iv-num{color:#06d6a0;}
+  .iv-row.always .iv-en{color:rgba(6,214,160,.6);}
+  .iv-row.always .iv-trigger{color:#06d6a0;background:rgba(6,214,160,.1);}
+  .iv-row.l3{border-left-color:rgba(6,214,160,.4);}
+  .iv-row.l3 .iv-num{color:#06d6a0;}
+  .iv-row.l3 .iv-trigger{color:#06d6a0;background:rgba(6,214,160,.1);}
+  .fg-card{flex:1;background:rgba(246,174,45,.07);border:1px solid rgba(246,174,45,.3);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:9px;}
+  .fg-headline{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:var(--gold);line-height:1.2;}
+  .fg-point{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.65);line-height:1.5;}
+  .fg-dot{color:var(--gold);flex-shrink:0;}
+  .fg-trigger{padding:10px 14px;background:rgba(255,200,0,.06);border:1px solid rgba(255,200,0,.2);border-radius:9px;}
+
   /* S5 Journey */
   #s5{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s5 .s-top{padding:28px 48px 8px;}
@@ -391,34 +424,24 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
               <div class="larr-line">→</div>
             </div>
 
-            <!-- Node 2: Decide — TWO COLUMNS -->
-            <div class="lnode active" style="flex:1.4;padding:12px 14px;">
+            <!-- Node 2: Decide -->
+            <div class="lnode active" style="flex:1.2;">
               <div class="ai-badge">AI</div>
-              <div class="lnode-head" style="margin-bottom:8px;">
+              <div class="lnode-head">
                 <div class="lnode-icon">🤖</div>
                 <div>
                   <div class="lnode-title">判斷</div>
                   <div class="lnode-en">Decide</div>
                 </div>
               </div>
-              <div style="display:flex;gap:8px;flex:1;">
-                <!-- Left: Realtime -->
-                <div style="flex:1;background:rgba(0,180,216,.12);border-radius:9px;padding:9px 10px;border:1px solid rgba(0,180,216,.3);">
-                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">即時訊號 · 依成效自動調整</div>
-                  <div class="lpill" style="margin-bottom:4px;font-size:10px;">👁 移動中 → 游標跟隨</div>
-                  <div class="lpill" style="margin-bottom:4px;font-size:10px;">⏱ 停留達門檻 → 對比強化</div>
-                  <div class="lpill green" style="margin-bottom:4px;font-size:10px;">⏱ 繼續停留 → 語音朗讀</div>
-                  <div class="lpill green" style="margin-bottom:4px;font-size:10px;">🔁 掃視異常 → 積極介入</div>
-                  <div class="lpill gold" style="font-size:10px;">⚠️ 靠近偵測 → 暫停切換</div>
-                  <div style="font-size:10px;color:rgba(0,180,216,.7);margin-top:7px;line-height:1.5;">門檻非固定值<br>依介入成效<br>個人化調整</div>
-                </div>
-                <!-- Right: Accumulated -->
-                <div style="flex:1;background:rgba(255,200,0,.08);border-radius:9px;padding:9px 10px;border:1px solid rgba(255,200,0,.3);">
-                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:#ffd166;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">累積推斷</div>
-                  <div class="lpill" style="background:rgba(255,200,0,.15);color:#ffd166;border-color:rgba(255,200,0,.3);margin-bottom:4px;font-size:10px;">🗺️ 視野地圖統計分析</div>
-                  <div class="lpill" style="background:rgba(255,200,0,.15);color:#ffd166;border-color:rgba(255,200,0,.3);font-size:10px;">🧊 長期冷區 → 視野缺損</div>
-                  <div style="font-size:10px;color:rgba(255,200,0,.7);margin-top:7px;line-height:1.4;">↓ 看不到那裡<br>→ 焦點牽引（非對比）<br>兩者互斥</div>
-                </div>
+              <div class="lnode-body" style="margin:6px 0 10px;">兩條軌道並行，決定採用哪種介入路徑</div>
+              <div style="padding:9px 11px;background:rgba(0,180,216,.1);border-radius:9px;border:1px solid rgba(0,180,216,.3);margin-bottom:8px;">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:5px;">⚡ 即時訊號</div>
+                <div class="lnode-body">停留門檻觸發介入<br><span style="color:rgba(0,180,216,.6);">門檻依成效自動個人化調整</span></div>
+              </div>
+              <div style="padding:9px 11px;background:rgba(255,200,0,.08);border-radius:9px;border:1px solid rgba(255,200,0,.3);">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#ffd166;margin-bottom:5px;">🗺️ 累積推斷</div>
+                <div class="lnode-body">視野地圖冷區偵測<br><span style="color:rgba(255,200,0,.6);">→ 分叉決定策略路徑（詳見下頁）</span></div>
               </div>
             </div>
 
@@ -427,38 +450,25 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
               <div class="larr-line">→</div>
             </div>
 
-            <!-- Node 3: Act — TWO COLUMNS -->
-            <div class="lnode" style="flex:1.3;padding:12px 14px;">
-              <div class="lnode-head" style="margin-bottom:8px;">
+            <!-- Node 3: Act -->
+            <div class="lnode" style="flex:1.1;">
+              <div class="lnode-head">
                 <div class="lnode-icon">✨</div>
                 <div>
                   <div class="lnode-title">介入</div>
                   <div class="lnode-en">Act</div>
                 </div>
               </div>
-              <div style="display:flex;gap:8px;flex:1;">
-                <!-- Left: priority stack -->
-                <div style="flex:1;background:rgba(0,180,216,.08);border-radius:9px;padding:9px 10px;border:1px solid rgba(0,180,216,.2);">
-                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">看得到 · 漸進疊加</div>
-                  <div class="lpill" style="margin-bottom:1px;font-size:10px;background:rgba(6,214,160,.12);color:#06d6a0;border-color:rgba(6,214,160,.3);">◎ 注視圓圈 — 常駐</div>
-                  <div style="font-size:9px;color:rgba(6,214,160,.6);margin:0 0 4px 4px;line-height:1.45;">信心高→實線填色倒數<br>信心低→虛線縮小提示</div>
-                  <div class="lpill" style="margin-bottom:3px;font-size:10px;">① 🖱️ 智慧游標 — 常駐</div>
-                  <div class="lpill" style="margin-bottom:1px;font-size:10px;">② 🎨 L1 文字層 — 短停留</div>
-                  <div style="font-size:9px;color:rgba(0,180,216,.5);margin:0 0 3px 4px;">字色加深 · 加粗 · 行距加大</div>
-                  <div class="lpill" style="margin-bottom:1px;font-size:10px;">③ 🎨 L2 元件層 — 中停留</div>
-                  <div style="font-size:9px;color:rgba(0,180,216,.5);margin:0 0 3px 4px;">按鈕邊框 · 點擊區域放大</div>
-                  <div class="lpill" style="margin-bottom:3px;font-size:10px;">④ 🗣️ 語音朗讀 — 長停留</div>
-                  <div class="lpill green" style="margin-bottom:1px;font-size:10px;">⑤ 🎨 L3 全頁結構 — 掃視異常</div>
-                  <div style="font-size:9px;color:rgba(6,214,160,.55);margin:0 0 3px 4px;">WCAG AA 全頁套用</div>
-                  <div style="font-size:9px;color:rgba(0,180,216,.55);margin-top:4px;line-height:1.4;">觸發時機依成效自動調整<br>語音啟動時 L1/L2 退讓</div>
-                </div>
-                <!-- Right: Focus guide -->
-                <div style="flex:1;background:rgba(255,200,0,.08);border-radius:9px;padding:9px 10px;border:1px solid rgba(255,200,0,.3);">
-                  <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:#ffd166;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">看不到 · 焦點牽引</div>
-                  <div class="lpill" style="background:rgba(255,200,0,.18);color:#ffd166;border-color:rgba(255,200,0,.4);font-size:10px;font-weight:700;margin-bottom:4px;">✦ 視野邊界脈動光點</div>
-                  <div style="font-size:10px;color:rgba(255,200,0,.7);margin-top:4px;line-height:1.5;">不移動元件<br>不破壞頁面排版<br>引導視線主動移過去</div>
-                </div>
+              <div class="lnode-body" style="margin:6px 0 10px;">依判斷結果走不同介入路徑</div>
+              <div style="padding:9px 11px;background:rgba(0,180,216,.08);border-radius:9px;border:1px solid rgba(0,180,216,.2);margin-bottom:8px;">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:5px;">👁 看得到區域</div>
+                <div class="lnode-body">漸進疊加 ◎ ①②③④⑤</div>
               </div>
+              <div style="padding:9px 11px;background:rgba(255,200,0,.08);border-radius:9px;border:1px solid rgba(255,200,0,.3);margin-bottom:10px;">
+                <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#ffd166;margin-bottom:5px;">🗺️ 視野缺損區</div>
+                <div class="lnode-body">✦ 焦點牽引</div>
+              </div>
+              <div style="font-family:'Sora',sans-serif;font-size:10px;color:rgba(0,180,216,.45);text-align:right;letter-spacing:.5px;">詳見下頁 →</div>
             </div>
 
           </div>
@@ -471,6 +481,86 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
             <div class="loop-fb-line"></div>
             <div class="loop-fb-arrow">↗</div>
           </div>
+        </div>
+      </div>
+
+      <!-- S4b Decision Split -->
+      <div class="slide" id="s4b">
+        <div class="s-top">
+          <div class="step-badge">2 · Proposed Solution</div>
+          <div class="slide-title">AI 決策分叉 ── 看得到 vs 看不到<span class="en">Intervention Strategy · Two Mutually Exclusive Paths</span></div>
+        </div>
+        <div class="split-wrap">
+
+          <!-- Left: Can See -->
+          <div class="split-half">
+            <div class="half-header cyan">
+              <div style="font-size:22px;">👁</div>
+              <div>
+                <div class="half-title cyan">看得到區域</div>
+                <div class="half-sub">漸進疊加介入 · 依停留時間觸發</div>
+              </div>
+            </div>
+            <div class="iv-row always">
+              <div class="iv-num">◎</div>
+              <div class="iv-title">注視圓圈<span class="iv-en">信心高→實線填色倒數 · 信心低→虛線縮小</span></div>
+              <div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">常駐</div>
+            </div>
+            <div class="iv-row always">
+              <div class="iv-num">①</div>
+              <div class="iv-title">智慧游標<span class="iv-en">放大光暈 · 靜止脈動 · 偏離閃光引導</span></div>
+              <div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">常駐</div>
+            </div>
+            <div class="iv-row">
+              <div class="iv-num">②</div>
+              <div class="iv-title">L1 文字層<span class="iv-en">字色加深 · font-weight 加粗 · 行距加大</span></div>
+              <div class="iv-trigger">短停留</div>
+            </div>
+            <div class="iv-row">
+              <div class="iv-num">③</div>
+              <div class="iv-title">L2 元件層<span class="iv-en">按鈕邊框 · 點擊區域 padding 放大</span></div>
+              <div class="iv-trigger">中停留</div>
+            </div>
+            <div class="iv-row">
+              <div class="iv-num">④</div>
+              <div class="iv-title">語音朗讀<span class="iv-en">Web Speech API · 啟動時 L1/L2 退讓</span></div>
+              <div class="iv-trigger">長停留</div>
+            </div>
+            <div class="iv-row l3">
+              <div class="iv-num">⑤</div>
+              <div class="iv-title">L3 全頁結構<span class="iv-en">WCAG AA · 全頁對比度 4.5:1 套用</span></div>
+              <div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">掃視異常</div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="split-divider">
+            <div class="split-badge">互斥<br>MUTUALLY<br>EXCLUSIVE</div>
+          </div>
+
+          <!-- Right: Can't See -->
+          <div class="split-half" style="justify-content:center;">
+            <div class="half-header gold">
+              <div style="font-size:22px;">🗺️</div>
+              <div>
+                <div class="half-title gold">視野缺損區</div>
+                <div class="half-sub">AI 推斷長期冷區 → 改用焦點牽引</div>
+              </div>
+            </div>
+            <div class="fg-card">
+              <div style="font-size:32px;">✦</div>
+              <div class="fg-headline">視野邊界<br>脈動光點</div>
+              <div style="font-size:11px;color:rgba(246,174,45,.6);font-family:'Sora',sans-serif;letter-spacing:1px;">Boundary Pulse Guide</div>
+              <div class="fg-point"><span class="fg-dot">·</span>在視野可及邊界放脈動光點 + 箭頭</div>
+              <div class="fg-point"><span class="fg-dot">·</span>不移動元件，不破壞頁面排版</div>
+              <div class="fg-point"><span class="fg-dot">·</span>引導用戶主動轉移視線到目標</div>
+            </div>
+            <div class="fg-trigger">
+              <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:rgba(246,174,45,.7);letter-spacing:1px;margin-bottom:5px;">🧊 觸發條件</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.55;">視野地圖長期冷區偵測<br>GMM 密度估計 → 推斷視野缺損象限<br>→ 切換至焦點牽引（非對比強化）</div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -702,6 +792,44 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
   </div>
 
   <div class="mc">
+    <div class="mh dark">
+      <div class="m-tag">2 · Proposed Solution</div>
+      <div class="m-title">AI 決策分叉</div>
+      <div class="m-en">看得到 vs 看不到 · 互斥路徑</div>
+      <div class="m-sub" style="font-size:clamp(12px,3.2vw,14px);margin-top:4px;">AI 判斷後走不同介入路徑</div>
+    </div>
+    <div class="m-list">
+      <div style="padding:8px 14px 4px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);">👁 看得到區域 · 漸進疊加</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(6,214,160,.06);border-radius:9px;border-left:3px solid rgba(6,214,160,.6);margin-bottom:6px;">
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:#06d6a0;min-width:22px;">◎①</div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">注視圓圈 + 智慧游標</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(6,214,160,.7);font-family:'Sora',sans-serif;">常駐</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,180,216,.05);border-radius:9px;border-left:3px solid rgba(0,180,216,.5);margin-bottom:6px;">
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:22px;">②</div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L1 文字層</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">短停留</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,180,216,.05);border-radius:9px;border-left:3px solid rgba(0,180,216,.5);margin-bottom:6px;">
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:22px;">③</div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L2 元件層</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">中停留</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,180,216,.05);border-radius:9px;border-left:3px solid rgba(0,180,216,.5);margin-bottom:6px;">
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:22px;">④</div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">語音朗讀</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">長停留</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(6,214,160,.05);border-radius:9px;border-left:3px solid rgba(6,214,160,.4);margin-bottom:14px;">
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:#06d6a0;min-width:22px;">⑤</div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L3 全頁結構</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(6,214,160,.6);font-family:'Sora',sans-serif;">掃視異常</div></div>
+      </div>
+      <div style="padding:8px 14px 6px;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);">🗺️ 視野缺損區 · 互斥路徑</div>
+      <div style="background:rgba(246,174,45,.08);border:1px solid rgba(246,174,45,.3);border-radius:12px;padding:16px;">
+        <div style="font-size:24px;margin-bottom:7px;">✦</div>
+        <div style="font-family:'Sora',sans-serif;font-size:clamp(17px,4.8vw,20px);font-weight:800;color:var(--gold);line-height:1.2;margin-bottom:8px;">視野邊界脈動光點</div>
+        <div style="font-size:clamp(12px,3.2vw,13px);color:rgba(255,255,255,.6);line-height:1.55;">不移動元件 · 不破壞排版<br>在可視邊界引導視線主動轉移</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mc">
     <div class="mh light">
       <div class="m-tag lt">3 · User Experience Flow</div>
       <div class="m-title dk">使用者旅程</div>
@@ -797,7 +925,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
 </div><!-- /mobile-view -->
 
 <script>
-let cur=0,total=8;
+let cur=0,total=9;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<total;i++){
   const d=document.createElement('div');
