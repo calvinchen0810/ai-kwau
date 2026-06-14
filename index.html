@@ -674,7 +674,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
                 <div class="fake-t">Extended screen sessions increase eye fatigue by up to 340% for low-vision users compared to those with normal vision — yet most platforms provide no adaptive display options whatsoever.</div>
                 <div class="fake-cta">Continue Reading →</div>
                 <!-- Pulse guide: right edge → by default, shifts left ← when blind-spot active -->
-                <div id="pulse-guide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
+                <div id="pulse-guide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:10;">
                   <div class="pulse-ring"></div>
                   <span id="pulse-arrow" style="font-size:14px;color:#f6ae2d;line-height:1;">→</span>
                 </div>
@@ -1214,7 +1214,7 @@ function saveAsNew(){
     if(editMode||moveMode)return;
     bz.classList.add('gaze-active');
     if(visBlur)visBlur.style.opacity='1';
-    if(pulseGuide){pulseGuide.style.right='auto';pulseGuide.style.left='10px';}
+    if(pulseGuide){pulseGuide.style.right='auto';pulseGuide.style.left='calc(45% + 6px)';}
     if(pulseArrow)pulseArrow.textContent='←';
   });
   bz.addEventListener('mouseleave',()=>{
