@@ -165,7 +165,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .bchrome-dot{width:10px;height:10px;border-radius:50%;}
   .bchrome-url{flex:1;background:#fff;border:1px solid #dadce0;border-radius:18px;padding:3px 14px;font-size:11px;color:#555;font-family:'Sora',sans-serif;max-width:380px;margin:0 auto;text-align:center;}
   .bchrome-ext{font-size:10px;font-family:'Sora',sans-serif;font-weight:700;color:#00b4d8;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:4px;white-space:nowrap;}
-  .b-viewport{flex:1;display:flex;overflow:hidden;}
+  .b-viewport{flex:1;display:flex;overflow:hidden;position:relative;}
   .bzone{position:relative;display:flex;flex-direction:column;padding:14px 16px;overflow:hidden;}
   .bzone-v{flex:2;border-right:2px dashed rgba(0,180,216,.35);}
   .bzone-b{flex:0.7;background:rgba(246,174,45,.04);}
@@ -178,7 +178,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .fake-h{font-family:'Sora',sans-serif;font-size:11px;font-weight:400;color:#b8b8b8;line-height:1.4;margin-bottom:7px;}
   .fake-t{font-size:9.5px;color:#cccccc;line-height:1.65;margin-bottom:6px;}
   .fake-cta{display:inline-block;font-family:'Sora',sans-serif;font-size:9.5px;font-weight:400;background:rgba(0,0,0,.06);color:#c8c8c8;padding:5px 13px;border-radius:5px;border:1px solid #ddd;}
-  .gaze-halo{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(0,180,216,.1);border:2px solid rgba(0,180,216,.5);box-shadow:0 0 0 10px rgba(0,180,216,.05),0 0 0 22px rgba(0,180,216,.025);pointer-events:none;}
+  .gaze-halo{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(0,180,216,.1);border:2px solid rgba(0,180,216,.5);box-shadow:0 0 0 10px rgba(0,180,216,.05),0 0 0 22px rgba(0,180,216,.025);pointer-events:none;z-index:9;}
   .act-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#0077b6;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:10px;margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;}
   .blind-h{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#bbb;margin-bottom:6px;}
   .blind-t{font-size:11px;color:#ccc;line-height:1.6;margin-bottom:10px;}
@@ -663,6 +663,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
               </div>
             </div>
             <div class="b-viewport">
+              <div class="gaze-halo" id="mock-halo" style="display:none;"></div>
               <div class="bzone bzone-v">
                 <div class="bzone-tag c">👁 Visible Area · Gaze Active</div>
                 <div class="fake-nav">
@@ -672,13 +673,12 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
                 <div class="fake-t">Studies indicate over 1.1 billion people experience vision impairment globally, many relying on default PC settings with minimal contrast. Small fonts and inadequate spacing remain the top barriers to digital accessibility for aging users and those with mild visual conditions.</div>
                 <div class="fake-t">Extended screen sessions increase eye fatigue by up to 340% for low-vision users compared to those with normal vision — yet most platforms provide no adaptive display options whatsoever.</div>
                 <div class="fake-cta">Continue Reading →</div>
-                <!-- Pulse guide at right edge pointing to blind zone -->
-                <div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
+                <!-- Pulse guide at left edge pointing left into blur zone -->
+                <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
                   <div class="pulse-ring"></div>
-                  <span style="font-size:14px;color:#f6ae2d;line-height:1;">→</span>
+                  <span style="font-size:14px;color:#f6ae2d;line-height:1;">←</span>
                 </div>
                 <div id="vis-blur"></div>
-                <div class="gaze-halo" id="mock-halo" style="display:none;"></div>
                 <div class="act-badge" id="mock-badge">👋 Hover to sense…</div>
               </div>
               <div class="bzone bzone-b">
@@ -1148,24 +1148,29 @@ function saveAsNew(){
 (function(){
   const vz=document.querySelector('#s4c .bzone-v');
   const bz=document.querySelector('#s4c .bzone-b');
+  const bvp=document.querySelector('#s4c .b-viewport');
   const visBlur=document.getElementById('vis-blur');
-  if(!vz||!bz)return;
+  if(!vz||!bz||!bvp)return;
   const halo=document.getElementById('mock-halo');
   const badge=document.getElementById('mock-badge');
   const bpulse=document.querySelector('#s4c .pulse-ring');
   const tgts=vz.querySelectorAll('.fake-h,.fake-t,.fake-cta,.fake-nav span');
   let t1=null,tr=null,_cur=null;
   function scl(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
-  vz.addEventListener('mousemove',e=>{
+  function moveHalo(e){
     if(editMode||moveMode)return;
-    const r=vz.getBoundingClientRect(),s=scl();
+    const r=bvp.getBoundingClientRect(),s=scl();
     halo.style.left=((e.clientX-r.left)/s-26)+'px';
     halo.style.top=((e.clientY-r.top)/s-26)+'px';
     halo.style.display='block';
-  });
-  vz.addEventListener('mouseleave',()=>{
+  }
+  vz.addEventListener('mousemove',moveHalo);
+  bz.addEventListener('mousemove',moveHalo);
+  bvp.addEventListener('mouseleave',()=>{
     halo.style.display='none';
     halo.classList.remove('sensing','hit');
+  });
+  vz.addEventListener('mouseleave',()=>{
     clearTimeout(t1);_cur=null;
     tr=setTimeout(()=>{
       tgts.forEach(el=>el.classList.remove('l1-on','l2-on'));
