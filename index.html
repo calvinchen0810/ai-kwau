@@ -175,9 +175,9 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .fake-nav{display:flex;gap:14px;border-bottom:1px solid #eee;padding-bottom:7px;margin-bottom:10px;}
   .fake-nav span{font-family:'Sora',sans-serif;font-size:10px;color:#888;}
   .fake-nav span.on{color:#0077b6;font-weight:700;border-bottom:2px solid #0077b6;padding-bottom:3px;}
-  .fake-h{font-family:'Sora',sans-serif;font-size:13.5px;font-weight:800;color:#0d1f3c;line-height:1.35;margin-bottom:7px;}
-  .fake-t{font-size:11px;color:#444;line-height:1.75;margin-bottom:8px;}
-  .fake-cta{display:inline-block;font-family:'Sora',sans-serif;font-size:10px;font-weight:700;background:#0d1f3c;color:#fff;padding:5px 13px;border-radius:5px;}
+  .fake-h{font-family:'Sora',sans-serif;font-size:11px;font-weight:400;color:#b8b8b8;line-height:1.4;margin-bottom:7px;}
+  .fake-t{font-size:9.5px;color:#cccccc;line-height:1.65;margin-bottom:6px;}
+  .fake-cta{display:inline-block;font-family:'Sora',sans-serif;font-size:9.5px;font-weight:400;background:rgba(0,0,0,.06);color:#c8c8c8;padding:5px 13px;border-radius:5px;border:1px solid #ddd;}
   .gaze-halo{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(0,180,216,.1);border:2px solid rgba(0,180,216,.5);box-shadow:0 0 0 10px rgba(0,180,216,.05),0 0 0 22px rgba(0,180,216,.025);pointer-events:none;}
   .act-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#0077b6;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:10px;margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;}
   .blind-h{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#bbb;margin-bottom:6px;}
@@ -189,7 +189,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .l2-on{outline:2px solid rgba(0,180,216,.55)!important;outline-offset:3px;border-radius:4px!important;background:rgba(0,180,216,.06)!important;}
   @keyframes sense-pulse{0%{border-color:rgba(0,180,216,.2);box-shadow:0 0 0 10px rgba(0,180,216,.02);}100%{border-color:rgba(0,180,216,1);box-shadow:0 0 0 13px rgba(0,180,216,.16);}}
   @keyframes hit-flash{0%,100%{transform:scale(1);}50%{transform:scale(1.5);opacity:.7;}}
-  .gaze-halo.sensing{animation:sense-pulse .8s linear forwards;}
+  .gaze-halo.sensing{animation:sense-pulse 2s linear forwards;}
   .gaze-halo.hit{animation:hit-flash .25s ease;}
 
   /* S5 Journey */
@@ -625,24 +625,43 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
         <div style="flex:1;display:flex;align-items:center;padding:0 40px 20px;">
           <div class="browser-mock" style="width:100%;height:390px;">
-            <div class="bchrome">
-              <div class="bchrome-dots">
-                <div class="bchrome-dot" style="background:#ff5f57;"></div>
-                <div class="bchrome-dot" style="background:#febc2e;"></div>
-                <div class="bchrome-dot" style="background:#28c840;"></div>
+            <div class="bchrome" style="flex-direction:column;padding:0;gap:0;background:#e5e5e5;">
+              <!-- Edge tab strip -->
+              <div style="display:flex;align-items:flex-end;padding:5px 10px 0;gap:4px;">
+                <div class="bchrome-dots" style="margin-right:6px;margin-bottom:5px;">
+                  <div class="bchrome-dot" style="background:#ff5f57;"></div>
+                  <div class="bchrome-dot" style="background:#febc2e;"></div>
+                  <div class="bchrome-dot" style="background:#28c840;"></div>
+                </div>
+                <div style="background:#f3f3f3;border:1px solid #c8c8c8;border-bottom:none;border-radius:7px 7px 0 0;padding:4px 10px;display:flex;align-items:center;gap:5px;font-family:'Sora',sans-serif;font-size:9.5px;color:#333;max-width:220px;min-width:0;">
+                  <span style="color:#0078d4;font-weight:900;font-style:italic;font-size:14px;line-height:1;flex-shrink:0;">e</span>
+                  <span style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">Health News · example-news.com</span>
+                  <span style="color:#bbb;font-size:11px;flex-shrink:0;margin-left:4px;">✕</span>
+                </div>
+                <div style="font-size:16px;color:#aaa;padding:2px 8px;margin-bottom:4px;cursor:default;">+</div>
               </div>
-              <div class="bchrome-url">🔒 example-news.com/health-article</div>
-              <div class="bchrome-ext">AI Kwau ● Active</div>
+              <!-- Edge navigation bar -->
+              <div style="background:#f3f3f3;border-bottom:1px solid #d0d0d0;padding:5px 10px;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:13px;color:#555;cursor:default;">←</span>
+                <span style="font-size:13px;color:#ccc;cursor:default;">→</span>
+                <span style="font-size:13px;color:#555;cursor:default;">↻</span>
+                <div class="bchrome-url" style="flex:1;max-width:none;">🔒 example-news.com/health/low-contrast-ui-2025</div>
+                <span style="font-size:12px;color:#888;">🔖</span>
+                <span style="font-size:12px;color:#888;">👤</span>
+                <span style="font-size:12px;color:#888;">⋯</span>
+                <div class="bchrome-ext">AI Kwau ● Active</div>
+              </div>
             </div>
             <div class="b-viewport">
               <div class="bzone bzone-v">
                 <div class="bzone-tag c">👁 Visible Area · Gaze Active</div>
                 <div class="fake-nav">
-                  <span class="on">Health</span><span>News</span><span>Tech</span><span>More</span>
+                  <span class="on">Health</span><span>News</span><span>Tech</span><span>Sports</span><span>Lifestyle</span>
                 </div>
-                <div class="fake-h">Vision Accessibility Tools<br>Go Mainstream in 2025</div>
-                <div class="fake-t">With real-time gaze sensing, contrast and text scale adapt automatically to the user's focus zone — no manual toggle required.</div>
-                <div class="fake-cta">Read Full Article →</div>
+                <div class="fake-h">Ageing Populations & Screen Ergonomics:<br>The Hidden Cost of Low-Contrast UI Design</div>
+                <div class="fake-t">Studies indicate over 1.1 billion people experience vision impairment globally, many relying on default PC settings with minimal contrast. Small fonts and inadequate spacing remain the top barriers to digital accessibility for aging users and those with mild visual conditions.</div>
+                <div class="fake-t">Extended screen sessions increase eye fatigue by up to 340% for low-vision users compared to those with normal vision — yet most platforms provide no adaptive display options whatsoever.</div>
+                <div class="fake-cta">Continue Reading →</div>
                 <div class="gaze-halo" id="mock-halo" style="display:none;"></div>
                 <div class="act-badge" id="mock-badge">👋 Hover to sense…</div>
               </div>
@@ -1161,8 +1180,8 @@ function saveAsNew(){
           el.classList.add('l2-on');
           halo.classList.add('hit');setTimeout(()=>halo.classList.remove('hit'),280);
           if(badge)badge.textContent='✅ L1 + L2 Active';
-        },700);
-      },800);
+        },2000);
+      },2000);
     });
     el.addEventListener('mouseleave',()=>{
       if(_cur===el){_cur=null;clearTimeout(t1);clearTimeout(t2);halo.classList.remove('sensing');}
