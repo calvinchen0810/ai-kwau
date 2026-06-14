@@ -66,10 +66,10 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
 
   /* S2 Problem: users */
   #s2{flex-direction:row;}
-  #s2 .s-left{width:38%;background:var(--navy);padding:48px 38px;}
+  #s2 .s-left{width:38%;background:var(--navy);padding:48px 38px;display:flex;flex-direction:column;justify-content:center;}
   #s2 .s-left .slide-title{color:#fff;font-size:32px;}
   #s2 .s-left .slide-sub{color:rgba(255,255,255,.55);font-size:14px;}
-  #s2 .s-right{width:62%;padding:28px 38px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+  #s2 .s-right{width:62%;display:flex;flex-direction:column;justify-content:center;align-items:stretch;}
   .a-card{margin:6px;padding:22px 16px;border-radius:14px;display:flex;flex-direction:column;gap:9px;}
   .a-card .icon{font-size:32px;}
   .a-card .pct{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--accent);line-height:1;}
@@ -184,26 +184,26 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s7 .comp-wrap{flex:1;display:flex;padding:0 38px 30px;gap:14px;}
   #s7 .comp-table{flex:1.4;display:flex;flex-direction:column;gap:8px;justify-content:center;}
   .comp-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:11px;background:var(--bg);}
-  .comp-name{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);min-width:160px;}
+  .comp-name{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:var(--navy);min-width:160px;}
   .comp-sub{font-size:10px;color:var(--muted);display:block;font-weight:400;}
-  .comp-gap{font-size:14px;color:var(--muted);line-height:1.4;}
+  .comp-gap{font-size:15px;color:var(--muted);line-height:1.4;}
   #s7 .hp-box{flex:1;background:var(--navy);border-radius:14px;padding:26px 24px;display:flex;flex-direction:column;justify-content:center;gap:14px;}
-  .hp-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--cyan);}
+  .hp-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--cyan);}
   .hp-item{display:flex;gap:10px;align-items:flex-start;}
   .hp-item .ic{font-size:17px;min-width:22px;}
-  .hp-item .tx{font-size:14px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .hp-item .tx{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;}
   .hp-item .tx strong{color:var(--cyanl);}
 
   /* S8 Closing */
   #s8{flex-direction:row;background:var(--navy);}
   #s8 .s-left{width:50%;padding:50px 48px;}
   #s8 .slide-title{color:#fff;font-size:36px;}
-  #s8 .slide-sub{color:rgba(255,255,255,.55);font-size:14px;margin-top:8px;}
+  #s8 .slide-sub{color:rgba(255,255,255,.55);font-size:17px;margin-top:8px;}
   #s8 .cta{margin-top:26px;display:inline-block;padding:14px 22px;background:var(--cyan);border-radius:11px;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);}
   #s8 .s-right{width:50%;padding:34px;display:flex;flex-direction:column;justify-content:center;gap:11px;}
   .sum-item{display:flex;gap:13px;padding:13px 17px;background:rgba(255,255,255,.06);border-radius:11px;border-left:4px solid var(--cyan);}
   .sum-item .ic{font-size:19px;min-width:24px;}
-  .sum-item .tx{font-size:14px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .sum-item .tx{font-size:16px;color:rgba(255,255,255,.85);line-height:1.5;}
   .sum-item .tx strong{color:var(--cyan);font-family:'Sora',sans-serif;}
 }
 
@@ -309,7 +309,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
         <div class="s-left">
           <div class="tag">Midterm Workshop</div>
           <div style="position:relative;display:inline-block;">
-            <span style="position:absolute;left:100%;bottom:100%;margin-bottom:2px;margin-left:-40px;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span>
+            <span style="position:absolute;left:100%;bottom:100%;margin-bottom:2px;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span>
             <div class="brand">AI<span>·</span>Kwau</div>
           </div>
           <div class="tagline">Webcam × AI — making every PC understand your vision</div>
@@ -349,11 +349,13 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
           <div class="slide-sub">Vision-Impaired PC Users<br>Five Visual Conditions · Survey n=17</div>
         </div>
         <div class="s-right">
-          <div class="pain-item" style="border-left-color:#06d6a0;"><div class="pain-num" style="color:#06d6a0;">53%</div><div class="pain-title">🌫️ Overall Dimness / Fog</div></div>
-          <div class="pain-item" style="border-left-color:#f6ae2d;"><div class="pain-num" style="color:#f6ae2d;">41%</div><div class="pain-title">🔭 Peripheral Vision Loss</div></div>
-          <div class="pain-item" style="border-left-color:#b5179e;"><div class="pain-num" style="color:#b5179e;">35%</div><div class="pain-title">📖 Reading Difficulty</div></div>
-          <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">🔵 Central Vision Blur</div></div>
-          <div class="pain-item" style="border-left-color:#f77f00;"><div class="pain-num" style="color:#f77f00;">24%</div><div class="pain-title">💡 Light Sensitivity / Glare</div></div>
+          <div style="width:100%;display:flex;flex-direction:column;gap:10px;padding:28px 38px;">
+            <div class="pain-item" style="border-left-color:#06d6a0;"><div class="pain-num" style="color:#06d6a0;">53%</div><div class="pain-title">🌫️ Overall Dimness / Fog</div></div>
+            <div class="pain-item" style="border-left-color:#f6ae2d;"><div class="pain-num" style="color:#f6ae2d;">41%</div><div class="pain-title">🔭 Peripheral Vision Loss</div></div>
+            <div class="pain-item" style="border-left-color:#b5179e;"><div class="pain-num" style="color:#b5179e;">35%</div><div class="pain-title">📖 Reading Difficulty</div></div>
+            <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">🔵 Central Vision Blur</div></div>
+            <div class="pain-item" style="border-left-color:#f77f00;"><div class="pain-num" style="color:#f77f00;">24%</div><div class="pain-title">💡 Light Sensitivity / Glare</div></div>
+          </div>
         </div>
       </div>
 
@@ -662,8 +664,8 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
           <div class="hp-box">
             <div class="hp-title">HP Strengths</div>
             <div style="margin-bottom:10px;padding:10px 14px;background:rgba(0,180,216,.15);border-radius:10px;border-left:3px solid var(--cyan);">
-              <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:#fff;margin-bottom:3px;">Active Sensing vs Passive Tools</div>
-              <div style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">Competitors wait for the user — AI Kwau senses, decides, and acts proactively</div>
+              <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:3px;">Active Sensing vs Passive Tools</div>
+              <div style="font-size:14px;color:rgba(255,255,255,.65);line-height:1.5;">Competitors wait for the user — AI Kwau senses, decides, and acts proactively</div>
             </div>
             <div class="hp-item"><div class="ic">📷</div><div class="tx"><strong>Built-in webcam:</strong> zero incremental hardware cost</div></div>
             <div class="hp-item"><div class="ic">🔒</div><div class="tx"><strong>On-device AI:</strong> gaze data stays local, no API fees</div></div>
