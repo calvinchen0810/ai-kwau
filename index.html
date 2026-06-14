@@ -300,7 +300,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
 }
 body.edit-mode .slide [contenteditable]{outline:1.5px dashed rgba(0,180,216,.55);border-radius:3px;cursor:text;}
 body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);background:rgba(0,180,216,.04);}
-#btn-edit.on{background:rgba(0,180,216,.2);border-color:var(--cyan);color:var(--cyan);}
+#btn-edit.on,#btn-move.on{background:rgba(0,180,216,.2);border-color:var(--cyan);color:var(--cyan);}
+#btn-move{display:none;}
+body.edit-mode #btn-move{display:inline-flex;}
+body.move-mode #scaler,body.move-mode #scaler *{cursor:grab!important;}
+body.move-mode #scaler *:active{cursor:grabbing!important;}
 </style>
 </head>
 <body>
@@ -310,6 +314,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
   <span class="counter" id="counter">1 / 8</span>
   <div class="spacer"></div>
   <button class="tbtn" id="btn-edit" onclick="toggleEdit()">✏️ 編輯</button>
+  <button class="tbtn" id="btn-move" onclick="toggleMove()">↖ 移動</button>
   <button class="tbtn primary" onclick="saveAsNew()">💾 另存新檔</button>
 </div>
 
@@ -1011,7 +1016,7 @@ function toggleEdit(){
   if(!editMode)document.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
 }
 document.getElementById('scaler').addEventListener('click',function(e){
-  if(!editMode)return;
+  if(!editMode||moveMode)return;
   const skip=new Set(['svg','path','circle','ellipse','defs','radialgradient','stop','button']);
   let el=e.target;
   while(el&&el!==this){
@@ -1022,6 +1027,36 @@ document.getElementById('scaler').addEventListener('click',function(e){
     el=el.parentElement;
   }
 },false);
+let moveMode=false;
+function toggleMove(){
+  moveMode=!moveMode;
+  document.body.classList.toggle('move-mode',moveMode);
+  document.getElementById('btn-move').classList.toggle('on',moveMode);
+}
+(function(){
+  let _drag=null;
+  function _sc(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
+  function _getTx(el){const m=(el.style.transform||'').match(/translate\((-?[\d.]+)px,\s*(-?[\d.]+)px\)/);return m?{x:parseFloat(m[1]),y:parseFloat(m[2])}:{x:0,y:0};}
+  document.getElementById('scaler').addEventListener('mousedown',function(e){
+    if(!editMode||!moveMode||e.button!==0)return;
+    e.preventDefault();
+    let el=e.target;
+    while(el&&el!==this){
+      if(!el.classList.contains('slide')&&el.id!=='scaler'){
+        const t=_getTx(el);
+        _drag={el,sx:e.clientX,sy:e.clientY,ox:t.x,oy:t.y};
+        break;
+      }
+      el=el.parentElement;
+    }
+  },false);
+  document.addEventListener('mousemove',function(e){
+    if(!_drag)return;
+    const sc=_sc();
+    _drag.el.style.transform=`translate(${_drag.ox+(e.clientX-_drag.sx)/sc}px,${_drag.oy+(e.clientY-_drag.sy)/sc}px)`;
+  });
+  document.addEventListener('mouseup',function(){_drag=null;});
+})();
 function saveAsNew(){
   const c=document.cloneNode(true);
   c.body.classList.remove('edit-mode');
