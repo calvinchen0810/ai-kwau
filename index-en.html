@@ -65,9 +65,11 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s1 .eye-cap{color:rgba(255,255,255,.35);font-size:10px;font-family:'Sora',sans-serif;letter-spacing:3px;margin-top:12px;}
 
   /* S2 Problem: users */
-  #s2{flex-direction:column;}
-  #s2 .s-top{padding:30px 48px 12px;}
-  #s2 .grid{display:grid;grid-template-columns:repeat(5,1fr);flex:1;padding:0 38px 34px;}
+  #s2{flex-direction:row;}
+  #s2 .s-left{width:38%;background:var(--navy);padding:48px 38px;}
+  #s2 .s-left .slide-title{color:#fff;font-size:32px;}
+  #s2 .s-left .slide-sub{color:rgba(255,255,255,.55);font-size:14px;}
+  #s2 .s-right{width:62%;padding:28px 38px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
   .a-card{margin:6px;padding:22px 16px;border-radius:14px;display:flex;flex-direction:column;gap:9px;}
   .a-card .icon{font-size:32px;}
   .a-card .pct{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--accent);line-height:1;}
@@ -163,7 +165,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .j-step.gold .j-icon{border-color:var(--gold);}
   .j-name{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.25;}
   .j-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-  .j-desc{font-size:14px;color:var(--muted);line-height:1.55;}
+  .j-desc{font-size:14px;color:var(--muted);line-height:1.55;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
   .j-detail{font-size:11px;color:var(--accent);background:rgba(0,119,182,.07);border:1px solid rgba(0,119,182,.2);border-radius:8px;padding:5px 10px;line-height:1.5;text-align:center;margin-top:6px;width:100%;}
 
   /* S6 Value Curb-Cut */
@@ -174,7 +176,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s6 .cards-row{display:flex;flex:1;padding:16px 38px 32px;}
   .e-card{flex:1;margin:0 6px;padding:20px 16px;border-radius:12px;background:var(--bg);display:flex;flex-direction:column;gap:7px;border-top:4px solid var(--cyan);}
   .e-card .icon{font-size:26px;}
-  .e-card .name{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--navy);line-height:1.3;}
+  .e-card .name{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:var(--navy);line-height:1.3;}
 
   /* S7 Competitors */
   #s7{flex-direction:column;}
@@ -306,7 +308,10 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       <div class="slide active" id="s1">
         <div class="s-left">
           <div class="tag">Midterm Workshop</div>
-          <div class="brand">AI<span>·</span>Kwau<span style="font-size:16px;font-weight:400;color:var(--cyanl);opacity:.75;letter-spacing:1px;margin-left:8px;vertical-align:super;line-height:0;">愛看有</span></div>
+          <div style="position:relative;display:inline-block;">
+            <span style="position:absolute;left:100%;bottom:100%;margin-bottom:2px;margin-left:-40px;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span>
+            <div class="brand">AI<span>·</span>Kwau</div>
+          </div>
           <div class="tagline">Webcam × AI — making every PC understand your vision</div>
           <div class="agenda">
             <div class="ag-item"><span class="ag-num">01</span>Problem Statement</div>
@@ -338,16 +343,17 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
 
       <!-- S2 Problem: 20% target users -->
       <div class="slide" id="s2">
-        <div class="s-top">
+        <div class="s-left">
           <div class="step-badge">1 · Problem Statement</div>
-          <div class="slide-title">20% Target Users: Vision-Impaired PC Users<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:var(--muted);display:block;margin-top:4px;">Five Visual Conditions · Survey n=17</span></div>
+          <div class="slide-title">20% Target Users</div>
+          <div class="slide-sub">Vision-Impaired PC Users<br>Five Visual Conditions · Survey n=17</div>
         </div>
-        <div class="grid">
-          <div class="a-card c3"><div class="icon">🌫️</div><div class="pct">53%</div><div class="name">Overall Dimness / Fog</div></div>
-          <div class="a-card c2"><div class="icon">🔭</div><div class="pct">41%</div><div class="name">Peripheral Vision Loss</div></div>
-          <div class="a-card c5"><div class="icon">📖</div><div class="pct">35%</div><div class="name">Reading Difficulty</div></div>
-          <div class="a-card c1"><div class="icon">🔵</div><div class="pct">24%</div><div class="name">Central Vision Blur</div></div>
-          <div class="a-card c4"><div class="icon">💡</div><div class="pct">24%</div><div class="name">Light Sensitivity / Glare</div></div>
+        <div class="s-right">
+          <div class="pain-item" style="border-left-color:#06d6a0;"><div class="pain-num" style="color:#06d6a0;">53%</div><div class="pain-title">🌫️ Overall Dimness / Fog</div></div>
+          <div class="pain-item" style="border-left-color:#f6ae2d;"><div class="pain-num" style="color:#f6ae2d;">41%</div><div class="pain-title">🔭 Peripheral Vision Loss</div></div>
+          <div class="pain-item" style="border-left-color:#b5179e;"><div class="pain-num" style="color:#b5179e;">35%</div><div class="pain-title">📖 Reading Difficulty</div></div>
+          <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">🔵 Central Vision Blur</div></div>
+          <div class="pain-item" style="border-left-color:#f77f00;"><div class="pain-num" style="color:#f77f00;">24%</div><div class="pain-title">💡 Light Sensitivity / Glare</div></div>
         </div>
       </div>
 
@@ -598,7 +604,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
           <div class="j-step">
             <div class="j-icon">✨</div>
             <div class="j-name">Auto-Enhance</div>
-            <div class="j-desc">Contrast enhance · Smart cursor<br>Voice reading · Focus attraction</div>
+            <div class="j-desc">Contrast · Smart Cursor<br>Voice · Focus Attraction</div>
           </div>
         </div>
       </div>
@@ -613,17 +619,17 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
           <div class="e-card">
             <div class="icon">☀️</div>
             <div class="name">Screen Glare &amp; Reflections</div>
-            <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px;">Same visual experience as dim-vision users</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Same visual experience as dim-vision users</div>
           </div>
           <div class="e-card">
             <div class="icon">🌞</div>
             <div class="name">Outdoor Bright Sunlight</div>
-            <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px;">Identical to the daily reality of foggy-vision users</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Identical to the daily reality of foggy-vision users</div>
           </div>
           <div class="e-card">
             <div class="icon">😵</div>
             <div class="name">Eye Fatigue from Long Screen Time</div>
-            <div style="font-size:13px;color:var(--muted);line-height:1.5;margin-top:4px;">#1 pain point for 71% of impaired users — common for everyone</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">#1 pain point for 71% of impaired users — common for everyone</div>
           </div>
         </div>
       </div>
@@ -638,19 +644,19 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
           <div class="comp-table">
             <div class="comp-row">
               <div class="comp-name">Windows Magnifier / Narrator</div>
-              <div class="comp-gap">Passive — manual activation, no visual field awareness</div>
+              <div class="comp-gap">Manual-only, no visual field awareness</div>
             </div>
             <div class="comp-row">
               <div class="comp-name">Windows High Contrast Mode</div>
-              <div class="comp-gap">Too aggressive for mild impairment — our 20% target</div>
+              <div class="comp-gap">Disrupts mild-impairment users (our 20% target)</div>
             </div>
             <div class="comp-row">
               <div class="comp-name">Eye Trackers</div>
-              <div class="comp-gap">Dedicated hardware, thousands of dollars, gaming-focused</div>
+              <div class="comp-gap">Expensive hardware, gaming market</div>
             </div>
             <div class="comp-row">
               <div class="comp-name">ZoomText</div>
-              <div class="comp-gap">Expensive license, magnify-only, no gaze sensing</div>
+              <div class="comp-gap">Magnify-only, no gaze sensing</div>
             </div>
           </div>
           <div class="hp-box">
@@ -671,7 +677,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
         <div class="s-left">
           <div class="tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary</div>
           <div class="slide-title">AI Kwau<span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.4);display:block;margin-top:4px;">Let every PC see what you need</span></div>
-          <div class="slide-sub">Starting from real pain points of 20% vision-impaired users,<br>a zero-hardware-cost AI solution<br>that ultimately benefits 80% of all PC users</div>
+          <div class="slide-sub">Zero hardware cost.<br>Built for 20%, benefits 80%.</div>
           <div class="cta">Q &amp; A</div>
         </div>
         <div class="s-right">
