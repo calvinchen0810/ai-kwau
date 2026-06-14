@@ -53,7 +53,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   /* S1 Cover */
   #s1{background:var(--navy);flex-direction:row;}
   #s1 .s-left{padding:54px 56px;}
-  #s1 .brand{font-family:'Sora',sans-serif;font-size:68px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1;margin-bottom:6px;}
+  #s1 .brand{font-family:'Sora',sans-serif;font-size:68px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1;margin-bottom:6px;position:relative;display:inline-block;}
   #s1 .brand span{color:var(--cyan);}
   #s1 .tagline{font-size:16px;color:var(--cyanl);margin-bottom:5px;}
   #s1 .tagline-sub{font-family:'Sora',sans-serif;font-size:13px;color:rgba(144,224,239,.6);margin-bottom:30px;}
@@ -308,10 +308,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       <div class="slide active" id="s1">
         <div class="s-left">
           <div class="tag">Midterm Workshop</div>
-          <div style="position:relative;display:inline-block;">
-            <span style="position:absolute;left:100%;bottom:100%;margin-bottom:2px;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span>
-            <div class="brand">AI<span>·</span>Kwau</div>
-          </div>
+          <div class="brand">AI<span>·</span>Kwau<span style="position:absolute;left:100%;bottom:100%;margin-bottom:2px;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span></div>
           <div class="tagline">Webcam × AI — making every PC understand your vision</div>
           <div class="agenda">
             <div class="ag-item"><span class="ag-num">01</span>Problem Statement</div>
@@ -497,7 +494,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
               <div style="font-size:22px;">👁</div>
               <div>
                 <div class="half-title cyan">Visible Area</div>
-                <div class="half-sub">Progressively triggered by dwell time</div>
+                <div class="half-sub">Progressively triggered by hold time</div>
               </div>
             </div>
             <div class="iv-row always">
@@ -513,17 +510,17 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
             <div class="iv-row">
               <div class="iv-num">②</div>
               <div class="iv-title">Voice Reading</div>
-              <div class="iv-trigger">Long dwell</div>
+              <div class="iv-trigger">Long hold</div>
             </div>
             <div class="iv-row">
               <div class="iv-num">③</div>
               <div class="iv-title">L1 Text Layer</div>
-              <div class="iv-trigger">Short dwell</div>
+              <div class="iv-trigger">Short hold</div>
             </div>
             <div class="iv-row">
               <div class="iv-num">④</div>
               <div class="iv-title">L2 Component Layer</div>
-              <div class="iv-trigger">Medium dwell</div>
+              <div class="iv-trigger">Mid hold</div>
             </div>
             <div class="iv-row l3">
               <div class="iv-num">⑤</div>
@@ -680,7 +677,6 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
           <div class="tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary</div>
           <div class="slide-title">AI Kwau<span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.4);display:block;margin-top:4px;">Let every PC see what you need</span></div>
           <div class="slide-sub">Zero hardware cost.<br>Built for 20%, benefits 80%.</div>
-          <div class="cta">Q &amp; A</div>
         </div>
         <div class="s-right">
           <div class="sum-item"><div class="ic">🎯</div><div class="tx"><strong>Problem:</strong> 5 conditions × 5 pain points, real users</div></div>
@@ -783,7 +779,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
         <div class="m-fen">Bold borders · Enlarged click zones (medium dwell)</div>
       </div>
       <div class="m-feat" style="margin-bottom:4px;">
-        <div class="m-frow"><div class="m-ficon">🗣️</div><div class="m-fname">④ Voice Reading — Long dwell trigger</div></div>
+        <div class="m-frow"><div class="m-ficon">🗣️</div><div class="m-fname">④ Voice Reading — Long hold trigger</div></div>
         <div class="m-fen">L1/L2 yield when voice reading activates</div>
       </div>
       <div class="m-feat" style="margin-bottom:4px;border-left:4px solid #06d6a0;">
@@ -796,7 +792,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       </div>
       <div style="margin:4px 0 0;padding:11px 13px;background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.25);border-radius:10px;">
         <div style="font-family:'Sora',sans-serif;font-size:clamp(12px,3.2vw,13px);font-weight:700;color:#ffd166;margin-bottom:3px;">🗺️ Cold Zone Detection</div>
-        <div style="font-size:clamp(11px,3vw,12px);color:rgba(0,0,0,.55);line-height:1.5;">If a screen quadrant has no dwell for a long period, AI infers it as a blind-spot area and switches to focus attraction instead of contrast enhancement</div>
+        <div style="font-size:clamp(11px,3vw,12px);color:rgba(0,0,0,.55);line-height:1.5;">If a screen quadrant has no gaze hold for a long period, AI infers it as a blind-spot area and switches to focus attraction instead of contrast enhancement</div>
       </div>
     </div>
   </div>
@@ -816,15 +812,15 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,180,216,.05);border-radius:9px;border-left:3px solid rgba(0,180,216,.5);margin-bottom:6px;">
         <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:22px;">②</div>
-        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L1 Text Layer</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">Short dwell</div></div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L1 Text Layer</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">Short hold</div></div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,180,216,.05);border-radius:9px;border-left:3px solid rgba(0,180,216,.5);margin-bottom:6px;">
         <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:22px;">③</div>
-        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L2 Component Layer</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">Medium dwell</div></div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">L2 Component Layer</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">Mid hold</div></div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(0,180,216,.05);border-radius:9px;border-left:3px solid rgba(0,180,216,.5);margin-bottom:6px;">
         <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--cyan);min-width:22px;">④</div>
-        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">Voice Reading</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">Long dwell</div></div>
+        <div><div style="font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,14px);font-weight:700;color:#fff;">Voice Reading</div><div style="font-size:clamp(11px,3vw,12px);color:rgba(0,180,216,.6);font-family:'Sora',sans-serif;">Long hold</div></div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(6,214,160,.05);border-radius:9px;border-left:3px solid rgba(6,214,160,.4);margin-bottom:14px;">
         <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:#06d6a0;min-width:22px;">⑤</div>
@@ -929,7 +925,6 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       <div class="m-sum"><div class="m-si">📈</div><div class="m-st"><strong>Impact:</strong> Curb-Cut Effect extends to everyday users</div></div>
       <div class="m-sum"><div class="m-si">🏆</div><div class="m-st"><strong>HP Differentiation:</strong> Active sensing · Pre-installed webcam · On-device AI · 59% untapped market</div></div>
     </div>
-    <div class="m-cta">Q &amp; A</div>
   </div>
 
 </div><!-- /mobile-view -->
