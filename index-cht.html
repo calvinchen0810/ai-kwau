@@ -301,9 +301,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a1628;}
 body.edit-mode .slide [contenteditable]{outline:1.5px dashed rgba(0,180,216,.55);border-radius:3px;cursor:text;}
 body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);background:rgba(0,180,216,.04);}
 #btn-edit.on,#btn-move.on{background:rgba(0,180,216,.2);border-color:var(--cyan);color:var(--cyan);}
+#btn-move{display:none;}
+body.edit-mode #btn-move{display:inline-flex;}
 body.move-mode #scaler,body.move-mode #scaler *{cursor:grab!important;}
 body.move-mode #scaler *:active{cursor:grabbing!important;}
-#slide-num{position:absolute;top:12px;right:18px;z-index:200;font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,.55);background:rgba(0,0,0,.35);padding:3px 10px;border-radius:20px;pointer-events:none;backdrop-filter:blur(4px);}
 </style>
 </head>
 <body>
@@ -319,7 +320,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 
 <!-- DESKTOP -->
 <div id="stage">
-  <div id="slide-num">1 / 8</div>
   <div id="slide-row">
     <div id="slide-wrapper">
       <div class="scaler" id="scaler">
@@ -975,7 +975,6 @@ function goTo(n){
   slides[cur].classList.add('active');
   getDots()[cur].classList.add('active');
   document.getElementById('counter').textContent=(cur+1)+' / '+total;
-  document.getElementById('slide-num').textContent=(cur+1)+' / '+total;
 }
 function prev(){goTo(cur-1);}
 function next(){goTo(cur+1);}
