@@ -53,7 +53,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   /* S1 Cover */
   #s1{background:var(--navy);flex-direction:row;}
   #s1 .s-left{padding:54px 56px;}
-  #s1 .brand{font-family:'Sora',sans-serif;font-size:68px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1;margin-bottom:6px;position:relative;display:inline-block;}
+  #s1 .brand{font-family:'Sora',sans-serif;font-size:68px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1;margin-bottom:6px;position:relative;align-self:flex-start;}
   #s1 .brand span{color:var(--cyan);}
   #s1 .tagline{font-size:16px;color:var(--cyanl);margin-bottom:5px;}
   #s1 .tagline-sub{font-family:'Sora',sans-serif;font-size:13px;color:rgba(144,224,239,.6);margin-bottom:30px;}
@@ -183,7 +183,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s7 .s-top{padding:28px 48px 10px;}
   #s7 .comp-wrap{flex:1;display:flex;padding:0 38px 30px;gap:14px;}
   #s7 .comp-table{flex:1.4;display:flex;flex-direction:column;gap:8px;justify-content:center;}
-  .comp-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:11px;background:var(--bg);}
+  .comp-row{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-radius:11px;background:var(--bg);}
   .comp-name{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:var(--navy);min-width:160px;}
   .comp-sub{font-size:10px;color:var(--muted);display:block;font-weight:400;}
   .comp-gap{font-size:15px;color:var(--muted);line-height:1.4;}
@@ -434,7 +434,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
               </div>
               <div style="padding:9px 11px;background:rgba(0,180,216,.08);border-radius:9px;border:1px solid rgba(0,180,216,.25);margin-bottom:8px;margin-top:10px;">
                 <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px;">⚡ Real-time Signal</div>
-                <div class="lnode-body">Dwell threshold trigger · Auto-adjusted by outcome</div>
+                <div class="lnode-body">Hold threshold trigger · Auto-adjusted by outcome</div>
               </div>
               <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);">
                 <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:3px;">🗺️ Accumulated Inference</div>
@@ -763,7 +763,7 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       <div style="padding:10px 14px 4px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">🤖 AI Decision Layer</div>
       <div class="m-feat" style="margin-bottom:4px;">
         <div class="m-frow"><div class="m-ficon">🔦</div><div class="m-fname">Focus Zone Detection</div><div class="m-ftag">Auto-adjusted</div></div>
-        <div class="m-fen">Dwell threshold is dynamic — personalised by intervention outcome</div>
+        <div class="m-fen">Hold threshold is dynamic — personalised by intervention outcome</div>
       </div>
       <div style="padding:10px 14px 4px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">✨ Intervention Output · Progressive Layering</div>
       <div class="m-feat" style="margin-bottom:4px;">
@@ -772,11 +772,11 @@ body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);back
       </div>
       <div class="m-feat" style="margin-bottom:4px;">
         <div class="m-frow"><div class="m-ficon">🎨</div><div class="m-fname">② Contrast Enhancement L1 — Text</div></div>
-        <div class="m-fen">Darker text · Bold · Wider line spacing (short dwell)</div>
+        <div class="m-fen">Darker text · Bold · Wider line spacing (short hold)</div>
       </div>
       <div class="m-feat" style="margin-bottom:4px;">
         <div class="m-frow"><div class="m-ficon">🎨</div><div class="m-fname">③ Contrast Enhancement L2 — Component</div></div>
-        <div class="m-fen">Bold borders · Enlarged click zones (medium dwell)</div>
+        <div class="m-fen">Bold borders · Enlarged click zones (mid hold)</div>
       </div>
       <div class="m-feat" style="margin-bottom:4px;">
         <div class="m-frow"><div class="m-ficon">🗣️</div><div class="m-fname">④ Voice Reading — Long hold trigger</div></div>
