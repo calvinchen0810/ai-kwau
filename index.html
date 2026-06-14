@@ -185,6 +185,12 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .pulse-ring{width:12px;height:12px;border-radius:50%;background:#f6ae2d;animation:pr 1.8s ease-in-out infinite;flex-shrink:0;}
   @keyframes pr{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.65);opacity:.45;}}
   .blind-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#996b00;background:rgba(246,174,45,.18);padding:2px 8px;border-radius:10px;margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;}
+  .l1-on{color:#080808!important;font-weight:800!important;letter-spacing:.3px;transition:color .3s,font-weight .3s;}
+  .l2-on{outline:2px solid rgba(0,180,216,.55)!important;outline-offset:3px;border-radius:4px!important;background:rgba(0,180,216,.06)!important;}
+  @keyframes sense-pulse{0%{border-color:rgba(0,180,216,.2);box-shadow:0 0 0 10px rgba(0,180,216,.02);}100%{border-color:rgba(0,180,216,1);box-shadow:0 0 0 13px rgba(0,180,216,.16);}}
+  @keyframes hit-flash{0%,100%{transform:scale(1);}50%{transform:scale(1.5);opacity:.7;}}
+  .gaze-halo.sensing{animation:sense-pulse .8s linear forwards;}
+  .gaze-halo.hit{animation:hit-flash .25s ease;}
 
   /* S5 Journey */
   #s5{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
@@ -637,8 +643,8 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
                 <div class="fake-h">Vision Accessibility Tools<br>Go Mainstream in 2025</div>
                 <div class="fake-t">With real-time gaze sensing, contrast and text scale adapt automatically to the user's focus zone — no manual toggle required.</div>
                 <div class="fake-cta">Read Full Article →</div>
-                <div class="gaze-halo" style="bottom:86px;right:68px;"></div>
-                <div class="act-badge">✅ L1 Text Active · Short Hold</div>
+                <div class="gaze-halo" id="mock-halo" style="display:none;"></div>
+                <div class="act-badge" id="mock-badge">👋 Hover to sense…</div>
               </div>
               <div class="bzone bzone-b">
                 <div class="bzone-tag g">🗺️ Blind-Spot · Cold Zone</div>
@@ -1108,6 +1114,61 @@ function saveAsNew(){
   a.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!DOCTYPE html>\n'+c.documentElement.outerHTML);
   a.download='ai-kwau-en-edited.html';a.click();
 }
+// S4c interactive gaze mockup
+(function(){
+  const vz=document.querySelector('#s4c .bzone-v');
+  if(!vz)return;
+  const halo=document.getElementById('mock-halo');
+  const badge=document.getElementById('mock-badge');
+  const bpulse=document.querySelector('#s4c .pulse-ring');
+  const tgts=vz.querySelectorAll('.fake-h,.fake-t,.fake-cta,.fake-nav span');
+  let t1=null,t2=null,tr=null,_cur=null;
+  function scl(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
+  vz.addEventListener('mousemove',e=>{
+    if(editMode||moveMode)return;
+    const r=vz.getBoundingClientRect(),s=scl();
+    halo.style.left=((e.clientX-r.left)/s-26)+'px';
+    halo.style.top=((e.clientY-r.top)/s-26)+'px';
+    halo.style.display='block';
+  });
+  vz.addEventListener('mouseleave',()=>{
+    halo.style.display='none';
+    halo.classList.remove('sensing','hit');
+    clearTimeout(t1);clearTimeout(t2);_cur=null;
+    tr=setTimeout(()=>{
+      tgts.forEach(el=>el.classList.remove('l1-on','l2-on'));
+      if(bpulse)bpulse.style.animationDuration='1.8s';
+      if(badge)badge.textContent='👋 Hover to sense…';
+    },2000);
+  });
+  tgts.forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      if(editMode||moveMode)return;
+      clearTimeout(tr);
+      if(_cur===el)return;
+      _cur=el;clearTimeout(t1);clearTimeout(t2);
+      halo.classList.remove('sensing','hit');
+      void halo.offsetWidth;
+      halo.classList.add('sensing');
+      if(bpulse)bpulse.style.animationDuration='.55s';
+      if(badge)badge.textContent='Sensing…';
+      t1=setTimeout(()=>{
+        el.classList.add('l1-on');
+        halo.classList.remove('sensing');halo.classList.add('hit');
+        setTimeout(()=>halo.classList.remove('hit'),280);
+        if(badge)badge.textContent='✅ L1 Text Active';
+        t2=setTimeout(()=>{
+          el.classList.add('l2-on');
+          halo.classList.add('hit');setTimeout(()=>halo.classList.remove('hit'),280);
+          if(badge)badge.textContent='✅ L1 + L2 Active';
+        },700);
+      },800);
+    });
+    el.addEventListener('mouseleave',()=>{
+      if(_cur===el){_cur=null;clearTimeout(t1);clearTimeout(t2);halo.classList.remove('sensing');}
+    });
+  });
+})();
 let tx=0;
 const sw=document.getElementById('slide-wrapper');
 sw.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
