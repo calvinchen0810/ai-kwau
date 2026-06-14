@@ -279,6 +279,9 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .m-agn{font-family:'Sora',sans-serif;font-size:clamp(14px,3.8vw,16px);font-weight:800;color:var(--cyan);min-width:24px;}
   .m-agt{font-size:clamp(14px,3.8vw,16px);color:var(--text);}
 }
+body.edit-mode .slide [contenteditable]{outline:1.5px dashed rgba(0,180,216,.55);border-radius:3px;cursor:text;}
+body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);background:rgba(0,180,216,.04);}
+#btn-edit.on{background:rgba(0,180,216,.2);border-color:var(--cyan);color:var(--cyan);}
 </style>
 </head>
 <body>
@@ -287,6 +290,8 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   <span class="logo">AI Kwau · Midterm</span>
   <span class="counter" id="counter">1 / 9</span>
   <div class="spacer"></div>
+  <button class="tbtn" id="btn-edit" onclick="toggleEdit()">✏️ Edit</button>
+  <button class="tbtn primary" onclick="saveAsNew()">💾 Save As</button>
 </div>
 
 <!-- DESKTOP -->
@@ -946,6 +951,7 @@ function goTo(n){
 function prev(){goTo(cur-1);}
 function next(){goTo(cur+1);}
 document.addEventListener('keydown',e=>{
+  if(editMode)return;
   if(e.key==='ArrowLeft'){e.preventDefault();prev();}
   if(e.key==='ArrowRight'){e.preventDefault();next();}
 },true);
@@ -964,6 +970,36 @@ function scaleSlide(){
 window.addEventListener('resize',scaleSlide);
 requestAnimationFrame(()=>requestAnimationFrame(scaleSlide));
 
+let editMode=false;
+function toggleEdit(){
+  editMode=!editMode;
+  document.body.classList.toggle('edit-mode',editMode);
+  const btn=document.getElementById('btn-edit');
+  btn.textContent=editMode?'✅ Done':'✏️ Edit';
+  btn.classList.toggle('on',editMode);
+  if(!editMode)document.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+}
+document.getElementById('scaler').addEventListener('click',function(e){
+  if(!editMode)return;
+  const skip=new Set(['svg','path','circle','ellipse','defs','radialgradient','stop','button']);
+  let el=e.target;
+  while(el&&el!==this){
+    if(!skip.has(el.tagName.toLowerCase())&&!el.classList.contains('slide')&&el.id!=='scaler'&&el.textContent.trim()){
+      if(!el.getAttribute('contenteditable'))el.setAttribute('contenteditable','true');
+      el.focus();break;
+    }
+    el=el.parentElement;
+  }
+},false);
+function saveAsNew(){
+  const c=document.cloneNode(true);
+  c.body.classList.remove('edit-mode');
+  c.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  const eb=c.getElementById('btn-edit');if(eb){eb.textContent='✏️ Edit';eb.classList.remove('on');}
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!DOCTYPE html>\n'+c.documentElement.outerHTML);
+  a.download='ai-kwau-en-edited.html';a.click();
+}
 let tx=0;
 const sw=document.getElementById('slide-wrapper');
 sw.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
