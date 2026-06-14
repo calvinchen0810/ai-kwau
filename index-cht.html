@@ -690,10 +690,10 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
                 <div class="fake-t">研究指出，全球逾 11 億人患有視力障礙，多數仍依賴電腦預設的顯示設定。小字體與不足的文字間距是高齡使用者及輕度視障族群面臨的最大數位無障礙障礙。</div>
                 <div class="fake-t">對低視力使用者而言，長時間螢幕使用所造成的眼睛疲勞程度，是視力正常者的 3.4 倍——但多數平台至今仍未提供任何自適應顯示選項。</div>
                 <div class="fake-cta">繼續閱讀 →</div>
-                <!-- Pulse guide at left edge pointing left into blur zone -->
-                <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
+                <!-- Pulse guide: right edge → by default, shifts left ← when blind-spot active -->
+                <div id="pulse-guide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
                   <div class="pulse-ring"></div>
-                  <span style="font-size:14px;color:#f6ae2d;line-height:1;">←</span>
+                  <span id="pulse-arrow" style="font-size:14px;color:#f6ae2d;line-height:1;">→</span>
                 </div>
                 <div id="vis-blur"></div>
                 <div class="act-badge" id="mock-badge">👋 懸停感知…</div>
@@ -1120,6 +1120,8 @@ requestAnimationFrame(()=>requestAnimationFrame(scaleSlide));
   const halo=document.getElementById('mock-halo');
   const badge=document.getElementById('mock-badge');
   const bpulse=document.querySelector('#s4c .pulse-ring');
+  const pulseGuide=document.getElementById('pulse-guide');
+  const pulseArrow=document.getElementById('pulse-arrow');
   const tgts=vz.querySelectorAll('.fake-h,.fake-t,.fake-cta,.fake-nav span');
   let t1=null,tr=null,_cur=null;
   function scl(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
@@ -1178,10 +1180,14 @@ requestAnimationFrame(()=>requestAnimationFrame(scaleSlide));
     if(editMode||moveMode)return;
     bz.classList.add('gaze-active');
     if(visBlur)visBlur.style.opacity='1';
+    if(pulseGuide){pulseGuide.style.right='auto';pulseGuide.style.left='10px';}
+    if(pulseArrow)pulseArrow.textContent='←';
   });
   bz.addEventListener('mouseleave',()=>{
     bz.classList.remove('gaze-active');
     if(visBlur)visBlur.style.opacity='0';
+    if(pulseGuide){pulseGuide.style.left='auto';pulseGuide.style.right='10px';}
+    if(pulseArrow)pulseArrow.textContent='→';
   });
 })();
 let tx=0;

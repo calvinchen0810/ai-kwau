@@ -673,10 +673,10 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
                 <div class="fake-t">Studies indicate over 1.1 billion people experience vision impairment globally, many relying on default PC settings with minimal contrast. Small fonts and inadequate spacing remain the top barriers to digital accessibility for aging users and those with mild visual conditions.</div>
                 <div class="fake-t">Extended screen sessions increase eye fatigue by up to 340% for low-vision users compared to those with normal vision — yet most platforms provide no adaptive display options whatsoever.</div>
                 <div class="fake-cta">Continue Reading →</div>
-                <!-- Pulse guide at left edge pointing left into blur zone -->
-                <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
+                <!-- Pulse guide: right edge → by default, shifts left ← when blind-spot active -->
+                <div id="pulse-guide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:5;">
                   <div class="pulse-ring"></div>
-                  <span style="font-size:14px;color:#f6ae2d;line-height:1;">←</span>
+                  <span id="pulse-arrow" style="font-size:14px;color:#f6ae2d;line-height:1;">→</span>
                 </div>
                 <div id="vis-blur"></div>
                 <div class="act-badge" id="mock-badge">👋 Hover to sense…</div>
@@ -1154,6 +1154,8 @@ function saveAsNew(){
   const halo=document.getElementById('mock-halo');
   const badge=document.getElementById('mock-badge');
   const bpulse=document.querySelector('#s4c .pulse-ring');
+  const pulseGuide=document.getElementById('pulse-guide');
+  const pulseArrow=document.getElementById('pulse-arrow');
   const tgts=vz.querySelectorAll('.fake-h,.fake-t,.fake-cta,.fake-nav span');
   let t1=null,tr=null,_cur=null;
   function scl(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
@@ -1212,10 +1214,14 @@ function saveAsNew(){
     if(editMode||moveMode)return;
     bz.classList.add('gaze-active');
     if(visBlur)visBlur.style.opacity='1';
+    if(pulseGuide){pulseGuide.style.right='auto';pulseGuide.style.left='10px';}
+    if(pulseArrow)pulseArrow.textContent='←';
   });
   bz.addEventListener('mouseleave',()=>{
     bz.classList.remove('gaze-active');
     if(visBlur)visBlur.style.opacity='0';
+    if(pulseGuide){pulseGuide.style.left='auto';pulseGuide.style.right='10px';}
+    if(pulseArrow)pulseArrow.textContent='→';
   });
 })();
 let tx=0;
