@@ -155,6 +155,37 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .iv-row.gold .iv-en{color:rgba(201,146,42,.7);}
   .iv-row.gold .iv-trigger{color:var(--goldd);background:rgba(246,174,45,.1);}
 
+  /* S4c Mockup */
+  #s4c{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s4c .s-top{padding:18px 48px 8px;}
+  #s4c .s-top .slide-title{color:var(--navy);font-size:28px;}
+  .browser-mock{background:#fff;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;}
+  .bchrome{background:#f1f3f4;border-bottom:1px solid #dadce0;padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .bchrome-dots{display:flex;gap:5px;}
+  .bchrome-dot{width:10px;height:10px;border-radius:50%;}
+  .bchrome-url{flex:1;background:#fff;border:1px solid #dadce0;border-radius:18px;padding:3px 14px;font-size:11px;color:#555;font-family:'Sora',sans-serif;max-width:380px;margin:0 auto;text-align:center;}
+  .bchrome-ext{font-size:10px;font-family:'Sora',sans-serif;font-weight:700;color:#00b4d8;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+  .b-viewport{flex:1;display:flex;overflow:hidden;}
+  .bzone{position:relative;display:flex;flex-direction:column;padding:14px 16px;overflow:hidden;}
+  .bzone-v{flex:1.5;border-right:2px dashed rgba(0,180,216,.35);}
+  .bzone-b{flex:1;background:rgba(246,174,45,.04);}
+  .bzone-tag{font-family:'Sora',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;margin-bottom:10px;align-self:flex-start;}
+  .bzone-tag.c{background:rgba(0,180,216,.12);color:#0077b6;}
+  .bzone-tag.g{background:rgba(246,174,45,.18);color:#996b00;}
+  .fake-nav{display:flex;gap:14px;border-bottom:1px solid #eee;padding-bottom:7px;margin-bottom:10px;}
+  .fake-nav span{font-family:'Sora',sans-serif;font-size:10px;color:#888;}
+  .fake-nav span.on{color:#0077b6;font-weight:700;border-bottom:2px solid #0077b6;padding-bottom:3px;}
+  .fake-h{font-family:'Sora',sans-serif;font-size:13.5px;font-weight:800;color:#0d1f3c;line-height:1.35;margin-bottom:7px;}
+  .fake-t{font-size:11px;color:#444;line-height:1.75;margin-bottom:8px;}
+  .fake-cta{display:inline-block;font-family:'Sora',sans-serif;font-size:10px;font-weight:700;background:#0d1f3c;color:#fff;padding:5px 13px;border-radius:5px;}
+  .gaze-halo{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(0,180,216,.1);border:2px solid rgba(0,180,216,.5);box-shadow:0 0 0 10px rgba(0,180,216,.05),0 0 0 22px rgba(0,180,216,.025);}
+  .act-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#0077b6;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:10px;margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;}
+  .blind-h{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#bbb;margin-bottom:6px;}
+  .blind-t{font-size:11px;color:#ccc;line-height:1.6;margin-bottom:10px;}
+  .pulse-ring{width:12px;height:12px;border-radius:50%;background:#f6ae2d;animation:pr 1.8s ease-in-out infinite;flex-shrink:0;}
+  @keyframes pr{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.65);opacity:.45;}}
+  .blind-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#996b00;background:rgba(246,174,45,.18);padding:2px 8px;border-radius:10px;margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;}
+
   /* S5 Journey */
   #s5{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s5 .s-top{padding:28px 48px 8px;}
@@ -296,7 +327,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 
 <div id="toolbar">
   <span class="logo">AI Kwau · Midterm</span>
-  <span class="counter" id="counter">1 / 9</span>
+  <span class="counter" id="counter">1 / 10</span>
   <div class="spacer"></div>
   <button class="tbtn" id="btn-edit" onclick="toggleEdit()">✏️ Edit</button>
   <button class="tbtn" id="btn-move" onclick="toggleMove()">↖ Move</button>
@@ -577,6 +608,51 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             </div>
           </div>
 
+        </div>
+      </div>
+
+      <!-- S4c Mockup UI -->
+      <div class="slide" id="s4c">
+        <div class="s-top">
+          <div class="step-badge">2 · Proposed Solution</div>
+          <div class="slide-title">Extension Mockup — Live Dual-Zone Intervention</div>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;padding:0 40px 20px;">
+          <div class="browser-mock" style="width:100%;height:390px;">
+            <div class="bchrome">
+              <div class="bchrome-dots">
+                <div class="bchrome-dot" style="background:#ff5f57;"></div>
+                <div class="bchrome-dot" style="background:#febc2e;"></div>
+                <div class="bchrome-dot" style="background:#28c840;"></div>
+              </div>
+              <div class="bchrome-url">🔒 example-news.com/health-article</div>
+              <div class="bchrome-ext">AI Kwau ● Active</div>
+            </div>
+            <div class="b-viewport">
+              <div class="bzone bzone-v">
+                <div class="bzone-tag c">👁 Visible Area · Gaze Active</div>
+                <div class="fake-nav">
+                  <span class="on">Health</span><span>News</span><span>Tech</span><span>More</span>
+                </div>
+                <div class="fake-h">Vision Accessibility Tools<br>Go Mainstream in 2025</div>
+                <div class="fake-t">With real-time gaze sensing, contrast and text scale adapt automatically to the user's focus zone — no manual toggle required.</div>
+                <div class="fake-cta">Read Full Article →</div>
+                <div class="gaze-halo" style="bottom:86px;right:68px;"></div>
+                <div class="act-badge">✅ L1 Text Active · Short Hold</div>
+              </div>
+              <div class="bzone bzone-b">
+                <div class="bzone-tag g">🗺️ Blind-Spot · Cold Zone</div>
+                <div class="blind-h">Recommended For You</div>
+                <div class="blind-t">Sidebar and related articles sit outside the user's visual field — never gazed at in this session.</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+                  <div class="pulse-ring"></div>
+                  <span style="font-family:'Sora',sans-serif;font-size:9.5px;color:#c08000;font-weight:600;">Focus Attraction · Pulse Guide Active</span>
+                </div>
+                <div style="font-size:20px;color:#f6ae2d;margin-bottom:8px;">← ⊙</div>
+                <div class="blind-badge">📊 GMM Cold Zone · Auto-Triggered</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
