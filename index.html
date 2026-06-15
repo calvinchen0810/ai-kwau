@@ -185,8 +185,8 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .pulse-ring{width:12px;height:12px;border-radius:50%;background:#f6ae2d;animation:pr 1.8s ease-in-out infinite;flex-shrink:0;}
   @keyframes pr{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.65);opacity:.45;}}
   .blind-badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#996b00;background:rgba(246,174,45,.18);padding:2px 8px;border-radius:10px;margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:4px;}
-  .l1-on{color:#080808!important;letter-spacing:.2px;transition:color .35s;}
-  .l2-on{color:#080808!important;font-weight:800!important;letter-spacing:.3px;transition:color .35s,font-weight .35s;}
+  .l1-on{color:#080808!important;font-weight:700!important;letter-spacing:.2px;transition:color .35s,font-weight .35s;}
+  .l2-on{color:#080808!important;font-weight:800!important;font-size:1.2em!important;letter-spacing:.3px;transition:color .35s,font-weight .35s,font-size .3s;}
   @keyframes sense-pulse{0%{border-color:rgba(0,180,216,.2);box-shadow:0 0 0 10px rgba(0,180,216,.02);}100%{border-color:rgba(0,180,216,1);box-shadow:0 0 0 13px rgba(0,180,216,.16);}}
   @keyframes hit-flash{0%,100%{transform:scale(1);}50%{transform:scale(1.5);opacity:.7;}}
   .gaze-halo.sensing{animation:sense-pulse 2s linear forwards;}
@@ -1204,7 +1204,7 @@ function saveAsNew(){
         el.classList.add('l1-on');
         halo.classList.remove('sensing');halo.classList.add('hit');
         setTimeout(()=>halo.classList.remove('hit'),280);
-        if(badge)badge.textContent='✅ L1 Active · 🖱 Click for L2';
+        if(badge)badge.textContent='✅ L1 · Darker & Bold · 🖱 Click for L2';
       },2000);
     });
     el.addEventListener('mouseleave',()=>{
@@ -1215,7 +1215,7 @@ function saveAsNew(){
       if(el.classList.contains('l1-on')){
         el.classList.add('l2-on');
         halo.classList.add('hit');setTimeout(()=>halo.classList.remove('hit'),280);
-        if(badge)badge.textContent='✅ L1 + L2 Active';
+        if(badge)badge.textContent='✅ L2 · + Text Enlarged';
       }
     });
   });
