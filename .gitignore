@@ -1,0 +1,18 @@
+# Claude Code internal files
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Model files (large, downloaded separately)
+poc/models/
+
+# Native host generated files
+poc/native_host/run_host.bat
+poc/native_host/aikwau_host.log
+
+# OS
+.DS_Store
+Thumbs.db
