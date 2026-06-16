@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Kwau PoC — Developer Docs</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1f3c;--blue:#1a3a6b;--cyan:#00b4d8;--cyanl:#90e0ef;
+  --accent:#0077b6;--gold:#f6ae2d;--goldd:#c9922a;
+  --green:#06d6a0;--red:#f6553d;
+  --bg:#f4f6fa;--white:#fff;--text:#1a1a2e;--muted:#4a5568;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;}
+a{color:var(--cyan);text-decoration:none;}
+
+/* NAV */
+nav{background:var(--navy);padding:0 40px;height:56px;display:flex;align-items:center;gap:28px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,180,216,.2);}
+.nav-logo{font-weight:800;font-size:16px;color:var(--cyan);}
+.nav-links{display:flex;gap:22px;margin-left:auto;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,.6);transition:color .2s;}
+.nav-links a:hover{color:#fff;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy),var(--blue));padding:64px 40px 56px;text-align:center;}
+.hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);padding:5px 16px;border-radius:20px;margin-bottom:18px;}
+.hero h1{font-size:42px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:10px;}
+.hero h1 span{color:var(--cyan);}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto 28px;}
+.hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.chip{font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;border:1px solid;}
+.chip.cyan{color:var(--cyan);border-color:rgba(0,180,216,.4);background:rgba(0,180,216,.08);}
+.chip.gold{color:var(--gold);border-color:rgba(246,174,45,.4);background:rgba(246,174,45,.08);}
+.chip.green{color:var(--green);border-color:rgba(6,214,160,.4);background:rgba(6,214,160,.08);}
+
+/* LAYOUT */
+.container{max-width:960px;margin:0 auto;padding:0 32px;}
+section{padding:56px 0 32px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;}
+h2{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.section-sub{font-size:15px;color:var(--muted);margin-bottom:32px;}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:16px;}
+.card{background:var(--white);border-radius:14px;padding:22px 20px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.card-icon{font-size:28px;margin-bottom:10px;}
+.card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.card.cyan{border-top:4px solid var(--cyan);}
+.card.gold{border-top:4px solid var(--gold);}
+.card.green{border-top:4px solid var(--green);}
+.card.navy{border-top:4px solid var(--navy);}
+
+/* ARCH DIAGRAM */
+.arch{background:var(--navy);border-radius:16px;padding:32px 36px;margin:28px 0;}
+.arch-row{display:flex;align-items:stretch;gap:0;margin-bottom:16px;}
+.arch-box{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 16px;text-align:center;}
+.arch-box .ab-icon{font-size:22px;margin-bottom:6px;}
+.arch-box .ab-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
+.arch-box .ab-sub{font-size:10.5px;color:rgba(255,255,255,.45);line-height:1.5;}
+.arch-box.highlight{background:rgba(0,180,216,.12);border-color:rgba(0,180,216,.4);}
+.arch-arrow{display:flex;align-items:center;justify-content:center;width:40px;flex-shrink:0;color:var(--cyan);font-size:18px;}
+.arch-arrow.down{width:auto;height:28px;justify-content:center;text-align:center;color:var(--cyan);font-size:16px;margin:-4px 0;}
+.arch-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(0,180,216,.6);text-align:center;margin-top:2px;}
+
+/* PHASE STEPS */
+.phase{background:var(--white);border-radius:14px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.phase-head{display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid rgba(0,0,0,.06);}
+.phase-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
+.phase-num.p1{background:rgba(0,180,216,.12);color:var(--cyan);}
+.phase-num.p2{background:rgba(6,214,160,.12);color:var(--green);}
+.phase-num.p3{background:rgba(246,174,45,.12);color:var(--goldd);}
+.phase-num.p4{background:rgba(0,119,182,.12);color:var(--accent);}
+.phase-title{font-size:16px;font-weight:700;color:var(--navy);}
+.phase-day{margin-left:auto;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);padding:3px 10px;border-radius:10px;}
+.phase-body{padding:18px 22px;}
+.phase-body p{font-size:13.5px;color:var(--muted);margin-bottom:14px;line-height:1.65;}
+.step-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.step{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);}
+.step-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;}
+.step-dot.done{background:rgba(6,214,160,.15);color:var(--green);}
+.step-dot.cmd{background:rgba(0,180,216,.1);color:var(--cyan);}
+.test-box{background:var(--bg);border-radius:10px;padding:14px 16px;border-left:3px solid var(--cyan);}
+.test-box .test-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.test-box ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.test-box li{font-size:12.5px;color:var(--text);padding-left:16px;position:relative;line-height:1.5;}
+.test-box li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;}
+
+/* CODE */
+pre{background:var(--navy);color:#90e0ef;border-radius:10px;padding:16px 18px;font-size:12.5px;line-height:1.7;overflow-x:auto;margin:12px 0;}
+code{font-family:'Courier New',monospace;}
+.inline-code{background:rgba(0,180,216,.1);color:var(--accent);padding:2px 7px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;}
+
+/* HW TABLE */
+table{width:100%;border-collapse:collapse;margin:16px 0;}
+th{background:var(--navy);color:rgba(255,255,255,.75);font-size:11.5px;font-weight:600;padding:10px 14px;text-align:left;}
+td{padding:10px 14px;font-size:13px;border-bottom:1px solid rgba(0,0,0,.07);}
+tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+.badge-ok{display:inline-block;background:rgba(6,214,160,.12);color:#059669;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.badge-warn{display:inline-block;background:rgba(246,174,45,.12);color:var(--goldd);font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.badge-no{display:inline-block;background:rgba(246,85,61,.1);color:var(--red);font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+
+/* FILE TREE */
+.tree{background:var(--navy);border-radius:12px;padding:24px 28px;font-family:'Courier New',monospace;font-size:13px;color:rgba(255,255,255,.75);line-height:2;}
+.tree .dir{color:var(--cyan);font-weight:700;}
+.tree .file{color:rgba(255,255,255,.6);}
+.tree .comment{color:rgba(255,255,255,.3);font-size:11.5px;}
+
+/* TIMELINE */
+.timeline{display:flex;gap:0;margin:24px 0;}
+.tl-step{flex:1;text-align:center;position:relative;}
+.tl-step:not(:last-child)::after{content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;background:linear-gradient(90deg,var(--cyan),rgba(0,180,216,.2));}
+.tl-dot{width:36px;height:36px;border-radius:50%;background:var(--navy);border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--cyan);margin:0 auto 8px;position:relative;z-index:1;}
+.tl-day{font-size:11px;font-weight:700;color:var(--muted);}
+.tl-label{font-size:12px;color:var(--text);margin-top:3px;line-height:1.4;}
+
+footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255,255,255,.35);font-size:12px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">AI Kwau PoC</span>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#phases">Phases</a>
+    <a href="#hardware">Hardware</a>
+    <a href="#files">Files</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Developer Documentation</div>
+  <h1>AI Kwau <span>PoC</span></h1>
+  <p>On-device text summarization triggered by gaze hold — OpenVINO + Phi-4 Mini + Edge Extension</p>
+  <div class="hero-chips">
+    <span class="chip cyan">Intel OpenVINO</span>
+    <span class="chip cyan">Phi-4 Mini INT4</span>
+    <span class="chip gold">Intel NPU</span>
+    <span class="chip gold">Native Messaging</span>
+    <span class="chip green">Microsoft Edge</span>
+    <span class="chip green">No Cloud · No GPU Required</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="section-label">Overview</div>
+    <h2>What This PoC Does</h2>
+    <p class="section-sub">Validates end-to-end on-device AI summarization triggered by simulated gaze hold, running entirely on the local Intel chip — no API, no cloud, no GPU required.</p>
+    <div class="card-grid">
+      <div class="card cyan">
+        <div class="card-icon">👁</div>
+        <h3>Gaze Hold Trigger</h3>
+        <p>Simulated with mouse hover (2 s threshold). When the user holds gaze on a paragraph, L1 visual enhancement + summarization activate simultaneously.</p>
+      </div>
+      <div class="card gold">
+        <div class="card-icon">🤖</div>
+        <h3>On-device AI</h3>
+        <p>Phi-4 Mini (INT4 quantized, ~1.8 GB) runs via OpenVINO on Intel NPU → iGPU → CPU fallback. No internet required after first model download.</p>
+      </div>
+      <div class="card green">
+        <div class="card-icon">🔌</div>
+        <h3>Native Messaging</h3>
+        <p>Edge extension communicates with a local Python process via Chrome Native Messaging protocol (stdin/stdout JSON). Registered in Windows Registry.</p>
+      </div>
+      <div class="card navy">
+        <div class="card-icon">⚡</div>
+        <h3>Target: &lt; 2s</h3>
+        <p>On Intel Core Ultra 2 (Lunar Lake) NPU, summary latency is 0.9–1.5 s. Panther Lake expected to be faster. Acceptable threshold: &lt; 3 s.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture">
+    <div class="section-label">Architecture</div>
+    <h2>System Design</h2>
+    <p class="section-sub">Three layers: Edge extension (UI + trigger) → Native Messaging Host (orchestration) → OpenVINO Runtime (inference on Intel hardware).</p>
+
+    <div class="arch">
+      <div class="arch-row">
+        <div class="arch-box">
+          <div class="ab-icon">🌐</div>
+          <div class="ab-title">Web Page</div>
+          <div class="ab-sub">Any URL<br>User browses normally</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">
+          <div class="ab-icon">🖱</div>
+          <div class="ab-title">content.js</div>
+          <div class="ab-sub">Hover 2 s detected<br>L1 effect + send text</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">
+          <div class="ab-icon">⚙️</div>
+          <div class="ab-title">background.js</div>
+          <div class="ab-sub">Service Worker<br>Native Messaging bridge</div>
+        </div>
+      </div>
+      <div style="text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;">↓</div>
+      <div class="arch-label">Native Messaging · stdin/stdout · Length-prefixed JSON</div>
+      <div style="text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;">↓</div>
+      <div class="arch-row">
+        <div class="arch-box highlight">
+          <div class="ab-icon">🐍</div>
+          <div class="ab-title">native_host.py</div>
+          <div class="ab-sub">Receives text<br>Builds prompt</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">
+          <div class="ab-icon">🔬</div>
+          <div class="ab-title">OpenVINO GenAI</div>
+          <div class="ab-sub">LLMPipeline<br>Phi-4 Mini INT4</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">
+          <div class="ab-icon">🧠</div>
+          <div class="ab-title">Intel Hardware</div>
+          <div class="ab-sub">NPU → GPU → CPU<br>auto fallback</div>
+        </div>
+      </div>
+      <div style="text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;">↓</div>
+      <div class="arch-label">Summary JSON returned → Badge appears on page</div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 10px;">User-visible Timeline</h3>
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-dot">0s</div>
+        <div class="tl-day">Gaze start</div>
+        <div class="tl-label">User looks at paragraph</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">2s</div>
+        <div class="tl-day">L1 + request</div>
+        <div class="tl-label">Text darkens + bold<br>Summary requested</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">~s</div>
+        <div class="tl-day">Inference</div>
+        <div class="tl-label">NPU running<br>"Summarising…" badge</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot">✓</div>
+        <div class="tl-day">Done</div>
+        <div class="tl-label">Summary badge appears<br>Stays 12 s</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASES -->
+  <section id="phases">
+    <div class="section-label">Implementation</div>
+    <h2>Four-Phase Plan</h2>
+    <p class="section-sub">Each phase has a clear deliverable and test criteria before moving forward.</p>
+
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-num p1">1</div>
+        <div class="phase-title">Model Setup — Download &amp; Convert</div>
+        <div class="phase-day">Day 1</div>
+      </div>
+      <div class="phase-body">
+        <p>Download Phi-4-mini from HuggingFace and convert it to OpenVINO IR format with INT4 quantization. Then run the benchmark script to confirm inference works on your specific Intel hardware.</p>
+        <div class="step-list">
+          <div class="step"><div class="step-dot cmd">1</div><span>Activate venv and run <span class="inline-code">install_deps.bat</span></span></div>
+          <div class="step"><div class="step-dot cmd">2</div><span>Run <span class="inline-code">python download_convert.py</span> — takes ~15 min, outputs ~1.8 GB model</span></div>
+          <div class="step"><div class="step-dot cmd">3</div><span>Run <span class="inline-code">python benchmark.py</span> — tests NPU / GPU / CPU</span></div>
+        </div>
+        <div class="test-box">
+          <div class="test-label">✅ Phase 1 Pass Criteria</div>
+          <ul>
+            <li>Model folder <span class="inline-code">models/phi4-mini-int4/</span> exists and contains <span class="inline-code">openvino_model.bin</span></li>
+            <li>benchmark.py prints Available devices including NPU</li>
+            <li>At least one device completes a summary in &lt; 5 s</li>
+            <li>Summary text is readable English/Chinese</li>
+          </ul>
+        </div>
+<pre><code># Expected benchmark.py output
+Available devices: ['CPU', 'GPU', 'NPU']
+NPU: Intel NPU (Panther Lake)
+
+======== NPU ========
+  Load time : 8.3s
+  Round 1   : 1.12s | Studies show that over 1 billion...
+  Round 2   : 1.08s | ...
+  Avg latency : 1.10s
+  Tokens/sec  : 54.5</code></pre>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-num p2">2</div>
+        <div class="phase-title">Native Messaging Host</div>
+        <div class="phase-day">Day 2</div>
+      </div>
+      <div class="phase-body">
+        <p>Set up the Python process that Edge will talk to. Test the stdin/stdout protocol manually before involving the extension.</p>
+        <div class="step-list">
+          <div class="step"><div class="step-dot cmd">1</div><span>Load the extension in Edge (edge://extensions → Developer mode → Load unpacked → select <span class="inline-code">poc/extension/</span>)</span></div>
+          <div class="step"><div class="step-dot cmd">2</div><span>Copy the Extension ID shown in edge://extensions</span></div>
+          <div class="step"><div class="step-dot cmd">3</div><span>Run <span class="inline-code">python register.py --extension-id &lt;ID&gt;</span></span></div>
+          <div class="step"><div class="step-dot cmd">4</div><span>Test the host manually with the Python test script below</span></div>
+        </div>
+<pre><code># Manual host test (run in a separate terminal)
+import subprocess, json, struct
+
+proc = subprocess.Popen(
+    ["python", "native_host.py"],
+    stdin=subprocess.PIPE, stdout=subprocess.PIPE
+)
+
+def send(obj):
+    data = json.dumps(obj).encode()
+    proc.stdin.write(struct.pack("=I", len(data)) + data)
+    proc.stdin.flush()
+
+def recv():
+    n = struct.unpack("=I", proc.stdout.read(4))[0]
+    return json.loads(proc.stdout.read(n))
+
+send({"action": "ping", "reqId": 1})
+print(recv())   # → {"status": "ready", "reqId": 1}
+
+send({"action": "summarize", "text": "AI Kwau is a browser extension...", "lang": "en", "reqId": 2})
+print(recv())   # → {"status": "ok", "summary": "...", "reqId": 2}</code></pre>
+        <div class="test-box">
+          <div class="test-label">✅ Phase 2 Pass Criteria</div>
+          <ul>
+            <li>Registry key exists: <span class="inline-code">HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer</span></li>
+            <li>Manual ping test returns <span class="inline-code">{"status": "ready"}</span></li>
+            <li>Manual summarize test returns a non-empty summary string</li>
+            <li><span class="inline-code">aikwau_host.log</span> shows "Model loaded and warmed up"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-num p3">3</div>
+        <div class="phase-title">Edge Extension — UI &amp; Trigger</div>
+        <div class="phase-day">Day 3</div>
+      </div>
+      <div class="phase-body">
+        <p>The extension is already loaded from Phase 2. This phase verifies the content script triggers correctly and the badge UI renders.</p>
+        <div class="step-list">
+          <div class="step"><div class="step-dot cmd">1</div><span>Reload the extension in edge://extensions (click the refresh icon)</span></div>
+          <div class="step"><div class="step-dot cmd">2</div><span>Navigate to any news article (e.g. BBC, CNN)</span></div>
+          <div class="step"><div class="step-dot cmd">3</div><span>Open DevTools Console — check for errors</span></div>
+          <div class="step"><div class="step-dot cmd">4</div><span>Hover mouse over a paragraph and hold for 2 seconds</span></div>
+        </div>
+        <div class="test-box">
+          <div class="test-label">✅ Phase 3 Pass Criteria</div>
+          <ul>
+            <li>No errors in DevTools Console after page load</li>
+            <li>After 2 s hover: paragraph text becomes darker and bold (L1)</li>
+            <li>Blue badge appears with "💡 Summarising…" text</li>
+            <li>Badge disappears when mouse moves away (cleanup)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-num p4">4</div>
+        <div class="phase-title">End-to-End Integration &amp; Benchmark</div>
+        <div class="phase-day">Day 4–5</div>
+      </div>
+      <div class="phase-body">
+        <p>Connect all three layers. Measure real-world latency from gaze-hold to summary-visible, across multiple page types and Intel device paths.</p>
+        <div class="step-list">
+          <div class="step"><div class="step-dot cmd">1</div><span>Ensure native host is registered (Phase 2) and extension loaded (Phase 3)</span></div>
+          <div class="step"><div class="step-dot cmd">2</div><span>Open any English or Chinese article</span></div>
+          <div class="step"><div class="step-dot cmd">3</div><span>Hover 2 s → verify "Summarising…" → verify summary appears</span></div>
+          <div class="step"><div class="step-dot cmd">4</div><span>Check <span class="inline-code">aikwau_host.log</span> for timing and errors</span></div>
+          <div class="step"><div class="step-dot cmd">5</div><span>Record latency across NPU / GPU / CPU by changing <span class="inline-code">DEVICE_PRIORITY</span> in native_host.py</span></div>
+        </div>
+        <div class="test-box">
+          <div class="test-label">✅ Phase 4 Pass Criteria</div>
+          <ul>
+            <li>Full flow works: hover → L1 → "Summarising…" → summary text → auto-dismiss</li>
+            <li>Chinese page produces Chinese summary (lang auto-detect)</li>
+            <li>NPU latency recorded and &lt; 2 s on Panther Lake</li>
+            <li>No crashes after 10 consecutive requests</li>
+            <li>Log file shows no errors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HARDWARE -->
+  <section id="hardware">
+    <div class="section-label">Hardware</div>
+    <h2>Intel Chip Generation Guide</h2>
+    <p class="section-sub">Performance estimates for Phi-4 Mini INT4 (80-token summary output). Measured via OpenVINO on each device path.</p>
+    <table>
+      <tr>
+        <th>Generation</th>
+        <th>Example</th>
+        <th>Best Path</th>
+        <th>Avg Latency</th>
+        <th>Tokens/s</th>
+        <th>UX</th>
+      </tr>
+      <tr>
+        <td>13th gen (Raptor Lake)</td>
+        <td>i7-1360P</td>
+        <td>iGPU (Iris Xe)</td>
+        <td>3–5 s</td>
+        <td>16–27</td>
+        <td><span class="badge-warn">Marginal</span></td>
+      </tr>
+      <tr>
+        <td>Core Ultra 1 (Meteor Lake)</td>
+        <td>Ultra 7 165H</td>
+        <td>iGPU (Arc Xe)</td>
+        <td>1.6–2.7 s</td>
+        <td>30–50</td>
+        <td><span class="badge-ok">Acceptable</span></td>
+      </tr>
+      <tr>
+        <td>Core Ultra 200H (Arrow Lake)</td>
+        <td>Ultra 7 268H</td>
+        <td>NPU (13 TOPS)</td>
+        <td>2–3.2 s</td>
+        <td>25–40</td>
+        <td><span class="badge-ok">Acceptable</span></td>
+      </tr>
+      <tr>
+        <td>Core Ultra 2 (Lunar Lake)</td>
+        <td>Ultra 7 258V</td>
+        <td>NPU (48 TOPS)</td>
+        <td>0.9–1.5 s</td>
+        <td>55–85</td>
+        <td><span class="badge-ok">Ideal</span></td>
+      </tr>
+      <tr>
+        <td><strong>Panther Lake</strong></td>
+        <td><strong>Your machine</strong></td>
+        <td><strong>NPU (100+ TOPS)</strong></td>
+        <td><strong>&lt; 1 s (est.)</strong></td>
+        <td><strong>80–120+ (est.)</strong></td>
+        <td><span class="badge-ok">Ideal</span></td>
+      </tr>
+    </table>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px;">* Panther Lake figures are estimates based on pre-launch Intel targets. Run benchmark.py to get actual numbers.</p>
+  </section>
+
+  <!-- FILES -->
+  <section id="files">
+    <div class="section-label">Reference</div>
+    <h2>File Structure</h2>
+    <div class="tree">
+      <span class="dir">ai-kwau/</span><br>
+      ├── <span class="dir">poc/</span><br>
+      │&nbsp;&nbsp; ├── <span class="dir">model_setup/</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">install_deps.bat</span>  &nbsp;<span class="comment">← run first to set up venv</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">download_convert.py</span>  &nbsp;<span class="comment">← download + INT4 conversion</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">benchmark.py</span>  &nbsp;<span class="comment">← NPU/GPU/CPU latency test</span><br>
+      │&nbsp;&nbsp; ├── <span class="dir">native_host/</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">native_host.py</span>  &nbsp;<span class="comment">← OpenVINO inference + stdio</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">host_manifest.json</span>  &nbsp;<span class="comment">← Edge host descriptor</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">register.py</span>  &nbsp;<span class="comment">← writes Windows Registry</span><br>
+      │&nbsp;&nbsp; ├── <span class="dir">extension/</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">manifest.json</span>  &nbsp;<span class="comment">← MV3 extension manifest</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">background.js</span>  &nbsp;<span class="comment">← service worker + native bridge</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>  &nbsp;<span class="comment">← hover trigger + badge UI</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">content.css</span>  &nbsp;<span class="comment">← L1 effect + badge styles</span><br>
+      │&nbsp;&nbsp; └── <span class="dir">models/</span>  &nbsp;<span class="comment">← auto-created by download_convert.py</span><br>
+      │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">phi4-mini-int4/</span>  &nbsp;<span class="comment">← ~1.8 GB OpenVINO IR + tokenizer</span><br>
+      ├── <span class="dir">doc/</span><br>
+      │&nbsp;&nbsp; └── <span class="file">index.html</span>  &nbsp;<span class="comment">← this file</span><br>
+      ├── <span class="file">index.html</span>  &nbsp;<span class="comment">← EN presentation</span><br>
+      └── <span class="file">index-cht.html</span>  &nbsp;<span class="comment">← CHT presentation</span>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">Quick Start</h3>
+<pre><code># 1. Clone and enter project
+cd ai-kwau/poc/model_setup
+
+# 2. Set up environment
+install_deps.bat
+.venv\Scripts\activate
+
+# 3. Convert model (one-time, ~15 min)
+python download_convert.py
+
+# 4. Benchmark on your hardware
+python benchmark.py
+
+# 5. Register native host (after loading extension in Edge)
+cd ..\native_host
+python register.py --extension-id &lt;YOUR_EXTENSION_ID&gt;
+
+# 6. Load extension in Edge
+#    edge://extensions → Developer mode → Load unpacked → select poc/extension/</code></pre>
+  </section>
+
+</div>
+
+<footer>
+  AI Kwau PoC — Calvin Chen · Ava Lu · Thomas Chang · Yorke Lee
+</footer>
+
+</body>
+</html>
