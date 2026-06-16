@@ -129,6 +129,8 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     <a href="#phases">Phases</a>
     <a href="#hardware">Hardware</a>
     <a href="#files">Files</a>
+    <a href="#gaze">Gaze</a>
+    <a href="#validation">Validation</a>
   </div>
 </nav>
 
@@ -143,6 +145,7 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     <span class="chip gold">Native Messaging</span>
     <span class="chip green">Microsoft Edge</span>
     <span class="chip green">No Cloud · No GPU Required</span>
+    <span class="chip cyan">WebGazer Eye Tracking</span>
   </div>
 </div>
 
@@ -250,6 +253,84 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
         <div class="tl-dot">✓</div>
         <div class="tl-day">Done</div>
         <div class="tl-label">Summary badge appears<br>Stays 12 s</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAZE TRACKING -->
+  <section id="gaze">
+    <div class="section-label">Gaze Tracking</div>
+    <h2>Eye-Tracking Integration</h2>
+    <p class="section-sub">Two interchangeable modes share the same trigger interface — switch between them without changing content.js or background.js.</p>
+
+    <div class="card-grid">
+      <div class="card cyan">
+        <div class="card-icon">🖱</div>
+        <h3>Mouse Simulation (Default)</h3>
+        <p>Hover over any paragraph for 2 seconds to trigger L1 + summarization. No webcam, no calibration. Works on any machine. This is the PoC demo mode.</p>
+      </div>
+      <div class="card gold">
+        <div class="card-icon">👁</div>
+        <h3>Webcam Eye Tracking (Real Gaze)</h3>
+        <p>WebGazer.js maps webcam frames to screen coordinates using ML. After a 9-point calibration click, gaze accuracy is ±50–100 px — enough for paragraph detection.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">GazeTracker Architecture</h3>
+    <div class="arch">
+      <div class="arch-row">
+        <div class="arch-box highlight">
+          <div class="ab-icon">🖱 / 👁</div>
+          <div class="ab-title">Input Source</div>
+          <div class="ab-sub">Mouse events (default)<br>or WebGazer gaze point</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">
+          <div class="ab-icon">⏱</div>
+          <div class="ab-title">Dwell Timer</div>
+          <div class="ab-sub">2000 ms threshold<br>Reset on element change</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">
+          <div class="ab-icon">📡</div>
+          <div class="ab-title">CustomEvents</div>
+          <div class="ab-sub">gazefocus → trigger L1<br>gazeblur → cleanup</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">
+          <div class="ab-icon">📄</div>
+          <div class="ab-title">content.js</div>
+          <div class="ab-sub">Applies L1 effect<br>Requests summary</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">Enabling Real Eye Tracking</h3>
+    <pre><code># 1. Download WebGazer.js (~2.5 MB)
+# https://github.com/brownhci/WebGazer/releases → webgazer.js
+
+# 2. Place in extension directory
+copy webgazer.js poc\extension\webgazer.js
+
+# 3. Add to manifest.json content_scripts.js array (before gaze_tracker.js)
+#    "js": ["webgazer.js", "gaze_tracker.js", "content.js"]
+
+# 4. Reload extension in edge://extensions
+
+# 5. Switch mode via DevTools Console on any page:
+chrome.storage.local.set({ aikwau_gaze_mode: 'webcam' })
+# Then reload the page — WebGazer camera prompt appears
+
+# 6. Click 9 different points on the page for calibration
+# 7. Hover gaze over a paragraph for 2 s → L1 activates</code></pre>
+
+    <div style="margin-top:16px;padding:14px 18px;background:rgba(246,174,45,.07);border:1px solid rgba(246,174,45,.3);border-radius:10px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--goldd);margin-bottom:8px;">WebGazer Accuracy Notes</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.7;">
+        Raw accuracy: ±100–200 px uncalibrated &nbsp;·&nbsp; After calibration: ±50–100 px &nbsp;·&nbsp;
+        Paragraph height ≈ 100–200 px → enough for detection.<br>
+        Works best with: good lighting, no glasses glare, 50–80 cm viewing distance, stable head position.<br>
+        For HP SureView / Tobii hardware: replace <span class="inline-code">_startWebcam()</span> with Tobii SDK bridge.
       </div>
     </div>
   </section>
@@ -402,6 +483,168 @@ print(recv())   # → {"status": "ok", "summary": "...", "reqId": 2}</code></pre
     </div>
   </section>
 
+  <!-- MVP VALIDATION -->
+  <section id="validation">
+    <div class="section-label">MVP Validation</div>
+    <h2>Test Plan &amp; Success Criteria</h2>
+    <p class="section-sub">Structured test matrix to validate the full PoC on Panther Lake hardware. Run in order — each phase must pass before the next.</p>
+
+    <table>
+      <tr>
+        <th>#</th>
+        <th>Test Scenario</th>
+        <th>Input</th>
+        <th>Expected Output</th>
+        <th>Pass Condition</th>
+      </tr>
+      <tr>
+        <td><strong>V1</strong></td>
+        <td>NPU detection</td>
+        <td><span class="inline-code">benchmark.py</span></td>
+        <td>NPU in available_devices</td>
+        <td><span class="badge-ok">NPU listed</span></td>
+      </tr>
+      <tr>
+        <td><strong>V2</strong></td>
+        <td>Model load</td>
+        <td><span class="inline-code">benchmark.py</span></td>
+        <td>Load time printed, no crash</td>
+        <td><span class="badge-ok">&lt; 30 s load</span></td>
+      </tr>
+      <tr>
+        <td><strong>V3</strong></td>
+        <td>NPU inference latency</td>
+        <td><span class="inline-code">benchmark.py</span> NPU path</td>
+        <td>Avg latency + tok/s printed</td>
+        <td><span class="badge-ok">&lt; 2 s on Panther Lake</span></td>
+      </tr>
+      <tr>
+        <td><strong>V4</strong></td>
+        <td>Native host ping</td>
+        <td>Manual Python test script</td>
+        <td><span class="inline-code">{"status":"ready","reqId":1}</span></td>
+        <td><span class="badge-ok">status == ready</span></td>
+      </tr>
+      <tr>
+        <td><strong>V5</strong></td>
+        <td>Native host summarize (EN)</td>
+        <td>English paragraph text</td>
+        <td>Non-empty English summary</td>
+        <td><span class="badge-ok">Readable 1–2 sentence summary</span></td>
+      </tr>
+      <tr>
+        <td><strong>V6</strong></td>
+        <td>Native host summarize (ZH)</td>
+        <td>Chinese paragraph text</td>
+        <td>Non-empty Chinese summary</td>
+        <td><span class="badge-ok">Readable Chinese summary</span></td>
+      </tr>
+      <tr>
+        <td><strong>V7</strong></td>
+        <td>Extension load (no errors)</td>
+        <td>Load unpacked in Edge</td>
+        <td>No manifest errors, no console errors</td>
+        <td><span class="badge-ok">Clean load</span></td>
+      </tr>
+      <tr>
+        <td><strong>V8</strong></td>
+        <td>L1 visual trigger (mouse)</td>
+        <td>Hover paragraph 2 s</td>
+        <td>Text darkens + bold, badge shows "Summarising…"</td>
+        <td><span class="badge-ok">Visual effect + badge visible</span></td>
+      </tr>
+      <tr>
+        <td><strong>V9</strong></td>
+        <td>End-to-end summary (EN)</td>
+        <td>Hover English article paragraph</td>
+        <td>Summary appears in badge within 3 s</td>
+        <td><span class="badge-ok">&lt; 3 s total (on Panther Lake: &lt; 2 s)</span></td>
+      </tr>
+      <tr>
+        <td><strong>V10</strong></td>
+        <td>End-to-end summary (ZH)</td>
+        <td>Hover Chinese article paragraph</td>
+        <td>Chinese summary in badge</td>
+        <td><span class="badge-ok">Language auto-detected</span></td>
+      </tr>
+      <tr>
+        <td><strong>V11</strong></td>
+        <td>Stability (10 requests)</td>
+        <td>10 consecutive hovers</td>
+        <td>All succeed, no port disconnect</td>
+        <td><span class="badge-ok">Zero errors in log</span></td>
+      </tr>
+      <tr>
+        <td><strong>V12</strong></td>
+        <td>Cleanup on gaze-away</td>
+        <td>Move mouse off paragraph</td>
+        <td>L1 removed, badge dismissed</td>
+        <td><span class="badge-ok">No visual artifacts left</span></td>
+      </tr>
+    </table>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">Latency Budget (Panther Lake Target)</h3>
+    <table>
+      <tr><th>Stage</th><th>Description</th><th>Budget</th></tr>
+      <tr><td>Dwell detection</td><td>content.js → gazefocus event</td><td>= 2000 ms (fixed)</td></tr>
+      <tr><td>IPC overhead</td><td>Extension → background → native host</td><td>&lt; 10 ms</td></tr>
+      <tr><td>Model warm-up</td><td>First request only (subsequent cached)</td><td>&lt; 10 s (one-time)</td></tr>
+      <tr><td>Prompt build + tokenize</td><td>Text truncated to 1200 chars</td><td>&lt; 50 ms</td></tr>
+      <tr><td>NPU inference</td><td>80 output tokens @ 100 tok/s target</td><td>&lt; 800 ms</td></tr>
+      <tr><td>Detokenize + IPC return</td><td>JSON encode + write stdout</td><td>&lt; 20 ms</td></tr>
+      <tr><td><strong>Total after dwell</strong></td><td></td><td><strong>&lt; 1 s (target)</strong></td></tr>
+    </table>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">Quick Validation Script</h3>
+    <pre><code># Run from poc/native_host/ with .venv active
+python -c "
+import subprocess, json, struct, time
+
+proc = subprocess.Popen(
+    ['python', 'native_host.py'],
+    stdin=subprocess.PIPE, stdout=subprocess.PIPE
+)
+
+def send(obj):
+    data = json.dumps(obj).encode()
+    proc.stdin.write(struct.pack('=I', len(data)) + data)
+    proc.stdin.flush()
+
+def recv():
+    n = struct.unpack('=I', proc.stdout.read(4))[0]
+    return json.loads(proc.stdout.read(n))
+
+# V4: Ping
+send({'action': 'ping', 'reqId': 1})
+r = recv()
+assert r['status'] == 'ready', f'FAIL V4: {r}'
+print('V4 PASS:', r)
+
+# V5: English summary
+t = time.time()
+send({'action': 'summarize',
+      'text': 'Studies show over 1.1 billion people experience vision impairment globally. Small fonts and poor contrast remain the top barriers to digital accessibility for aging users.',
+      'lang': 'en', 'reqId': 2})
+r = recv()
+latency = time.time() - t
+assert r['status'] == 'ok' and len(r.get('summary','')) > 10, f'FAIL V5: {r}'
+print(f'V5 PASS ({latency:.2f}s):', r[\"summary\"][:80])
+
+# V6: Chinese summary
+t = time.time()
+send({'action': 'summarize',
+      'text': '研究顯示，全球超過11億人有視力障礙。字體太小與對比度不足是老年用戶在數位存取上的主要障礙。',
+      'lang': 'zh', 'reqId': 3})
+r = recv()
+latency = time.time() - t
+assert r['status'] == 'ok', f'FAIL V6: {r}'
+print(f'V6 PASS ({latency:.2f}s):', r[\"summary\"][:80])
+
+proc.terminate()
+print('All validation tests passed.')
+"</code></pre>
+  </section>
+
   <!-- HARDWARE -->
   <section id="hardware">
     <div class="section-label">Hardware</div>
@@ -476,14 +719,17 @@ print(recv())   # → {"status": "ok", "summary": "...", "reqId": 2}</code></pre
       │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">host_manifest.json</span>  &nbsp;<span class="comment">← Edge host descriptor</span><br>
       │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">register.py</span>  &nbsp;<span class="comment">← writes Windows Registry</span><br>
       │&nbsp;&nbsp; ├── <span class="dir">extension/</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">manifest.json</span>  &nbsp;<span class="comment">← MV3 extension manifest</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">manifest.json</span>  &nbsp;<span class="comment">← MV3: nativeMessaging, storage permissions</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">gaze_tracker.js</span>  &nbsp;<span class="comment">← GazeTracker: mouse sim or WebGazer webcam</span><br>
       │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">background.js</span>  &nbsp;<span class="comment">← service worker + native bridge</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>  &nbsp;<span class="comment">← hover trigger + badge UI</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">content.css</span>  &nbsp;<span class="comment">← L1 effect + badge styles</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>  &nbsp;<span class="comment">← gazefocus/gazeblur → L1 effect + badge</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>  &nbsp;<span class="comment">← L1 effect + badge styles</span><br>
+      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">[webgazer.js]</span>  &nbsp;<span class="comment">← optional: download separately for webcam mode</span><br>
       │&nbsp;&nbsp; └── <span class="dir">models/</span>  &nbsp;<span class="comment">← auto-created by download_convert.py</span><br>
       │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">phi4-mini-int4/</span>  &nbsp;<span class="comment">← ~1.8 GB OpenVINO IR + tokenizer</span><br>
       ├── <span class="dir">doc/</span><br>
       │&nbsp;&nbsp; └── <span class="file">index.html</span>  &nbsp;<span class="comment">← this file</span><br>
+      ├── <span class="file">CLAUDE.md</span>  &nbsp;<span class="comment">← project context for Claude Code (read on session start)</span><br>
       ├── <span class="file">index.html</span>  &nbsp;<span class="comment">← EN presentation</span><br>
       └── <span class="file">index-cht.html</span>  &nbsp;<span class="comment">← CHT presentation</span>
     </div>
@@ -507,7 +753,11 @@ cd ..\native_host
 python register.py --extension-id &lt;YOUR_EXTENSION_ID&gt;
 
 # 6. Load extension in Edge
-#    edge://extensions → Developer mode → Load unpacked → select poc/extension/</code></pre>
+#    edge://extensions → Developer mode → Load unpacked → select poc/extension/
+
+# 7. Run MVP validation test suite
+cd ..\native_host
+python -c "import subprocess,json,struct; ..."  # see Validation section above</code></pre>
   </section>
 
 </div>
