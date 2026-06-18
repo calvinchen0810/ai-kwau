@@ -1,15 +1,39 @@
 """
-Step 1: Download Phi-4-mini from HuggingFace and convert to OpenVINO IR.
-Runtime: ~10-20 min on first run (downloads ~8 GB, outputs ~1.8 GB).
-Note: Current toolchain (optimum-intel 2.0.0 + transformers 5.0.0) produces INT8 quantization.
-NPU backend has compatibility issues; GPU/CPU are stable and tested.
+Step 1: Download and convert a supported local LLM to OpenVINO IR.
+
+Default model: Qwen/Qwen2.5-1.5B-Instruct
+Legacy option: microsoft/Phi-4-mini-instruct
 """
 import sys
+import argparse
 from pathlib import Path
 
-OUTPUT_DIR = Path(__file__).parent.parent / "models" / "phi4-mini-int4"
+MODELS_BASE = Path(__file__).parent.parent / "models"
+
+MODELS = {
+    "qwen2.5-1.5b": {
+        "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+        "output_dir": MODELS_BASE / "qwen2.5-1.5b-int4",
+        "trust_remote_code": False,
+    },
+    "phi4-mini": {
+        "model_id": "microsoft/Phi-4-mini-instruct",
+        "output_dir": MODELS_BASE / "phi4-mini-int4",
+        "trust_remote_code": True,
+    },
+}
+
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--model",
+        choices=list(MODELS.keys()),
+        default="qwen2.5-1.5b",
+        help="Which model to download and convert",
+    )
+    args = parser.parse_args()
+
     try:
         from optimum.intel import OVModelForCausalLM
         from transformers import AutoTokenizer
@@ -19,24 +43,28 @@ def main():
         print(f"ERROR: Run install_deps.bat first. Missing: {e}")
         sys.exit(1)
 
-    MODEL_ID = "microsoft/Phi-4-mini-instruct"
-    print(f"Downloading and converting: {MODEL_ID}")
-    print(f"Output: {OUTPUT_DIR}\n")
+    cfg = MODELS[args.model]
+    model_id = cfg["model_id"]
+    output_dir = cfg["output_dir"]
+    trust_remote_code = cfg["trust_remote_code"]
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"Downloading and converting: {model_id}")
+    print(f"Output: {output_dir}\n")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     print("[1/3] Downloading tokenizer...")
-    tok = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
+    tok = AutoTokenizer.from_pretrained(model_id, trust_remote_code=trust_remote_code)
 
     print("[2/3] Converting model to OpenVINO IR...")
-    print("      (optimum-intel 2.0.0 applies default quantization)")
+    print("      (optimum-intel exports INT4 quantized OpenVINO IR)")
     try:
         model = OVModelForCausalLM.from_pretrained(
-            MODEL_ID,
+            model_id,
             export=True,
-            trust_remote_code=True,
+            trust_remote_code=trust_remote_code,
         )
-        model.save_pretrained(str(OUTPUT_DIR))
+        model.save_pretrained(str(output_dir))
         print("      Model export successful")
     except Exception as e:
         print(f"ERROR during model export: {e}")
@@ -48,15 +76,15 @@ def main():
             tok,
             with_detokenizer=True
         )
-        ov.save_model(tokenizer_model, str(OUTPUT_DIR / "openvino_tokenizer.xml"))
-        ov.save_model(detokenizer_model, str(OUTPUT_DIR / "openvino_detokenizer.xml"))
+        ov.save_model(tokenizer_model, str(output_dir / "openvino_tokenizer.xml"))
+        ov.save_model(detokenizer_model, str(output_dir / "openvino_detokenizer.xml"))
         print("      Tokenizer and detokenizer converted successfully")
     except Exception as e:
         print(f"  Error converting tokenizer: {e}")
-        tok.save_pretrained(str(OUTPUT_DIR))
+        tok.save_pretrained(str(output_dir))
         print("  Fallback: saved HuggingFace tokenizer")
 
-    print(f"\nDone. Model saved to: {OUTPUT_DIR.resolve()}")
+    print(f"\nDone. Model saved to: {output_dir.resolve()}")
     print("Next step: run benchmark.py")
 
 if __name__ == "__main__":
