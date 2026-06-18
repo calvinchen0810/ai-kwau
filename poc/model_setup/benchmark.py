@@ -6,7 +6,7 @@ import time
 import sys
 from pathlib import Path
 
-MODEL_DIR = str(Path(__file__).parent.parent / "models" / "phi4-mini-int4")
+MODEL_DIR = str(Path(__file__).parent.parent / "models" / "qwen2.5-1.5b-int4")
 
 TEST_TEXT = (
     "Studies indicate over 1.1 billion people experience vision impairment globally. "
@@ -18,6 +18,21 @@ TEST_TEXT = (
 PROMPT = f"Summarize in 2 sentences:\n\n{TEST_TEXT}\n\nSummary:"
 MAX_TOKENS = 60
 ROUNDS = 3
+
+
+CACHE_DIR = str(Path(__file__).parent.parent / "models" / "qwen2.5-1.5b-int4" / "ov_cache")
+
+
+def looks_corrupted(text: str) -> bool:
+    s = text.strip()
+    if not s:
+        return True
+    printable_ratio = sum(ch.isprintable() for ch in s) / len(s)
+    alpha_ratio = sum(ch.isalpha() for ch in s) / len(s)
+    symbol_ratio = sum(
+        not (ch.isalnum() or ch.isspace() or ch in ",.;:!?'-\"()") for ch in s
+    ) / len(s)
+    return printable_ratio < 0.95 or alpha_ratio < 0.15 or symbol_ratio > 0.10
 
 
 def run_device(device: str):
@@ -33,7 +48,11 @@ def run_device(device: str):
 
     try:
         t0 = time.time()
-        pipe = ov_genai.LLMPipeline(MODEL_DIR, device)
+        # NPU-specific config: keep conservative settings for output stability
+        ov_config = {"CACHE_DIR": CACHE_DIR}
+        if device == "NPU":
+            ov_config["PERFORMANCE_HINT"] = "LATENCY"
+        pipe = ov_genai.LLMPipeline(MODEL_DIR, device, **ov_config)
         load_time = time.time() - t0
         print(f"  Load time : {load_time:.1f}s")
 
@@ -45,6 +64,8 @@ def run_device(device: str):
             t = time.time()
             result = pipe.generate(PROMPT, max_new_tokens=MAX_TOKENS)
             elapsed = time.time() - t
+            if device == "NPU" and looks_corrupted(result):
+                raise RuntimeError("NPU output quality check failed (corrupted text)")
             times.append(elapsed)
             print(f"  Round {i+1}   : {elapsed:.2f}s | {result.strip()[:70]}...")
 
@@ -86,6 +107,9 @@ def main():
     if results:
         best = min(results, key=lambda x: x["avg_latency"])
         print(f"\n  Best device for this machine: {best['device']}")
+        print(f"  Recommended DEVICE_PRIORITY for native_host: {best['device']},GPU,CPU"
+              if best['device'] == "NPU" else
+              f"  Recommended DEVICE_PRIORITY for native_host: {best['device']},CPU")
 
 
 if __name__ == "__main__":

@@ -9,7 +9,9 @@ import logging
 from pathlib import Path
 
 LOG_PATH = Path(__file__).parent / "aikwau_host.log"
-MODEL_DIR = str(Path(__file__).parent.parent / "models" / "phi4-mini-int4")
+# Qwen2.5-1.5B: standard architecture, verified working on Intel Panther Lake NPU
+# Phi-4-mini: NOT compatible with NPU (corrupted output)
+MODEL_DIR = str(Path(__file__).parent.parent / "models" / "qwen2.5-1.5b-int4")
 DEVICE_PRIORITY = "NPU,GPU,CPU"
 
 logging.basicConfig(
@@ -56,7 +58,10 @@ def main():
 
     logging.info(f"Loading model from {MODEL_DIR} on {DEVICE_PRIORITY}")
     try:
-        pipe = ov_genai.LLMPipeline(MODEL_DIR, DEVICE_PRIORITY)
+        ov_config = {}
+        if DEVICE_PRIORITY.startswith("NPU"):
+            ov_config["PERFORMANCE_HINT"] = "LATENCY"
+        pipe = ov_genai.LLMPipeline(MODEL_DIR, DEVICE_PRIORITY, **ov_config)
         pipe.generate("Ready", max_new_tokens=1)   # warm-up
         logging.info("Model loaded and warmed up.")
     except Exception as e:

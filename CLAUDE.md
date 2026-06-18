@@ -9,8 +9,8 @@ Primary target: Intel Panther Lake laptops (NPU 100+ TOPS), HP pre-install scena
 ## Key Design Decisions (already made, do not change without discussing)
 
 - **On-device only**: No cloud API, no telemetry. All AI runs via OpenVINO on Intel hardware.
-- **Model**: Phi-4 Mini INT4 (~1.8 GB). Downloaded from HuggingFace, converted via optimum-intel.
-- **Device priority**: `NPU,GPU,CPU` (OpenVINO auto-fallback). On Panther Lake, NPU first.
+- **Model**: ~~Phi-4 Mini~~ **Qwen2.5-1.5B-Instruct INT4** (~800 MB). Downloaded from HuggingFace, converted via optimum-intel. Phi-4-mini was abandoned: its custom architecture (`configuration_phi3.py`) causes corrupted output on NPU with OpenVINO 2026.2.
+- **Device priority**: `NPU,GPU,CPU` (OpenVINO auto-fallback). On Panther Lake, NPU first. Verified working with Qwen2.5-1.5B.
 - **Browser target**: Microsoft Edge (pre-installed on HP). MV3 extension.
 - **Communication**: Edge extension ↔ Python native host via Native Messaging (stdin/stdout, length-prefixed JSON).
 - **Registry key**: `HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer` (no admin required).
@@ -42,12 +42,24 @@ ai-kwau/
         └── content.css              # L1 bold/darken, summary badge (loading/ready/error)
 ```
 
-## Current State (as of 2026-06-16)
+## Current State (as of 2026-06-18)
 
-All PoC files are implemented and pushed to `main`. The extension is feature-complete for mouse-simulation mode. The following have NOT been tested on real hardware yet:
+All PoC files are implemented and tested on real Panther Lake hardware. The extension is feature-complete for mouse-simulation mode.
 
-- [ ] OpenVINO model conversion on Panther Lake
-- [ ] NPU detection and inference via `benchmark.py`
+### Hardware Test Results (Panther Lake, Qwen2.5-1.5B INT4)
+| Device | Latency | Tokens/sec | Status |
+|--------|---------|------------|--------|
+| NPU (Intel AI Boost) | 1.62s | 37 tok/s | Clean output ✅ |
+| GPU (iGPU) | 0.85s | 71 tok/s | Clean output ✅ |
+| CPU | 1.32s | 45 tok/s | Clean output ✅ |
+
+### Key Finding: Model Compatibility
+- **Phi-4-mini**: INCOMPATIBLE with NPU — custom `configuration_phi3.py` architecture causes garbled/Greek-character output on OpenVINO 2026.2 NPU backend. Downgrade to OpenVINO 2025.x also fails (unsupported opset in converted model).
+- **Qwen2.5-1.5B-Instruct**: COMPATIBLE — standard architecture, NPU produces correct output. INT4 (sym, group_size=128) achieves 37 tok/s on NPU.
+
+### What's been completed on hardware:
+- [x] OpenVINO model conversion on Panther Lake
+- [x] NPU detection and inference benchmarked
 - [ ] Native Messaging host registration and end-to-end test
 - [ ] Real WebGazer.js eye tracking (requires bundling webgazer.js)
 
@@ -166,7 +178,7 @@ WebGazer accuracy: ±50-100px after calibration (click 9 points on screen). Good
 | Eye tracking (PoC) | Mouse hover simulation |
 | Eye tracking (real) | WebGazer.js (webcam, JS) |
 | AI inference | OpenVINO GenAI (Python) |
-| Model | Phi-4 Mini, INT4 quantized via optimum-intel |
+| Model | Qwen2.5-1.5B-Instruct, INT4 quantized via optimum-intel (sym, group_size=128) |
 | Hardware | Intel NPU → iGPU → CPU (auto-fallback) |
 | Host protocol | Native Messaging (length-prefixed JSON) |
 | Registry | HKCU (no admin required) |

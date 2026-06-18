@@ -1,9 +1,9 @@
 {
   "name": "com.hp.aikwau.summarizer",
-  "description": "AI Kwau On-device Summarizer — Native Host",
-  "path": "PLACEHOLDER_PATH",
+  "description": "AI Kwau On-device Summarizer \u00e2\u20ac\u201d Native Host",
+  "path": "C:\\Users\\chencal\\Documents\\GitHub\\ai-kwau\\poc\\native_host\\run_host.bat",
   "type": "stdio",
   "allowed_origins": [
-    "chrome-extension://PLACEHOLDER_EXTENSION_ID/"
+    "chrome-extension://kiehfcfimiailgledmmfeolobhgkolbg/"
   ]
 }

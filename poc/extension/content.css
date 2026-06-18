@@ -11,32 +11,34 @@
   position: absolute;
   z-index: 2147483647;
   font-family: -apple-system, 'Segoe UI', sans-serif;
-  font-size: 12.5px;
-  line-height: 1.6;
-  padding: 9px 13px;
-  border-radius: 9px;
-  border-left: 3px solid #00b4d8;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.2px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border-left: 4px solid #00c7ee;
+  box-shadow: 0 7px 24px rgba(0, 0, 0, 0.35);
   pointer-events: none;
   animation: aikwau-in 0.22s ease;
 }
 
 .aikwau-badge--loading {
-  background: #0d1f3c;
-  color: rgba(255, 255, 255, 0.5);
-  border-color: rgba(0, 180, 216, 0.35);
+  background: #0a1b39;
+  color: rgba(255, 255, 255, 0.96);
+  border-color: #39d9ff;
 }
 
 .aikwau-badge--ready {
-  background: #0d1f3c;
-  color: rgba(255, 255, 255, 0.92);
-  border-color: #00b4d8;
+  background: #071734;
+  color: #ffffff;
+  border-color: #39d9ff;
 }
 
 .aikwau-badge--error {
-  background: #2d0d0d;
-  color: rgba(255, 120, 100, 0.9);
-  border-color: #f6553d;
+  background: #3a0f0f;
+  color: #ffd3cc;
+  border-color: #ff7c67;
 }
 
 @keyframes aikwau-in {
