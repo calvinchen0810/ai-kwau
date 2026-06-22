@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Kwau — Final Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1f3c;--blue:#1a3a6b;
+  --cyan:#00b4d8;--cyanl:#90e0ef;--cyanp:#caf0f8;
+  --accent:#0077b6;--white:#fff;--bg:#f4f6fa;
+  --gold:#f6ae2d;--goldd:#c9922a;
+  --green:#06d6a0;
+  --text:#1a1a2e;--muted:#4a5568;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sora',sans-serif;background:#0a1628;}
+
+#toolbar{background:var(--navy);display:flex;align-items:center;padding:0 16px;height:44px;gap:10px;position:sticky;top:0;z-index:300;border-bottom:1px solid rgba(0,180,216,.2);}
+.logo{font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--cyan);}
+.spacer{flex:1;}
+.counter{font-size:12px;color:rgba(255,255,255,.4);font-family:'Sora',sans-serif;}
+.tbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:5px 13px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Sora',sans-serif;}
+.tbtn.primary{background:var(--cyan);border-color:var(--cyan);color:var(--navy);font-weight:600;}
+
+@media(min-width:700px){
+  body{height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+  #mobile-view{display:none;}
+  #stage{flex:1;position:relative;overflow:hidden;}
+  #slide-row{position:absolute;inset:0;}
+  #slide-wrapper{position:absolute;inset:0;overflow:hidden;}
+  .scaler{position:absolute;inset:0;width:960px;height:540px;transform-origin:top left;}
+  .slide{position:absolute;inset:0;display:none;background:var(--white);}
+  .slide.active{display:flex;}
+  .snav{position:absolute;top:50%;transform:translateY(-50%);z-index:50;width:52px;height:52px;border-radius:50%;background:rgba(13,31,60,.7);color:#fff;border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s;}
+  .snav:hover{background:rgba(0,119,182,.9);}
+  #btn-prev{left:12px;}#btn-next{right:12px;}
+  #nav-bar{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;z-index:50;}
+  #dots{display:flex;gap:7px;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  .dot.active{background:#fff;width:28px;border-radius:5px;}
+
+  .tag{display:inline-block;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);padding:5px 14px;border-radius:20px;margin-bottom:16px;}
+  .step-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;background:var(--cyan);padding:5px 14px;border-radius:20px;margin-bottom:14px;}
+  .slide-title{font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:var(--navy);line-height:1.15;margin-bottom:8px;}
+  .slide-sub{font-size:15px;color:var(--muted);line-height:1.6;font-weight:300;}
+  .s-left{width:55%;padding:46px 48px;display:flex;flex-direction:column;justify-content:center;}
+  .s-right{width:45%;display:flex;align-items:center;justify-content:center;position:relative;}
+
+  /* S1 Cover */
+  #s1{background:var(--navy);flex-direction:row;}
+  #s1 .s-left{padding:54px 56px;}
+  #s1 .brand{font-family:'Sora',sans-serif;font-size:68px;font-weight:800;color:#fff;letter-spacing:-3px;line-height:1;margin-bottom:6px;position:relative;align-self:flex-start;}
+  #s1 .brand span{color:var(--cyan);}
+  #s1 .tagline{font-size:16px;color:var(--cyanl);margin-bottom:5px;}
+  #s1 .tagline-sub{font-family:'Sora',sans-serif;font-size:13px;color:rgba(144,224,239,.6);margin-bottom:30px;}
+  #s1 .agenda{display:flex;flex-direction:column;gap:7px;}
+  #s1 .ag-item{display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(255,255,255,.75);}
+  #s1 .ag-num{font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:var(--cyan);width:22px;}
+  #s1 .s-right{background:linear-gradient(135deg,#0096c7,#023e8a);flex-direction:column;}
+  #s1 .eye-svg{width:240px;height:240px;}
+  #s1 .eye-cap{color:rgba(255,255,255,.35);font-size:10px;font-family:'Sora',sans-serif;letter-spacing:3px;margin-top:12px;}
+
+  /* S2 */
+  #s2{flex-direction:row;}
+  #s2 .s-left{width:38%;background:var(--navy);padding:48px 38px;display:flex;flex-direction:column;justify-content:center;}
+  #s2 .s-left .slide-title{color:#fff;font-size:32px;}
+  #s2 .s-left .slide-sub{color:rgba(255,255,255,.55);font-size:14px;}
+  #s2 .s-right{width:62%;display:flex;flex-direction:column;justify-content:center;align-items:stretch;}
+  .pain-item{display:flex;align-items:center;gap:17px;padding:14px 19px;border-radius:12px;background:var(--bg);border-left:5px solid var(--cyan);}
+  .pain-num{font-family:'Sora',sans-serif;font-size:24px;font-weight:800;color:var(--cyan);min-width:64px;}
+  .pain-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.2;}
+
+  /* S3 */
+  #s3{flex-direction:row;}
+  #s3 .s-left{width:38%;background:var(--navy);padding:48px 38px;}
+  #s3 .s-left .slide-title{color:#fff;font-size:34px;}
+  #s3 .s-left .slide-sub{color:rgba(255,255,255,.55);font-size:14px;}
+  #s3 .s-right{width:62%;padding:28px 38px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+  .ev-box{display:flex;align-items:center;gap:14px;margin-top:14px;padding:12px 16px;background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);border-radius:11px;}
+  .ev-num{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--cyan);line-height:1;white-space:nowrap;}
+  .ev-tx{font-size:13px;color:rgba(255,255,255,.8);line-height:1.45;}
+  .ev-tx strong{color:var(--cyanl);}
+
+  /* S4 Loop */
+  #s4{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s4 .s-top{padding:24px 44px 0;}
+  #s4 .s-top .slide-title{color:var(--navy);font-size:30px;}
+  #s4 .loop-wrap{flex:1;display:flex;flex-direction:column;padding:8px 36px 10px;gap:0;}
+  #s4 .loop-row{display:flex;align-items:stretch;gap:0;flex:1.4;}
+  .lnode{flex:1;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(0,119,182,.18);border-radius:14px;padding:16px 18px;gap:8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .lnode.active{background:rgba(0,180,216,.07);border-color:rgba(0,180,216,.45);}
+  .lnode-head{display:flex;align-items:center;gap:10px;}
+  .lnode-icon{font-size:26px;flex-shrink:0;}
+  .lnode-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--navy);line-height:1.2;}
+  .lnode-body{font-size:12px;color:var(--muted);line-height:1.55;}
+  .ai-badge{position:absolute;top:12px;right:14px;font-family:'Sora',sans-serif;font-size:9px;font-weight:800;color:var(--accent);background:rgba(0,119,182,.1);border:1px solid rgba(0,119,182,.2);padding:2px 8px;border-radius:20px;letter-spacing:1px;}
+  .larr{display:flex;align-items:center;justify-content:center;width:44px;flex-shrink:0;flex-direction:column;gap:2px;}
+  .larr-line{color:var(--accent);font-size:22px;opacity:.7;}
+  .loop-feedback{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 0 0;}
+  .loop-fb-line{flex:1;height:2px;background:linear-gradient(90deg,transparent,rgba(0,119,182,.25),transparent);border-radius:2px;}
+  .loop-fb-text{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.5px;white-space:nowrap;}
+  .loop-fb-arrow{font-size:14px;color:var(--accent);}
+
+  /* S4b */
+  #s4b{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s4b .s-top{padding:22px 44px 0;}
+  #s4b .s-top .slide-title{color:var(--navy);font-size:28px;}
+  #s4b .split-wrap{flex:1;display:flex;padding:10px 32px 14px;gap:0;}
+  .split-half{flex:1;display:flex;flex-direction:column;gap:7px;padding:0 12px;}
+  .split-divider{width:1px;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.1),transparent);position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0 4px;}
+  .split-badge{background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);color:var(--muted);font-family:'Sora',sans-serif;font-size:9px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:8px;text-align:center;line-height:1.6;position:absolute;}
+  .half-header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;margin-bottom:2px;}
+  .half-header.cyan{background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);}
+  .half-header.gold{background:rgba(246,174,45,.12);border:1px solid rgba(246,174,45,.35);}
+  .half-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;}
+  .half-title.cyan{color:var(--accent);}
+  .half-title.gold{color:var(--goldd);}
+  .half-sub{font-size:11px;color:var(--muted);}
+  .iv-row{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:8px;background:#fff;border-left:3px solid rgba(0,180,216,.5);box-shadow:0 1px 3px rgba(0,0,0,.05);}
+  .iv-num{font-family:'Sora',sans-serif;font-size:12px;font-weight:800;color:var(--accent);min-width:18px;}
+  .iv-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--navy);line-height:1.25;flex:1;}
+  .iv-en{font-size:9px;color:var(--muted);display:block;font-weight:400;font-family:'Sora',sans-serif;}
+  .iv-trigger{font-family:'Sora',sans-serif;font-size:9px;color:var(--accent);white-space:nowrap;background:rgba(0,119,182,.08);padding:2px 7px;border-radius:8px;flex-shrink:0;}
+  .iv-row.always{border-left-color:rgba(5,150,105,.6);}
+  .iv-row.always .iv-num{color:#059669;}
+  .iv-row.always .iv-trigger{color:#059669;background:rgba(6,214,160,.08);}
+  .iv-row.ai{border-left-color:rgba(0,180,216,.8);background:rgba(0,180,216,.05);}
+  .iv-row.ai .iv-num{color:var(--cyan);}
+  .iv-row.gold{border-left-color:rgba(201,146,42,.6);}
+  .iv-row.gold .iv-num{color:var(--goldd);}
+  .iv-row.gold .iv-trigger{color:var(--goldd);background:rgba(246,174,45,.1);}
+
+  /* S5 Prototype Demo */
+  #s5{flex-direction:row;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s5 .demo-left{width:56%;padding:14px 16px 14px 28px;display:flex;flex-direction:column;gap:8px;}
+  #s5 .demo-right{width:44%;padding:20px 24px 14px 8px;display:flex;flex-direction:column;gap:10px;}
+  #s5 .s-top-row{padding:14px 28px 0;}
+  .browser-mock{background:#fff;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;flex:1;}
+  .bchrome{background:#f1f3f4;border-bottom:1px solid #dadce0;padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .bchrome-dots{display:flex;gap:5px;}
+  .bchrome-dot{width:10px;height:10px;border-radius:50%;}
+  .bchrome-url{flex:1;background:#fff;border:1px solid #dadce0;border-radius:18px;padding:3px 14px;font-size:11px;color:#555;font-family:'Sora',sans-serif;max-width:320px;margin:0 auto;text-align:center;}
+  .bchrome-ext{font-size:10px;font-family:'Sora',sans-serif;font-weight:700;color:#00b4d8;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+  .b5-vp{flex:1;padding:14px 16px;overflow:hidden;position:relative;cursor:default;}
+  .fake-nav5{display:flex;gap:14px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:9px;}
+  .fake-nav5 span{font-family:'Sora',sans-serif;font-size:10px;color:#888;}
+  .fake-nav5 span.on{color:#0077b6;font-weight:700;border-bottom:2px solid #0077b6;padding-bottom:2px;}
+  .fake-h5{font-family:'Sora',sans-serif;font-size:10.5px;font-weight:600;color:#bbb;line-height:1.4;margin-bottom:6px;}
+  .fake-t5{font-size:9.5px;color:#bbb;line-height:1.7;margin-bottom:5px;padding:4px 6px;border-radius:5px;cursor:pointer;transition:color .3s,font-weight .3s,background .2s;}
+  .fake-t5:hover{background:rgba(0,180,216,.04);}
+  .gaze-halo5{position:absolute;width:48px;height:48px;border-radius:50%;background:rgba(0,180,216,.1);border:2px solid rgba(0,180,216,.5);box-shadow:0 0 0 8px rgba(0,180,216,.05);pointer-events:none;z-index:9;display:none;}
+  .l1-on{color:#080808!important;font-weight:700!important;letter-spacing:.15px;transition:color .35s,font-weight .35s;}
+  .l2-on{color:#080808!important;font-weight:800!important;font-size:1.18em!important;letter-spacing:.25px;transition:color .35s,font-weight .35s,font-size .3s;}
+  #sum-badge{position:absolute;z-index:20;font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;line-height:1.55;padding:7px 11px;border-radius:8px;pointer-events:none;max-width:230px;display:none;}
+  .sum-badge-loading{background:#0d1f3c;color:rgba(0,180,216,.8);border-left:3px solid rgba(0,180,216,.4);}
+  .sum-badge-ready{background:#0d1f3c;color:rgba(255,255,255,.9);border-left:3px solid #00b4d8;box-shadow:0 4px 16px rgba(0,0,0,.35);}
+  @keyframes aikwau-in{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .demo-hint{font-family:'Sora',sans-serif;font-size:10px;color:var(--muted);text-align:center;padding:4px 0;border-top:1px solid rgba(0,0,0,.07);flex-shrink:0;}
+  .bench-panel{background:var(--navy);border-radius:12px;padding:16px 18px;flex:1;}
+  .bench-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
+  .bench-sub{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:12px;}
+  .bench-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .bench-label{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#fff;min-width:38px;}
+  .bench-bar-wrap{flex:1;background:rgba(255,255,255,.08);border-radius:4px;height:14px;overflow:hidden;}
+  .bench-bar{height:100%;border-radius:4px;transition:width .6s ease;}
+  .bench-val{font-family:'Sora',sans-serif;font-size:10px;color:rgba(255,255,255,.55);min-width:80px;text-align:right;}
+  .bench-note{font-size:9.5px;color:rgba(255,255,255,.35);line-height:1.55;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);}
+  .demo-video-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+
+  /* S6 Journey */
+  #s6{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s6 .s-top{padding:28px 48px 8px;}
+  #s6 .journey{flex:1;display:flex;align-items:center;padding:0 28px 20px;gap:0;}
+  .j-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 4px;}
+  .j-step:not(:last-child)::after{content:'→';position:absolute;right:-12px;top:20px;font-size:20px;color:var(--cyan);font-family:'Sora',sans-serif;z-index:2;}
+  .j-icon{width:68px;height:68px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px;border:3px solid var(--cyan);flex-shrink:0;}
+  .j-step.gold .j-icon{border-color:var(--gold);}
+  .j-name{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.25;}
+  .j-desc{font-size:11.5px;color:var(--muted);line-height:1.55;}
+  .j-detail{font-size:10px;color:var(--accent);background:rgba(0,119,182,.07);border:1px solid rgba(0,119,182,.2);border-radius:8px;padding:4px 8px;line-height:1.5;text-align:center;margin-top:6px;width:100%;}
+
+  /* S7 Architecture */
+  #s7{flex-direction:column;background:var(--navy);}
+  #s7 .s-top{padding:20px 44px 10px;}
+  #s7 .s-top .slide-title{color:#fff;font-size:28px;}
+  #s7 .s-top .slide-sub{color:rgba(255,255,255,.45);font-size:13px;}
+  #s7 .arch-wrap{flex:1;padding:0 32px 14px;display:flex;flex-direction:column;gap:8px;}
+  .arch-row7{display:flex;align-items:stretch;gap:0;}
+  .abox{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:10px 12px;text-align:center;}
+  .abox.cyan{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.35);}
+  .abox.gold{background:rgba(246,174,45,.1);border-color:rgba(246,174,45,.3);}
+  .abox.green{background:rgba(6,214,160,.1);border-color:rgba(6,214,160,.3);}
+  .abox-icon{font-size:22px;margin-bottom:5px;}
+  .abox-title{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;}
+  .abox-sub{font-size:9.5px;color:rgba(255,255,255,.4);line-height:1.5;}
+  .aarr{width:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:rgba(0,180,216,.6);font-size:16px;}
+  .arch-mid{text-align:center;font-family:'Sora',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;color:rgba(0,180,216,.5);padding:4px 0;}
+  .result-chips{display:flex;gap:10px;justify-content:center;padding:4px 0;}
+  .rchip{border-radius:10px;padding:7px 16px;text-align:center;}
+  .rchip-num{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;line-height:1;}
+  .rchip-lbl{font-size:9px;margin-top:2px;}
+
+  /* S8 Value */
+  #s8{flex-direction:column;}
+  #s8 .s-top{padding:28px 48px 10px;background:linear-gradient(90deg,#0d1f3c,#1a3a6b);}
+  #s8 .s-top .slide-title{color:#fff;font-size:32px;}
+  #s8 .s-top .slide-sub{color:rgba(255,255,255,.55);font-size:13px;}
+  #s8 .cards-row{display:flex;flex:1;padding:16px 38px 32px;}
+  .e-card{flex:1;margin:0 6px;padding:20px 16px;border-radius:12px;background:var(--bg);display:flex;flex-direction:column;gap:7px;border-top:4px solid var(--cyan);}
+  .e-card .icon{font-size:26px;}
+  .e-card .name{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:var(--navy);line-height:1.3;}
+
+  /* S9 Competitors */
+  #s9{flex-direction:column;}
+  #s9 .s-top{padding:28px 48px 10px;}
+  #s9 .comp-wrap{flex:1;display:flex;padding:0 38px 30px;gap:14px;}
+  #s9 .comp-table{flex:1.4;display:flex;flex-direction:column;gap:8px;justify-content:center;}
+  .comp-row{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-radius:11px;background:var(--bg);}
+  .comp-name{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:var(--navy);min-width:160px;}
+  .comp-gap{font-size:15px;color:var(--muted);line-height:1.4;text-align:right;margin-left:auto;}
+  #s9 .hp-box{flex:1;background:var(--navy);border-radius:14px;padding:26px 24px;display:flex;flex-direction:column;justify-content:center;gap:14px;}
+  .hp-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--cyan);}
+  .hp-item{display:flex;gap:10px;align-items:flex-start;}
+  .hp-item .ic{font-size:17px;min-width:22px;}
+  .hp-item .tx{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .hp-item .tx strong{color:var(--cyanl);}
+
+  /* S10 Validation */
+  #s10{flex-direction:row;}
+  #s10 .s-left{width:50%;background:var(--navy);padding:32px 38px;display:flex;flex-direction:column;justify-content:flex-start;}
+  #s10 .s-left .slide-title{color:#fff;font-size:26px;}
+  #s10 .s-right{width:50%;padding:26px 32px;display:flex;flex-direction:column;justify-content:flex-start;gap:10px;}
+  .vcheck{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;background:rgba(6,214,160,.06);border-left:3px solid rgba(6,214,160,.5);margin-bottom:6px;}
+  .vcheck-dot{width:18px;height:18px;border-radius:50%;background:rgba(6,214,160,.2);border:2px solid #06d6a0;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;margin-top:1px;}
+  .vcheck-tx{font-size:12px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .vcheck-tx strong{color:var(--cyanl);}
+  .iter-card{background:#fff;border-radius:10px;padding:12px 14px;border:1px solid rgba(0,0,0,.07);}
+  .iter-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .iter-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:5px;line-height:1.45;}
+  .iter-row .from{color:#e74c3c;text-decoration:line-through;font-family:'Sora',sans-serif;font-size:11px;}
+  .iter-row .to{color:#059669;font-weight:700;font-family:'Sora',sans-serif;font-size:11px;}
+
+  /* S11 KPIs */
+  #s11{flex-direction:column;}
+  #s11 .s-top{padding:26px 48px 14px;}
+  #s11 .s-top .slide-title{font-size:32px;}
+  #s11 .kpi-grid{display:flex;padding:0 40px 28px;gap:16px;flex:1;}
+  .kpi-card{flex:1;background:var(--bg);border-radius:14px;padding:20px 18px;border-top:4px solid;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .kpi-card.cyan{border-top-color:var(--cyan);}
+  .kpi-card.gold{border-top-color:var(--gold);}
+  .kpi-card.green{border-top-color:var(--green);}
+  .kpi-icon{font-size:28px;margin-bottom:8px;}
+  .kpi-cat{font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px;}
+  .kpi-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12.5px;color:var(--text);line-height:1.5;}
+  .kpi-item .kpi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+  .kpi-dot.cyan{background:var(--cyan);}
+  .kpi-dot.gold{background:var(--gold);}
+  .kpi-dot.green{background:var(--green);}
+  .kpi-achieved{display:inline-block;font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:#059669;background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);padding:1px 6px;border-radius:8px;margin-left:4px;}
+
+  /* S12 Summary */
+  #s12{flex-direction:row;background:var(--navy);}
+  #s12 .s-left{width:50%;padding:50px 48px;}
+  #s12 .slide-title{color:#fff;font-size:36px;}
+  #s12 .slide-sub{color:rgba(255,255,255,.55);font-size:17px;margin-top:8px;}
+  #s12 .s-right{width:50%;padding:34px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+  .sum-item{display:flex;gap:13px;padding:12px 16px;background:rgba(255,255,255,.06);border-radius:11px;border-left:4px solid var(--cyan);}
+  .sum-item .ic{font-size:19px;min-width:24px;}
+  .sum-item .tx{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;}
+  .sum-item .tx strong{color:var(--cyan);font-family:'Sora',sans-serif;}
+}
+
+@media(max-width:699px){
+  #stage{display:none;}
+  #mobile-view{display:block;padding:14px 14px 56px;}
+  .mc{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 22px rgba(0,0,0,.12);margin-bottom:16px;}
+  .mh{padding:22px 18px 18px;}
+  .mh.dark{background:var(--navy);}
+  .mh.light{background:var(--bg);}
+  .m-tag{display:inline-block;font-family:'Sora',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(0,180,216,.15);border:1px solid rgba(0,180,216,.35);padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+  .m-tag.lt{color:var(--accent);background:rgba(0,119,182,.1);border-color:rgba(0,119,182,.3);}
+  .m-title{font-family:'Sora',sans-serif;font-size:clamp(24px,6.5vw,30px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px;}
+  .m-title.dk{color:var(--navy);}
+  .m-title span{color:var(--cyan);}
+  .m-sub{font-size:clamp(13px,3.8vw,15px);color:rgba(255,255,255,.65);line-height:1.5;}
+  .m-sub.dk{color:var(--muted);}
+  .m-list{display:flex;flex-direction:column;gap:9px;padding:14px;}
+  .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;}
+  .m-ac{padding:15px;border-radius:12px;}
+  .m-ac.c1{background:#e8f4fd;}.m-ac.c2{background:#fef3e2;}.m-ac.c3{background:#e8fdf5;}.m-ac.c4{background:#fde8f5;}.m-ac.c5{background:#f0e8fd;}
+  .m-ac .icon{font-size:24px;margin-bottom:4px;}
+  .m-ac .mpct{font-family:'Sora',sans-serif;font-size:clamp(22px,6vw,28px);font-weight:800;color:var(--accent);line-height:1;margin-bottom:5px;}
+  .m-ac .name{font-family:'Sora',sans-serif;font-size:clamp(13px,3.5vw,15px);font-weight:700;color:var(--navy);}
+  .m-pain{display:flex;align-items:center;gap:13px;padding:13px 15px;background:var(--bg);border-radius:11px;border-left:4px solid var(--cyan);}
+  .m-pn{font-family:'Sora',sans-serif;font-size:clamp(19px,5.2vw,23px);font-weight:800;color:var(--cyan);min-width:58px;}
+  .m-pt{font-family:'Sora',sans-serif;font-size:clamp(15px,4.2vw,18px);font-weight:700;color:var(--navy);}
+  .m-ev{display:flex;align-items:center;gap:8px;font-size:clamp(13px,3.6vw,15px);color:rgba(255,255,255,.8);margin-top:7px;}
+  .m-evn{font-family:'Sora',sans-serif;font-size:clamp(18px,5vw,22px);font-weight:800;color:var(--cyan);}
+  .m-feat{background:var(--navy);border-radius:12px;padding:15px;position:relative;overflow:hidden;margin-bottom:9px;}
+  .m-feat::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--cyan);}
+  .m-frow{display:flex;align-items:center;gap:10px;margin-bottom:5px;}
+  .m-ficon{font-size:22px;}
+  .m-fname{font-family:'Sora',sans-serif;font-size:clamp(15px,4vw,17px);font-weight:700;color:#fff;}
+  .m-ftag{font-size:clamp(11px,3vw,13px);color:var(--cyan);font-family:'Sora',sans-serif;font-weight:600;margin-left:auto;}
+  .m-fen{font-size:clamp(12px,3.2vw,14px);color:rgba(255,255,255,.5);font-family:'Sora',sans-serif;}
+  .m-jstep{display:flex;gap:14px;padding:13px 15px;background:var(--bg);border-radius:12px;margin-bottom:9px;align-items:center;}
+  .m-jicon{width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+  .m-jname{font-family:'Sora',sans-serif;font-size:clamp(14px,3.8vw,16px);font-weight:700;color:var(--navy);}
+  .m-jdesc{font-size:clamp(12px,3.3vw,14px);color:var(--muted);line-height:1.45;margin-top:2px;}
+  .m-comp{display:flex;flex-direction:column;gap:4px;padding:13px 15px;background:var(--bg);border-radius:11px;margin-bottom:9px;}
+  .m-cname{font-family:'Sora',sans-serif;font-size:clamp(14px,3.9vw,16px);font-weight:700;color:var(--navy);}
+  .m-cgap{font-size:clamp(12px,3.4vw,14px);color:var(--muted);line-height:1.45;}
+  .m-hp{background:var(--navy);border-radius:12px;padding:16px;margin:0 14px 14px;}
+  .m-hpt{font-family:'Sora',sans-serif;font-size:clamp(15px,4.2vw,18px);font-weight:800;color:var(--cyan);margin-bottom:10px;}
+  .m-hpi{display:flex;gap:10px;margin-bottom:9px;align-items:flex-start;}
+  .m-hpi .ic{font-size:17px;min-width:22px;}
+  .m-hpi .tx{font-size:clamp(13px,3.5vw,15px);color:rgba(255,255,255,.85);line-height:1.5;}
+  .m-hpi .tx strong{color:var(--cyanl);}
+  .m-sum{display:flex;gap:12px;background:rgba(0,180,216,.07);border-radius:11px;padding:13px 15px;border-left:4px solid var(--cyan);margin-bottom:9px;}
+  .m-si{font-size:19px;min-width:24px;}
+  .m-st{font-size:clamp(13px,3.7vw,15px);color:var(--text);line-height:1.55;}
+  .m-st strong{color:var(--accent);font-family:'Sora',sans-serif;}
+  .m-ag{display:flex;gap:11px;padding:10px 16px;align-items:center;border-bottom:1px solid rgba(0,0,0,.05);}
+  .m-agn{font-family:'Sora',sans-serif;font-size:clamp(14px,3.8vw,16px);font-weight:800;color:var(--cyan);min-width:24px;}
+  .m-agt{font-size:clamp(14px,3.8vw,16px);color:var(--text);}
+}
+body.edit-mode .slide [contenteditable]{outline:1.5px dashed rgba(0,180,216,.55);border-radius:3px;cursor:text;}
+body.edit-mode .slide [contenteditable]:focus{outline:2px solid var(--cyan);background:rgba(0,180,216,.04);}
+#btn-edit.on,#btn-move.on{background:rgba(0,180,216,.2);border-color:var(--cyan);color:var(--cyan);}
+#btn-move{display:none;}
+body.edit-mode #btn-move{display:inline-flex;}
+body.move-mode #scaler,body.move-mode #scaler *{cursor:grab!important;}
+body.move-mode #scaler *:active{cursor:grabbing!important;}
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span class="logo">AI Kwau · Final</span>
+  <span class="counter" id="counter">1 / 12</span>
+  <div class="spacer"></div>
+  <button class="tbtn" id="btn-edit" onclick="toggleEdit()">✏️ Edit</button>
+  <button class="tbtn" id="btn-move" onclick="toggleMove()">↖ Move</button>
+  <button class="tbtn primary" onclick="saveAsNew()">💾 Save As</button>
+</div>
+
+<div id="stage">
+  <div id="slide-row">
+    <div id="slide-wrapper">
+      <div class="scaler" id="scaler">
+
+      <!-- S1 Cover -->
+      <div class="slide active" id="s1">
+        <div class="s-left">
+          <div class="tag">Final Presentation</div>
+          <div class="brand">AI<span>·</span>Kwau<span style="position:absolute;left:100%;bottom:65%;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span></div>
+          <div class="tagline">Webcam × AI — making every PC understand your vision</div>
+          <div class="tagline-sub">HP Panther Lake · On-device · Microsoft Edge Extension</div>
+          <div class="agenda">
+            <div class="ag-item"><span class="ag-num">01</span>Problem Statement</div>
+            <div class="ag-item"><span class="ag-num">02</span>Proposed Solution</div>
+            <div class="ag-item"><span class="ag-num">03</span>Functional Prototype</div>
+            <div class="ag-item"><span class="ag-num">04</span>User Experience Flow</div>
+            <div class="ag-item"><span class="ag-num">05</span>AI Architecture</div>
+            <div class="ag-item"><span class="ag-num">06</span>Value &amp; Impact</div>
+            <div class="ag-item"><span class="ag-num">07</span>Competitor Study</div>
+            <div class="ag-item"><span class="ag-num">08</span>Validation &amp; KPIs</div>
+          </div>
+          <div style="margin-top:14px;padding-top:11px;border-top:1px solid rgba(255,255,255,.08);">
+            <div style="font-family:'Sora',sans-serif;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(144,224,239,.5);margin-bottom:5px;">Team</div>
+            <div style="font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,.55);">Calvin Chen &nbsp;·&nbsp; Ava Lu &nbsp;·&nbsp; Thomas Chang &nbsp;·&nbsp; Yorke Lee</div>
+          </div>
+        </div>
+        <div class="s-right">
+          <svg class="eye-svg" viewBox="0 0 200 200">
+            <defs><radialGradient id="eg" cx="50%" cy="50%"><stop offset="0%" stop-color="#00b4d8" stop-opacity=".3"/><stop offset="100%" stop-color="#023e8a" stop-opacity="0"/></radialGradient></defs>
+            <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(0,180,216,.12)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(0,180,216,.18)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="50" fill="none" stroke="rgba(0,180,216,.28)" stroke-width="1.5"/>
+            <ellipse cx="100" cy="100" rx="80" ry="36" fill="none" stroke="rgba(0,180,216,.5)" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="28" fill="url(#eg)" stroke="rgba(0,180,216,.6)" stroke-width="2"/>
+            <circle cx="100" cy="100" r="12" fill="rgba(0,180,216,.4)" stroke="#00b4d8" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="4" fill="#00b4d8"/>
+            <path d="M60 60 Q100 20 140 60" fill="none" stroke="#00b4d8" stroke-width="1.5" stroke-dasharray="3,4" opacity=".6"/>
+            <path d="M20 20L20 34M20 20L34 20" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+            <path d="M180 20L166 20M180 20L180 34" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+            <path d="M20 180L20 166M20 180L34 180" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+            <path d="M180 180L166 180M180 180L180 166" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
+          </svg>
+          <div class="eye-cap">GAZE TRACKING AI</div>
+        </div>
+      </div>
+
+      <!-- S2 Problem: Target Users -->
+      <div class="slide" id="s2">
+        <div class="s-left">
+          <div class="step-badge">1 · Problem Statement</div>
+          <div class="slide-title">20% Target Users</div>
+          <div class="slide-sub">Vision-Impaired PC Users<br>Five Visual Conditions · Survey n=17</div>
+        </div>
+        <div class="s-right">
+          <div style="width:100%;display:flex;flex-direction:column;gap:10px;padding:28px 38px;">
+            <div class="pain-item" style="border-left-color:#06d6a0;"><div class="pain-num" style="color:#06d6a0;">53%</div><div class="pain-title">🌫️ Overall Dimness / Fog</div></div>
+            <div class="pain-item" style="border-left-color:#f6ae2d;"><div class="pain-num" style="color:#f6ae2d;">41%</div><div class="pain-title">🔭 Peripheral Vision Loss</div></div>
+            <div class="pain-item" style="border-left-color:#b5179e;"><div class="pain-num" style="color:#b5179e;">35%</div><div class="pain-title">📖 Reading Difficulty</div></div>
+            <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">🔵 Central Vision Blur</div></div>
+            <div class="pain-item" style="border-left-color:#f77f00;"><div class="pain-num" style="color:#f77f00;">24%</div><div class="pain-title">💡 Light Sensitivity / Glare</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3 Problem: Pain Points -->
+      <div class="slide" id="s3">
+        <div class="s-left">
+          <div class="step-badge">1 · Problem Statement</div>
+          <div class="slide-title" style="color:#fff;">Five Pain Points — Survey Evidence (n=17)</div>
+          <div class="ev-box"><div class="ev-num">59%</div><div class="ev-tx"><strong>never used any assistive tool</strong></div></div>
+          <div class="ev-box"><div class="ev-num">3.4<span style="font-size:14px;">/5</span></div><div class="ev-tx">average PC experience score</div></div>
+        </div>
+        <div class="s-right">
+          <div style="width:100%;display:flex;flex-direction:column;gap:10px;padding:28px 38px;">
+            <div class="pain-item"><div class="pain-num">71%</div><div class="pain-title">Eye strain from long screen time</div></div>
+            <div class="pain-item"><div class="pain-num">65%</div><div class="pain-title">Text too small to read</div></div>
+            <div class="pain-item"><div class="pain-num">47%</div><div class="pain-title">Low screen contrast</div></div>
+            <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">Cursor hard to track and locate</div></div>
+            <div class="pain-item"><div class="pain-num">18%</div><div class="pain-title">Can't find buttons or links</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4 Solution Loop -->
+      <div class="slide" id="s4">
+        <div class="s-top">
+          <div class="step-badge">2 · Proposed Solution</div>
+          <div class="slide-title">Browser Extension — Active Perception Loop</div>
+        </div>
+        <div class="loop-wrap">
+          <div class="loop-row">
+            <div class="lnode" style="flex:0.85;">
+              <div class="lnode-head"><div class="lnode-icon">📷</div><div><div class="lnode-title">Sense</div></div></div>
+              <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+                <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);">👁️ Eye Position</div></div>
+                <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);">🧑 Face Distance</div></div>
+                <div style="padding:6px 10px;background:rgba(246,174,45,.1);border-radius:8px;border-left:3px solid rgba(201,146,42,.45);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);">🗺️ Gaze Heatmap</div><div class="lnode-body">Builds visual field map</div></div>
+                <div style="padding:6px 10px;background:rgba(6,214,160,.08);border-radius:8px;border-left:3px solid rgba(5,150,105,.45);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#059669;">📊 Gaze Stability</div><div class="lnode-body">Stable→solid ring · Jitter→dashed ring</div></div>
+              </div>
+            </div>
+            <div class="larr"><div class="larr-line">→</div></div>
+            <div class="lnode active" style="flex:1.2;">
+              <div class="ai-badge">AI</div>
+              <div class="lnode-head"><div class="lnode-icon">🤖</div><div><div class="lnode-title">Decide</div></div></div>
+              <div style="padding:9px 11px;background:rgba(0,180,216,.08);border-radius:9px;border:1px solid rgba(0,180,216,.25);margin-bottom:8px;margin-top:10px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px;">⚡ Real-time Signal</div><div class="lnode-body">Hold threshold trigger<div>Auto-adjusted by outcome</div></div></div>
+              <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:3px;">🗺️ Pattern Learning</div><div class="lnode-body">Cold zones on visual map → path fork</div></div>
+            </div>
+            <div class="larr"><div class="larr-line">→</div></div>
+            <div class="lnode" style="flex:1.1;">
+              <div class="lnode-head"><div class="lnode-icon">✨</div><div><div class="lnode-title">Act</div></div></div>
+              <div style="padding:9px 11px;background:rgba(0,119,182,.07);border-radius:9px;border:1px solid rgba(0,119,182,.2);margin-bottom:8px;margin-top:10px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px;">👁 Visible Area</div><div class="lnode-body">Progressive layering ◎①②③④⑤ + 🤖 AI Summary</div></div>
+              <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);margin-bottom:8px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:3px;">🗺️ Blind Spot</div><div class="lnode-body">✦ Focus Attraction</div></div>
+              <div style="font-family:'Sora',sans-serif;font-size:10px;color:var(--muted);text-align:right;letter-spacing:.5px;">See next slide →</div>
+            </div>
+          </div>
+          <div class="loop-feedback" style="padding:6px 0 0;">
+            <div class="loop-fb-arrow">↙</div>
+            <div class="loop-fb-line"></div>
+            <div class="loop-fb-text">🔄 &nbsp;Observe outcomes · Auto-adjust thresholds · Gets smarter over time</div>
+            <div class="loop-fb-line"></div>
+            <div class="loop-fb-arrow">↗</div>
+          </div>
+          <div style="margin-top:8px;padding:7px 14px;background:rgba(0,119,182,.05);border:1px solid rgba(0,119,182,.18);border-radius:10px;display:flex;align-items:center;gap:12px;">
+            <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--accent);white-space:nowrap;">📊 Why browser?</div>
+            <div style="width:1px;height:24px;background:rgba(0,0,0,.1);flex-shrink:0;"></div>
+            <div style="font-family:'Sora',sans-serif;font-size:10px;color:#555;flex:1;"><span style="font-weight:700;color:#333;">69%+</span> respondents confirmed browser use (n=16) &nbsp;·&nbsp; News · Email · Shopping · Video · Calls</div>
+            <div style="width:1px;height:24px;background:rgba(0,0,0,.1);flex-shrink:0;"></div>
+            <div style="font-family:'Sora',sans-serif;font-size:9.5px;color:var(--muted);white-space:nowrap;">Phase 1 Browser Ext &nbsp;→&nbsp; Phase 2 Windows Accessibility API</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4b Decision Fork -->
+      <div class="slide" id="s4b">
+        <div class="s-top">
+          <div class="step-badge">2 · Proposed Solution</div>
+          <div class="slide-title">AI Decision Fork — Visible vs Blind-Spot Areas<span style="font-family:'Sora',sans-serif;font-size:12px;font-weight:300;color:var(--muted);display:block;margin-top:3px;">Two Separate Ways AI Helps</span></div>
+        </div>
+        <div class="split-wrap">
+          <div class="split-half">
+            <div class="half-header cyan"><div style="font-size:22px;">👁</div><div><div class="half-title cyan">Visible Area</div><div class="half-sub">Progressively triggered by hold time</div></div></div>
+            <div class="iv-row always"><div class="iv-num">◎</div><div class="iv-title">Gaze Ring</div><div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">Always-on</div></div>
+            <div class="iv-row always"><div class="iv-num">①</div><div class="iv-title">Smart Cursor</div><div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">Always-on</div></div>
+            <div class="iv-row"><div class="iv-num">②</div><div class="iv-title">L1 Text Layer<div class="iv-en">Darker + Bold</div></div><div class="iv-trigger">Short hold</div></div>
+            <div class="iv-row ai"><div class="iv-num">🤖</div><div class="iv-title">AI Paragraph Summary<div class="iv-en">Qwen2.5-1.5B INT4 · On-device · GPU 0.85s</div></div><div class="iv-trigger" style="color:var(--cyan);background:rgba(0,180,216,.1);">2s hold</div></div>
+            <div class="iv-row"><div class="iv-num">③</div><div class="iv-title">L2 Component Layer<div class="iv-en">L1 + Font Size Larger</div></div><div class="iv-trigger">Mid hold</div></div>
+            <div class="iv-row"><div class="iv-num">④</div><div class="iv-title">Voice Reading</div><div class="iv-trigger">Long hold</div></div>
+            <div class="iv-row" style="border-left-color:rgba(5,150,105,.5);"><div class="iv-num" style="color:#059669;">⑤</div><div class="iv-title">L3 Full-page Structure</div><div class="iv-trigger" style="color:#059669;background:rgba(6,214,160,.08);">Unusual eye movement</div></div>
+          </div>
+          <div class="split-divider"><div class="split-badge">AI<br>FORK</div></div>
+          <div class="split-half">
+            <div class="half-header gold"><div style="font-size:22px;">🗺️</div><div><div class="half-title gold">Blind-Spot Area</div><div class="half-sub">Unvisited area → AI switches mode</div></div></div>
+            <div class="iv-row gold"><div class="iv-num">✦</div><div class="iv-title">Focus Attraction<div class="iv-en">Mutually exclusive with contrast</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Auto-trigger</div></div>
+            <div class="iv-row gold"><div class="iv-num">📊</div><div class="iv-title">GMM Heatmap<div class="iv-en">Gaussian Mixture Model</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Background</div></div>
+            <div class="iv-row gold"><div class="iv-num">💡</div><div class="iv-title">Pulse Dot<div class="iv-en">Boundary indicator</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Visual edge</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5 Functional Prototype Demo -->
+      <div class="slide" id="s5" style="flex-direction:column;">
+        <div style="padding:14px 28px 6px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);">
+          <div class="step-badge" style="margin-bottom:0;">3 · Functional Prototype</div>
+          <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--navy);">Live Demo — L1 Enhancement + AI Summary</div>
+        </div>
+        <div style="flex:1;display:flex;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);padding:8px 16px 10px;">
+          <!-- Left: browser mockup -->
+          <div class="demo-left" style="width:56%;padding:0 12px 0 16px;display:flex;flex-direction:column;">
+            <div class="browser-mock" style="flex:1;">
+              <div class="bchrome">
+                <div class="bchrome-dots"><div style="background:#ff5f56" class="bchrome-dot"></div><div style="background:#febc2e" class="bchrome-dot"></div><div style="background:#28c840" class="bchrome-dot"></div></div>
+                <div class="bchrome-url">bbc.com/news/health/accessibility</div>
+                <div class="bchrome-ext">AI Kwau ✓</div>
+              </div>
+              <div class="b5-vp" id="b5vp">
+                <div class="gaze-halo5" id="mock-halo-5"></div>
+                <div id="sum-badge"></div>
+                <div class="fake-nav5"><span class="on">Health</span><span>Tech</span><span>Science</span></div>
+                <div class="fake-h5">New Study: Digital Eye Strain Now Affects 71% of Extended Screen Users</div>
+                <div class="fake-t5" id="ft1">Researchers at Stanford found that prolonged screen exposure exceeding four hours daily significantly increases eye strain risk, particularly among adults over 40 who use computers for work.</div>
+                <div class="fake-t5" id="ft2">The study identified poor contrast settings and small font sizes as the two leading causes of visual fatigue in office environments, affecting productivity and long-term eye health.</div>
+                <div class="fake-t5" id="ft3">Participants who used adaptive text enhancement tools reported a 38% reduction in reported eye discomfort after two weeks of regular use during their normal browsing sessions.</div>
+              </div>
+            </div>
+            <div class="demo-hint" id="demo-hint">👆 Hover any paragraph · hold 2 s → L1 darker+bold + AI Summary · click for L2</div>
+          </div>
+          <!-- Right: benchmark -->
+          <div style="width:44%;padding:0 14px 0 8px;display:flex;flex-direction:column;gap:8px;">
+            <div class="bench-panel">
+              <div class="bench-title">On-Device Performance</div>
+              <div class="bench-sub">Panther Lake · Qwen2.5-1.5B-Instruct INT4</div>
+              <div class="bench-row">
+                <div class="bench-label">GPU</div>
+                <div class="bench-bar-wrap"><div class="bench-bar" style="width:100%;background:var(--cyan);"></div></div>
+                <div class="bench-val">0.85 s &nbsp;·&nbsp; 71 tok/s</div>
+              </div>
+              <div class="bench-row">
+                <div class="bench-label">CPU</div>
+                <div class="bench-bar-wrap"><div class="bench-bar" style="width:63%;background:rgba(144,224,239,.6);"></div></div>
+                <div class="bench-val">1.32 s &nbsp;·&nbsp; 45 tok/s</div>
+              </div>
+              <div class="bench-row">
+                <div class="bench-label">NPU</div>
+                <div class="bench-bar-wrap"><div class="bench-bar" style="width:52%;background:rgba(246,174,45,.7);"></div></div>
+                <div class="bench-val">1.62 s &nbsp;·&nbsp; 37 tok/s</div>
+              </div>
+              <div class="bench-note">All three devices produce clean EN + ZH output ✅<br>GPU currently fastest on Panther Lake — OpenVINO NPU LLM kernels maturing</div>
+            </div>
+            <div class="demo-video-box">
+              <div style="font-size:26px;">🎬</div>
+              <div>
+                <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--navy);">Full Demo Video</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px;">End-to-end: webcam calibration → gaze hold → L1/L2 → AI summary badge appearing</div>
+              </div>
+            </div>
+            <div style="background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.2);border-radius:10px;padding:10px 14px;">
+              <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px;">🤖 AI Summary — How It Works</div>
+              <div style="font-size:11px;color:var(--muted);line-height:1.6;">Gaze holds 2s → L1 activates → Qwen2.5 summarizes in 2 sentences → badge appears inline · Auto-dismissed after 12s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6 UX Journey -->
+      <div class="slide" id="s6">
+        <div class="s-top">
+          <div class="step-badge">4 · User Experience Flow</div>
+          <div class="slide-title" style="font-size:30px;">User Journey Map</div>
+        </div>
+        <div class="journey">
+          <div class="j-step">
+            <div class="j-icon">🏭</div>
+            <div class="j-name">Pre-installed</div>
+            <div class="j-desc">Ready at boot<br>No setup needed</div>
+            <div class="j-detail">HP factory image<br>Edge extension pre-loaded</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">🎯</div>
+            <div class="j-name">One-time Setup</div>
+            <div class="j-desc">9-point gaze calibration<br>Done once · ~60 seconds</div>
+            <div class="j-detail">Webcam calibration UI<br>or skip → mouse sim mode</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">🌐</div>
+            <div class="j-name">Browse Normally</div>
+            <div class="j-desc">AI runs silently<br>No habit change</div>
+            <div class="j-detail">Gaze ring follows focus<br>Smart cursor always-on</div>
+          </div>
+          <div class="j-step gold">
+            <div class="j-icon">✨</div>
+            <div class="j-name">Gaze Holds 2s</div>
+            <div class="j-desc">L1 text darkens + bold<br>AI Summary appears</div>
+            <div class="j-detail">🤖 Qwen2.5 · GPU 0.85s<br>EN + ZH auto-detected</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">📖</div>
+            <div class="j-name">Read Faster</div>
+            <div class="j-desc">Summary aids comprehension<br>Badge dismisses after 12s</div>
+            <div class="j-detail">Click for L2 text enlarge<br>Move gaze to next para</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S7 AI Architecture -->
+      <div class="slide" id="s7">
+        <div class="s-top">
+          <div class="step-badge" style="background:var(--gold);color:var(--navy);">5 · AI Architecture</div>
+          <div class="slide-title">On-Device AI Stack</div>
+          <div class="slide-sub">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
+        </div>
+        <div class="arch-wrap">
+          <div class="arch-row7">
+            <div class="abox cyan">
+              <div class="abox-icon">🌐</div>
+              <div class="abox-title">Edge Extension</div>
+              <div class="abox-sub">gaze_tracker.js<br>content.js · CSS</div>
+            </div>
+            <div class="aarr">→</div>
+            <div class="abox cyan">
+              <div class="abox-icon">⚙️</div>
+              <div class="abox-title">Service Worker</div>
+              <div class="abox-sub">background.js<br>reqId routing</div>
+            </div>
+            <div class="aarr">→</div>
+            <div class="abox cyan">
+              <div class="abox-icon">🐍</div>
+              <div class="abox-title">Native Host</div>
+              <div class="abox-sub">native_host.py<br>stdin / stdout JSON</div>
+            </div>
+          </div>
+          <div class="arch-mid">↓ &nbsp; Native Messaging · Length-prefixed JSON · Windows Registry HKCU &nbsp; ↓</div>
+          <div class="arch-row7">
+            <div class="abox gold">
+              <div class="abox-icon">🧠</div>
+              <div class="abox-title">Qwen2.5-1.5B</div>
+              <div class="abox-sub">INT4 sym<br>group_size=128</div>
+            </div>
+            <div class="aarr">→</div>
+            <div class="abox gold">
+              <div class="abox-icon">🔬</div>
+              <div class="abox-title">OpenVINO GenAI</div>
+              <div class="abox-sub">LLMPipeline<br>v2026.2</div>
+            </div>
+            <div class="aarr">→</div>
+            <div class="abox green">
+              <div class="abox-icon">⚡</div>
+              <div class="abox-title">Intel Hardware</div>
+              <div class="abox-sub">GPU → NPU → CPU<br>auto-fallback</div>
+            </div>
+          </div>
+          <div class="result-chips">
+            <div class="rchip" style="background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);">
+              <div class="rchip-num" style="color:var(--cyan);">0.85s</div>
+              <div class="rchip-lbl" style="color:rgba(255,255,255,.5);">GPU · 71 tok/s ⭐</div>
+            </div>
+            <div class="rchip" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);">
+              <div class="rchip-num" style="color:#fff;">1.32s</div>
+              <div class="rchip-lbl" style="color:rgba(255,255,255,.4);">CPU · 45 tok/s</div>
+            </div>
+            <div class="rchip" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);">
+              <div class="rchip-num" style="color:#fff;">1.62s</div>
+              <div class="rchip-lbl" style="color:rgba(255,255,255,.4);">NPU · 37 tok/s</div>
+            </div>
+            <div style="flex:1;background:rgba(246,174,45,.08);border:1px solid rgba(246,174,45,.25);border-radius:10px;padding:7px 14px;display:flex;align-items:center;gap:8px;">
+              <div style="font-size:16px;">🔍</div>
+              <div style="font-size:10.5px;color:rgba(255,255,255,.6);line-height:1.55;">Phi-4 Mini abandoned — custom arch causes garbled output on NPU<br>Qwen2.5 standard arch: all 3 devices produce clean EN + ZH ✅</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S8 Value: Curb-Cut Effect -->
+      <div class="slide" id="s8">
+        <div class="s-top">
+          <div class="step-badge" style="background:var(--gold);color:var(--navy);">6 · Value &amp; Impact</div>
+          <div class="slide-title">Curb-Cut Effect — From 20% to Everyday Users<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">The same solution works for everyday users — not just vision-impaired</span></div>
+        </div>
+        <div class="cards-row">
+          <div class="e-card">
+            <div class="icon">☀️</div>
+            <div class="name">Screen Glare &amp; Reflections</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Same visual experience as dim-vision users</div>
+          </div>
+          <div class="e-card">
+            <div class="icon">🌞</div>
+            <div class="name">Outdoor Bright Sunlight</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Identical to the daily reality of foggy-vision users</div>
+          </div>
+          <div class="e-card">
+            <div class="icon">😵</div>
+            <div class="name">Eye Strain from Long Screen Time</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">#1 pain point for 71% of impaired users — common for everyone after extended sessions</div>
+          </div>
+          <div class="e-card" style="border-top-color:var(--gold);">
+            <div class="icon">📰</div>
+            <div class="name">Busy Readers &amp; Skimmers</div>
+            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">AI summary helps anyone quickly grasp paragraph meaning without reading every word</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S9 Competitors -->
+      <div class="slide" id="s9">
+        <div class="s-top">
+          <div class="step-badge">7 · Competitor Study</div>
+          <div class="slide-title" style="font-size:30px;">Competition &amp; What Makes HP Different</div>
+        </div>
+        <div class="comp-wrap">
+          <div class="comp-table">
+            <div class="comp-row"><div class="comp-name">Windows Magnifier / Narrator</div><div class="comp-gap">Manual-only, no visual field awareness</div></div>
+            <div class="comp-row"><div class="comp-name">Windows High Contrast Mode</div><div class="comp-gap">Disrupts mild-impairment users (our 20% target)</div></div>
+            <div class="comp-row"><div class="comp-name">Dedicated Eye Trackers (Tobii)</div><div class="comp-gap">Expensive hardware, gaming / medical market</div></div>
+            <div class="comp-row"><div class="comp-name">ZoomText / SuperNova</div><div class="comp-gap">Magnify-only, no gaze sensing, no AI summary</div></div>
+            <div class="comp-row"><div class="comp-name">Browser AI Extensions (ChatGPT etc.)</div><div class="comp-gap">Cloud API — privacy risk, requires internet</div></div>
+          </div>
+          <div class="hp-box">
+            <div class="hp-title">HP Strengths</div>
+            <div style="margin-bottom:10px;padding:10px 14px;background:rgba(0,180,216,.15);border-radius:10px;border-left:3px solid var(--cyan);">
+              <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:3px;">Active Sensing vs Passive Tools</div>
+              <div style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.5;">Competitors wait for the user — AI Kwau senses, decides, and acts proactively</div>
+            </div>
+            <div class="hp-item"><div class="ic">📷</div><div class="tx"><strong>Built-in webcam:</strong> zero extra hardware cost</div></div>
+            <div class="hp-item"><div class="ic">🔒</div><div class="tx"><strong>On-device AI:</strong> gaze + text data stays local, no API fees</div></div>
+            <div class="hp-item"><div class="ic">🤖</div><div class="tx"><strong>AI summary:</strong> unique — no other accessibility tool summarizes while enhancing</div></div>
+            <div class="hp-item"><div class="ic">📊</div><div class="tx"><strong>Untapped market:</strong> 59% never used any assistive tool</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S10 Validation & User Testing -->
+      <div class="slide" id="s10">
+        <div class="s-left">
+          <div class="step-badge">8 · Validation &amp; User Testing</div>
+          <div class="slide-title" style="color:#fff;font-size:26px;">Prototype Testing &amp; Design Iteration</div>
+          <div style="margin-top:16px;">
+            <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,180,216,.7);margin-bottom:10px;">Technical Validation ✅</div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Qwen2.5 INT4</strong> — clean output on GPU / NPU / CPU</div></div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Phi-4 Mini → Qwen2.5</strong> — NPU output was corrupted (custom arch)</div></div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>GPU 0.85s latency</strong> — meets &lt; 1s target on Panther Lake</div></div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Language detection</strong> — EN / ZH auto-detected from document.lang</div></div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Badge positioning</strong> — viewport-aware, no overlap with content</div></div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>10 consecutive requests</strong> — zero port disconnect, stable</div></div>
+          </div>
+        </div>
+        <div class="s-right" style="padding:24px 28px;display:flex;flex-direction:column;gap:10px;">
+          <div class="iter-card">
+            <div class="iter-title">Design Iterations from PoC Testing</div>
+            <div class="iter-row"><span class="from">3s dwell</span> <span style="color:var(--muted);">→</span> <span class="to">2s dwell</span> <span style="font-size:11px;color:var(--muted);margin-left:4px;">Team feedback: 3s felt too slow</span></div>
+            <div class="iter-row"><span class="from">Uncapped summary</span> <span style="color:var(--muted);">→</span> <span class="to">72 char limit</span> <span style="font-size:11px;color:var(--muted);margin-left:4px;">Longer text overflowed badge</span></div>
+            <div class="iter-row"><span class="from">Fixed badge top-left</span> <span style="color:var(--muted);">→</span> <span class="to">Smart positioning</span> <span style="font-size:11px;color:var(--muted);margin-left:4px;">Overlapped paragraph content</span></div>
+          </div>
+          <div style="background:rgba(0,119,182,.06);border:1px solid rgba(0,119,182,.2);border-radius:11px;padding:14px 16px;">
+            <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">📋 User Testing Plan (n=5–8)</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.7;">
+              <div>• Recruit from original survey pool (n=17)</div>
+              <div>• Task: read 3 articles with / without AI Kwau</div>
+              <div>• Measure: time to key points, ease rating (1–5), re-read frequency</div>
+              <div>• Success: ease rating ≥ 4/5 · summary helpful ≥ 80%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S11 KPIs -->
+      <div class="slide" id="s11">
+        <div class="s-top">
+          <div class="step-badge">8 · Success Metrics</div>
+          <div class="slide-title">KPIs — How We Measure Success</div>
+          <div class="slide-sub">Three dimensions: user experience · technical performance · adoption</div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card cyan">
+            <div class="kpi-icon">👁</div>
+            <div class="kpi-cat">User Experience</div>
+            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>AI summary rated helpful ≥ 4/5</div></div>
+            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>L1 activation feels natural (qualitative)</div></div>
+            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>No missed gaze detections &gt; 10%</div></div>
+            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>CVS eye strain score reduction after use</div></div>
+          </div>
+          <div class="kpi-card gold">
+            <div class="kpi-icon">⚡</div>
+            <div class="kpi-cat">Technical Performance</div>
+            <div class="kpi-item"><div class="kpi-dot gold"></div><div>Summary latency &lt; 2s &nbsp;<span class="kpi-achieved">GPU: 0.85s ✅</span></div></div>
+            <div class="kpi-item"><div class="kpi-dot gold"></div><div>Zero crashes in 10 consecutive requests &nbsp;<span class="kpi-achieved">✅</span></div></div>
+            <div class="kpi-item"><div class="kpi-dot gold"></div><div>EN + ZH clean output on all devices &nbsp;<span class="kpi-achieved">✅</span></div></div>
+            <div class="kpi-item"><div class="kpi-dot gold"></div><div>Model loads in &lt; 15s (warm-up once)</div></div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-icon">📈</div>
+            <div class="kpi-cat">Adoption &amp; Impact</div>
+            <div class="kpi-item"><div class="kpi-dot green"></div><div>7-day extension retention &gt; 60%</div></div>
+            <div class="kpi-item"><div class="kpi-dot green"></div><div>Per-session AI summary triggers &gt; 5</div></div>
+            <div class="kpi-item"><div class="kpi-dot green"></div><div>Reduction in re-reading same paragraph</div></div>
+            <div class="kpi-item"><div class="kpi-dot green"></div><div>Curb-Cut: non-impaired users adopt ≥ 30%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S12 Summary -->
+      <div class="slide" id="s12">
+        <div class="s-left">
+          <div class="tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary</div>
+          <div class="slide-title">AI Kwau<span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.4);display:block;margin-top:4px;">Let every PC see what you need</span></div>
+          <div class="slide-sub">Zero hardware cost.<br>Built for 20%, benefits 80%.</div>
+          <div style="margin-top:20px;display:inline-block;padding:11px 20px;background:var(--cyan);border-radius:11px;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--navy);">🎬 Live Demo Available</div>
+        </div>
+        <div class="s-right" style="flex-direction:column;justify-content:center;gap:9px;padding:30px;">
+          <div class="sum-item"><div class="ic">🎯</div><div class="tx"><strong>Problem:</strong> 5 visual conditions × 5 pain points · 59% never used any assistive tool</div></div>
+          <div class="sum-item"><div class="ic">🤖</div><div class="tx"><strong>Solution:</strong> Browser extension · gaze tracking · on-device AI · no habit change</div></div>
+          <div class="sum-item"><div class="ic">🖥️</div><div class="tx"><strong>Prototype:</strong> Working PoC · GPU 0.85s · Qwen2.5 clean EN + ZH output</div></div>
+          <div class="sum-item"><div class="ic">🗺️</div><div class="tx"><strong>UX Flow:</strong> Set up once, AI adapts continuously</div></div>
+          <div class="sum-item"><div class="ic">📈</div><div class="tx"><strong>Impact:</strong> Curb-Cut Effect — from 20% to 80% of users</div></div>
+          <div class="sum-item"><div class="ic">🏆</div><div class="tx"><strong>HP Edge:</strong> Built-in webcam · On-device AI · Active sensing · Privacy-first</div></div>
+        </div>
+      </div>
+
+      </div><!-- /scaler -->
+    </div><!-- /slide-wrapper -->
+    <button class="snav" id="btn-prev" onclick="prev()">&#8592;</button>
+    <button class="snav" id="btn-next" onclick="next()">&#8594;</button>
+    <div id="nav-bar"><div id="dots"></div></div>
+  </div><!-- /slide-row -->
+</div><!-- /stage -->
+
+<!-- MOBILE -->
+<div id="mobile-view">
+  <div class="mc"><div class="mh dark"><div class="m-tag">Final Presentation</div><div class="m-title">AI<span>·</span>Kwau</div><div class="m-sub">Webcam × AI — making every PC understand your vision</div></div><div style="padding:6px 0;"><div class="m-ag"><div class="m-agn">01</div><div class="m-agt">Problem Statement</div></div><div class="m-ag"><div class="m-agn">02</div><div class="m-agt">Proposed Solution</div></div><div class="m-ag"><div class="m-agn">03</div><div class="m-agt">Functional Prototype</div></div><div class="m-ag"><div class="m-agn">04</div><div class="m-agt">User Experience Flow</div></div><div class="m-ag"><div class="m-agn">05</div><div class="m-agt">AI Architecture</div></div><div class="m-ag"><div class="m-agn">06</div><div class="m-agt">Value &amp; Impact</div></div><div class="m-ag"><div class="m-agn">07</div><div class="m-agt">Competitor Study</div></div><div class="m-ag"><div class="m-agn">08</div><div class="m-agt">Validation &amp; KPIs</div></div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">1 · Problem Statement</div><div class="m-title dk">20% Target Users</div></div><div class="m-grid"><div class="m-ac c3"><div class="icon">🌫️</div><div class="mpct">53%</div><div class="name">Overall Dimness / Fog</div></div><div class="m-ac c2"><div class="icon">🔭</div><div class="mpct">41%</div><div class="name">Peripheral Vision Loss</div></div><div class="m-ac c5"><div class="icon">📖</div><div class="mpct">35%</div><div class="name">Reading Difficulty</div></div><div class="m-ac c1"><div class="icon">🔵</div><div class="mpct">24%</div><div class="name">Central Vision Blur</div></div><div class="m-ac c4"><div class="icon">💡</div><div class="mpct">24%</div><div class="name">Light Sensitivity</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">1 · Problem Statement</div><div class="m-title">Five Pain Points</div><div class="m-ev"><span class="m-evn">59%</span> never used any assistive tool</div></div><div class="m-list"><div class="m-pain"><div class="m-pn">71%</div><div class="m-pt">Eye strain from long screen time</div></div><div class="m-pain"><div class="m-pn">65%</div><div class="m-pt">Text too small to read</div></div><div class="m-pain"><div class="m-pn">47%</div><div class="m-pt">Low screen contrast</div></div><div class="m-pain"><div class="m-pn">24%</div><div class="m-pt">Cursor hard to track</div></div><div class="m-pain"><div class="m-pn">18%</div><div class="m-pt">Can't find buttons or links</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">3 · Functional Prototype</div><div class="m-title">Live Demo</div><div class="m-sub">L1 Enhancement + AI Summary</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-ficon">🖱</div><div class="m-fname">Mouse / Gaze Hold 2s → L1</div></div><div class="m-fen">Text darkens + bold · badge shows "Summarising…"</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">🤖</div><div class="m-fname">AI Summary Badge</div><div class="m-ftag">GPU: 0.85s</div></div><div class="m-fen">Qwen2.5-1.5B INT4 · EN + ZH · On-device</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">⚡</div><div class="m-fname">Panther Lake Benchmark</div></div><div class="m-fen">GPU 71 tok/s · CPU 45 tok/s · NPU 37 tok/s</div></div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">4 · User Experience Flow</div><div class="m-title dk">User Journey</div></div><div class="m-list"><div class="m-jstep"><div class="m-jicon">🏭</div><div><div class="m-jname">Pre-installed</div><div class="m-jdesc">Ready at boot · No setup</div></div></div><div class="m-jstep"><div class="m-jicon">🎯</div><div><div class="m-jname">One-time Setup</div><div class="m-jdesc">9-point calibration · ~60s</div></div></div><div class="m-jstep"><div class="m-jicon">🌐</div><div><div class="m-jname">Browse Normally</div><div class="m-jdesc">AI runs silently</div></div></div><div class="m-jstep" style="background:rgba(246,174,45,.1);border-left:3px solid var(--gold);"><div class="m-jicon" style="border-color:var(--gold);">✨</div><div><div class="m-jname">Gaze Holds 2s</div><div class="m-jdesc">L1 + AI Summary</div></div></div><div class="m-jstep"><div class="m-jicon">📖</div><div><div class="m-jname">Read Faster</div><div class="m-jdesc">Summary aids comprehension</div></div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">5 · AI Architecture</div><div class="m-title">On-Device AI Stack</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-ficon">🌐</div><div class="m-fname">Edge Extension</div><div class="m-ftag">MV3</div></div><div class="m-fen">gaze_tracker.js + content.js + background.js</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">🧠</div><div class="m-fname">Qwen2.5-1.5B INT4</div><div class="m-ftag">OpenVINO</div></div><div class="m-fen">GPU 0.85s · CPU 1.32s · NPU 1.62s on Panther Lake</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag" style="background:rgba(246,174,45,.15);border-color:rgba(246,174,45,.4);color:var(--goldd);">6 · Value &amp; Impact</div><div class="m-title">Curb-Cut Effect</div><div class="m-sub">From 20% to everyday users</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px;">☀️ Screen glare · 🌞 Outdoor sunlight · 😵 Eye strain — same experience as vision-impaired users</div><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;">📰 Busy readers — AI summary saves reading time for everyone</div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">7 · Competitor Study</div><div class="m-title dk">HP Differentiation</div></div><div class="m-list"><div class="m-comp"><div class="m-cname">Windows Magnifier / Narrator</div><div class="m-cgap">Manual-only, no gaze awareness</div></div><div class="m-comp"><div class="m-cname">ZoomText / SuperNova</div><div class="m-cgap">Magnify-only, no AI summary</div></div><div class="m-comp"><div class="m-cname">Cloud AI Extensions</div><div class="m-cgap">Privacy risk, requires internet</div></div></div><div class="m-hp"><div class="m-hpt">HP Strengths</div><div class="m-hpi"><div class="ic">📷</div><div class="tx"><strong>Built-in webcam</strong> — zero extra cost</div></div><div class="m-hpi"><div class="ic">🔒</div><div class="tx"><strong>On-device AI</strong> — privacy-first</div></div><div class="m-hpi"><div class="ic">🤖</div><div class="tx"><strong>AI summary</strong> — unique, no competitor has this</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">8 · Validation &amp; KPIs</div><div class="m-title">Results &amp; Metrics</div></div><div class="m-list"><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>GPU 0.85s latency</strong> — meets &lt; 1s target</div></div><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>Clean EN + ZH output</strong> on all 3 devices</div></div><div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Target:</strong> summary helpful ≥ 4/5 · retention &gt; 60%</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary</div><div class="m-title">AI Kwau</div><div class="m-sub">Zero hardware cost · Built for 20% · Benefits 80%</div></div><div class="m-list"><div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Problem:</strong> 5 conditions × 5 pain points · real users</div></div><div class="m-sum"><div class="m-si">🤖</div><div class="m-st"><strong>Solution:</strong> Browser extension · on-device AI · no habit change</div></div><div class="m-sum"><div class="m-si">🖥️</div><div class="m-st"><strong>Prototype:</strong> GPU 0.85s · Qwen2.5 working on Panther Lake</div></div><div class="m-sum"><div class="m-si">📈</div><div class="m-st"><strong>Impact:</strong> Curb-Cut Effect — from 20% to 80%</div></div><div class="m-sum"><div class="m-si">🏆</div><div class="m-st"><strong>HP Edge:</strong> Active sensing · Built-in webcam · Privacy-first</div></div></div></div>
+</div><!-- /mobile-view -->
+
+<script>
+let cur=0,total=12;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=(()=>{const n=i;return()=>goTo(n);})();
+  dotsEl.appendChild(d);
+}
+const slides=document.querySelectorAll('#scaler .slide');
+const getDots=()=>document.querySelectorAll('#dots .dot');
+function goTo(n){
+  slides[cur].classList.remove('active');
+  getDots()[cur].classList.remove('active');
+  cur=Math.max(0,Math.min(total-1,n));
+  slides[cur].classList.add('active');
+  getDots()[cur].classList.add('active');
+  document.getElementById('counter').textContent=(cur+1)+' / '+total;
+}
+function prev(){goTo(cur-1);}
+function next(){goTo(cur+1);}
+document.addEventListener('keydown',e=>{
+  if(editMode)return;
+  if(e.key==='ArrowLeft'){e.preventDefault();prev();}
+  if(e.key==='ArrowRight'){e.preventDefault();next();}
+},true);
+function scaleSlide(){
+  const row=document.getElementById('slide-row');
+  const s=document.getElementById('scaler');
+  if(!row||!s)return;
+  const cw=row.offsetWidth,ch=row.offsetHeight;
+  if(!cw||!ch)return;
+  const sc=Math.min(cw/960,ch/540);
+  s.style.transform=`scale(${sc})`;
+  s.style.left=Math.round((cw-960*sc)/2)+'px';
+  s.style.top=Math.round((ch-540*sc)/2)+'px';
+}
+window.addEventListener('resize',scaleSlide);
+requestAnimationFrame(()=>requestAnimationFrame(scaleSlide));
+
+let editMode=false;
+function toggleEdit(){
+  editMode=!editMode;
+  document.body.classList.toggle('edit-mode',editMode);
+  const btn=document.getElementById('btn-edit');
+  btn.textContent=editMode?'✅ Done':'✏️ Edit';
+  btn.classList.toggle('on',editMode);
+  if(!editMode)document.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+}
+document.getElementById('scaler').addEventListener('click',function(e){
+  if(!editMode||moveMode)return;
+  const skip=new Set(['svg','path','circle','ellipse','defs','radialgradient','stop','button']);
+  let el=e.target;
+  while(el&&el!==this){
+    if(!skip.has(el.tagName.toLowerCase())&&!el.classList.contains('slide')&&el.id!=='scaler'&&el.textContent.trim()){
+      if(!el.getAttribute('contenteditable'))el.setAttribute('contenteditable','true');
+      el.focus();break;
+    }
+    el=el.parentElement;
+  }
+},false);
+let moveMode=false;
+function toggleMove(){
+  moveMode=!moveMode;
+  document.body.classList.toggle('move-mode',moveMode);
+  document.getElementById('btn-move').classList.toggle('on',moveMode);
+}
+(function(){
+  let _drag=null;
+  function _sc(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
+  function _getTx(el){const m=(el.style.transform||'').match(/translate\((-?[\d.]+)px,\s*(-?[\d.]+)px\)/);return m?{x:parseFloat(m[1]),y:parseFloat(m[2])}:{x:0,y:0};}
+  document.getElementById('scaler').addEventListener('mousedown',function(e){
+    if(!editMode||!moveMode||e.button!==0)return;
+    e.preventDefault();
+    let el=e.target;
+    while(el&&el!==this){
+      if(!el.classList.contains('slide')&&el.id!=='scaler'){
+        const t=_getTx(el);
+        _drag={el,sx:e.clientX,sy:e.clientY,ox:t.x,oy:t.y};
+        break;
+      }
+      el=el.parentElement;
+    }
+  },false);
+  document.addEventListener('mousemove',function(e){if(!_drag)return;const sc=_sc();_drag.el.style.transform=`translate(${_drag.ox+(e.clientX-_drag.sx)/sc}px,${_drag.oy+(e.clientY-_drag.sy)/sc}px)`;});
+  document.addEventListener('mouseup',function(){_drag=null;});
+})();
+function saveAsNew(){
+  const c=document.cloneNode(true);
+  c.body.classList.remove('edit-mode');
+  c.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  const eb=c.getElementById('btn-edit');if(eb){eb.textContent='✏️ Edit';eb.classList.remove('on');}
+  const a=document.createElement('a');
+  a.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!DOCTYPE html>\n'+c.documentElement.outerHTML);
+  a.download='ai-kwau-final-edited.html';a.click();
+}
+
+// S5 interactive prototype demo
+(function(){
+  const vp=document.getElementById('b5vp');
+  if(!vp)return;
+  const halo=document.getElementById('mock-halo-5');
+  const sumBadge=document.getElementById('sum-badge');
+  const hint=document.getElementById('demo-hint');
+  const tgts=vp.querySelectorAll('.fake-t5');
+  let t1=null,t2=null,_cur=null;
+  function scl(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
+  vp.addEventListener('mousemove',(e)=>{
+    if(!halo)return;
+    const r=vp.getBoundingClientRect(),s=scl();
+    halo.style.left=((e.clientX-r.left)/s-24)+'px';
+    halo.style.top=((e.clientY-r.top)/s-24)+'px';
+    halo.style.display='block';
+  });
+  vp.addEventListener('mouseleave',()=>{
+    if(halo)halo.style.display='none';
+    clearTimeout(t1);clearTimeout(t2);
+    tgts.forEach(el=>el.classList.remove('l1-on','l2-on'));
+    if(sumBadge){sumBadge.style.display='none';sumBadge.className='';}
+    if(hint)hint.textContent='👆 Hover any paragraph · hold 2 s → L1 darker+bold + AI Summary · click for L2';
+    _cur=null;
+  });
+  tgts.forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      if(editMode||moveMode)return;
+      if(_cur===el)return;
+      clearTimeout(t1);clearTimeout(t2);
+      tgts.forEach(e2=>e2.classList.remove('l1-on','l2-on'));
+      if(sumBadge){sumBadge.style.display='none';}
+      _cur=el;
+      if(hint)hint.textContent='⏳ Sensing gaze hold… (2s)';
+      t1=setTimeout(()=>{
+        el.classList.add('l1-on');
+        if(sumBadge){
+          const r2=el.getBoundingClientRect();
+          const r3=vp.getBoundingClientRect();
+          const s=scl();
+          sumBadge.className='sum-badge-loading';
+          sumBadge.textContent='🤖 Summarising…';
+          sumBadge.style.top=Math.max(2,((r2.top-r3.top)/s-38))+'px';
+          sumBadge.style.left=((r2.left-r3.left)/s)+'px';
+          sumBadge.style.display='block';
+          sumBadge.style.animation='aikwau-in .22s ease';
+        }
+        if(hint)hint.textContent='✅ L1 active · AI running on GPU (Qwen2.5)…';
+        t2=setTimeout(()=>{
+          if(sumBadge){
+            sumBadge.className='sum-badge-ready';
+            sumBadge.textContent='🤖 Screen fatigue affects 71% of extended users — mostly untreated due to limited tool awareness.';
+            sumBadge.style.animation='aikwau-in .22s ease';
+          }
+          if(hint)hint.textContent='✅ Summary ready (0.85s) · Click paragraph for L2 text enlarge';
+        },1400);
+      },2000);
+    });
+    el.addEventListener('mouseleave',()=>{if(_cur===el)_cur=null;});
+    el.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      if(el.classList.contains('l1-on')){
+        el.classList.add('l2-on');
+        if(hint)hint.textContent='✅ L2 active · Text enlarged · Move away to reset';
+      }
+    });
+  });
+})();
+
+document.getElementById('slide-wrapper').addEventListener('touchstart',e=>{window._tx=e.touches[0].clientX;},{passive:true});
+document.getElementById('slide-wrapper').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-window._tx;if(Math.abs(dx)>40){dx<0?next():prev();}},{passive:true});
+</script>
+</body>
+</html>
