@@ -1,17 +1,15 @@
 /**
- * AI Kwau Content Script
- * Gaze-hold triggered text enhancement + on-device AI summarization.
- * Dwell detection is handled by GazeTracker (gaze_tracker.js).
+ * AI Kwau Content Script (isolated world)
+ * Listens for gaze events dispatched by gaze_tracker.js (MAIN world) on document.
+ * Events carry viewport (x,y) coords; this script does its own elementFromPoint()
+ * because HTML elements cannot cross the MAIN↔isolated world boundary.
  */
 
-// Guard against double-injection (hash navigation, SPA, extension reload)
 if (window.__aikwauContentLoaded) {
-  // Already loaded, skip
   throw new Error('content.js skipped (already loaded)');
 }
 window.__aikwauContentLoaded = true;
 
-// Wrap entire script in IIFE to prevent duplicate const declarations
 (() => {
   const MIN_TEXT_LEN = 40;
   const SUMMARY_MAX_CHARS = 72;
@@ -19,23 +17,22 @@ window.__aikwauContentLoaded = true;
   let activeEl = null;
   let activeBadge = null;
 
-  (async () => {
-    const tracker = window.__aikwauTracker;
-    if (!tracker) return;
+  const SELECTORS = 'p, h1, h2, h3, h4, li, blockquote, td, figcaption';
 
-    await tracker.init();
+  document.addEventListener('aikwau:gazefocus', (e) => {
+    const { x, y } = e.detail ?? {};
+    if (x == null) return;
+    const hit = document.elementFromPoint(x, y);
+    const el = hit?.closest(SELECTORS);
+    if (!el) return;
+    const text = el.innerText?.trim() ?? '';
+    if (text.length < MIN_TEXT_LEN) return;
+    triggerL1(el, text);
+  });
 
-    tracker.addEventListener('gazefocus', (e) => {
-      const el = e.detail.el;
-      const text = el.innerText?.trim() ?? '';
-      if (text.length < MIN_TEXT_LEN) return;
-      triggerL1(el, text);
-    });
+  document.addEventListener('aikwau:gazeblur', () => cleanup());
 
-    tracker.addEventListener('gazeblur', () => cleanup());
-  })();
-
-  // ── L1 visual enhancement + summarize request ─────────────────────────
+  // ── L1 visual enhancement + summarize request ─────────────────────────────
   function triggerL1(el, text) {
     el.classList.add('aikwau-l1');
     activeEl = el;
@@ -54,7 +51,7 @@ window.__aikwauContentLoaded = true;
     );
   }
 
-  // ── Badge UI ──────────────────────────────────────────────────────────
+  // ── Badge UI ──────────────────────────────────────────────────────────────
   function showBadge(anchor, text, state) {
     cleanup(false);
     const badge = document.createElement('div');
@@ -115,13 +112,11 @@ window.__aikwauContentLoaded = true;
     const viewportHeight = document.documentElement.clientHeight;
     const badgeRect = badge.getBoundingClientRect();
 
-    // Clamp horizontally to viewport while following the paragraph edge.
     const idealLeft = anchorRect.left;
     const minLeft = PAD;
     const maxLeft = Math.max(PAD, viewportWidth - badgeRect.width - PAD);
     const left = Math.min(Math.max(idealLeft, minLeft), maxLeft);
 
-    // Keep the badge outside paragraph area: prefer above, fallback to below.
     const aboveTop = anchorRect.top - badgeRect.height - GAP;
     const belowTop = anchorRect.bottom + GAP;
     const top = aboveTop >= PAD

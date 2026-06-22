@@ -6,6 +6,7 @@ import sys
 import json
 import struct
 import logging
+import os
 from pathlib import Path
 
 LOG_PATH = Path(__file__).parent / "aikwau_host.log"
@@ -46,6 +47,40 @@ def build_prompt(text: str, lang: str) -> str:
     return f"Summarize in 2 sentences:\n\n{text}\n\nSummary:"
 
 
+def _parse_device_candidates() -> list[str]:
+    # Allow runtime override (for AMD/CPU-only boxes): AIKWAU_DEVICE_PRIORITY=CPU
+    raw = os.getenv("AIKWAU_DEVICE_PRIORITY", DEVICE_PRIORITY)
+    candidates = [x.strip() for x in raw.split(",") if x.strip()]
+    if not candidates:
+        candidates = ["CPU"]
+    if "CPU" not in candidates:
+        candidates.append("CPU")
+    return candidates
+
+
+def _build_pipeline(ov_genai):
+    candidates = _parse_device_candidates()
+    logging.info(f"Device candidates: {candidates}")
+
+    last_error = None
+    for device in candidates:
+        try:
+            ov_config = {}
+            if device == "NPU":
+                ov_config["PERFORMANCE_HINT"] = "LATENCY"
+
+            logging.info(f"Trying model load on device: {device}")
+            pipe = ov_genai.LLMPipeline(MODEL_DIR, device, **ov_config)
+            pipe.generate("Ready", max_new_tokens=1)  # warm-up
+            logging.info(f"Model loaded and warmed up on {device}.")
+            return pipe, device
+        except Exception as e:
+            last_error = e
+            logging.warning(f"Device {device} failed: {e}")
+
+    raise RuntimeError(f"All devices failed. Last error: {last_error}")
+
+
 def main():
     logging.info("Native host starting...")
 
@@ -56,14 +91,9 @@ def main():
         send_msg({"status": "error", "message": "openvino_genai not installed"})
         return
 
-    logging.info(f"Loading model from {MODEL_DIR} on {DEVICE_PRIORITY}")
+    logging.info(f"Loading model from {MODEL_DIR}")
     try:
-        ov_config = {}
-        if DEVICE_PRIORITY.startswith("NPU"):
-            ov_config["PERFORMANCE_HINT"] = "LATENCY"
-        pipe = ov_genai.LLMPipeline(MODEL_DIR, DEVICE_PRIORITY, **ov_config)
-        pipe.generate("Ready", max_new_tokens=1)   # warm-up
-        logging.info("Model loaded and warmed up.")
+        pipe, active_device = _build_pipeline(ov_genai)
     except Exception as e:
         logging.error(f"Model load failed: {e}")
         send_msg({"status": "error", "message": str(e)})
@@ -85,7 +115,7 @@ def main():
         logging.info(f"Action: {action} (reqId={req_id})")
 
         if action == "ping":
-            send_msg({"status": "ready", "reqId": req_id})
+            send_msg({"status": "ready", "device": active_device, "reqId": req_id})
 
         elif action == "summarize":
             try:
