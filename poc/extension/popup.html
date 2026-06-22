@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: sans-serif; width: 220px; padding: 12px; margin: 0; }
+    h3 { margin: 0 0 10px; font-size: 14px; color: #1a1a2e; }
+    label { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 13px; cursor: pointer; }
+    button { margin-top: 10px; width: 100%; padding: 6px; font-size: 12px; cursor: pointer;
+             border: 1px solid #ccc; border-radius: 4px; background: #f5f5f5; }
+    button:hover { background: #e0e0e0; }
+    #status { font-size: 11px; color: #666; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h3>AI Kwau ⚙️</h3>
+  <label><input type="radio" name="mode" value="mouse"> 滑鼠模式（PoC）</label>
+  <label><input type="radio" name="mode" value="webcam"> 眼球追蹤（Webcam）</label>
+  <button id="recalibrate" style="display:none">重新校準</button>
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
