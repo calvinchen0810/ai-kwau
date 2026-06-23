@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Kwau — Gaze Tracker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; font-family: system-ui, sans-serif; overflow: hidden; }
+    #cam { width: 240px; height: 160px; display: block; transform: scaleX(-1); }
+    #status {
+      position: absolute; bottom: 0; width: 100%;
+      padding: 3px 6px; background: rgba(0,0,0,0.75);
+      font-size: 11px; color: #aaa; text-align: center;
+    }
+    #startbtn {
+      position: absolute; inset: 0; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      background: #111; gap: 10px;
+    }
+    #startbtn button {
+      padding: 8px 18px; font-size: 13px; cursor: pointer;
+      background: #0088ff; color: #fff; border: none; border-radius: 6px;
+    }
+    #startbtn p { font-size: 11px; color: #888; margin: 0; text-align: center; }
+    #dot {
+      position: absolute; width: 10px; height: 10px; border-radius: 50%;
+      background: #0088ff; pointer-events: none; display: none;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px rgba(0,136,255,0.8);
+    }
+  </style>
+</head>
+<body>
+  <div id="startbtn">
+    <button id="grantbtn">開啟相機</button>
+    <p>AI Kwau 眼球追蹤<br>點擊以授權相機存取</p>
+  </div>
+  <video id="cam" autoplay playsinline style="display:none"></video>
+  <div id="dot"></div>
+  <div id="status">正在啟動相機...</div>
+  <script src="mediapipe/face_mesh.js"></script>
+  <script src="gazetracker.js"></script>
+</body>
+</html>

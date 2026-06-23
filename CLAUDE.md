@@ -14,7 +14,8 @@ Primary target: Intel Panther Lake laptops (NPU 100+ TOPS), HP pre-install scena
 - **Browser target**: Microsoft Edge (pre-installed on HP). MV3 extension.
 - **Communication**: Edge extension ↔ Python native host via Native Messaging (stdin/stdout, length-prefixed JSON).
 - **Registry key**: `HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer` (no admin required).
-- **Gaze simulation**: Mouse hover 2s dwell = gaze hold (PoC mode). Real eye tracking via WebGazer.js (webcam mode) is integrated but requires bundling webgazer.js separately.
+- **Gaze tracking**: Mouse hover 2s dwell (PoC default) OR WebGazer.js v2.1.2 (webcam, bundled). Toggled via extension popup.
+- **WebGazer world**: Runs in MAIN world (not isolated) to bypass MV3 extension CSP which blocks `new Function()` used by TF.js. Gaze events bridge to isolated world via DOM CustomEvents with (x,y) coordinates.
 - **Languages**: English and Traditional Chinese (zh). Prompt and badge language auto-detected from `document.documentElement.lang`.
 
 ## Repository Structure
@@ -28,23 +29,37 @@ ai-kwau/
 └── poc/
     ├── model_setup/
     │   ├── install_deps.bat         # Creates .venv, installs openvino + huggingface deps
-    │   ├── download_convert.py      # Downloads Phi-4-mini, converts to OpenVINO INT4 IR
+    │   ├── download_convert.py      # Downloads Qwen2.5-1.5B, converts to OpenVINO INT4 IR
     │   └── benchmark.py             # Tests NPU/GPU/CPU latency, prints tok/s, recommends best device
     ├── native_host/
     │   ├── native_host.py           # Inference host: reads stdin, runs LLMPipeline, writes stdout
     │   ├── host_manifest.json       # Edge native host descriptor (path/origin patched by register.py)
     │   └── register.py              # Writes Windows Registry key + creates run_host.bat shim
     └── extension/
-        ├── manifest.json            # MV3: nativeMessaging, activeTab, scripting, storage
-        ├── gaze_tracker.js          # GazeTracker class — mouse simulation or WebGazer webcam mode
+        ├── manifest.json            # MV3 v0.3.0: three content_scripts entries (see architecture)
+        ├── mode_bridge.js           # Isolated world, document_start: reads storage → DOM attribute
+        ├── webgazer.js              # WebGazer v2.1.2 minified (2.3 MB, bundled, MAIN world)
+        ├── gaze_tracker.js          # MAIN world: mouse/webcam tracking → document CustomEvents
         ├── background.js            # Service worker: manages native port, routes requests with reqId
-        ├── content.js               # Listens to gazefocus/gazeblur → L1 effect + summary badge
-        └── content.css              # L1 bold/darken, summary badge (loading/ready/error)
+        ├── content.js               # Isolated world: listens to gaze events → L1 effect + badge
+        ├── content.css              # L1 bold/darken, summary badge (loading/ready/error)
+        ├── popup.html               # Extension popup UI (mode toggle, recalibrate button)
+        └── popup.js                 # Popup logic: reads/writes chrome.storage for mode
 ```
 
-## Current State (as of 2026-06-18)
+## Current State (as of 2026-06-22)
 
-All PoC files are implemented and tested on real Panther Lake hardware. The extension is feature-complete for mouse-simulation mode.
+### Completed
+- [x] OpenVINO model conversion on Panther Lake (Qwen2.5-1.5B INT4)
+- [x] NPU/GPU/CPU inference benchmarked
+- [x] Mouse mode: L1 effect (bold/darken) + badge pipeline working end-to-end
+- [x] WebGazer v2.1.2 bundled and running in MAIN world
+- [x] 9-point calibration UI (full-screen overlay, sequential click)
+- [x] Gaze ring visual indicator (blue circle follows estimated gaze)
+- [x] EMA smoothing on gaze coordinates (SMOOTH_ALPHA = 0.05)
+- [x] Extension popup for mode switching (mouse ↔ webcam) + recalibrate button
+- [ ] Native Messaging host registration and end-to-end test ← **next step**
+- [ ] L2 text enlargement
 
 ### Hardware Test Results (Panther Lake, Qwen2.5-1.5B INT4)
 | Device | Latency | Tokens/sec | Status |
@@ -54,93 +69,103 @@ All PoC files are implemented and tested on real Panther Lake hardware. The exte
 | CPU | 1.32s | 45 tok/s | Clean output ✅ |
 
 ### Key Finding: Model Compatibility
-- **Phi-4-mini**: INCOMPATIBLE with NPU — custom `configuration_phi3.py` architecture causes garbled/Greek-character output on OpenVINO 2026.2 NPU backend. Downgrade to OpenVINO 2025.x also fails (unsupported opset in converted model).
+- **Phi-4-mini**: INCOMPATIBLE with NPU — custom `configuration_phi3.py` architecture causes garbled/Greek-character output on OpenVINO 2026.2 NPU backend.
 - **Qwen2.5-1.5B-Instruct**: COMPATIBLE — standard architecture, NPU produces correct output. INT4 (sym, group_size=128) achieves 37 tok/s on NPU.
 
-### What's been completed on hardware:
-- [x] OpenVINO model conversion on Panther Lake
-- [x] NPU detection and inference benchmarked
-- [ ] Native Messaging host registration and end-to-end test
-- [ ] Real WebGazer.js eye tracking (requires bundling webgazer.js)
+### Key Finding: WebGazer CSP Issue
+- WebGazer v3.x uses MediaPipe, which dynamically loads JS files at runtime. Host page CSP (`script-src`) blocks these loads — incompatible with content scripts.
+- WebGazer v2.1.2 uses TF.js + clmtrackr (no dynamic JS loading), but TF.js uses `new Function()` for WebGL shaders, blocked by MV3 extension isolated-world CSP.
+- **Solution**: Run webgazer.js in MAIN world (`"world": "MAIN"` in manifest content_scripts). Bridge gaze events to isolated world via DOM CustomEvents carrying `{x, y}` coordinates (primitives cross world boundaries; HTML elements do not).
 
-## Immediate Next Steps (on Panther Lake)
+## Immediate Next Step — Register Native Host
 
-### Step 1 — Python environment
+### Step 1 — Get Extension ID
+`edge://extensions` → AI Kwau PoC → copy the 32-character **ID**
+
+### Step 2 — Activate Python environment
 ```cmd
-cd ai-kwau\poc\model_setup
-install_deps.bat
+cd poc\model_setup
 .venv\Scripts\activate
 ```
+If not yet set up: `install_deps.bat` first.
 
-### Step 2 — Download + convert model (~15 min, ~1.8 GB output)
+### Step 3 — Download + convert model (if not done, ~15 min)
 ```cmd
 python download_convert.py
 ```
 
-### Step 3 — Benchmark hardware
-```cmd
-python benchmark.py
-```
-Expected: NPU listed in available devices, latency < 1 s on Panther Lake.
-
 ### Step 4 — Register native host
 ```cmd
 cd ..\native_host
-# First load extension in edge://extensions, copy the Extension ID
 python register.py --extension-id <EXTENSION_ID>
 ```
 
-### Step 5 — Test extension
-- Open Edge → `edge://extensions` → Developer mode → Load unpacked → select `poc/extension/`
-- Navigate to any article
-- Hover a paragraph for 2 seconds
-- Verify: text darkens + bold (L1), blue badge shows "Summarising…", then summary text
+### Step 5 — Reload extension and test
+- `edge://extensions` → reload AI Kwau PoC
+- Navigate to any article, hover a paragraph 2 seconds (mouse mode)
+- Verify: text bold/dark (L1) + blue badge shows summary text
 
 ## Extension Architecture
 
+### Content script injection order (manifest.json)
 ```
-[content.js]  ──gazefocus──>  triggerL1(el)
-                                  └─> chrome.runtime.sendMessage({type:'summarize', text, lang})
-                                              |
-[background.js]  <─────────────────────────────
-    └─> connectNative('com.hp.aikwau.summarizer')
-    └─> port.postMessage({action:'summarize', text, lang, reqId})
-                |
-[native_host.py]  (Python, Windows process)
-    └─> OpenVINO LLMPipeline.generate(prompt)
-    └─> send_msg({status:'ok', summary:'...', reqId})
-                |
-[background.js]  <── response ──
-    └─> pending.get(reqId)(resp)  ──> sendResponse
-                |
-[content.js]  <── sendResponse ──
-    └─> updateBadge(summary)
+document_start  [isolated]  mode_bridge.js
+                              └─> chrome.storage → document.setAttribute('data-aikwau-mode', mode)
+                              └─> document.dispatchEvent('aikwau:mode-ready')
+
+document_idle   [MAIN]      webgazer.js  →  gaze_tracker.js
+                              └─> reads data-aikwau-mode attribute
+                              └─> mouse: mouseover+2s dwell
+                                  webcam: webgazer.begin() → calibration UI → gaze listener
+                              └─> document.dispatchEvent('aikwau:gazefocus', {x, y})
+                              └─> document.dispatchEvent('aikwau:gazeblur')
+
+document_idle   [isolated]  content.js
+                              └─> document.addEventListener('aikwau:gazefocus')
+                              └─> elementFromPoint(x, y) → triggerL1(el)
+                              └─> chrome.runtime.sendMessage({type:'summarize', text, lang})
 ```
 
-## GazeTracker Modes
-
-**Mouse mode (default):**
-- `mouseover` + 2000ms `setTimeout` → `gazefocus` event
-- `mouseout` → `gazeblur` event + cancel timer
-- No hardware required, works for PoC demos
-
-**Webcam mode (real eye tracking):**
-1. Download `webgazer.js` from https://github.com/brownhci/WebGazer/releases
-2. Place in `poc/extension/webgazer.js`
-3. Add `"webgazer.js"` to `manifest.json` content_scripts js array (before `gaze_tracker.js`)
-4. Set mode: `chrome.storage.local.set({ aikwau_gaze_mode: 'webcam' })`
-5. Reload extension + page
-
-WebGazer accuracy: ±50-100px after calibration (click 9 points on screen). Good enough for paragraph-level gaze detection. Works on any webcam.
+### Summary pipeline
+```
+[content.js isolated] ──sendMessage──> [background.js service worker]
+                                            └─> connectNative('com.hp.aikwau.summarizer')
+                                            └─> port.postMessage({action:'summarize', ...})
+                                                        |
+                                            [native_host.py — Python]
+                                                └─> OpenVINO LLMPipeline.generate()
+                                                └─> send_msg({status:'ok', summary:'...'})
+                                                        |
+                                        [background.js] ──sendResponse──> [content.js]
+                                                                              └─> updateBadge(summary)
+```
 
 ## Key File Details
+
+### `mode_bridge.js` — World bridge (NEW)
+- Runs at `document_start` in isolated world
+- Sets `document.documentElement.setAttribute('data-aikwau-mode', 'mouse')` synchronously
+- Reads `chrome.storage.local.aikwau_gaze_mode` → updates attribute + fires `aikwau:mode-ready` event
+
+### `gaze_tracker.js` — Gaze tracking (MAIN world)
+- Reads mode from DOM attribute (not chrome.storage — not accessible in MAIN world)
+- Mouse mode: `document.mouseover` + 2000ms dwell → dispatch `aikwau:gazefocus`
+- Webcam mode: `webgazer.begin()` → 9-point calibration overlay → EMA-smoothed gaze → dispatch events
+- EMA smoothing: `SMOOTH_ALPHA = 0.05` (lower = smoother, higher = more responsive)
+- Gaze ring: blue 40px fixed-position circle follows smoothed gaze point
+- Calibration: full-screen dark overlay, 9 dots at 3×3 grid positions, sequential click, skip button
+- Events carry `{x, y}` viewport coords — NOT element references (elements don't cross world boundary)
+
+### `content.js` — L1 + badge (isolated world)
+- Listens to `aikwau:gazefocus` on document, extracts `{x, y}`, calls `elementFromPoint(x, y)`
+- Applies `aikwau-l1` class, shows loading badge, sends summarize message
+- On response: updates badge to summary text (truncated to 72 chars) or error
 
 ### `native_host.py` — Inference Host
 - Reads 4-byte LE uint32 length prefix, then JSON from stdin
 - Sends 4-byte LE uint32 length prefix, then JSON to stdout
-- Supports actions: `ping` (returns `{status:'ready'}`) and `summarize` (returns `{status:'ok', summary:'...'}`)
-- `reqId` is echoed back for async matching
-- Logs to `aikwau_host.log` in same directory
+- Supports actions: `ping` → `{status:'ready'}` and `summarize` → `{status:'ok', summary:'...'}`
+- `reqId` echoed back for async matching; logs to `aikwau_host.log`
 - `DEVICE_PRIORITY = "NPU,GPU,CPU"` — change to `"CPU"` for debugging
 
 ### `background.js` — Service Worker
@@ -149,17 +174,25 @@ WebGazer accuracy: ±50-100px after calibration (click 9 points on screen). Good
 - Maps `reqId` → callback in `pending` Map
 - On disconnect: rejects all pending with error
 
-### `gaze_tracker.js` — GazeTracker
-- Loaded before `content.js` in manifest content_scripts
-- Sets `window.__aikwauTracker = new GazeTracker()`
-- Mode persisted in `chrome.storage.local.aikwau_gaze_mode`
-- Emits `CustomEvent('gazefocus')` and `CustomEvent('gazeblur')` on itself (not document)
-
 ### `register.py` — Host Registration
 - Creates `run_host.bat` that calls `python native_host.py`
 - Patches `host_manifest.json` with real `.bat` path and extension ID
-- Writes registry key `HKCU\...\com.hp.aikwau.summarizer` pointing to `host_manifest.json`
+- Writes registry key `HKCU\...\com.hp.aikwau.summarizer` → `host_manifest.json`
 - After running: reload the extension in Edge
+
+### `popup.html` / `popup.js` — Mode switcher
+- Radio buttons: 滑鼠模式 / 眼球追蹤
+- On change: writes `chrome.storage.local.aikwau_gaze_mode`, shows "請重新整理頁面生效"
+- Recalibrate button: sets `aikwau_needs_calibration: true` (calibration triggers on next page load)
+
+## WebGazer Notes
+
+- **Version**: 2.1.2 (npm), bundled as `poc/extension/webgazer.js` (2.3 MB minified)
+- **Why v2 not v3**: v3 uses MediaPipe which dynamically loads JS — blocked by page CSP
+- **Why MAIN world**: v2 uses TF.js which calls `new Function()` for WebGL — blocked by extension isolated-world CSP
+- **Model source**: TF.js loads facemesh model from `https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1` on first use (requires internet, cached by browser after first load)
+- **Accuracy**: ±100–200px uncalibrated; improves to ±50–100px after 9-point calibration. Good enough for paragraph-level detection.
+- **Smoothing**: EMA with α=0.05 applied to raw gaze coordinates before hit-testing and ring display
 
 ## Presentation Files
 
@@ -175,21 +208,20 @@ WebGazer accuracy: ±50-100px after calibration (click 9 points on screen). Good
 | Layer | Technology |
 |---|---|
 | Browser | Microsoft Edge (MV3 extension) |
-| Eye tracking (PoC) | Mouse hover simulation |
-| Eye tracking (real) | WebGazer.js (webcam, JS) |
+| Eye tracking (PoC) | Mouse hover simulation (default) |
+| Eye tracking (real) | WebGazer.js v2.1.2 (webcam, TF.js-based, MAIN world) |
 | AI inference | OpenVINO GenAI (Python) |
 | Model | Qwen2.5-1.5B-Instruct, INT4 quantized via optimum-intel (sym, group_size=128) |
 | Hardware | Intel NPU → iGPU → CPU (auto-fallback) |
 | Host protocol | Native Messaging (length-prefixed JSON) |
 | Registry | HKCU (no admin required) |
 
-## Potential Next Features (not yet started)
+## Potential Next Features
 
+- [ ] Native Messaging host registration and end-to-end test ← **immediate**
 - [ ] L2 text enlargement (triggered by longer dwell, e.g. 4s)
-- [ ] Gaze ring visual overlay (show where gaze is estimated)
-- [ ] Calibration UI for WebGazer (9-point click calibration)
-- [ ] Extension popup for toggling modes (mouse vs webcam)
 - [ ] Streaming inference (show summary word-by-word as generated)
+- [ ] WebGazer local model cache (avoid tfhub.dev dependency)
 - [ ] Windows Accessibility API integration (Phase 2 — beyond browser)
 - [ ] Tobii/HP SureView real eye tracker hardware integration
 
@@ -209,9 +241,12 @@ send({'action':'ping','reqId':1}); print(recv())
 send({'action':'summarize','text':'AI is transforming healthcare with new diagnostic tools.','lang':'en','reqId':2}); print(recv())
 "
 
-# View logs
+# View native host logs
 type poc\native_host\aikwau_host.log
 
 # Check registry key exists
 reg query HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer
+
+# Check extension mode in storage (run from background service worker DevTools console)
+chrome.storage.local.get(null, console.log)
 ```

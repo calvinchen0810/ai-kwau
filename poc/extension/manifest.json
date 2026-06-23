@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AI Kwau PoC",
-  "version": "0.3.0",
+  "version": "0.4.2",
   "description": "On-device gaze summarization — PoC",
   "permissions": ["nativeMessaging", "activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
@@ -16,7 +16,7 @@
     },
     {
       "matches": ["<all_urls>"],
-      "js": ["webgazer.js", "gaze_tracker.js"],
+      "js": ["gaze_tracker.js"],
       "world": "MAIN",
       "run_at": "document_idle"
     },
@@ -27,6 +27,10 @@
       "run_at": "document_idle"
     }
   ],
+  "web_accessible_resources": [{
+    "resources": ["mediapipe/*"],
+    "matches": ["<all_urls>"]
+  }],
   "action": {
     "default_title": "AI Kwau PoC",
     "default_popup": "popup.html"

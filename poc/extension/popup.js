@@ -20,8 +20,12 @@ radios.forEach(radio => {
 });
 
 recalibrate.addEventListener('click', () => {
-  chrome.storage.local.set({ aikwau_needs_calibration: true }, () => {
-    status.textContent = '下次頁面載入時將進行校準';
-    setTimeout(() => { status.textContent = ''; }, 2500);
+  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+    if (!tab) return;
+    chrome.tabs.sendMessage(tab.id, { type: 'gaze:recalibrate' }, () => {
+      status.textContent = chrome.runtime.lastError ? '請先重新整理頁面' : '校準 UI 已開啟';
+      if (!chrome.runtime.lastError) window.close();
+      setTimeout(() => { status.textContent = ''; }, 2500);
+    });
   });
 });

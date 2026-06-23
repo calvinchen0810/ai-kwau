@@ -13,7 +13,7 @@ LOG_PATH = Path(__file__).parent / "aikwau_host.log"
 # Qwen2.5-1.5B: standard architecture, verified working on Intel Panther Lake NPU
 # Phi-4-mini: NOT compatible with NPU (corrupted output)
 MODEL_DIR = str(Path(__file__).parent.parent / "models" / "qwen2.5-1.5b-int4")
-DEVICE_PRIORITY = "NPU,GPU,CPU"
+DEVICE_PRIORITY = "CPU"
 
 logging.basicConfig(
     filename=str(LOG_PATH),
