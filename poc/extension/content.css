@@ -3,7 +3,22 @@
   color: #080808 !important;
   font-weight: 700 !important;
   letter-spacing: 0.15px;
-  transition: color 0.3s ease, font-weight 0.3s ease;
+  transition: color 0.3s ease, font-weight 0.3s ease, font-size 0.25s ease;
+}
+
+/* ── L2: additional font enlargement (toggled via popup) ───────────── */
+.aikwau-l2 {
+  font-size: 1.2em !important;
+  line-height: 1.7 !important;
+}
+
+/* ── Paragraph summary-ready highlight ──────────────────────────────── */
+.aikwau-summary-ready {
+  background-color: rgba(255, 220, 0, 0.22) !important;
+  outline: 2px solid rgba(220, 180, 0, 0.35) !important;
+  outline-offset: 2px;
+  border-radius: 3px;
+  transition: background-color 0.35s ease, outline 0.35s ease;
 }
 
 /* ── Summary badge ─────────────────────────────────────────────────── */
@@ -20,6 +35,7 @@
   border-left: 4px solid #00c7ee;
   box-shadow: 0 7px 24px rgba(0, 0, 0, 0.35);
   pointer-events: none;
+  white-space: pre-line;
   animation: aikwau-in 0.22s ease;
 }
 
@@ -44,4 +60,80 @@
 @keyframes aikwau-in {
   from { opacity: 0; transform: translateY(5px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Blind-area edge beacon ─────────────────────────────────────────── */
+.aikwau-beacon {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px 7px 10px;
+  background: rgba(10, 10, 16, 0.90);
+  border: 1.5px solid rgba(255, 200, 0, 0.85);
+  border-radius: 999px;
+  color: #fff;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2147483646;
+  pointer-events: all;
+  white-space: nowrap;
+  max-width: 230px;
+  overflow: hidden;
+  animation: aikwau-beacon-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 2px 16px rgba(255, 190, 0, 0.30);
+  user-select: none;
+}
+
+.aikwau-beacon:hover {
+  background: rgba(28, 24, 6, 0.97);
+  border-color: #ffd700;
+  box-shadow: 0 4px 22px rgba(255, 215, 0, 0.55);
+}
+
+.aikwau-beacon-arrow {
+  font-size: 10px;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.aikwau-beacon-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Margin note (side annotation pinned beside paragraph) ──────────────── */
+.aikwau-margin-note {
+  position: absolute;
+  width: 240px;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: #e8f4ff;
+  background: rgba(6, 18, 46, 0.97);
+  border-left: 3px solid #39d9ff;
+  border-radius: 0 6px 6px 0;
+  padding: 9px 11px 9px 10px;
+  box-shadow: 0 3px 16px rgba(0, 0, 0, 0.55);
+  z-index: 2147483640;
+  pointer-events: none;
+  white-space: pre-line;
+  animation: aikwau-in 0.2s ease;
+}
+
+/* ── Margin note light theme (白底黑字) ──────────────────────────────────── */
+.aikwau-margin-note--light {
+  color: #0d1520;
+  background: rgba(255, 255, 255, 0.98);
+  border-left-color: #0070cc;
+  box-shadow: 0 3px 16px rgba(0, 0, 0, 0.20);
+}
+
+@keyframes aikwau-beacon-pulse {
+  0%, 100% { opacity: 0.78; box-shadow: 0 2px 12px rgba(255, 190, 0, 0.25); }
+  50%       { opacity: 1.00; box-shadow: 0 3px 24px rgba(255, 215, 0, 0.65); }
 }

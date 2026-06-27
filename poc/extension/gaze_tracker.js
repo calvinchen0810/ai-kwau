@@ -6,7 +6,7 @@
  * This MAIN-world script only runs the mouse-hover simulation.
  */
 (() => {
-  const DWELL_MS = 2000;
+  const DWELL_MS = 1500;
   const SELECTORS = 'p, h1, h2, h3, h4, li, blockquote, td, figcaption';
   const MIN_TEXT_LEN = 40;
 

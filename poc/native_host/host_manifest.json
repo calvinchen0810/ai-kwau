@@ -1,6 +1,6 @@
 {
   "name": "com.hp.aikwau.summarizer",
-  "description": "AI Kwau On-device Summarizer \u00e2\u20ac\u201d Native Host",
+  "description": "AI Kwau On-device Summarizer \u2014 Native Host",
   "path": "C:\\Users\\chencal\\Documents\\GitHub\\ai-kwau\\poc\\native_host\\run_host.bat",
   "type": "stdio",
   "allowed_origins": [

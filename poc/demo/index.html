@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Kwau 盲區提示演示 — HP 智慧文件審閱</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --header-h: 62px;
+  --footer-h: 64px;
+  --sidebar-l: 210px;
+  --sidebar-r: 176px;
+  --accent: #0073c8;
+  --danger: #d0281e;
+  --success: #1a7a3a;
+  --surface: #f7f8fb;
+  --border: #dde1ea;
+  --text: #1a1d26;
+  --muted: #6b717e;
+}
+
+body {
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  background: var(--surface);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* ── Fixed header ──────────────────────────────────────────────────────── */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  z-index: 1000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.header-logo svg { color: var(--accent); }
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.header-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.header-nav a:hover { background: #f0f2f5; color: var(--text); }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.btn-ghost:hover { background: #f0f2f5; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-primary:hover { background: #005fa3; }
+
+.btn-outline {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--muted);
+  width: 100%;
+  justify-content: center;
+  font-size: 12px;
+  padding: 8px 10px;
+}
+.btn-outline:hover { background: #f5f6fa; color: var(--text); }
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+  padding: 11px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.btn-danger:hover { background: #b01f17; }
+
+.btn-success {
+  background: var(--success);
+  color: #fff;
+  border-color: var(--success);
+  padding: 11px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+.btn-success:hover { background: #155d2c; }
+
+.btn-tool {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--text);
+  width: 100%;
+  justify-content: flex-start;
+  font-size: 12.5px;
+  padding: 9px 12px;
+  border-radius: 8px;
+}
+.btn-tool:hover { background: #eef2ff; border-color: #b8c5f0; }
+
+/* ── Page layout ───────────────────────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-l) 1fr var(--sidebar-r);
+  min-height: 100vh;
+  padding-top: var(--header-h);
+  padding-bottom: var(--footer-h);
+}
+
+/* ── Left sidebar ──────────────────────────────────────────────────────── */
+.sidebar-left {
+  background: #fff;
+  border-right: 1px solid var(--border);
+  padding: 20px 14px;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-left h4 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc-list {
+  list-style: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toc-list a {
+  display: block;
+  padding: 5px 8px;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 12.5px;
+  transition: all 0.1s;
+}
+.toc-list a:hover { background: #eef2ff; color: var(--accent); }
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+/* ── Main content ──────────────────────────────────────────────────────── */
+.main {
+  padding: 28px 40px 40px;
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Demo control panel ────────────────────────────────────────────────── */
+.demo-panel {
+  background: linear-gradient(135deg, #0a1628 0%, #0e2040 100%);
+  border: 1px solid #1e4080;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  color: #fff;
+}
+
+.demo-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.demo-panel-header h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.demo-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 115, 200, 0.4);
+  border: 1px solid rgba(0, 115, 200, 0.6);
+  color: #7bc4f7;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.demo-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.demo-step {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+}
+
+.demo-step strong {
+  display: block;
+  color: #7bc4f7;
+  font-size: 11px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demo-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.btn-demo-primary {
+  background: #0073c8;
+  color: #fff;
+}
+.btn-demo-primary:hover { background: #005fa3; transform: translateY(-1px); }
+
+.btn-demo-secondary {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+}
+.btn-demo-secondary:hover { background: rgba(255,255,255,0.16); }
+
+#demoStatus {
+  font-size: 12px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  flex: 1;
+  min-width: 0;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.2s;
+}
+
+#demoStatus.ok    { color: #4ae090; }
+#demoStatus.error { color: #ff8a7a; }
+#demoStatus.info  { color: #7bc4f7; }
+
+/* ── Article ───────────────────────────────────────────────────────────── */
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.meta-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.meta-badge-blue { background: #e8f1fd; color: #0058b0; }
+.meta-badge-orange { background: #fff0e0; color: #b05000; }
+
+.meta-info { font-size: 12px; color: var(--muted); }
+
+article h1 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+article h2 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 28px 0 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+}
+
+article p {
+  margin-bottom: 14px;
+  color: #2a2e3a;
+}
+
+article ol, article ul {
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+
+article li {
+  margin-bottom: 6px;
+  color: #2a2e3a;
+}
+
+.highlight-box {
+  background: #fff8e6;
+  border: 1px solid #f5d78e;
+  border-left: 4px solid #f5a623;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: #5a3c00;
+}
+
+.article-footer-note {
+  margin-top: 28px;
+  padding: 16px;
+  background: #f0f4ff;
+  border: 1px solid #c8d5f0;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #3a4a70;
+  line-height: 1.6;
+}
+
+/* ── Right sidebar ─────────────────────────────────────────────────────── */
+.sidebar-right {
+  background: #fff;
+  border-left: 1px solid var(--border);
+  padding: 20px 14px;
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-right h4 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.progress-card {
+  background: #f7f8fb;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 4px;
+}
+
+.progress-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.progress-bar-wrap {
+  height: 6px;
+  background: #dde1ea;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.progress-pct {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ── Fixed footer bar ──────────────────────────────────────────────────── */
+.footer-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--footer-h);
+  background: #fff;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 24px;
+}
+
+.footer-note {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  flex: 1;
+}
+
+/* ── Blind area label (for explanation, not the extension beacon) ───────── */
+.demo-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #d08000;
+  background: #fff8e0;
+  border: 1px dashed #e0b030;
+  border-radius: 4px;
+  padding: 2px 7px;
+  vertical-align: middle;
+  margin-left: 6px;
+  letter-spacing: 0.04em;
+  cursor: default;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ HEADER ════════ -->
+<header class="header">
+  <a href="#" class="header-logo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="M2 12h4M18 12h4M12 2v4M12 18v4"/>
+      <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/>
+    </svg>
+    HP 文件審閱
+  </a>
+
+  <nav class="header-nav">
+    <a href="#">首頁</a>
+    <a href="#">我的文件</a>
+    <a href="#">審閱歷史</a>
+    <a href="#">說明</a>
+  </nav>
+
+  <div class="header-actions">
+    <button class="btn btn-ghost">💾 儲存草稿 <span class="demo-label">盲區?</span></button>
+    <button class="btn btn-ghost">📤 分享 <span class="demo-label">盲區?</span></button>
+    <button class="btn btn-primary">👤 登入</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ LAYOUT ════════ -->
+<div class="layout">
+
+  <!-- ── Left sidebar ──────────────────────────────────────────────────── -->
+  <aside class="sidebar-left">
+    <h4>文件目錄</h4>
+    <ul class="toc-list">
+      <li><a href="#s1">1. 服務範圍與定義</a></li>
+      <li><a href="#s2">2. 資料收集與隱私</a></li>
+      <li><a href="#s3">3. 使用者義務</a></li>
+      <li><a href="#s4">4. 智慧財產權</a></li>
+      <li><a href="#s5">5. 責任限制</a></li>
+      <li><a href="#s6">6. 服務終止條件</a></li>
+      <li><a href="#s7">7. 爭議解決機制</a></li>
+    </ul>
+
+    <div class="sidebar-divider"></div>
+
+    <button class="btn btn-outline">⬇️ 下載 PDF <span class="demo-label" style="font-size:9px">盲區?</span></button>
+    <button class="btn btn-outline" style="margin-top:6px">🖨️ 列印</button>
+    <button class="btn btn-outline" style="margin-top:6px">📋 複製連結</button>
+  </aside>
+
+  <!-- ── Main content ───────────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Demo control panel -->
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <h3>🔬 AI Kwau 盲區按鈕提示演示</h3>
+        <span class="demo-badge">互動演示</span>
+      </div>
+
+      <div class="demo-steps">
+        <div class="demo-step">
+          <strong>步驟 1 — 安裝擴充功能</strong>
+          在 Edge 安裝 AI Kwau PoC 擴充功能，並確認已啟用。
+        </div>
+        <div class="demo-step">
+          <strong>步驟 2 — 載入演示資料</strong>
+          點擊「載入演示熱圖」，模擬使用者視線集中在文章中央的情況。
+        </div>
+        <div class="demo-step">
+          <strong>步驟 3 — 觀察燈塔</strong>
+          邊緣出現金色脈衝燈塔，指向使用者沒有注視到的按鈕。
+        </div>
+        <div class="demo-step">
+          <strong>步驟 4 — 點擊燈塔</strong>
+          點擊任一燈塔，頁面自動捲動並高亮對應的按鈕元素。
+        </div>
+      </div>
+
+      <div class="demo-controls">
+        <button class="btn-demo btn-demo-primary" onclick="loadDemoHeatmap()">📊 載入演示熱圖</button>
+        <button class="btn-demo btn-demo-secondary" onclick="clearDemoHeatmap()">🗑️ 清除</button>
+        <div id="demoStatus" class="info">請先載入演示熱圖</div>
+      </div>
+    </div>
+
+    <!-- Article -->
+    <div class="article-meta">
+      <span class="meta-badge meta-badge-blue">需要簽署</span>
+      <span class="meta-badge meta-badge-orange">合約效期 30 日</span>
+      <span class="meta-info">文件編號：HPQ-2026-MED-8821 　版本：v3.2 　最後更新：2026-06-01</span>
+    </div>
+
+    <article>
+      <h1>HP 智慧健康監測服務條款合約</h1>
+
+      <p>本合約（以下簡稱「本合約」）係由惠普科技股份有限公司（以下簡稱「HP」或「公司」）與簽署方（以下簡稱「使用者」或「您」）就 HP 智慧健康監測服務（以下簡稱「本服務」）之使用，所訂立之合法協議。請在簽署本合約前，仔細閱讀以下所有條款。您對本服務之使用即表示您同意接受本合約所有條款的約束。</p>
+
+      <div class="highlight-box">
+        ⚠ 重要提醒：本合約包含責任限制、仲裁條款及豁免集體訴訟的條款。請務必完整閱讀第五節（責任限制）及第七節（爭議解決機制）。
+      </div>
+
+      <h2 id="s1">第一條 服務範圍與定義</h2>
+      <p>「本服務」係指 HP 透過其搭載於 Panther Lake 系列筆記型電腦上的人工智慧晶片（Intel AI Boost NPU，TOPS 值超過 100）所提供的一系列健康監測功能，包括但不限於：</p>
+      <ol>
+        <li><strong>視線追蹤功能</strong>：利用設備前置鏡頭及內建神經處理器，即時分析使用者眼球動態，用以輔助無障礙功能及使用者體驗優化。所有分析僅在本地設備上進行，不上傳至任何外部伺服器。</li>
+        <li><strong>文字強化功能</strong>：當系統偵測到使用者正在閱讀某段文字時，自動加深該段落的字體顏色與粗細（L1 效果），或選擇性地放大字體（L2 效果），以減輕視覺疲勞。</li>
+        <li><strong>摘要生成功能</strong>：利用本地部署之 Qwen2.5-1.5B-Instruct INT4 量化語言模型，對使用者正在閱讀的段落自動生成簡短摘要，所有推理過程僅在本地執行，不依賴雲端 API。</li>
+        <li><strong>盲區偵測功能</strong>：透過分析使用者視線熱圖，偵測使用者較少注視的視窗區域，並在可視範圍邊緣以視覺提示告知使用者該區域中存在的互動元素（如按鈕或連結）。</li>
+      </ol>
+
+      <h2 id="s2">第二條 資料收集、處理與隱私保護</h2>
+      <p>HP 深知隱私保護的重要性。本服務在設計之初即採用「隱私優先」原則，確保您的個人資料受到最高程度的保護：</p>
+      <ul>
+        <li><strong>本地處理原則</strong>：所有視線追蹤資料、健康相關數據及 AI 推理結果均在您的設備本地端處理，不以任何形式傳輸至 HP 伺服器或任何第三方。</li>
+        <li><strong>資料最小化</strong>：系統僅收集提供服務所必需的最少量資料。視線追蹤資料以 24×14 的低解析度熱圖形式儲存於瀏覽器本地儲存空間，不包含任何可識別個人身份的特徵資訊。</li>
+        <li><strong>使用者控制</strong>：您可隨時透過擴充功能彈出視窗清除所有本地儲存的視線資料。系統不會在您未知情的情況下保存或共享任何資料。</li>
+        <li><strong>安全性</strong>：視線資料僅在瀏覽器的 chrome.storage.local 沙箱環境中儲存，其他網站或擴充功能無法存取。</li>
+      </ul>
+
+      <h2 id="s3">第三條 使用者義務與使用限制</h2>
+      <p>使用本服務，您同意遵守以下義務及限制：</p>
+      <ol>
+        <li>您不得嘗試對本服務進行逆向工程、反組譯或以任何方式破解本服務的技術保護措施。</li>
+        <li>您不得將本服務用於任何非法目的，包括但不限於侵犯他人隱私、進行網路釣魚攻擊或散布惡意軟體。</li>
+        <li>您應妥善保管您的帳號憑證，HP 不對因您疏忽保管帳號憑證而導致的損失負責。</li>
+        <li>您不得允許未經授權的第三方存取您帳號下的服務資料。</li>
+        <li>您同意在使用視線追蹤功能時，遵守所在地區關於生物特徵識別技術使用的相關法規。</li>
+      </ol>
+
+      <h2 id="s4">第四條 智慧財產權</h2>
+      <p>本服務中的所有軟體、演算法、使用者介面設計及相關文件均受著作權法及其他智慧財產權法律的保護。HP 保留本服務的所有權利、所有權及利益，包括所有相關的智慧財產權。本合約授予您有限的、非獨家的、不可轉讓的個人使用許可，但不轉讓任何智慧財產權。</p>
+      <p>但書：本服務所使用的 OpenVINO™ 軟體框架及 Qwen2.5 系列模型分別依據 Apache 2.0 授權及 Qwen License Agreement 進行授權，上述開源組件的授權條款另行適用。</p>
+
+      <h2 id="s5">第五條 責任限制</h2>
+      <p>在法律允許的最大範圍內，HP 對以下情況不承擔任何責任：</p>
+      <ul>
+        <li>因使用或無法使用本服務而造成的任何直接、間接、偶然、特殊或後果性損害。</li>
+        <li>因視線追蹤精度不足（通常在 ±50–100 像素範圍內）而導致的誤操作。</li>
+        <li>因 AI 摘要功能生成不準確或不完整的內容而造成的損失。</li>
+        <li>因第三方網站的技術變更導致擴充功能無法正常運作。</li>
+      </ul>
+
+      <div class="highlight-box">
+        ⚠ 重要：如您不同意上述責任限制條款，請點擊頁面底部「拒絕合約」按鈕，並停止使用本服務。
+      </div>
+
+      <h2 id="s6">第六條 服務終止條件</h2>
+      <p>HP 保留在下列情況下終止或暫停您使用本服務的權利，且無需提前通知：</p>
+      <ol>
+        <li>您違反本合約的任何條款或條件。</li>
+        <li>HP 有合理理由相信您的帳號活動對其他使用者、HP 或第三方造成損害或威脅。</li>
+        <li>依據適用法律、法院命令或政府機關指示，HP 須終止向您提供服務。</li>
+      </ol>
+      <p>在服務終止後，本合約中關於智慧財產權、責任限制及爭議解決的條款仍繼續有效。</p>
+
+      <h2 id="s7">第七條 爭議解決機制</h2>
+      <p>本合約依據中華民國法律解釋及執行。雙方同意，因本合約或本服務而引發的任何爭議，應首先以友好協商方式解決。協商不成時，應提交中華民國仲裁協會，依其仲裁規則進行仲裁。仲裁地點為臺灣臺北市，仲裁語言為中文。</p>
+      <p>本合約之簽署即表示您已完整閱讀並理解上述所有條款，並同意受本合約的約束。如您對本合約有任何疑問，請在簽署前聯絡 HP 客戶服務部門。</p>
+
+      <div class="article-footer-note">
+        本文件為法律約束性合約。請在閱讀全文後，使用頁面<strong>底部</strong>的「拒絕合約」或「同意並簽署」按鈕作出決定。<br>
+        <em>提示：如果您已安裝 AI Kwau 擴充功能並載入演示熱圖，邊緣燈塔將指引您找到這些按鈕。</em>
+      </div>
+    </article>
+  </main>
+
+  <!-- ── Right sidebar ───────────────────────────────────────────────────── -->
+  <aside class="sidebar-right">
+    <h4>審閱工具</h4>
+
+    <div class="progress-card">
+      <div class="progress-label">閱讀進度</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="readProgress" style="width:0%"></div>
+      </div>
+      <div class="progress-pct" id="readPct">0%</div>
+    </div>
+
+    <button class="btn btn-tool">🚩 標記問題段落 <span class="demo-label" style="font-size:9px">盲區?</span></button>
+    <button class="btn btn-tool">💬 加入備註</button>
+    <button class="btn btn-tool">📌 加入書籤 <span class="demo-label" style="font-size:9px">盲區?</span></button>
+    <button class="btn btn-tool">🔍 搜尋條款</button>
+
+    <div class="sidebar-divider"></div>
+
+    <h4 style="margin-top:4px">審閱狀態</h4>
+    <div class="progress-card" style="background:#fff8e0;border-color:#f5d78e">
+      <div style="font-size:11px;color:#7a5200;font-weight:600">⏳ 待簽署</div>
+      <div style="font-size:11px;color:#a06000;margin-top:4px">截止日：2026-07-21</div>
+    </div>
+
+    <button class="btn btn-tool" style="margin-top:4px">🔔 設定提醒</button>
+    <button class="btn btn-tool">📧 轉寄此文件</button>
+  </aside>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ FOOTER ════════ -->
+<div class="footer-bar">
+  <div class="footer-inner">
+    <button class="btn btn-danger" onclick="handleReject()">❌ 拒絕合約</button>
+    <div class="footer-note">
+      請仔細閱讀全文後再作決定<br>
+      <span style="font-size:11px;color:#aaa">簽署即表示您同意受本合約所有條款約束</span>
+    </div>
+    <button class="btn btn-success" onclick="handleAgree()">✅ 同意並簽署</button>
+  </div>
+</div>
+
+<script>
+// ── Demo event bridge ────────────────────────────────────────────────────
+function loadDemoHeatmap() {
+  const s = document.getElementById('demoStatus');
+  s.className = 'info';
+  s.textContent = '⏳ 正在通知 AI Kwau 擴充功能...';
+  document.dispatchEvent(new CustomEvent('aikwau:demo-populate'));
+  // Fallback if extension not installed
+  setTimeout(() => {
+    if (s.textContent.startsWith('⏳')) {
+      s.className = 'error';
+      s.textContent = '⚠ 未偵測到 AI Kwau 擴充功能，請確認已安裝並啟用';
+    }
+  }, 1500);
+}
+
+function clearDemoHeatmap() {
+  document.dispatchEvent(new CustomEvent('aikwau:demo-clear'));
+  const s = document.getElementById('demoStatus');
+  s.className = 'info';
+  s.textContent = '🗑️ 已清除熱圖資料';
+}
+
+// Response from content.js after scanning
+document.addEventListener('aikwau:demo-ready', (e) => {
+  const count = e.detail?.count ?? 0;
+  const s = document.getElementById('demoStatus');
+  if (count > 0) {
+    s.className = 'ok';
+    s.textContent = `✅ 偵測到 ${count} 個盲區互動元素 — 請觀察視窗邊緣的金色燈塔`;
+  } else {
+    s.className = 'info';
+    s.textContent = '✅ 演示資料已載入（目前無盲區元素，請捲動頁面後再試）';
+  }
+});
+
+// ── Reading progress ─────────────────────────────────────────────────────
+function updateProgress() {
+  const el = document.querySelector('article');
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const total = r.height - window.innerHeight;
+  const pct = total <= 0 ? 100 : Math.min(100, Math.max(0, Math.round(-r.top / total * 100)));
+  document.getElementById('readProgress').style.width = pct + '%';
+  document.getElementById('readPct').textContent = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+// ── Action buttons ───────────────────────────────────────────────────────
+function handleReject() {
+  if (confirm('確定要拒絕此合約嗎？')) {
+    alert('您已拒絕合約。感謝您的審閱。');
+  }
+}
+
+function handleAgree() {
+  if (confirm('您確定要同意並簽署此合約嗎？此動作不可撤銷。')) {
+    alert('✅ 合約已簽署！感謝您的使用。\n\n（演示模式：實際簽署功能未啟用）');
+  }
+}
+</script>
+</body>
+</html>

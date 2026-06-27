@@ -15,23 +15,256 @@ window.__aikwauContentLoaded = true;
   const SUMMARY_MAX_CHARS = 220;
   const SELECTORS = 'p, h1, h2, h3, h4, li, blockquote, td, figcaption';
 
-  let activeEl    = null;
-  let activeBadge = null;
-  let lastMouseX  = 0, lastMouseY = 0;
+  let activeEl            = null;
+  let activeBadge         = null;
+  let lastMouseX          = 0, lastMouseY = 0;
+  let l2Enabled           = true;   // L2 font enlargement
+  let shiftReplaceEnabled = false;  // Shift key replaces paragraph with summary
+  let shiftHandler        = null;
+  let replacedEl          = null;   // element whose text was replaced by summary
+  let replacedOrigText    = null;   // original textContent before replacement
+  let badgeTimer          = null;   // auto-dismiss timer (tracked so cleanup can cancel it)
+  const summaryCache      = new Map(); // text-key → cached summary string
+  let marginNoteEnabled   = false;
+  const marginNotes       = new Map(); // el → noteDiv
+  let isWebcamMode        = false;  // true → badge fixed on right, not cursor-following
+  let noteTheme           = 'dark'; // 'dark' | 'light'
   document.addEventListener('mousemove', e => { lastMouseX = e.clientX; lastMouseY = e.clientY; }, { passive: true });
 
-  // ── Mode init ─────────────────────────────────────────────────────────────
-  chrome.storage.local.get('aikwau_gaze_mode', ({ aikwau_gaze_mode }) => {
-    if ((aikwau_gaze_mode ?? 'mouse') === 'webcam') {
-      initWebcam();
+  // ── Gaze heatmap accumulator ──────────────────────────────────────────────
+  const HM_W = 24, HM_H = 14;
+  let hmCells     = new Array(HM_W * HM_H).fill(0);
+  let hmDirty     = false;
+  let hmSaveTimer = null;
+  let lastHmTime  = 0;
+
+  chrome.storage.local.get('aikwau_heatmap', ({ aikwau_heatmap: d }) => {
+    if (Array.isArray(d?.cells) && d.cells.length === HM_W * HM_H) {
+      hmCells = d.cells.slice();
     }
-    // Mouse mode events come from gaze_tracker.js (MAIN world) via document
   });
+
+  function hmAccumulate(vx, vy) {
+    const now = Date.now();
+    if (now - lastHmTime < 200) return;
+    lastHmTime = now;
+    const col = Math.floor(vx / window.innerWidth  * HM_W);
+    const row = Math.floor(vy / window.innerHeight * HM_H);
+    if (col < 0 || col >= HM_W || row < 0 || row >= HM_H) return;
+    hmCells[row * HM_W + col] += 1;
+    hmDirty = true;
+    if (!hmSaveTimer) hmSaveTimer = setTimeout(hmSave, 5000);
+  }
+
+  function hmSave() {
+    hmSaveTimer = null;
+    if (!hmDirty) return;
+    hmDirty = false;
+    chrome.storage.local.set({
+      aikwau_heatmap: {
+        cells:       hmCells.slice(),
+        totalPoints: hmCells.reduce((a, b) => a + b, 0),
+        lastUpdated: Date.now(),
+      }
+    });
+    scanBlindButtons();
+  }
+
+  window.addEventListener('beforeunload', hmSave);
+
+  // ── Blind-area button scanner ─────────────────────────────────────────────
+  const INTERACTIVE_SEL = [
+    'button:not([disabled])',
+    'a[href]',
+    'input:not([type="hidden"]):not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[role="button"]',
+    '[role="link"]',
+  ].join(', ');
+
+  const MIN_HM_POINTS = 50;   // need this many gaze samples before scanning
+  const MAX_BEACONS   = 4;    // max beacons on screen at once
+
+  let beaconTargets = [];     // [{el, beaconEl}]
+
+  function coldCells() {
+    const total = hmCells.reduce((a, b) => a + b, 0);
+    if (total < MIN_HM_POINTS) return new Set();
+    const cold = new Set();
+    for (let r = 0; r < HM_H; r++) {
+      for (let c = 0; c < HM_W; c++) {
+        if (hmCells[r * HM_W + c] > 0) continue;   // has data → not cold
+        // Only flag if surrounded by ≥3 active cells (avoids flagging unscrolled regions)
+        let nbActive = 0;
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            const nr = r + dr, nc = c + dc;
+            if (nr >= 0 && nr < HM_H && nc >= 0 && nc < HM_W && hmCells[nr * HM_W + nc] > 0) nbActive++;
+          }
+        }
+        if (nbActive >= 3) cold.add(r * HM_W + c);
+      }
+    }
+    return cold;
+  }
+
+  function elLabel(el) {
+    const t = (
+      el.getAttribute('aria-label') ||
+      el.getAttribute('title') ||
+      el.innerText ||
+      el.value ||
+      el.getAttribute('placeholder') ||
+      el.tagName.toLowerCase()
+    ).trim();
+    return t.slice(0, 22) || el.tagName.toLowerCase();
+  }
+
+  function scanBlindButtons() {
+    const total = hmCells.reduce((a, b) => a + b, 0);
+    if (total < MIN_HM_POINTS) { updateBeacons([]); return; }
+
+    const cold = coldCells();
+    if (cold.size === 0) { updateBeacons([]); return; }
+
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const found = [];
+
+    for (const el of document.querySelectorAll(INTERACTIVE_SEL)) {
+      // Skip extension-injected elements
+      if (el.id?.startsWith('__aikwau') || el.id?.startsWith('__ap')) continue;
+      if (el.closest('[id^="__aikwau"]') || el.closest('[id^="__ap"]')) continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+      if (rect.bottom <= 0 || rect.top >= vh || rect.right <= 0 || rect.left >= vw) continue;
+
+      const cx = rect.left + rect.width  / 2;
+      const cy = rect.top  + rect.height / 2;
+      const col = Math.floor(cx / vw * HM_W);
+      const row = Math.floor(cy / vh * HM_H);
+      if (col < 0 || col >= HM_W || row < 0 || row >= HM_H) continue;
+
+      if (cold.has(row * HM_W + col)) {
+        found.push({ el, cx, cy, label: elLabel(el),
+                     dist: Math.hypot(cx - vw / 2, cy - vh / 2) });
+      }
+    }
+
+    // Keep the ones furthest from viewport center (most likely to be missed)
+    found.sort((a, b) => b.dist - a.dist);
+    const top = found.slice(0, MAX_BEACONS);
+    updateBeacons(top);
+
+    // Inform demo page how many were found
+    document.dispatchEvent(new CustomEvent('aikwau:demo-ready', { detail: { count: top.length } }));
+  }
+
+  function updateBeacons(list) {
+    const keep = new Set(list.map(i => i.el));
+    for (const { el, beaconEl } of beaconTargets) {
+      if (!keep.has(el)) beaconEl.remove();
+    }
+    beaconTargets = beaconTargets.filter(b => keep.has(b.el));
+
+    const existingEls = new Set(beaconTargets.map(b => b.el));
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const PAD = 10;
+    const edgeCount = { left: 0, right: 0, top: 0, bottom: 0 };
+
+    for (const item of list) {
+      const { cx, cy, el, label } = item;
+
+      // Nearest viewport edge
+      const nearest = { left: cx, right: vw - cx, top: cy, bottom: vh - cy };
+      const side = Object.keys(nearest).reduce((a, b) => nearest[a] < nearest[b] ? a : b);
+      const idx  = edgeCount[side]++;
+
+      if (existingEls.has(el)) continue;  // beacon already rendered
+
+      const beaconEl = document.createElement('div');
+      beaconEl.className = 'aikwau-beacon';
+      beaconEl.dataset.side = side;
+      const arrow   = { left: '◀', right: '▶', top: '▲', bottom: '▼' }[side];
+      const tagType = el.tagName === 'A' ? '連結' : '按鈕';
+      beaconEl.innerHTML =
+        `<span class="aikwau-beacon-arrow">${arrow}</span>` +
+        `<span class="aikwau-beacon-label">${tagType}：${label}</span>`;
+
+      // Position: stack beacons along the edge at the element's cross-axis coordinate
+      if (side === 'left' || side === 'right') {
+        const top = Math.max(PAD, Math.min(vh - 36, cy - 14)) + idx * 48;
+        beaconEl.style.cssText = `${side}:${PAD}px; top:${top}px;`;
+      } else {
+        const left = Math.max(PAD, Math.min(vw - 200, cx - 80)) + idx * 210;
+        beaconEl.style.cssText = `${side}:${PAD}px; left:${left}px;`;
+      }
+
+      beaconEl.addEventListener('click', () => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('aikwau-l1');
+        setTimeout(() => el.classList.remove('aikwau-l1'), 1800);
+      });
+
+      document.body.appendChild(beaconEl);
+      beaconTargets.push({ el, beaconEl });
+    }
+  }
+
+  // ── Demo page bridge ──────────────────────────────────────────────────────
+  document.addEventListener('aikwau:demo-populate', () => {
+    // Gaussian gaze centered on reading area (roughly top-center of main content)
+    const rCx = HM_W * 0.45, rCy = HM_H * 0.45;
+    for (let r = 0; r < HM_H; r++) {
+      for (let c = 0; c < HM_W; c++) {
+        const d2 = (c - rCx) ** 2 / 12 + (r - rCy) ** 2 / 6;
+        hmCells[r * HM_W + c] = Math.max(0, Math.round(280 * Math.exp(-d2)));
+      }
+    }
+    hmDirty = true;
+    hmSave();
+  });
+
+  document.addEventListener('aikwau:demo-clear', () => {
+    hmCells.fill(0);
+    hmDirty = false;
+    chrome.storage.local.remove('aikwau_heatmap');
+    updateBeacons([]);
+  });
+
+  // ── SPA navigation: clear margin notes on pushState / popstate ──────────
+  const _clearOnNavigate = () => {
+    marginNotes.forEach(n => n.remove());
+    marginNotes.clear();
+    cleanup();
+  };
+  window.addEventListener('popstate', _clearOnNavigate);
+  ['pushState', 'replaceState'].forEach(m => {
+    const orig = history[m].bind(history);
+    history[m] = function(...args) { orig(...args); _clearOnNavigate(); };
+  });
+
+  // ── Mode + feature-flag init ──────────────────────────────────────────────
+  chrome.storage.local.get(
+    ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_shift_replace',
+     'aikwau_margin_note', 'aikwau_note_theme'],
+    (data) => {
+      l2Enabled           = data.aikwau_l2_enabled !== false;   // default true
+      shiftReplaceEnabled = data.aikwau_shift_replace === true; // default false
+      marginNoteEnabled   = data.aikwau_margin_note  === true;  // default false
+      noteTheme           = data.aikwau_note_theme   ?? 'dark';
+      isWebcamMode        = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
+      if (isWebcamMode) initWebcam();
+      // Mouse mode events come from gaze_tracker.js (MAIN world) via document
+    }
+  );
 
   // ── Gaze events from MAIN world (mouse mode: immediate; webcam mode: via dwell) ──
   document.addEventListener('aikwau:gazefocus', (e) => {
     const { x, y } = e.detail ?? {};
     if (x == null) return;
+    hmAccumulate(x, y);
     if (calDone) {
       // Webcam: raw frames at ~10 fps — route through EMA+dwell+median logic
       onWebcamGazePoint(x, y);
@@ -52,7 +285,7 @@ window.__aikwauContentLoaded = true;
   // ══════════════════════════════════════════════════════════════════════════
 
   // ── Gaze state for webcam mode ────────────────────────────────────────────
-  const DWELL_MS = 2000;
+  const DWELL_MS = 1500;
   const SMOOTH_ALPHA = 0.25;   // responsive EMA — mouse cursor is the reference speed
   const DEAD_ZONE = 15;        // px — absorb small noise without freezing real movement
   const HISTORY_FRAMES = 20;
@@ -61,6 +294,7 @@ window.__aikwauContentLoaded = true;
   let gazeCurrentEl = null;
   let smoothX = null, smoothY = null;
   let ringX = null, ringY = null;  // last committed ring position (dead-zone gated)
+  let ringVisible = true;          // controlled by popup toggle
   const gazeYHistory = [];
   let calDone = false;
   let gazeRing = null;
@@ -72,19 +306,46 @@ window.__aikwauContentLoaded = true;
     // gaze_webcam.js (MAIN world) dispatches aikwau:gazeready when camera+FaceMesh are up.
     // event.detail.calCount = how many calibration points gaze_webcam.js currently has.
     // On fresh injection this is always 0, so we always show the calibration UI.
+    // Bridge: save calibration to storage when gaze_webcam.js has new data
+    document.addEventListener('aikwau:saveCalibration', (e) => {
+      chrome.storage.local.set({ aikwau_cal_data: e.detail });
+    });
+    // Bridge: respond to calibration load request from gaze_webcam.js
+    document.addEventListener('aikwau:requestCalibration', () => {
+      chrome.storage.local.get('aikwau_cal_data', ({ aikwau_cal_data }) => {
+        document.dispatchEvent(new CustomEvent('aikwau:loadCalibration',
+          { detail: aikwau_cal_data ?? null }));
+      });
+    });
+
     document.addEventListener('aikwau:gazeready', (e) => {
-      const calCount = e.detail?.calCount ?? 0;
-      console.log('[aikwau/content] aikwau:gazeready received, calCount =', calCount);
-      if (calCount >= 12) {
-        // gaze_webcam.js already has enough calibration points (re-injection edge case)
+      const calCount    = e.detail?.calCount ?? 0;
+      const polyReady   = e.detail?.polyCoeffsReady ?? false;
+      console.log('[aikwau/content] aikwau:gazeready received, calCount =', calCount, 'polyReady =', polyReady);
+      if (polyReady) {
+        // Calibration restored from storage — skip calibration UI
         calDone = true;
         if (loadingOverlay) { loadingOverlay.remove(); loadingOverlay = null; }
         ensureGazeRing();
-        console.log('[aikwau/content] Skipping calibration — gaze_webcam already has', calCount, 'points');
+        console.log('[aikwau/content] Calibration restored from storage, skipping UI');
       } else {
         console.log('[aikwau/content] Showing calibration UI');
-        showCalibrationUI();
+        chrome.storage.local.get('aikwau_cal_points', ({ aikwau_cal_points }) => {
+          const pts    = Number(aikwau_cal_points) || 25;
+          const minCal = pts === 9 ? 6 : 12;
+          document.dispatchEvent(new CustomEvent('aikwau:setcalpoints', { detail: { minCal } }));
+          showCalibrationUI(pts);
+        });
       }
+      // Apply saved panel + ring visibility preferences
+      chrome.storage.local.get(
+        ['aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible'],
+        ({ aikwau_webcam_panel_visible, aikwau_gaze_ring_visible }) => {
+          document.dispatchEvent(new CustomEvent('aikwau:panel-toggle',
+            { detail: { visible: aikwau_webcam_panel_visible !== false } }));
+          ringVisible = aikwau_gaze_ring_visible !== false;
+        }
+      );
     }, { once: true });
     document.addEventListener('aikwau:gazeerror', (e) => {
       console.error('[aikwau/content] aikwau:gazeerror received', e.detail);
@@ -169,6 +430,7 @@ window.__aikwauContentLoaded = true;
   }
 
   function moveGazeRing(x, y) {
+    if (!ringVisible) { if (gazeRing) gazeRing.style.display = 'none'; return; }
     ensureGazeRing();
     gazeRing.style.display = 'block';
     gazeRing.style.left = `${x}px`;
@@ -197,18 +459,22 @@ window.__aikwauContentLoaded = true;
     document.body.appendChild(loadingOverlay);
   }
 
-  // ── 25-point calibration overlay (5×5 grid) ──────────────────────────────
-  function showCalibrationUI() {
+  // ── Calibration overlay (9-point 3×3 or 25-point 5×5) ───────────────────
+  function showCalibrationUI(numPoints) {
+    numPoints = numPoints === 9 ? 9 : 25;
     if (loadingOverlay) { loadingOverlay.remove(); loadingOverlay = null; }
     document.dispatchEvent(new CustomEvent('aikwau:calstart'));
 
-    const POINTS = [
-      [10,10],[30,10],[50,10],[70,10],[90,10],
-      [10,30],[30,30],[50,30],[70,30],[90,30],
-      [10,50],[30,50],[50,50],[70,50],[90,50],
-      [10,70],[30,70],[50,70],[70,70],[90,70],
-      [10,90],[30,90],[50,90],[70,90],[90,90],
-    ];
+    const POINTS = numPoints === 9
+      ? [[10,10],[50,10],[90,10],
+         [10,50],[50,50],[90,50],
+         [10,90],[50,90],[90,90]]
+      : [[10,10],[30,10],[50,10],[70,10],[90,10],
+         [10,30],[30,30],[50,30],[70,30],[90,30],
+         [10,50],[30,50],[50,50],[70,50],[90,50],
+         [10,70],[30,70],[50,70],[70,70],[90,70],
+         [10,90],[30,90],[50,90],[70,90],[90,90]];
+    const SKIP_MIN = numPoints === 9 ? 6 : 12;
 
     const overlay = document.createElement('div');
     Object.assign(overlay.style, {
@@ -222,12 +488,12 @@ window.__aikwauContentLoaded = true;
       <div style="position:absolute;top:20px;width:100%;text-align:center">
         <div style="font-size:18px;font-weight:600;margin-bottom:6px">眼球追蹤校準 (MediaPipe)</div>
         <div style="font-size:13px;color:#aaa;margin-bottom:10px">注視每個藍色圓點，然後點擊它。請確保臉部在鏡頭中央。</div>
-        <div id="__aikwau_cal_prog" style="font-size:13px;color:#4af">0 / 25 完成</div>
+        <div id="__aikwau_cal_prog" style="font-size:13px;color:#4af">0 / ${numPoints} 完成</div>
       </div>
     `;
 
     const skipBtn = document.createElement('button');
-    skipBtn.textContent = '跳過校準（需至少 12 點）';
+    skipBtn.textContent = `跳過校準（需至少 ${SKIP_MIN} 點）`;
     Object.assign(skipBtn.style, {
       position: 'absolute', bottom: '24px', right: '24px',
       padding: '8px 20px', background: 'transparent',
@@ -284,7 +550,7 @@ window.__aikwauContentLoaded = true;
     };
 
     skipBtn.onclick = () => {
-      if (currentIdx < 12) { alert('請至少完成 12 個校準點。'); return; }
+      if (currentIdx < SKIP_MIN) { alert(`請至少完成 ${SKIP_MIN} 個校準點。`); return; }
       finish();
     };
 
@@ -304,7 +570,7 @@ window.__aikwauContentLoaded = true;
         document.dispatchEvent(new CustomEvent('aikwau:calibrate', { detail: { screenX, screenY } }));
 
         currentIdx++;
-        overlay.querySelector('#__aikwau_cal_prog').textContent = `${currentIdx} / 25 完成`;
+        overlay.querySelector('#__aikwau_cal_prog').textContent = `${currentIdx} / ${numPoints} 完成`;
         if (currentIdx >= POINTS.length) {
           finish();
         } else {
@@ -332,9 +598,33 @@ window.__aikwauContentLoaded = true;
     }
     if (msg.type === 'gaze:recalibrate') {
       calDone = false;
+      chrome.storage.local.remove('aikwau_cal_data');
       document.dispatchEvent(new CustomEvent('aikwau:resetCalibration'));
-      console.log('[aikwau/content] gaze:recalibrate — showing calibration UI again');
-      showCalibrationUI();
+      chrome.storage.local.get('aikwau_cal_points', ({ aikwau_cal_points }) => {
+        const pts    = Number(aikwau_cal_points) || 25;
+        const minCal = pts === 9 ? 6 : 12;
+        document.dispatchEvent(new CustomEvent('aikwau:setcalpoints', { detail: { minCal } }));
+        showCalibrationUI(pts);
+      });
+    }
+    if (msg.type === 'gaze:panel-toggle') {
+      document.dispatchEvent(new CustomEvent('aikwau:panel-toggle', { detail: { visible: msg.visible } }));
+    }
+    if (msg.type === 'gaze:ring-toggle') {
+      ringVisible = msg.visible;
+      if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
+    }
+    if (msg.type === 'gaze:l2-toggle')            { l2Enabled = msg.enabled; }
+    if (msg.type === 'gaze:shift-replace-toggle') { shiftReplaceEnabled = msg.enabled; }
+    if (msg.type === 'gaze:margin-note-toggle') {
+      marginNoteEnabled = msg.enabled;
+      if (!msg.enabled) { marginNotes.forEach(n => n.remove()); marginNotes.clear(); }
+    }
+    if (msg.type === 'gaze:note-theme-toggle') {
+      noteTheme = msg.theme;
+      marginNotes.forEach(noteEl => {
+        noteEl.classList.toggle('aikwau-margin-note--light', noteTheme === 'light');
+      });
     }
   });
 
@@ -342,21 +632,64 @@ window.__aikwauContentLoaded = true;
   // SHARED: L1 effect + summarization badge
   // ══════════════════════════════════════════════════════════════════════════
 
+  function markSummaryReady(el) {
+    if (el) el.classList.add('aikwau-summary-ready');
+  }
+
   function triggerL1(el, text) {
     if (el === activeEl) return; // already active
     cleanup(false);
     el.classList.add('aikwau-l1');
+    if (l2Enabled) {
+      if (!el.dataset.aikwauBase) {
+        el.dataset.aikwauBase = parseFloat(getComputedStyle(el).fontSize);
+      }
+      el.classList.add('aikwau-l2');
+      const base = +el.dataset.aikwauBase;
+      if (!isNaN(base)) el.style.setProperty('font-size', `${(base * 1.2).toFixed(1)}px`, 'important');
+    }
     activeEl = el;
-    showBadge(el, loadingText(), 'loading');
 
+    const cacheKey = text.slice(0, 160);
+    const cached = summaryCache.get(cacheKey);
+    if (cached) {
+      if (marginNoteEnabled) showMarginNote(el, cached);
+      markSummaryReady(el);
+      installShiftReplace(el, cached);
+      return;
+    }
+
+    // No loading badge — summarize silently in background
     chrome.runtime.sendMessage(
-      { type: 'summarize', text, lang: detectLang() },
+      { type: 'summarize', text, lang: detectTextLang(text) },
       (resp) => {
-        if (!resp) { updateBadge(errorText('no_response'), 'error'); return; }
-        if (resp.status === 'ok') updateBadge(compactSummary(resp.summary), 'ready');
-        else updateBadge(errorText(resp.message), 'error');
+        if (!resp || resp.status !== 'ok') return; // silently fail
+        const summary = compactSummary(resp.summary);
+        summaryCache.set(cacheKey, summary);
+        if (marginNoteEnabled) showMarginNote(el, summary);
+        if (el === activeEl || el.classList.contains('aikwau-l1')) markSummaryReady(el);
+        installShiftReplace(el, summary);
       }
     );
+  }
+
+  function showMarginNote(el, text) {
+    removeMarginNote(el);
+    const rect = el.getBoundingClientRect();
+    if (window.innerWidth - rect.right < 256) return false;
+    const note = document.createElement('div');
+    note.className = 'aikwau-margin-note' + (noteTheme === 'light' ? ' aikwau-margin-note--light' : '');
+    note.textContent = text;
+    note.style.top  = `${window.scrollY + rect.top}px`;
+    note.style.left = `${window.scrollX + rect.right + 16}px`;
+    document.body.appendChild(note);
+    marginNotes.set(el, note);
+    return true;
+  }
+
+  function removeMarginNote(el) {
+    const n = marginNotes.get(el);
+    if (n) { n.remove(); marginNotes.delete(el); }
   }
 
   function showBadge(_anchor, text, state) {
@@ -364,27 +697,66 @@ window.__aikwauContentLoaded = true;
     const badge = document.createElement('div');
     badge.className = `aikwau-badge aikwau-badge--${state}`;
     badge.textContent = text;
-    badge.style.maxWidth = `${Math.min(420, document.documentElement.clientWidth - 32)}px`;
+    badge.style.maxWidth = `${Math.min(380, document.documentElement.clientWidth - 32)}px`;
     document.body.appendChild(badge);
-    positionBadgeAtCursor(badge);
+    if (isWebcamMode) positionBadgeRight(badge); else positionBadgeAtCursor(badge);
     activeBadge = badge;
-    if (state === 'ready') setTimeout(cleanup, 16000);
+    if (state === 'ready') badgeTimer = setTimeout(cleanup, 16000);
   }
 
   function updateBadge(text, state) {
     if (!activeBadge) return;
     activeBadge.textContent = text;
     activeBadge.className = `aikwau-badge aikwau-badge--${state}`;
-    if (state === 'ready') setTimeout(cleanup, 12000);
+    if (state === 'ready') badgeTimer = setTimeout(cleanup, 12000);
   }
 
   function cleanup(resetEl = true) {
+    clearTimeout(badgeTimer); badgeTimer = null;
     activeBadge?.remove(); activeBadge = null;
-    if (resetEl) { activeEl?.classList.remove('aikwau-l1'); activeEl = null; }
+    removeShiftHandler();
+    if (replacedEl) {
+      // Restore original text and remove styling — always, regardless of resetEl
+      replacedEl.textContent = replacedOrigText;
+      replacedEl.classList.remove('aikwau-l1', 'aikwau-l2', 'aikwau-summary-ready');
+      replacedEl.style.removeProperty('font-size');
+      delete replacedEl.dataset.aikwauBase;
+      removeMarginNote(replacedEl);
+      replacedEl = null; replacedOrigText = null;
+      if (resetEl) activeEl = null;
+    } else if (resetEl) {
+      activeEl = null;  // L1/L2 classes intentionally kept — styling persists after gaze leaves
+    }
+  }
+
+  function installShiftReplace(el, summary) {
+    removeShiftHandler();
+    shiftHandler = (e) => {
+      if (e.key !== 'Shift' || e.repeat || !activeEl) return;
+      replacedOrigText = el.textContent;
+      replacedEl       = el;
+      el.textContent   = summary;
+      el.classList.remove('aikwau-summary-ready');
+      activeBadge?.remove(); activeBadge = null;
+      removeShiftHandler();
+    };
+    document.addEventListener('keydown', shiftHandler);
+  }
+
+  function removeShiftHandler() {
+    if (!shiftHandler) return;
+    document.removeEventListener('keydown', shiftHandler);
+    shiftHandler = null;
   }
 
   function detectLang() {
     return (document.documentElement.lang ?? '').startsWith('zh') ? 'zh' : 'en';
+  }
+
+  function detectTextLang(text) {
+    // Count CJK characters; if > 8% of text → treat as Chinese
+    const cjk = (text.match(/[　-鿿豈-﫿]/g) || []).length;
+    return cjk / text.length > 0.08 ? 'zh' : 'en';
   }
 
   function loadingText() {
@@ -398,17 +770,29 @@ window.__aikwauContentLoaded = true;
   }
 
   function compactSummary(raw) {
-    const t = (raw ?? '').replace(/\s+/g, ' ').trim();
+    // Preserve newlines so bullet points render correctly with white-space:pre-line
+    const t = (raw ?? '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
     if (!t) return detectLang() === 'zh' ? '無摘要內容' : 'No summary';
     if (t.length <= SUMMARY_MAX_CHARS) return t;
-    // Trim to last complete sentence within the limit
     const cut = t.slice(0, SUMMARY_MAX_CHARS);
     const lastEnd = Math.max(
       cut.lastIndexOf('。'), cut.lastIndexOf('.'),
       cut.lastIndexOf('！'), cut.lastIndexOf('!'),
       cut.lastIndexOf('？'), cut.lastIndexOf('?'),
+      cut.lastIndexOf('\n'),
     );
     return lastEnd > SUMMARY_MAX_CHARS * 0.4 ? t.slice(0, lastEnd + 1) : cut;
+  }
+
+  function positionBadgeRight(badge) {
+    const PAD = 20;
+    const vw  = document.documentElement.clientWidth;
+    const vh  = document.documentElement.clientHeight;
+    const br  = badge.getBoundingClientRect();
+    const left = Math.max(PAD, vw - br.width - PAD);
+    const top  = Math.round(vh * 0.18);
+    badge.style.left = `${window.scrollX + left}px`;
+    badge.style.top  = `${window.scrollY + top}px`;
   }
 
   function positionBadgeAtCursor(badge) {

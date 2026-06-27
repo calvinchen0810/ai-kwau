@@ -29,8 +29,8 @@
   if (window.__aikwau_webcam_active) return;
   window.__aikwau_webcam_active = true;
 
-  const D       = 8;   // feature dimension
-  const MIN_CAL = 12;  // minimum calibration points before regression activates
+  const D     = 8;   // feature dimension
+  let minCal  = 12;  // minimum calibration points before regression activates (updated via aikwau:setcalpoints)
   const MAP_W   = 240;
   const MAP_H   = 135; // 16:9 minimap
 
@@ -51,10 +51,10 @@
     'color:#fff;border:none;border-radius:6px;cursor:pointer;">開啟相機</button>' +
     '<p style="font-size:11px;color:#888;margin:0;text-align:center;">' +
     'AI Kwau 眼球追蹤<br>點擊以授權相機存取</p></div>' +
-    '<div id="__ap_vidwrap" style="display:none;position:relative;width:240px;height:160px;">' +
+    '<div id="__ap_vidwrap" style="display:none;position:relative;width:240px;height:200px;">' +
     '<video id="__ap_video" autoplay playsinline style="display:none;"></video>' +
-    '<canvas id="__ap_display" width="240" height="160" ' +
-    'style="display:block;width:240px;height:160px;"></canvas></div>' +
+    '<canvas id="__ap_display" width="240" height="200" ' +
+    'style="display:block;width:240px;height:200px;"></canvas></div>' +
     '<div id="__ap_iris" style="padding:4px 6px;background:#0a0f1a;border-top:1px solid #1e2030;' +
     'font-size:10px;color:#7af;font-family:monospace;white-space:pre;display:none;line-height:1.5">' +
     '</div>' +
@@ -66,6 +66,21 @@
     '<div id="__ap_status" style="padding:3px 6px;background:rgba(0,0,0,0.75);' +
     'font-size:11px;color:#aaa;text-align:center;border-radius:0 0 8px 8px;">正在啟動相機...</div>';
   document.body.appendChild(panel);
+
+  // ── Panel visibility toggle (from popup) ──────────────────────────────────
+  document.addEventListener('aikwau:panel-toggle', (e) => {
+    panel.style.display = e.detail?.visible !== false ? '' : 'none';
+  });
+
+  // ── Calibration point count sync (from popup / content.js) ───────────────
+  document.addEventListener('aikwau:setcalpoints', (e) => {
+    minCal = e.detail?.minCal ?? 12;
+    // Refresh status bar immediately so the new threshold is reflected
+    const n = calPoints.length;
+    statusEl.textContent = n < minCal
+      ? `校準中 (${n}/${minCal} 點)`
+      : `追蹤中 (${n} 校準點)`;
+  });
 
   // ── Drag to reposition ────────────────────────────────────────────────────
   const dragHandle = panel.querySelector('#__ap_drag');
@@ -194,7 +209,7 @@
   }
 
   function fitPolynomial() {
-    if (calPoints.length < MIN_CAL) { polyCoeffs = null; return; }
+    if (calPoints.length < minCal) { polyCoeffs = null; return; }
     const Phi = calPoints.map(p =>
       makeFeatures(p.irisX, p.irisY, p.headYaw, p.headPitch));
 
@@ -352,9 +367,14 @@
     fitPolynomial();
     drawMinimap();
     const n = calPoints.length;
-    statusEl.textContent = n < MIN_CAL
-      ? `校準中 (${n}/${MIN_CAL} 點)`
+    statusEl.textContent = n < minCal
+      ? `校準中 (${n}/${minCal} 點)`
       : `追蹤中 (${n} 校準點)`;
+    if (polyCoeffs) {
+      document.dispatchEvent(new CustomEvent('aikwau:saveCalibration', {
+        detail: { calPoints: calPoints.slice(), polyCoeffs, minCal },
+      }));
+    }
     console.log(`[aikwau/webcam] Cal point ${n}:`,
       `iris=(${p.irisX.toFixed(3)},${p.irisY.toFixed(3)})`,
       `yaw=${p.headYaw.toFixed(3)} pitch=${p.headPitch.toFixed(3)}`,
@@ -461,23 +481,23 @@
 
   verifyBtn.addEventListener('click', showVerificationOverlay);
 
-  // ── Zoomed eye canvas ────────────────────────────────────────────────────
+  // ── Full-face canvas ─────────────────────────────────────────────────────
   function drawZoomedEye(lm) {
     const vw = video.videoWidth  || 640;
     const vh = video.videoHeight || 480;
-    const DW = 240, DH = 160;
+    const DW = 240, DH = 200;
     const dc = displayCtx;
 
-    // Bounding box of all eye-relevant landmarks in video pixels
-    const EYE_LMS = [33, 133, 159, 145, 263, 362, 386, 374, 468, 473];
-    const exs = EYE_LMS.map(i => lm[i].x * vw);
-    const eys = EYE_LMS.map(i => lm[i].y * vh);
-    const bx1 = Math.min(...exs), bx2 = Math.max(...exs);
-    const by1 = Math.min(...eys), by2 = Math.max(...eys);
+    // Bounding box of full face using extreme face-oval landmarks
+    const FACE_LMS = [10, 152, 234, 454, 93, 323, 21, 251, 172, 397];
+    const fxs = FACE_LMS.map(i => lm[i].x * vw);
+    const fys = FACE_LMS.map(i => lm[i].y * vh);
+    const bx1 = Math.min(...fxs), bx2 = Math.max(...fxs);
+    const by1 = Math.min(...fys), by2 = Math.max(...fys);
 
-    // Padding: tight horizontal, extra vertical to show brows
-    const pw = (bx2 - bx1) * 0.45;
-    const ph = (by2 - by1) * 0.9;
+    // Padding: 25% sides, 25% top/bottom for natural head-room
+    const pw = (bx2 - bx1) * 0.25;
+    const ph = (by2 - by1) * 0.25;
     const cx = Math.max(0,    bx1 - pw);
     const cy = Math.max(0,    by1 - ph);
     const cw = Math.min(vw - cx, bx2 + pw - cx);
@@ -536,13 +556,13 @@
         // Show full mirrored video when no face detected
         displayCtx.save();
         displayCtx.translate(240, 0); displayCtx.scale(-1, 1);
-        if (video.readyState >= 2) displayCtx.drawImage(video, 0, 0, 240, 160);
+        if (video.readyState >= 2) displayCtx.drawImage(video, 0, 0, 240, 200);
         displayCtx.restore();
         displayCtx.fillStyle = 'rgba(0,0,0,0.55)';
-        displayCtx.fillRect(0, 60, 240, 40);
+        displayCtx.fillRect(0, 80, 240, 40);
         displayCtx.fillStyle = '#f88'; displayCtx.font = '13px system-ui';
         displayCtx.textAlign = 'center';
-        displayCtx.fillText('未偵測到臉部', 120, 85);
+        displayCtx.fillText('未偵測到臉部', 120, 105);
         displayCtx.textAlign = 'left';
         irisInfoEl.textContent = '— 未偵測到臉部 —';
         if (!calPoints.length) statusEl.textContent = '未偵測到臉部';
@@ -574,8 +594,8 @@
         `  R473 (${lm[473].x.toFixed(3)}, ${lm[473].y.toFixed(3)})`;
 
       const n = calPoints.length;
-      statusEl.textContent = n < MIN_CAL
-        ? `校準中 (${n}/${MIN_CAL} 點)`
+      statusEl.textContent = n < minCal
+        ? `校準中 (${n}/${minCal} 點)`
         : `追蹤中 (${n} 校準點)  頭偏 yaw=${(pose.yaw*100).toFixed(0)}`;
 
       if (!polyCoeffs) return;
@@ -625,7 +645,23 @@
     });
     video.srcObject = stream;
     await new Promise(resolve => video.addEventListener('loadeddata', resolve, { once: true }));
-    statusEl.textContent = `校準中 (0/${MIN_CAL} 點)`;
+
+    // Request saved calibration from isolated world (chrome.storage bridge)
+    const savedCal = await new Promise(resolve => {
+      document.addEventListener('aikwau:loadCalibration', e => resolve(e.detail), { once: true });
+      document.dispatchEvent(new CustomEvent('aikwau:requestCalibration'));
+    });
+    if (savedCal?.polyCoeffs && Array.isArray(savedCal.calPoints) &&
+        savedCal.calPoints.length >= (savedCal.minCal ?? minCal)) {
+      savedCal.calPoints.forEach(p => calPoints.push(p));
+      polyCoeffs = savedCal.polyCoeffs;
+      if (savedCal.minCal) minCal = savedCal.minCal;
+      statusEl.textContent = `追蹤中（已載入 ${calPoints.length} 校準點）`;
+      verifyBtn.style.display = 'block';
+      drawMinimap();
+    } else {
+      statusEl.textContent = `校準中 (0/${minCal} 點)`;
+    }
 
     setInterval(async () => {
       if (video.readyState < 2 || processing) return;
@@ -641,8 +677,10 @@
     }, 33);
 
     const calCount = calPoints.length;
-    console.log('[aikwau/webcam] Ready; dispatching aikwau:gazeready (calPoints=' + calCount + ')');
-    document.dispatchEvent(new CustomEvent('aikwau:gazeready', { detail: { calCount } }));
+    console.log('[aikwau/webcam] Ready; dispatching aikwau:gazeready (calPoints=' + calCount + ', polyCoeffsReady=' + !!polyCoeffs + ')');
+    document.dispatchEvent(new CustomEvent('aikwau:gazeready', {
+      detail: { calCount, polyCoeffsReady: !!polyCoeffs },
+    }));
   }
 
   startWebcam().catch(err => {

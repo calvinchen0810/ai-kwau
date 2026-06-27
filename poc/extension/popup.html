@@ -3,21 +3,112 @@
 <head>
   <meta charset="utf-8">
   <style>
-    body { font-family: sans-serif; width: 220px; padding: 12px; margin: 0; }
+    body { font-family: sans-serif; width: 280px; padding: 12px; margin: 0; }
     h3 { margin: 0 0 10px; font-size: 14px; color: #1a1a2e; }
     label { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 13px; cursor: pointer; }
-    button { margin-top: 10px; width: 100%; padding: 6px; font-size: 12px; cursor: pointer;
+    button { margin-top: 8px; width: 100%; padding: 6px; font-size: 12px; cursor: pointer;
              border: 1px solid #ccc; border-radius: 4px; background: #f5f5f5; }
     button:hover { background: #e0e0e0; }
     #status { font-size: 11px; color: #666; margin-top: 6px; }
+
+    /* Cal points segmented control */
+    #calPointsOpts { display: none; margin: 8px 0 0; }
+    #calPointsOpts .opts-label {
+      font-size: 11px; color: #666; margin-bottom: 5px;
+    }
+    .seg-ctrl {
+      display: flex;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      font-size: 12px;
+      text-align: center;
+    }
+    .seg-ctrl label {
+      flex: 1; margin: 0; padding: 6px 4px;
+      cursor: pointer; justify-content: center;
+      color: #555; background: #fff;
+      border-right: 1px solid #ccc;
+      transition: background 0.12s, color 0.12s;
+      font-size: 12px;
+    }
+    .seg-ctrl label:last-child { border-right: none; }
+    .seg-ctrl input[type="radio"] { display: none; }
+    .seg-ctrl label.selected {
+      background: #eef2ff; color: #0058b0; font-weight: 600;
+    }
+
+    /* Reading features section */
+    .feat-sect { margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px; }
+    .feat-sect .sect-lbl { font-size: 11px; color: #888; margin-bottom: 4px; }
+    .feat-sect label { font-size: 12px; color: #333; margin: 3px 0; }
+
+    /* Heatmap section */
+    .hm-section { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
+    .hm-section h4 { margin: 0 0 6px; font-size: 12px; color: #333; }
+    #hmCanvas { display: block; border: 1px solid #bbb; border-radius: 3px; image-rendering: pixelated; }
+    .hm-legend { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+    #hmLegend { flex: 1; height: 7px; border-radius: 2px; }
+    .hm-legend span { font-size: 9px; color: #888; }
+    #hmStats { font-size: 10px; color: #777; margin-top: 4px; }
+    #hmClear { margin-top: 5px; color: #b00; border-color: #d88; background: #fff; }
+    #hmClear:hover { background: #fff0f0; }
   </style>
 </head>
 <body>
   <h3>AI Kwau ⚙️</h3>
   <label><input type="radio" name="mode" value="mouse"> 滑鼠模式（PoC）</label>
   <label><input type="radio" name="mode" value="webcam"> 眼球追蹤（Webcam）</label>
+
+  <div class="feat-sect">
+    <div class="sect-lbl">閱讀增強</div>
+    <label><input type="checkbox" id="l2Enabled"> L2 字型放大（注視時）</label>
+    <label><input type="checkbox" id="shiftReplace"> Shift 鍵取代段落文字</label>
+    <label><input type="checkbox" id="marginNote"> 旁注摘要（有右側空白時）</label>
+    <div id="noteThemeOpts" style="display:none; margin: 6px 0 0 20px;">
+      <div class="opts-label" style="font-size:11px; color:#888; margin-bottom:4px;">旁注顏色</div>
+      <div class="seg-ctrl">
+        <label id="segNoteDark"><input type="radio" name="notetheme" value="dark">黑底白字</label>
+        <label id="segNoteLight"><input type="radio" name="notetheme" value="light">白底黑字</label>
+      </div>
+    </div>
+  </div>
+
+  <div id="calPointsOpts">
+    <div class="opts-label">校準點數量</div>
+    <div class="seg-ctrl">
+      <label id="segOpt9">
+        <input type="radio" name="calpts" value="9">9 點（快速）
+      </label>
+      <label id="segOpt25">
+        <input type="radio" name="calpts" value="25">25 點（精確）
+      </label>
+    </div>
+  </div>
+
+  <div id="webcamToggles" style="display:none; margin-top:6px;">
+    <label style="font-size:12px; color:#444; display:flex; align-items:center; gap:8px; margin:3px 0; cursor:pointer;">
+      <input type="checkbox" id="panelVisible" checked> 顯示 Webcam 視窗
+    </label>
+    <label style="font-size:12px; color:#444; display:flex; align-items:center; gap:8px; margin:3px 0; cursor:pointer;">
+      <input type="checkbox" id="ringVisible" checked> 顯示注視藍圈
+    </label>
+  </div>
+
   <button id="recalibrate" style="display:none">重新校準</button>
   <div id="status"></div>
+
+  <div class="hm-section">
+    <h4>視線熱圖（頁面分佈）</h4>
+    <canvas id="hmCanvas" width="240" height="140"></canvas>
+    <div class="hm-legend">
+      <span>冷</span>
+      <canvas id="hmLegend" width="186" height="7"></canvas>
+      <span>熱</span>
+    </div>
+    <div id="hmStats">尚無資料</div>
+    <button id="hmClear">清除熱圖</button>
+  </div>
 
   <script src="popup.js"></script>
 </body>
