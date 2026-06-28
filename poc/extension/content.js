@@ -15,20 +15,19 @@ window.__aikwauContentLoaded = true;
   const SUMMARY_MAX_CHARS = 220;
   const SELECTORS = 'p, h1, h2, h3, h4, li, blockquote, td, figcaption';
 
-  let activeEl            = null;
-  let activeBadge         = null;
-  let lastMouseX          = 0, lastMouseY = 0;
-  let l2Enabled           = true;   // L2 font enlargement
-  let shiftReplaceEnabled = false;  // Shift key replaces paragraph with summary
-  let shiftHandler        = null;
-  let replacedEl          = null;   // element whose text was replaced by summary
-  let replacedOrigText    = null;   // original textContent before replacement
-  let badgeTimer          = null;   // auto-dismiss timer (tracked so cleanup can cancel it)
-  const summaryCache      = new Map(); // text-key → cached summary string
-  let marginNoteEnabled   = false;
-  const marginNotes       = new Map(); // el → noteDiv
-  let isWebcamMode        = false;  // true → badge fixed on right, not cursor-following
-  let noteTheme           = 'dark'; // 'dark' | 'light'
+  let activeEl          = null;
+  let activeBadge       = null;
+  let lastMouseX        = 0, lastMouseY = 0;
+  let l2Enabled         = true;   // L2 font enlargement
+  let badgeTimer        = null;
+  const summaryCache    = new Map(); // text-key → cached summary string
+  // summaryReadyEls: el → { summary, origText, handler, shown }
+  // Persists across gaze events — cleared only on SPA navigation
+  const summaryReadyEls = new Map();
+  let isWebcamMode = false;
+  let colorReady        = '#ffee00';
+  let colorShown        = '#00cc77';
+  let colorStyleEl      = null;
   document.addEventListener('mousemove', e => { lastMouseX = e.clientX; lastMouseY = e.clientY; }, { passive: true });
 
   // ── Gaze heatmap accumulator ──────────────────────────────────────────────
@@ -233,10 +232,30 @@ window.__aikwauContentLoaded = true;
     updateBeacons([]);
   });
 
-  // ── SPA navigation: clear margin notes on pushState / popstate ──────────
+  // ── Highlight colour injection ────────────────────────────────────────────
+  function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  function applyHighlightColors() {
+    if (!colorStyleEl) {
+      colorStyleEl = document.createElement('style');
+      colorStyleEl.id = '__aikwau_colors';
+      document.head.appendChild(colorStyleEl);
+    }
+    colorStyleEl.textContent =
+      `.aikwau-summary-ready{background-color:${hexToRgba(colorReady, 0.15)}!important;` +
+      `outline-color:${hexToRgba(colorReady, 0.40)}!important;}` +
+      `.aikwau-summary-shown{background-color:${hexToRgba(colorShown, 0.20)}!important;` +
+      `outline-color:${hexToRgba(colorShown, 0.50)}!important;}`;
+  }
+
+  // ── SPA navigation: clear summaries on pushState / popstate ─────────────
   const _clearOnNavigate = () => {
-    marginNotes.forEach(n => n.remove());
-    marginNotes.clear();
+    clearAllSummaryEls();
     cleanup();
   };
   window.addEventListener('popstate', _clearOnNavigate);
@@ -247,16 +266,15 @@ window.__aikwauContentLoaded = true;
 
   // ── Mode + feature-flag init ──────────────────────────────────────────────
   chrome.storage.local.get(
-    ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_shift_replace',
-     'aikwau_margin_note', 'aikwau_note_theme'],
+    ['aikwau_gaze_mode', 'aikwau_l2_enabled',
+     'aikwau_color_ready', 'aikwau_color_shown'],
     (data) => {
-      l2Enabled           = data.aikwau_l2_enabled !== false;   // default true
-      shiftReplaceEnabled = data.aikwau_shift_replace === true; // default false
-      marginNoteEnabled   = data.aikwau_margin_note  === true;  // default false
-      noteTheme           = data.aikwau_note_theme   ?? 'dark';
-      isWebcamMode        = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
+      l2Enabled  = data.aikwau_l2_enabled !== false;
+      colorReady = data.aikwau_color_ready ?? '#ffee00';
+      colorShown = data.aikwau_color_shown ?? '#00cc77';
+      isWebcamMode      = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
+      applyHighlightColors();
       if (isWebcamMode) initWebcam();
-      // Mouse mode events come from gaze_tracker.js (MAIN world) via document
     }
   );
 
@@ -614,17 +632,11 @@ window.__aikwauContentLoaded = true;
       ringVisible = msg.visible;
       if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
     }
-    if (msg.type === 'gaze:l2-toggle')            { l2Enabled = msg.enabled; }
-    if (msg.type === 'gaze:shift-replace-toggle') { shiftReplaceEnabled = msg.enabled; }
-    if (msg.type === 'gaze:margin-note-toggle') {
-      marginNoteEnabled = msg.enabled;
-      if (!msg.enabled) { marginNotes.forEach(n => n.remove()); marginNotes.clear(); }
-    }
-    if (msg.type === 'gaze:note-theme-toggle') {
-      noteTheme = msg.theme;
-      marginNotes.forEach(noteEl => {
-        noteEl.classList.toggle('aikwau-margin-note--light', noteTheme === 'light');
-      });
+    if (msg.type === 'gaze:l2-toggle') { l2Enabled = msg.enabled; }
+    if (msg.type === 'gaze:highlight-colors') {
+      if (msg.colorReady) colorReady = msg.colorReady;
+      if (msg.colorShown) colorShown = msg.colorShown;
+      applyHighlightColors();
     }
   });
 
@@ -632,13 +644,51 @@ window.__aikwauContentLoaded = true;
   // SHARED: L1 effect + summarization badge
   // ══════════════════════════════════════════════════════════════════════════
 
-  function markSummaryReady(el) {
-    if (el) el.classList.add('aikwau-summary-ready');
+  // Install a persistent click handler on el that toggles between original/summary.
+  // The handler stays until SPA navigation (_clearOnNavigate) removes it.
+  function markSummaryReady(el, summary) {
+    if (summaryReadyEls.has(el)) return; // already installed
+    el.classList.add('aikwau-summary-ready');
+    const entry = { summary, origText: null, shown: false, handler: null };
+    entry.handler = (e) => {
+      if (!el.classList.contains('aikwau-summary-ready') &&
+          !el.classList.contains('aikwau-summary-shown')) return;
+      e.stopPropagation();
+      if (!entry.shown) {
+        entry.origText = el.textContent;
+        el.textContent = summary;
+        el.classList.remove('aikwau-summary-ready');
+        el.classList.add('aikwau-summary-shown');
+        entry.shown = true;
+      } else {
+        el.textContent = entry.origText;
+        el.classList.remove('aikwau-summary-shown');
+        el.classList.add('aikwau-summary-ready');
+        entry.shown = false;
+      }
+      activeBadge?.remove(); activeBadge = null;
+    };
+    el.addEventListener('click', entry.handler);
+    summaryReadyEls.set(el, entry);
+  }
+
+  // Remove all persistent summary handlers and restore text if needed.
+  function clearAllSummaryEls() {
+    summaryReadyEls.forEach((entry, el) => {
+      el.removeEventListener('click', entry.handler);
+      if (entry.shown && entry.origText !== null) el.textContent = entry.origText;
+      el.classList.remove('aikwau-summary-ready', 'aikwau-summary-shown',
+                          'aikwau-l1', 'aikwau-l2');
+      el.style.removeProperty('font-size');
+      delete el.dataset.aikwauBase;
+    });
+    summaryReadyEls.clear();
   }
 
   function triggerL1(el, text) {
-    if (el === activeEl) return; // already active
-    cleanup(false);
+    if (el === activeEl) return;
+    cleanup();
+    activeEl = el;
     el.classList.add('aikwau-l1');
     if (l2Enabled) {
       if (!el.dataset.aikwauBase) {
@@ -648,48 +698,26 @@ window.__aikwauContentLoaded = true;
       const base = +el.dataset.aikwauBase;
       if (!isNaN(base)) el.style.setProperty('font-size', `${(base * 1.2).toFixed(1)}px`, 'important');
     }
-    activeEl = el;
+
+    // Already has a summary — nothing more to do
+    if (summaryReadyEls.has(el)) return;
 
     const cacheKey = text.slice(0, 160);
     const cached = summaryCache.get(cacheKey);
     if (cached) {
-      if (marginNoteEnabled) showMarginNote(el, cached);
-      markSummaryReady(el);
-      installShiftReplace(el, cached);
+      markSummaryReady(el, cached);
       return;
     }
 
-    // No loading badge — summarize silently in background
     chrome.runtime.sendMessage(
       { type: 'summarize', text, lang: detectTextLang(text) },
       (resp) => {
-        if (!resp || resp.status !== 'ok') return; // silently fail
+        if (!resp || resp.status !== 'ok') return;
         const summary = compactSummary(resp.summary);
         summaryCache.set(cacheKey, summary);
-        if (marginNoteEnabled) showMarginNote(el, summary);
-        if (el === activeEl || el.classList.contains('aikwau-l1')) markSummaryReady(el);
-        installShiftReplace(el, summary);
+        markSummaryReady(el, summary);
       }
     );
-  }
-
-  function showMarginNote(el, text) {
-    removeMarginNote(el);
-    const rect = el.getBoundingClientRect();
-    if (window.innerWidth - rect.right < 256) return false;
-    const note = document.createElement('div');
-    note.className = 'aikwau-margin-note' + (noteTheme === 'light' ? ' aikwau-margin-note--light' : '');
-    note.textContent = text;
-    note.style.top  = `${window.scrollY + rect.top}px`;
-    note.style.left = `${window.scrollX + rect.right + 16}px`;
-    document.body.appendChild(note);
-    marginNotes.set(el, note);
-    return true;
-  }
-
-  function removeMarginNote(el) {
-    const n = marginNotes.get(el);
-    if (n) { n.remove(); marginNotes.delete(el); }
   }
 
   function showBadge(_anchor, text, state) {
@@ -711,42 +739,12 @@ window.__aikwauContentLoaded = true;
     if (state === 'ready') badgeTimer = setTimeout(cleanup, 12000);
   }
 
-  function cleanup(resetEl = true) {
+  // Clears badge and active-element tracking. L1/L2 styling intentionally persists.
+  // Click handlers (summary toggle) are NOT removed here — they persist until navigation.
+  function cleanup() {
     clearTimeout(badgeTimer); badgeTimer = null;
     activeBadge?.remove(); activeBadge = null;
-    removeShiftHandler();
-    if (replacedEl) {
-      // Restore original text and remove styling — always, regardless of resetEl
-      replacedEl.textContent = replacedOrigText;
-      replacedEl.classList.remove('aikwau-l1', 'aikwau-l2', 'aikwau-summary-ready');
-      replacedEl.style.removeProperty('font-size');
-      delete replacedEl.dataset.aikwauBase;
-      removeMarginNote(replacedEl);
-      replacedEl = null; replacedOrigText = null;
-      if (resetEl) activeEl = null;
-    } else if (resetEl) {
-      activeEl = null;  // L1/L2 classes intentionally kept — styling persists after gaze leaves
-    }
-  }
-
-  function installShiftReplace(el, summary) {
-    removeShiftHandler();
-    shiftHandler = (e) => {
-      if (e.key !== 'Shift' || e.repeat || !activeEl) return;
-      replacedOrigText = el.textContent;
-      replacedEl       = el;
-      el.textContent   = summary;
-      el.classList.remove('aikwau-summary-ready');
-      activeBadge?.remove(); activeBadge = null;
-      removeShiftHandler();
-    };
-    document.addEventListener('keydown', shiftHandler);
-  }
-
-  function removeShiftHandler() {
-    if (!shiftHandler) return;
-    document.removeEventListener('keydown', shiftHandler);
-    shiftHandler = null;
+    activeEl = null;
   }
 
   function detectLang() {

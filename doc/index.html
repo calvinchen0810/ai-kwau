@@ -18,17 +18,19 @@ a{color:var(--cyan);text-decoration:none;}
 
 /* NAV */
 nav{background:var(--navy);padding:0 40px;height:56px;display:flex;align-items:center;gap:28px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,180,216,.2);}
-.nav-logo{font-weight:800;font-size:16px;color:var(--cyan);}
-.nav-links{display:flex;gap:22px;margin-left:auto;}
-.nav-links a{font-size:13px;color:rgba(255,255,255,.6);transition:color .2s;}
+.nav-logo{font-weight:800;font-size:16px;color:var(--cyan);white-space:nowrap;}
+.nav-links{display:flex;gap:18px;margin-left:auto;align-items:center;}
+.nav-links a{font-size:12px;color:rgba(255,255,255,.6);transition:color .2s;white-space:nowrap;}
 .nav-links a:hover{color:#fff;}
+.lang-btn{font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;border:1px solid rgba(0,180,216,.5);color:var(--cyan);background:rgba(0,180,216,.08);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.lang-btn:hover{background:rgba(0,180,216,.18);border-color:var(--cyan);}
 
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--navy),var(--blue));padding:64px 40px 56px;text-align:center;}
 .hero-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);padding:5px 16px;border-radius:20px;margin-bottom:18px;}
 .hero h1{font-size:42px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:10px;}
 .hero h1 span{color:var(--cyan);}
-.hero p{font-size:16px;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto 28px;}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);max-width:620px;margin:0 auto 28px;}
 .hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .chip{font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;border:1px solid;}
 .chip.cyan{color:var(--cyan);border-color:rgba(0,180,216,.4);background:rgba(0,180,216,.08);}
@@ -36,22 +38,23 @@ nav{background:var(--navy);padding:0 40px;height:56px;display:flex;align-items:c
 .chip.green{color:var(--green);border-color:rgba(6,214,160,.4);background:rgba(6,214,160,.08);}
 
 /* LAYOUT */
-.container{max-width:960px;margin:0 auto;padding:0 32px;}
+.container{max-width:980px;margin:0 auto;padding:0 32px;}
 section{padding:56px 0 32px;}
 .section-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;}
 h2{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:6px;}
 .section-sub{font-size:15px;color:var(--muted);margin-bottom:32px;}
 
 /* CARDS */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:16px;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:16px;}
 .card{background:var(--white);border-radius:14px;padding:22px 20px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.05);}
 .card-icon{font-size:28px;margin-bottom:10px;}
-.card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.card h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
 .card p{font-size:13px;color:var(--muted);line-height:1.6;}
 .card.cyan{border-top:4px solid var(--cyan);}
 .card.gold{border-top:4px solid var(--gold);}
 .card.green{border-top:4px solid var(--green);}
 .card.navy{border-top:4px solid var(--navy);}
+.card.red{border-top:4px solid var(--red);}
 
 /* ARCH DIAGRAM */
 .arch{background:var(--navy);border-radius:16px;padding:32px 36px;margin:28px 0;}
@@ -61,9 +64,23 @@ h2{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:6px;}
 .arch-box .ab-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
 .arch-box .ab-sub{font-size:10.5px;color:rgba(255,255,255,.45);line-height:1.5;}
 .arch-box.highlight{background:rgba(0,180,216,.12);border-color:rgba(0,180,216,.4);}
-.arch-arrow{display:flex;align-items:center;justify-content:center;width:40px;flex-shrink:0;color:var(--cyan);font-size:18px;}
-.arch-arrow.down{width:auto;height:28px;justify-content:center;text-align:center;color:var(--cyan);font-size:16px;margin:-4px 0;}
+.arch-box.gold-hl{background:rgba(246,174,45,.1);border-color:rgba(246,174,45,.4);}
+.arch-arrow{display:flex;align-items:center;justify-content:center;width:36px;flex-shrink:0;color:var(--cyan);font-size:18px;}
 .arch-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(0,180,216,.6);text-align:center;margin-top:2px;}
+.arch-down{text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;}
+
+/* FINDING BOXES */
+.finding{border-radius:12px;padding:18px 22px;margin:16px 0;border:1px solid;}
+.finding.red{background:rgba(246,85,61,.05);border-color:rgba(246,85,61,.3);}
+.finding.gold{background:rgba(246,174,45,.06);border-color:rgba(246,174,45,.3);}
+.finding.green{background:rgba(6,214,160,.06);border-color:rgba(6,214,160,.3);}
+.finding.cyan{background:rgba(0,180,216,.05);border-color:rgba(0,180,216,.3);}
+.finding-label{font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.finding.red .finding-label{color:var(--red);}
+.finding.gold .finding-label{color:var(--goldd);}
+.finding.green .finding-label{color:#059669;}
+.finding.cyan .finding-label{color:var(--accent);}
+.finding p{font-size:13.5px;color:var(--muted);line-height:1.7;}
 
 /* PHASE STEPS */
 .phase{background:var(--white);border-radius:14px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
@@ -73,19 +90,18 @@ h2{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:6px;}
 .phase-num.p2{background:rgba(6,214,160,.12);color:var(--green);}
 .phase-num.p3{background:rgba(246,174,45,.12);color:var(--goldd);}
 .phase-num.p4{background:rgba(0,119,182,.12);color:var(--accent);}
-.phase-title{font-size:16px;font-weight:700;color:var(--navy);}
-.phase-day{margin-left:auto;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);padding:3px 10px;border-radius:10px;}
+.phase-title{font-size:15px;font-weight:700;color:var(--navy);}
+.phase-tag{margin-left:auto;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);padding:3px 10px;border-radius:10px;white-space:nowrap;}
 .phase-body{padding:18px 22px;}
 .phase-body p{font-size:13.5px;color:var(--muted);margin-bottom:14px;line-height:1.65;}
 .step-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
 .step{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);}
-.step-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;}
-.step-dot.done{background:rgba(6,214,160,.15);color:var(--green);}
+.step-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;}
 .step-dot.cmd{background:rgba(0,180,216,.1);color:var(--cyan);}
 .test-box{background:var(--bg);border-radius:10px;padding:14px 16px;border-left:3px solid var(--cyan);}
 .test-box .test-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
 .test-box ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
-.test-box li{font-size:12.5px;color:var(--text);padding-left:16px;position:relative;line-height:1.5;}
+.test-box li{font-size:12.5px;color:var(--text);padding-left:18px;position:relative;line-height:1.5;}
 .test-box li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;}
 
 /* CODE */
@@ -103,18 +119,28 @@ tr:nth-child(even) td{background:rgba(0,0,0,.02);}
 .badge-no{display:inline-block;background:rgba(246,85,61,.1);color:var(--red);font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
 
 /* FILE TREE */
-.tree{background:var(--navy);border-radius:12px;padding:24px 28px;font-family:'Courier New',monospace;font-size:13px;color:rgba(255,255,255,.75);line-height:2;}
+.tree{background:var(--navy);border-radius:12px;padding:24px 28px;font-family:'Courier New',monospace;font-size:12.5px;color:rgba(255,255,255,.75);line-height:2;}
 .tree .dir{color:var(--cyan);font-weight:700;}
 .tree .file{color:rgba(255,255,255,.6);}
-.tree .comment{color:rgba(255,255,255,.3);font-size:11.5px;}
+.tree .comment{color:rgba(255,255,255,.3);font-size:11px;}
 
 /* TIMELINE */
 .timeline{display:flex;gap:0;margin:24px 0;}
 .tl-step{flex:1;text-align:center;position:relative;}
 .tl-step:not(:last-child)::after{content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;background:linear-gradient(90deg,var(--cyan),rgba(0,180,216,.2));}
-.tl-dot{width:36px;height:36px;border-radius:50%;background:var(--navy);border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--cyan);margin:0 auto 8px;position:relative;z-index:1;}
+.tl-dot{width:36px;height:36px;border-radius:50%;background:var(--navy);border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan);margin:0 auto 8px;position:relative;z-index:1;}
 .tl-day{font-size:11px;font-weight:700;color:var(--muted);}
-.tl-label{font-size:12px;color:var(--text);margin-top:3px;line-height:1.4;}
+.tl-label{font-size:11.5px;color:var(--text);margin-top:3px;line-height:1.4;}
+
+/* BILINGUAL TOGGLE */
+.zh{display:none;}
+html[lang="zh"] .zh{display:initial;}
+html[lang="zh"] .en{display:none;}
+.zh.block{display:none;}
+html[lang="zh"] .zh.block{display:block;}
+html[lang="zh"] .en.block{display:none;}
+
+h3.sub{font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;}
 
 footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255,255,255,.35);font-size:12px;}
 </style>
@@ -124,647 +150,823 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
 <nav>
   <span class="nav-logo">AI Kwau PoC</span>
   <div class="nav-links">
-    <a href="#overview">Overview</a>
-    <a href="#architecture">Architecture</a>
-    <a href="#phases">Phases</a>
-    <a href="#hardware">Hardware</a>
-    <a href="#files">Files</a>
-    <a href="#gaze">Gaze</a>
-    <a href="#validation">Validation</a>
+    <a href="#overview"><span class="en">Overview</span><span class="zh">概覽</span></a>
+    <a href="#architecture"><span class="en">Architecture</span><span class="zh">架構</span></a>
+    <a href="#gaze"><span class="en">Gaze</span><span class="zh">視線</span></a>
+    <a href="#install"><span class="en">Install</span><span class="zh">安裝</span></a>
+    <a href="#findings"><span class="en">Key Findings</span><span class="zh">技術發現</span></a>
+    <a href="#hardware"><span class="en">Hardware</span><span class="zh">硬體</span></a>
+    <a href="#files"><span class="en">Files</span><span class="zh">檔案</span></a>
+    <a href="#validation"><span class="en">Validation</span><span class="zh">驗證</span></a>
+    <button class="lang-btn" onclick="toggleLang()" id="lang-btn">切換中文</button>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-tag">Developer Documentation</div>
+  <div class="hero-tag">
+    <span class="en">Developer Documentation</span>
+    <span class="zh">開發者文件</span>
+  </div>
   <h1>AI Kwau <span>PoC</span></h1>
-  <p>On-device text summarization triggered by gaze hold — OpenVINO + Phi-4 Mini + Edge Extension</p>
+  <p class="en">On-device gaze-triggered text enhancement and AI summarization — OpenVINO · Qwen2.5-1.5B · Edge Extension · PyInstaller</p>
+  <p class="zh">本機端視線觸發文字增強與 AI 摘要 — OpenVINO · Qwen2.5-1.5B · Edge Extension · PyInstaller 封裝</p>
   <div class="hero-chips">
-    <span class="chip cyan">Intel OpenVINO</span>
-    <span class="chip cyan">Phi-4 Mini INT4</span>
-    <span class="chip gold">Intel NPU</span>
+    <span class="chip cyan">Intel OpenVINO GenAI</span>
+    <span class="chip cyan">Qwen2.5-1.5B INT4</span>
+    <span class="chip gold">Intel NPU / iGPU / CPU</span>
     <span class="chip gold">Native Messaging</span>
-    <span class="chip green">Microsoft Edge</span>
-    <span class="chip green">No Cloud · No GPU Required</span>
-    <span class="chip cyan">WebGazer Eye Tracking</span>
+    <span class="chip green">Microsoft Edge MV3</span>
+    <span class="chip green"><span class="en">No Cloud · No Admin</span><span class="zh">完全本機 · 無需管理員</span></span>
+    <span class="chip cyan">WebGazer v2.1.2</span>
+    <span class="chip cyan">PyInstaller Frozen Exe</span>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- OVERVIEW -->
-  <section id="overview">
-    <div class="section-label">Overview</div>
-    <h2>What This PoC Does</h2>
-    <p class="section-sub">Validates end-to-end on-device AI summarization triggered by simulated gaze hold, running entirely on the local Intel chip — no API, no cloud, no GPU required.</p>
-    <div class="card-grid">
-      <div class="card cyan">
-        <div class="card-icon">👁</div>
-        <h3>Gaze Hold Trigger</h3>
-        <p>Simulated with mouse hover (2 s threshold). When the user holds gaze on a paragraph, L1 visual enhancement + summarization activate simultaneously.</p>
+<!-- ═══════════════════════════════════════════════════════════ OVERVIEW -->
+<section id="overview">
+  <div class="section-label"><span class="en">Overview</span><span class="zh">概覽</span></div>
+  <h2><span class="en">What This PoC Does</span><span class="zh">這個 PoC 在做什麼</span></h2>
+  <p class="section-sub en">Validates end-to-end on-device AI summarization triggered by gaze hold, running entirely on the local Intel chip — no API, no cloud, no admin rights required.</p>
+  <p class="section-sub zh">驗證完整本機端 AI 摘要流程：使用者視線停留於段落 → 文字增強 → AI 自動摘要條列重點，全程在本機 Intel 晶片上執行，不需要雲端 API、不需要管理員權限。</p>
+  <div class="card-grid">
+    <div class="card cyan">
+      <div class="card-icon">👁</div>
+      <h3><span class="en">Gaze Hold Trigger</span><span class="zh">視線停留觸發</span></h3>
+      <p class="en">Mouse hover 2 s (default) or real webcam eye tracking via WebGazer v2.1.2. When held, L1 visual enhancement activates and AI summarization begins silently.</p>
+      <p class="zh">預設以滑鼠懸停 2 秒模擬，或使用 WebGazer v2.1.2 真實眼球追蹤。停留後立即套用 L1 視覺增強，並靜默送出摘要請求。</p>
+    </div>
+    <div class="card gold">
+      <div class="card-icon">🤖</div>
+      <h3><span class="en">On-device AI</span><span class="zh">本機端 AI</span></h3>
+      <p class="en">Qwen2.5-1.5B-Instruct INT4 (~800 MB) runs via OpenVINO GenAI. Device priority: NPU → iGPU → CPU. No internet required after model download.</p>
+      <p class="zh">Qwen2.5-1.5B-Instruct INT4（約 800 MB）透過 OpenVINO GenAI 執行。裝置優先順序：NPU → iGPU → CPU，下載後完全離線。</p>
+    </div>
+    <div class="card green">
+      <div class="card-icon">🔌</div>
+      <h3><span class="en">Native Messaging</span><span class="zh">原生訊息通訊</span></h3>
+      <p class="en">Edge extension ↔ Python frozen exe via Chrome Native Messaging (stdin/stdout length-prefixed JSON). Registry key written to HKCU — no admin needed.</p>
+      <p class="zh">Edge 擴充功能 ↔ Python 凍結執行檔，透過 Chrome Native Messaging（stdin/stdout 長度前綴 JSON）。Registry key 寫入 HKCU，不需管理員。</p>
+    </div>
+    <div class="card navy">
+      <div class="card-icon">🟡</div>
+      <h3><span class="en">Yellow Highlight UX</span><span class="zh">黃色提示 UX</span></h3>
+      <p class="en">When summary is ready, the paragraph gets a semi-transparent yellow highlight. Press Shift to replace paragraph text with bullet-point summary.</p>
+      <p class="zh">摘要完成後，段落背景變成半透明黃色提示。按 Shift 將段落文字替換為條列式摘要重點。</p>
+    </div>
+    <div class="card red">
+      <div class="card-icon">🌐</div>
+      <h3><span class="en">Bilingual Summaries</span><span class="zh">中英文自動摘要</span></h3>
+      <p class="en">Language detected per paragraph by CJK character ratio. English paragraphs → English bullets; Chinese paragraphs → Traditional Chinese bullets (via zhconv).</p>
+      <p class="zh">每段落依 CJK 字元比例自動偵測語言。英文段落 → 英文摘要；中文段落 → 正體中文摘要（透過 zhconv 後處理）。</p>
+    </div>
+    <div class="card cyan">
+      <div class="card-icon">📦</div>
+      <h3><span class="en">Frozen Exe Distribution</span><span class="zh">凍結執行檔封裝</span></h3>
+      <p class="en">native_host.exe and benchmark.exe are PyInstaller onedir builds. No Python installation required on target machine. CRT v14.31→v14.44 ABI fix applied.</p>
+      <p class="zh">native_host.exe 與 benchmark.exe 均為 PyInstaller onedir 封裝，目標機器不需安裝 Python。已修正 CRT v14.31→v14.44 ABI 衝突問題。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ ARCHITECTURE -->
+<section id="architecture">
+  <div class="section-label"><span class="en">Architecture</span><span class="zh">系統架構</span></div>
+  <h2><span class="en">System Design</span><span class="zh">架構設計</span></h2>
+  <p class="section-sub en">Four layers: Web page → Edge extension (three content scripts) → Service Worker + Native Messaging → Frozen Python inference host.</p>
+  <p class="section-sub zh">四層架構：網頁 → Edge 擴充功能（三支 content scripts）→ Service Worker + Native Messaging → 凍結 Python 推論主機。</p>
+
+  <div class="arch">
+    <!-- Row 1: Page → Scripts -->
+    <div class="arch-row">
+      <div class="arch-box">
+        <div class="ab-icon">🌐</div>
+        <div class="ab-title"><span class="en">Web Page</span><span class="zh">網頁</span></div>
+        <div class="ab-sub en">Any URL<br>User reads normally</div>
+        <div class="ab-sub zh">任意 URL<br>使用者正常閱讀</div>
       </div>
-      <div class="card gold">
-        <div class="card-icon">🤖</div>
-        <h3>On-device AI</h3>
-        <p>Phi-4 Mini (INT4 quantized, ~1.8 GB) runs via OpenVINO on Intel NPU → iGPU → CPU fallback. No internet required after first model download.</p>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box highlight">
+        <div class="ab-icon">🔗</div>
+        <div class="ab-title">mode_bridge.js</div>
+        <div class="ab-sub en">Isolated, doc_start<br>storage → DOM attr</div>
+        <div class="ab-sub zh">Isolated world, 最早執行<br>儲存設定 → DOM 屬性</div>
       </div>
-      <div class="card green">
-        <div class="card-icon">🔌</div>
-        <h3>Native Messaging</h3>
-        <p>Edge extension communicates with a local Python process via Chrome Native Messaging protocol (stdin/stdout JSON). Registered in Windows Registry.</p>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box highlight">
+        <div class="ab-icon">👁</div>
+        <div class="ab-title">gaze_tracker.js</div>
+        <div class="ab-sub en">MAIN world<br>mouse/webcam → CustomEvents</div>
+        <div class="ab-sub zh">MAIN world<br>滑鼠/視線 → 自訂事件</div>
       </div>
-      <div class="card navy">
-        <div class="card-icon">⚡</div>
-        <h3>Target: &lt; 2s</h3>
-        <p>On Intel Core Ultra 2 (Lunar Lake) NPU, summary latency is 0.9–1.5 s. Panther Lake expected to be faster. Acceptable threshold: &lt; 3 s.</p>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box highlight">
+        <div class="ab-icon">📄</div>
+        <div class="ab-title">content.js</div>
+        <div class="ab-sub en">Isolated world<br>L1 effect + summary req</div>
+        <div class="ab-sub zh">Isolated world<br>L1 增強 + 送出摘要請求</div>
       </div>
     </div>
-  </section>
-
-  <!-- ARCHITECTURE -->
-  <section id="architecture">
-    <div class="section-label">Architecture</div>
-    <h2>System Design</h2>
-    <p class="section-sub">Three layers: Edge extension (UI + trigger) → Native Messaging Host (orchestration) → OpenVINO Runtime (inference on Intel hardware).</p>
-
-    <div class="arch">
-      <div class="arch-row">
-        <div class="arch-box">
-          <div class="ab-icon">🌐</div>
-          <div class="ab-title">Web Page</div>
-          <div class="ab-sub">Any URL<br>User browses normally</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">
-          <div class="ab-icon">🖱</div>
-          <div class="ab-title">content.js</div>
-          <div class="ab-sub">Hover 2 s detected<br>L1 effect + send text</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">
-          <div class="ab-icon">⚙️</div>
-          <div class="ab-title">background.js</div>
-          <div class="ab-sub">Service Worker<br>Native Messaging bridge</div>
-        </div>
+    <div class="arch-down">↓</div>
+    <div class="arch-label">chrome.runtime.sendMessage · reqId async routing</div>
+    <div class="arch-down">↓</div>
+    <!-- Row 2: Background → Host -->
+    <div class="arch-row">
+      <div class="arch-box highlight">
+        <div class="ab-icon">⚙️</div>
+        <div class="ab-title">background.js</div>
+        <div class="ab-sub en">Service Worker<br>Lazy native connect · pending Map</div>
+        <div class="ab-sub zh">Service Worker<br>延遲連線 · reqId 對應表</div>
       </div>
-      <div style="text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;">↓</div>
-      <div class="arch-label">Native Messaging · stdin/stdout · Length-prefixed JSON</div>
-      <div style="text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;">↓</div>
-      <div class="arch-row">
-        <div class="arch-box highlight">
-          <div class="ab-icon">🐍</div>
-          <div class="ab-title">native_host.py</div>
-          <div class="ab-sub">Receives text<br>Builds prompt</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">
-          <div class="ab-icon">🔬</div>
-          <div class="ab-title">OpenVINO GenAI</div>
-          <div class="ab-sub">LLMPipeline<br>Phi-4 Mini INT4</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box">
-          <div class="ab-icon">🧠</div>
-          <div class="ab-title">Intel Hardware</div>
-          <div class="ab-sub">NPU → GPU → CPU<br>auto fallback</div>
-        </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box highlight">
+        <div class="ab-icon">🐍</div>
+        <div class="ab-title">native_host.exe</div>
+        <div class="ab-sub en">PyInstaller frozen<br>build_prompt · _format_output</div>
+        <div class="ab-sub zh">PyInstaller 封裝<br>建立 prompt · 後處理輸出</div>
       </div>
-      <div style="text-align:center;color:rgba(0,180,216,.6);font-size:20px;margin:4px 0;">↓</div>
-      <div class="arch-label">Summary JSON returned → Badge appears on page</div>
-    </div>
-
-    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 10px;">User-visible Timeline</h3>
-    <div class="timeline">
-      <div class="tl-step">
-        <div class="tl-dot">0s</div>
-        <div class="tl-day">Gaze start</div>
-        <div class="tl-label">User looks at paragraph</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box gold-hl">
+        <div class="ab-icon">🔬</div>
+        <div class="ab-title">OpenVINO GenAI</div>
+        <div class="ab-sub en">LLMPipeline<br>Qwen2.5-1.5B INT4</div>
+        <div class="ab-sub zh">LLMPipeline<br>Qwen2.5-1.5B INT4</div>
       </div>
-      <div class="tl-step">
-        <div class="tl-dot">2s</div>
-        <div class="tl-day">L1 + request</div>
-        <div class="tl-label">Text darkens + bold<br>Summary requested</div>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot">~s</div>
-        <div class="tl-day">Inference</div>
-        <div class="tl-label">NPU running<br>"Summarising…" badge</div>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot">✓</div>
-        <div class="tl-day">Done</div>
-        <div class="tl-label">Summary badge appears<br>Stays 12 s</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">
+        <div class="ab-icon">🧠</div>
+        <div class="ab-title"><span class="en">Intel Hardware</span><span class="zh">Intel 硬體</span></div>
+        <div class="ab-sub en">NPU → iGPU → CPU<br>auto-fallback</div>
+        <div class="ab-sub zh">NPU → iGPU → CPU<br>自動降級</div>
       </div>
     </div>
-  </section>
+    <div class="arch-down">↓</div>
+    <div class="arch-label en">summary JSON → content.js → yellow highlight → Shift → replace text</div>
+    <div class="arch-label zh">摘要 JSON → content.js → 黃色段落提示 → 按 Shift → 替換段落文字</div>
+  </div>
 
-  <!-- GAZE TRACKING -->
-  <section id="gaze">
-    <div class="section-label">Gaze Tracking</div>
-    <h2>Eye-Tracking Integration</h2>
-    <p class="section-sub">Two interchangeable modes share the same trigger interface — switch between them without changing content.js or background.js.</p>
+  <h3 class="sub"><span class="en">User-visible Timeline</span><span class="zh">使用者可見流程時序</span></h3>
+  <div class="timeline">
+    <div class="tl-step">
+      <div class="tl-dot">0s</div>
+      <div class="tl-day"><span class="en">Gaze start</span><span class="zh">視線開始</span></div>
+      <div class="tl-label en">User looks at paragraph</div>
+      <div class="tl-label zh">使用者看向段落</div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-dot">2s</div>
+      <div class="tl-day"><span class="en">L1 + request</span><span class="zh">L1 + 請求</span></div>
+      <div class="tl-label en">Text bold + dark<br>Summary requested silently</div>
+      <div class="tl-label zh">文字加粗加深<br>靜默送出摘要請求</div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-dot">~s</div>
+      <div class="tl-day"><span class="en">Inference</span><span class="zh">AI 推論</span></div>
+      <div class="tl-label en">NPU / GPU / CPU<br>generating summary</div>
+      <div class="tl-label zh">NPU / GPU / CPU<br>正在生成摘要</div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-dot">🟡</div>
+      <div class="tl-day"><span class="en">Ready</span><span class="zh">摘要完成</span></div>
+      <div class="tl-label en">Paragraph turns yellow<br>Press Shift to read</div>
+      <div class="tl-label zh">段落背景變黃<br>按 Shift 展開摘要</div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-dot">⇧</div>
+      <div class="tl-day"><span class="en">Shift pressed</span><span class="zh">按下 Shift</span></div>
+      <div class="tl-label en">Paragraph replaced<br>with bullet summary</div>
+      <div class="tl-label zh">段落文字替換為<br>條列式摘要</div>
+    </div>
+  </div>
 
-    <div class="card-grid">
-      <div class="card cyan">
-        <div class="card-icon">🖱</div>
-        <h3>Mouse Simulation (Default)</h3>
-        <p>Hover over any paragraph for 2 seconds to trigger L1 + summarization. No webcam, no calibration. Works on any machine. This is the PoC demo mode.</p>
-      </div>
-      <div class="card gold">
-        <div class="card-icon">👁</div>
-        <h3>Webcam Eye Tracking (Real Gaze)</h3>
-        <p>WebGazer.js maps webcam frames to screen coordinates using ML. After a 9-point calibration click, gaze accuracy is ±50–100 px — enough for paragraph detection.</p>
+  <h3 class="sub"><span class="en">Content Script Execution Order</span><span class="zh">Content Script 執行順序</span></h3>
+  <div class="arch">
+    <div class="arch-row">
+      <div class="arch-box">
+        <div class="ab-title" style="font-size:11px;color:rgba(0,180,216,.7);margin-bottom:6px;">document_start · isolated</div>
+        <div class="ab-title">mode_bridge.js</div>
+        <div class="ab-sub en">Reads storage → sets data-aikwau-mode on &lt;html&gt;</div>
+        <div class="ab-sub zh">讀取儲存設定 → 設定 &lt;html&gt; 的 data-aikwau-mode</div>
       </div>
     </div>
-
-    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">GazeTracker Architecture</h3>
-    <div class="arch">
-      <div class="arch-row">
-        <div class="arch-box highlight">
-          <div class="ab-icon">🖱 / 👁</div>
-          <div class="ab-title">Input Source</div>
-          <div class="ab-sub">Mouse events (default)<br>or WebGazer gaze point</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">
-          <div class="ab-icon">⏱</div>
-          <div class="ab-title">Dwell Timer</div>
-          <div class="ab-sub">2000 ms threshold<br>Reset on element change</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">
-          <div class="ab-icon">📡</div>
-          <div class="ab-title">CustomEvents</div>
-          <div class="ab-sub">gazefocus → trigger L1<br>gazeblur → cleanup</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box">
-          <div class="ab-icon">📄</div>
-          <div class="ab-title">content.js</div>
-          <div class="ab-sub">Applies L1 effect<br>Requests summary</div>
-        </div>
+    <div class="arch-down" style="margin:8px 0;">↓</div>
+    <div class="arch-row">
+      <div class="arch-box highlight" style="flex:0 0 auto;margin-right:12px;">
+        <div class="ab-title" style="font-size:11px;color:rgba(0,180,216,.7);margin-bottom:6px;">document_idle · MAIN</div>
+        <div class="ab-title">webgazer.js</div>
+        <div class="ab-sub en">TF.js + facemesh<br>2.3 MB bundled</div>
+        <div class="ab-sub zh">TF.js + facemesh<br>2.3 MB 已打包</div>
+      </div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-box highlight">
+        <div class="ab-title" style="font-size:11px;color:rgba(0,180,216,.7);margin-bottom:6px;">document_idle · MAIN</div>
+        <div class="ab-title">gaze_tracker.js</div>
+        <div class="ab-sub en">Reads mode attr · dwell timer<br>→ dispatch aikwau:gazefocus</div>
+        <div class="ab-sub zh">讀取模式屬性 · 停留計時<br>→ 派發 aikwau:gazefocus</div>
       </div>
     </div>
+    <div class="arch-down" style="margin:8px 0;">↓</div>
+    <div class="arch-row">
+      <div class="arch-box highlight">
+        <div class="ab-title" style="font-size:11px;color:rgba(0,180,216,.7);margin-bottom:6px;">document_idle · isolated</div>
+        <div class="ab-title">content.js</div>
+        <div class="ab-sub en">Listens aikwau:gazefocus · detectTextLang · triggerL1 · markSummaryReady · installShiftReplace</div>
+        <div class="ab-sub zh">監聽 aikwau:gazefocus · 偵測語言 · 套用 L1 · 黃色提示 · 安裝 Shift 替換</div>
+      </div>
+    </div>
+  </div>
 
-    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">Enabling Real Eye Tracking</h3>
-    <pre><code># 1. Download WebGazer.js (~2.5 MB)
-# https://github.com/brownhci/WebGazer/releases → webgazer.js
+  <div class="finding cyan" style="margin-top:20px;">
+    <div class="finding-label"><span class="en">Why MAIN world for WebGazer?</span><span class="zh">為什麼 WebGazer 要在 MAIN world 執行？</span></div>
+    <p class="en">WebGazer v2.1.2 uses TF.js which calls <span class="inline-code">new Function()</span> for WebGL shaders. MV3 extension isolated-world CSP blocks <span class="inline-code">unsafe-eval</span>. Running in MAIN world bypasses this restriction. Gaze coordinates are bridged back to isolated world via DOM <span class="inline-code">CustomEvent</span> (no object refs cross the boundary).</p>
+    <p class="zh">WebGazer v2.1.2 使用 TF.js，後者在 WebGL shader 中呼叫 <span class="inline-code">new Function()</span>。MV3 擴充功能的 isolated world CSP 封鎖了 <span class="inline-code">unsafe-eval</span>。在 MAIN world 執行可以繞過這個限制。視線座標透過 DOM <span class="inline-code">CustomEvent</span> 橋接回 isolated world（不傳遞物件參照）。</p>
+  </div>
+</section>
 
-# 2. Place in extension directory
-copy webgazer.js poc\extension\webgazer.js
+<!-- ═══════════════════════════════════════════════════════ GAZE TRACKING -->
+<section id="gaze">
+  <div class="section-label"><span class="en">Gaze Tracking</span><span class="zh">視線追蹤</span></div>
+  <h2><span class="en">Eye-Tracking Integration</span><span class="zh">眼球追蹤整合</span></h2>
+  <p class="section-sub en">Two interchangeable modes share the same DOM CustomEvent interface. Switch via popup or DevTools — no code changes needed.</p>
+  <p class="section-sub zh">兩種模式共用相同的 DOM CustomEvent 介面，透過彈出選單或 DevTools 切換，不需修改程式碼。</p>
 
-# 3. Add to manifest.json content_scripts.js array (before gaze_tracker.js)
-#    "js": ["webgazer.js", "gaze_tracker.js", "content.js"]
+  <div class="card-grid">
+    <div class="card cyan">
+      <div class="card-icon">🖱</div>
+      <h3><span class="en">Mouse Simulation (Default)</span><span class="zh">滑鼠模擬（預設）</span></h3>
+      <p class="en">Hover any paragraph for 2 seconds. No webcam, no calibration. Works on any machine. Use for PoC demo.</p>
+      <p class="zh">停留在任意段落 2 秒即觸發。不需攝影機、不需校準。任何機器均可使用，適合 PoC 展示。</p>
+    </div>
+    <div class="card gold">
+      <div class="card-icon">👁</div>
+      <h3><span class="en">Webcam Eye Tracking</span><span class="zh">攝影機眼球追蹤</span></h3>
+      <p class="en">WebGazer.js v2.1.2 with TF.js facemesh. 9-point or 25-point calibration. EMA smoothing (α=0.05). Accuracy ±50–100 px post-calibration.</p>
+      <p class="zh">WebGazer.js v2.1.2 搭配 TF.js facemesh。支援 9 點或 25 點校準。EMA 平滑處理（α=0.05）。校準後精度約 ±50–100 px。</p>
+    </div>
+  </div>
 
-# 4. Reload extension in edge://extensions
+  <h3 class="sub"><span class="en">Popup Controls</span><span class="zh">彈出選單功能</span></h3>
+  <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+    <div class="card navy">
+      <h3><span class="en">Mode Switch</span><span class="zh">模式切換</span></h3>
+      <p class="en">Mouse mode / Webcam mode toggle. Reloads page tracking on switch.</p>
+      <p class="zh">滑鼠模式 / 眼球追蹤切換，切換後重新初始化追蹤。</p>
+    </div>
+    <div class="card navy">
+      <h3><span class="en">L2 Text Enlargement</span><span class="zh">L2 文字放大</span></h3>
+      <p class="en">Toggle 1.2× font size on hovered paragraph. Applied together with L1.</p>
+      <p class="zh">切換視線段落 1.2× 字型放大，與 L1 同步套用。</p>
+    </div>
+    <div class="card navy">
+      <h3><span class="en">Shift-Replace Toggle</span><span class="zh">Shift 替換開關</span></h3>
+      <p class="en">Enable/disable Shift key replacing paragraph text with summary.</p>
+      <p class="zh">開啟/關閉按 Shift 將段落替換為摘要的功能。</p>
+    </div>
+    <div class="card navy">
+      <h3><span class="en">Margin Note Theme</span><span class="zh">旁注顏色主題</span></h3>
+      <p class="en">Dark navy / white toggle for sidebar margin notes. Shown when margin note is enabled.</p>
+      <p class="zh">旁注摘要黑底白字 / 白底黑字切換，於旁注啟用時顯示。</p>
+    </div>
+    <div class="card navy">
+      <h3><span class="en">Calibration</span><span class="zh">校準</span></h3>
+      <p class="en">9-point / 25-point calibration overlay. Recalibrate button. Only shown in webcam mode.</p>
+      <p class="zh">9 點 / 25 點校準介面，含重新校準按鈕，僅在眼球追蹤模式顯示。</p>
+    </div>
+    <div class="card navy">
+      <h3><span class="en">Heatmap</span><span class="zh">熱點圖</span></h3>
+      <p class="en">24×14 grid heat visualization of gaze distribution. Clear button resets.</p>
+      <p class="zh">24×14 網格視線分布熱點圖，附清除按鈕。</p>
+    </div>
+  </div>
 
-# 5. Switch mode via DevTools Console on any page:
+  <h3 class="sub"><span class="en">Enable Webcam Mode</span><span class="zh">啟用眼球追蹤模式</span></h3>
+  <pre><code><span class="en"># Switch to webcam mode via extension popup
+# OR via DevTools console on any page:</span><span class="zh"># 透過擴充功能彈出選單切換
+# 或在任意頁面的 DevTools console 執行：</span>
 chrome.storage.local.set({ aikwau_gaze_mode: 'webcam' })
-# Then reload the page — WebGazer camera prompt appears
+<span class="en"># Then reload the page — camera permission prompt appears
+# Click 9 or 25 calibration points when overlay appears</span><span class="zh"># 重新載入頁面，會出現攝影機授權提示
+# 出現校準介面時點擊 9 或 25 個校準點</span></code></pre>
+</section>
 
-# 6. Click 9 different points on the page for calibration
-# 7. Hover gaze over a paragraph for 2 s → L1 activates</code></pre>
+<!-- ═══════════════════════════════════════════════════════════ INSTALL -->
+<section id="install">
+  <div class="section-label"><span class="en">Installation &amp; Usage</span><span class="zh">安裝與使用</span></div>
+  <h2><span class="en">Step-by-Step Setup</span><span class="zh">完整安裝步驟</span></h2>
+  <p class="section-sub en">Four phases from model setup to browser end-to-end test. Each phase has clear pass criteria.</p>
+  <p class="section-sub zh">四個階段：模型設定 → 凍結執行檔建構 → 原生主機註冊 → 瀏覽器端對端測試。每階段有明確通過條件。</p>
 
-    <div style="margin-top:16px;padding:14px 18px;background:rgba(246,174,45,.07);border:1px solid rgba(246,174,45,.3);border-radius:10px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--goldd);margin-bottom:8px;">WebGazer Accuracy Notes</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.7;">
-        Raw accuracy: ±100–200 px uncalibrated &nbsp;·&nbsp; After calibration: ±50–100 px &nbsp;·&nbsp;
-        Paragraph height ≈ 100–200 px → enough for detection.<br>
-        Works best with: good lighting, no glasses glare, 50–80 cm viewing distance, stable head position.<br>
-        For HP SureView / Tobii hardware: replace <span class="inline-code">_startWebcam()</span> with Tobii SDK bridge.
+  <!-- Phase 1 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num p1">1</div>
+      <div class="phase-title"><span class="en">Model Setup — Download &amp; Convert</span><span class="zh">模型設定 — 下載與轉換</span></div>
+      <div class="phase-tag"><span class="en">One-time</span><span class="zh">一次性</span></div>
+    </div>
+    <div class="phase-body">
+      <p class="en">Download Qwen2.5-1.5B-Instruct from HuggingFace and convert to OpenVINO IR with INT4 quantization. Then run the benchmark to confirm the model works on your hardware.</p>
+      <p class="zh">從 HuggingFace 下載 Qwen2.5-1.5B-Instruct 並轉換為 OpenVINO IR INT4 格式，然後跑 benchmark 確認模型能在您的硬體上正確執行。</p>
+      <div class="step-list">
+        <div class="step"><div class="step-dot cmd">1</div><span><span class="en">Run </span><span class="zh">執行 </span><span class="inline-code">poc\model_setup\install_deps.bat</span><span class="en"> — creates .venv, installs openvino + optimum-intel + zhconv</span><span class="zh"> — 建立 .venv，安裝 openvino、optimum-intel、zhconv</span></span></div>
+        <div class="step"><div class="step-dot cmd">2</div><span><span class="inline-code">.venv\Scripts\activate</span><span class="en"> then </span><span class="zh"> 後執行 </span><span class="inline-code">python download_convert.py</span><span class="en"> — ~15 min, outputs ~800 MB model</span><span class="zh"> — 約 15 分鐘，輸出約 800 MB 模型</span></span></div>
+        <div class="step"><div class="step-dot cmd">3</div><span><span class="inline-code">python benchmark.py</span><span class="en"> — tests all available devices (NPU/GPU/CPU)</span><span class="zh"> — 測試所有可用裝置（NPU/GPU/CPU）</span></span></div>
+      </div>
+      <div class="test-box">
+        <div class="test-label"><span class="en">✅ Phase 1 Pass Criteria</span><span class="zh">✅ 階段 1 通過條件</span></div>
+        <ul>
+          <li><span class="en">Model folder </span><span class="zh">模型資料夾 </span><span class="inline-code">models/qwen2.5-1.5b-int4/</span><span class="en"> exists with </span><span class="zh"> 存在且包含 </span><span class="inline-code">openvino_model.bin</span></li>
+          <li><span class="en">benchmark.py prints token/s for at least one device</span><span class="zh">benchmark.py 至少有一個裝置輸出 tok/s 數值</span></li>
+          <li><span class="en">Summary output is readable (English or Traditional Chinese)</span><span class="zh">摘要輸出可讀（英文或正體中文條列）</span></li>
+        </ul>
+      </div>
+<pre><code><span class="en"># Expected benchmark.py output (dev machine, CPU only)</span><span class="zh"># benchmark.py 預期輸出（開發機，僅 CPU）</span>
+Available devices: ['CPU']
+
+======== CPU ========
+  Load time : 12.4s
+  Round 1   : 2.85s | • Global Vision Impairment: ...
+  Round 2   : 2.91s | ...
+  Round 3   : 2.94s | ...
+  Avg latency : 2.90s  |  21.1 tok/s
+  <span class="en">Recommend  : CPU</span><span class="zh">建議裝置 : CPU</span>
+
+<span class="en"># On Panther Lake (actual measured results):</span><span class="zh"># 在 Panther Lake 上（實測結果）：</span>
+  NPU : 1.62s | 37 tok/s  ✅
+  GPU : 0.85s | 71 tok/s  ✅
+  CPU : 1.32s | 45 tok/s  ✅</code></pre>
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num p2">2</div>
+      <div class="phase-title"><span class="en">Build Frozen Executables</span><span class="zh">建構凍結執行檔</span></div>
+      <div class="phase-tag">PyInstaller</div>
+    </div>
+    <div class="phase-body">
+      <p class="en">Build native_host.exe and benchmark.exe with PyInstaller. The CRT ABI fix in .spec files ensures the exe uses System32's MSVC v14.44 (not the bundled v14.31) to match openvino_genai.dll's expectations.</p>
+      <p class="zh">使用 PyInstaller 建構 native_host.exe 與 benchmark.exe。.spec 檔案中的 CRT ABI 修正確保執行檔使用 System32 的 MSVC v14.44（而非打包的 v14.31），以符合 openvino_genai.dll 的要求。</p>
+      <div class="step-list">
+        <div class="step"><div class="step-dot cmd">1</div><span><span class="inline-code">cd poc\native_host</span><span class="en"> and activate venv</span><span class="zh"> 並啟用 venv</span></span></div>
+        <div class="step"><div class="step-dot cmd">2</div><span><span class="en">If rebuilding: </span><span class="zh">若重建，先刪除快取： </span><span class="inline-code">Remove-Item -Recurse -Force dist\native_host\ov_cache</span></span></div>
+        <div class="step"><div class="step-dot cmd">3</div><span><span class="inline-code">pyinstaller --clean -y native_host.spec</span></span></div>
+        <div class="step"><div class="step-dot cmd">4</div><span><span class="inline-code">pyinstaller --clean -y benchmark.spec</span></span></div>
+        <div class="step"><div class="step-dot cmd">5</div><span><span class="en">Test: </span><span class="zh">測試： </span><span class="inline-code">set AIKWAU_MODEL_DIR=C:\...\models\qwen2.5-1.5b-int4</span><span class="en"> then run </span><span class="zh"> 後執行 </span><span class="inline-code">dist\benchmark\benchmark.exe</span></span></div>
+      </div>
+      <div class="test-box">
+        <div class="test-label"><span class="en">✅ Phase 2 Pass Criteria</span><span class="zh">✅ 階段 2 通過條件</span></div>
+        <ul>
+          <li><span class="en"><span class="inline-code">dist\native_host\native_host.exe</span> exists and runs without crash</span><span class="zh"><span class="inline-code">dist\native_host\native_host.exe</span> 存在且不崩潰</span></li>
+          <li><span class="en"><span class="inline-code">dist\benchmark\benchmark.exe</span> prints tok/s output correctly</span><span class="zh"><span class="inline-code">dist\benchmark\benchmark.exe</span> 正確輸出 tok/s 數值</span></li>
+          <li><span class="en">No crash mentioning <span class="inline-code">mtx_do_lock</span> or <span class="inline-code">msvcp140.dll</span></span><span class="zh">無 <span class="inline-code">mtx_do_lock</span> 或 <span class="inline-code">msvcp140.dll</span> 相關崩潰</span></li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- PHASES -->
-  <section id="phases">
-    <div class="section-label">Implementation</div>
-    <h2>Four-Phase Plan</h2>
-    <p class="section-sub">Each phase has a clear deliverable and test criteria before moving forward.</p>
-
-    <!-- Phase 1 -->
-    <div class="phase">
-      <div class="phase-head">
-        <div class="phase-num p1">1</div>
-        <div class="phase-title">Model Setup — Download &amp; Convert</div>
-        <div class="phase-day">Day 1</div>
-      </div>
-      <div class="phase-body">
-        <p>Download Phi-4-mini from HuggingFace and convert it to OpenVINO IR format with INT4 quantization. Then run the benchmark script to confirm inference works on your specific Intel hardware.</p>
-        <div class="step-list">
-          <div class="step"><div class="step-dot cmd">1</div><span>Activate venv and run <span class="inline-code">install_deps.bat</span></span></div>
-          <div class="step"><div class="step-dot cmd">2</div><span>Run <span class="inline-code">python download_convert.py</span> — takes ~15 min, outputs ~1.8 GB model</span></div>
-          <div class="step"><div class="step-dot cmd">3</div><span>Run <span class="inline-code">python benchmark.py</span> — tests NPU / GPU / CPU</span></div>
-        </div>
-        <div class="test-box">
-          <div class="test-label">✅ Phase 1 Pass Criteria</div>
-          <ul>
-            <li>Model folder <span class="inline-code">models/phi4-mini-int4/</span> exists and contains <span class="inline-code">openvino_model.bin</span></li>
-            <li>benchmark.py prints Available devices including NPU</li>
-            <li>At least one device completes a summary in &lt; 5 s</li>
-            <li>Summary text is readable English/Chinese</li>
-          </ul>
-        </div>
-<pre><code># Expected benchmark.py output
-Available devices: ['CPU', 'GPU', 'NPU']
-NPU: Intel NPU (Panther Lake)
-
-======== NPU ========
-  Load time : 8.3s
-  Round 1   : 1.12s | Studies show that over 1 billion...
-  Round 2   : 1.08s | ...
-  Avg latency : 1.10s
-  Tokens/sec  : 54.5</code></pre>
-      </div>
+  <!-- Phase 3 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num p3">3</div>
+      <div class="phase-title"><span class="en">Register Native Host &amp; Load Extension</span><span class="zh">註冊原生主機並載入擴充功能</span></div>
+      <div class="phase-tag"><span class="en">One-time</span><span class="zh">一次性</span></div>
     </div>
-
-    <!-- Phase 2 -->
-    <div class="phase">
-      <div class="phase-head">
-        <div class="phase-num p2">2</div>
-        <div class="phase-title">Native Messaging Host</div>
-        <div class="phase-day">Day 2</div>
+    <div class="phase-body">
+      <p class="en">Register the native messaging host in Windows Registry (HKCU — no admin required), then load the extension in Edge developer mode.</p>
+      <p class="zh">在 Windows Registry（HKCU，不需管理員）註冊原生訊息主機，然後在 Edge 開發者模式載入擴充功能。</p>
+      <div class="step-list">
+        <div class="step"><div class="step-dot cmd">1</div><span><span class="en">Open Edge → </span><span class="zh">開啟 Edge → </span><span class="inline-code">edge://extensions</span><span class="en"> → Developer mode ON → Load unpacked → select </span><span class="zh"> → 開啟開發人員模式 → 載入解壓縮 → 選擇 </span><span class="inline-code">poc/extension/</span></span></div>
+        <div class="step"><div class="step-dot cmd">2</div><span><span class="en">Copy the 32-character Extension ID shown on the extension card</span><span class="zh">複製擴充功能卡片上顯示的 32 字元 Extension ID</span></span></div>
+        <div class="step"><div class="step-dot cmd">3</div><span><span class="inline-code">set AIKWAU_MODEL_DIR=C:\...\models\qwen2.5-1.5b-int4</span></span></div>
+        <div class="step"><div class="step-dot cmd">4</div><span><span class="inline-code">cd poc\native_host &amp;&amp; python register.py --extension-id &lt;ID&gt;</span></span></div>
+        <div class="step"><div class="step-dot cmd">5</div><span><span class="en">Reload extension in edge://extensions (click refresh icon)</span><span class="zh">在 edge://extensions 重新載入擴充功能（點擊重新整理圖示）</span></span></div>
       </div>
-      <div class="phase-body">
-        <p>Set up the Python process that Edge will talk to. Test the stdin/stdout protocol manually before involving the extension.</p>
-        <div class="step-list">
-          <div class="step"><div class="step-dot cmd">1</div><span>Load the extension in Edge (edge://extensions → Developer mode → Load unpacked → select <span class="inline-code">poc/extension/</span>)</span></div>
-          <div class="step"><div class="step-dot cmd">2</div><span>Copy the Extension ID shown in edge://extensions</span></div>
-          <div class="step"><div class="step-dot cmd">3</div><span>Run <span class="inline-code">python register.py --extension-id &lt;ID&gt;</span></span></div>
-          <div class="step"><div class="step-dot cmd">4</div><span>Test the host manually with the Python test script below</span></div>
-        </div>
-<pre><code># Manual host test (run in a separate terminal)
-import subprocess, json, struct
-
-proc = subprocess.Popen(
-    ["python", "native_host.py"],
-    stdin=subprocess.PIPE, stdout=subprocess.PIPE
-)
-
-def send(obj):
-    data = json.dumps(obj).encode()
-    proc.stdin.write(struct.pack("=I", len(data)) + data)
-    proc.stdin.flush()
-
-def recv():
-    n = struct.unpack("=I", proc.stdout.read(4))[0]
-    return json.loads(proc.stdout.read(n))
-
-send({"action": "ping", "reqId": 1})
-print(recv())   # → {"status": "ready", "reqId": 1}
-
-send({"action": "summarize", "text": "AI Kwau is a browser extension...", "lang": "en", "reqId": 2})
-print(recv())   # → {"status": "ok", "summary": "...", "reqId": 2}</code></pre>
-        <div class="test-box">
-          <div class="test-label">✅ Phase 2 Pass Criteria</div>
-          <ul>
-            <li>Registry key exists: <span class="inline-code">HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer</span></li>
-            <li>Manual ping test returns <span class="inline-code">{"status": "ready"}</span></li>
-            <li>Manual summarize test returns a non-empty summary string</li>
-            <li><span class="inline-code">aikwau_host.log</span> shows "Model loaded and warmed up"</li>
-          </ul>
-        </div>
+      <div class="test-box">
+        <div class="test-label"><span class="en">✅ Phase 3 Pass Criteria</span><span class="zh">✅ 階段 3 通過條件</span></div>
+        <ul>
+          <li><span class="inline-code">reg query HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer</span><span class="en"> returns a path</span><span class="zh"> 返回路徑</span></li>
+          <li><span class="en">Extension loads without manifest errors in edge://extensions</span><span class="zh">擴充功能在 edge://extensions 載入無 manifest 錯誤</span></li>
+          <li><span class="en">Extension popup opens and shows mode toggle</span><span class="zh">擴充功能彈出選單可開啟並顯示模式切換</span></li>
+        </ul>
       </div>
-    </div>
+<pre><code><span class="en"># Verify registry (PowerShell)</span><span class="zh"># 確認 Registry（PowerShell）</span>
+reg query HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer
+<span class="en"># Should output path to host_manifest.json</span><span class="zh"># 應輸出 host_manifest.json 的路徑</span>
 
-    <!-- Phase 3 -->
-    <div class="phase">
-      <div class="phase-head">
-        <div class="phase-num p3">3</div>
-        <div class="phase-title">Edge Extension — UI &amp; Trigger</div>
-        <div class="phase-day">Day 3</div>
-      </div>
-      <div class="phase-body">
-        <p>The extension is already loaded from Phase 2. This phase verifies the content script triggers correctly and the badge UI renders.</p>
-        <div class="step-list">
-          <div class="step"><div class="step-dot cmd">1</div><span>Reload the extension in edge://extensions (click the refresh icon)</span></div>
-          <div class="step"><div class="step-dot cmd">2</div><span>Navigate to any news article (e.g. BBC, CNN)</span></div>
-          <div class="step"><div class="step-dot cmd">3</div><span>Open DevTools Console — check for errors</span></div>
-          <div class="step"><div class="step-dot cmd">4</div><span>Hover mouse over a paragraph and hold for 2 seconds</span></div>
-        </div>
-        <div class="test-box">
-          <div class="test-label">✅ Phase 3 Pass Criteria</div>
-          <ul>
-            <li>No errors in DevTools Console after page load</li>
-            <li>After 2 s hover: paragraph text becomes darker and bold (L1)</li>
-            <li>Blue badge appears with "💡 Summarising…" text</li>
-            <li>Badge disappears when mouse moves away (cleanup)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phase 4 -->
-    <div class="phase">
-      <div class="phase-head">
-        <div class="phase-num p4">4</div>
-        <div class="phase-title">End-to-End Integration &amp; Benchmark</div>
-        <div class="phase-day">Day 4–5</div>
-      </div>
-      <div class="phase-body">
-        <p>Connect all three layers. Measure real-world latency from gaze-hold to summary-visible, across multiple page types and Intel device paths.</p>
-        <div class="step-list">
-          <div class="step"><div class="step-dot cmd">1</div><span>Ensure native host is registered (Phase 2) and extension loaded (Phase 3)</span></div>
-          <div class="step"><div class="step-dot cmd">2</div><span>Open any English or Chinese article</span></div>
-          <div class="step"><div class="step-dot cmd">3</div><span>Hover 2 s → verify "Summarising…" → verify summary appears</span></div>
-          <div class="step"><div class="step-dot cmd">4</div><span>Check <span class="inline-code">aikwau_host.log</span> for timing and errors</span></div>
-          <div class="step"><div class="step-dot cmd">5</div><span>Record latency across NPU / GPU / CPU by changing <span class="inline-code">DEVICE_PRIORITY</span> in native_host.py</span></div>
-        </div>
-        <div class="test-box">
-          <div class="test-label">✅ Phase 4 Pass Criteria</div>
-          <ul>
-            <li>Full flow works: hover → L1 → "Summarising…" → summary text → auto-dismiss</li>
-            <li>Chinese page produces Chinese summary (lang auto-detect)</li>
-            <li>NPU latency recorded and &lt; 2 s on Panther Lake</li>
-            <li>No crashes after 10 consecutive requests</li>
-            <li>Log file shows no errors</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MVP VALIDATION -->
-  <section id="validation">
-    <div class="section-label">MVP Validation</div>
-    <h2>Test Plan &amp; Success Criteria</h2>
-    <p class="section-sub">Structured test matrix to validate the full PoC on Panther Lake hardware. Run in order — each phase must pass before the next.</p>
-
-    <table>
-      <tr>
-        <th>#</th>
-        <th>Test Scenario</th>
-        <th>Input</th>
-        <th>Expected Output</th>
-        <th>Pass Condition</th>
-      </tr>
-      <tr>
-        <td><strong>V1</strong></td>
-        <td>NPU detection</td>
-        <td><span class="inline-code">benchmark.py</span></td>
-        <td>NPU in available_devices</td>
-        <td><span class="badge-ok">NPU listed</span></td>
-      </tr>
-      <tr>
-        <td><strong>V2</strong></td>
-        <td>Model load</td>
-        <td><span class="inline-code">benchmark.py</span></td>
-        <td>Load time printed, no crash</td>
-        <td><span class="badge-ok">&lt; 30 s load</span></td>
-      </tr>
-      <tr>
-        <td><strong>V3</strong></td>
-        <td>NPU inference latency</td>
-        <td><span class="inline-code">benchmark.py</span> NPU path</td>
-        <td>Avg latency + tok/s printed</td>
-        <td><span class="badge-ok">&lt; 2 s on Panther Lake</span></td>
-      </tr>
-      <tr>
-        <td><strong>V4</strong></td>
-        <td>Native host ping</td>
-        <td>Manual Python test script</td>
-        <td><span class="inline-code">{"status":"ready","reqId":1}</span></td>
-        <td><span class="badge-ok">status == ready</span></td>
-      </tr>
-      <tr>
-        <td><strong>V5</strong></td>
-        <td>Native host summarize (EN)</td>
-        <td>English paragraph text</td>
-        <td>Non-empty English summary</td>
-        <td><span class="badge-ok">Readable 1–2 sentence summary</span></td>
-      </tr>
-      <tr>
-        <td><strong>V6</strong></td>
-        <td>Native host summarize (ZH)</td>
-        <td>Chinese paragraph text</td>
-        <td>Non-empty Chinese summary</td>
-        <td><span class="badge-ok">Readable Chinese summary</span></td>
-      </tr>
-      <tr>
-        <td><strong>V7</strong></td>
-        <td>Extension load (no errors)</td>
-        <td>Load unpacked in Edge</td>
-        <td>No manifest errors, no console errors</td>
-        <td><span class="badge-ok">Clean load</span></td>
-      </tr>
-      <tr>
-        <td><strong>V8</strong></td>
-        <td>L1 visual trigger (mouse)</td>
-        <td>Hover paragraph 2 s</td>
-        <td>Text darkens + bold, badge shows "Summarising…"</td>
-        <td><span class="badge-ok">Visual effect + badge visible</span></td>
-      </tr>
-      <tr>
-        <td><strong>V9</strong></td>
-        <td>End-to-end summary (EN)</td>
-        <td>Hover English article paragraph</td>
-        <td>Summary appears in badge within 3 s</td>
-        <td><span class="badge-ok">&lt; 3 s total (on Panther Lake: &lt; 2 s)</span></td>
-      </tr>
-      <tr>
-        <td><strong>V10</strong></td>
-        <td>End-to-end summary (ZH)</td>
-        <td>Hover Chinese article paragraph</td>
-        <td>Chinese summary in badge</td>
-        <td><span class="badge-ok">Language auto-detected</span></td>
-      </tr>
-      <tr>
-        <td><strong>V11</strong></td>
-        <td>Stability (10 requests)</td>
-        <td>10 consecutive hovers</td>
-        <td>All succeed, no port disconnect</td>
-        <td><span class="badge-ok">Zero errors in log</span></td>
-      </tr>
-      <tr>
-        <td><strong>V12</strong></td>
-        <td>Cleanup on gaze-away</td>
-        <td>Move mouse off paragraph</td>
-        <td>L1 removed, badge dismissed</td>
-        <td><span class="badge-ok">No visual artifacts left</span></td>
-      </tr>
-    </table>
-
-    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">Latency Budget (Panther Lake Target)</h3>
-    <table>
-      <tr><th>Stage</th><th>Description</th><th>Budget</th></tr>
-      <tr><td>Dwell detection</td><td>content.js → gazefocus event</td><td>= 2000 ms (fixed)</td></tr>
-      <tr><td>IPC overhead</td><td>Extension → background → native host</td><td>&lt; 10 ms</td></tr>
-      <tr><td>Model warm-up</td><td>First request only (subsequent cached)</td><td>&lt; 10 s (one-time)</td></tr>
-      <tr><td>Prompt build + tokenize</td><td>Text truncated to 1200 chars</td><td>&lt; 50 ms</td></tr>
-      <tr><td>NPU inference</td><td>80 output tokens @ 100 tok/s target</td><td>&lt; 800 ms</td></tr>
-      <tr><td>Detokenize + IPC return</td><td>JSON encode + write stdout</td><td>&lt; 20 ms</td></tr>
-      <tr><td><strong>Total after dwell</strong></td><td></td><td><strong>&lt; 1 s (target)</strong></td></tr>
-    </table>
-
-    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">Quick Validation Script</h3>
-    <pre><code># Run from poc/native_host/ with .venv active
+<span class="en"># Manual native host test</span><span class="zh"># 手動測試原生主機</span>
+$env:AIKWAU_MODEL_DIR = "C:\...\models\qwen2.5-1.5b-int4"
+$env:PYTHONUTF8 = "1"
 python -c "
-import subprocess, json, struct, time
-
-proc = subprocess.Popen(
-    ['python', 'native_host.py'],
-    stdin=subprocess.PIPE, stdout=subprocess.PIPE
-)
-
-def send(obj):
-    data = json.dumps(obj).encode()
-    proc.stdin.write(struct.pack('=I', len(data)) + data)
-    proc.stdin.flush()
-
-def recv():
-    n = struct.unpack('=I', proc.stdout.read(4))[0]
-    return json.loads(proc.stdout.read(n))
-
-# V4: Ping
-send({'action': 'ping', 'reqId': 1})
-r = recv()
-assert r['status'] == 'ready', f'FAIL V4: {r}'
-print('V4 PASS:', r)
-
-# V5: English summary
-t = time.time()
-send({'action': 'summarize',
-      'text': 'Studies show over 1.1 billion people experience vision impairment globally. Small fonts and poor contrast remain the top barriers to digital accessibility for aging users.',
-      'lang': 'en', 'reqId': 2})
-r = recv()
-latency = time.time() - t
-assert r['status'] == 'ok' and len(r.get('summary','')) > 10, f'FAIL V5: {r}'
-print(f'V5 PASS ({latency:.2f}s):', r[\"summary\"][:80])
-
-# V6: Chinese summary
-t = time.time()
-send({'action': 'summarize',
-      'text': '研究顯示，全球超過11億人有視力障礙。字體太小與對比度不足是老年用戶在數位存取上的主要障礙。',
-      'lang': 'zh', 'reqId': 3})
-r = recv()
-latency = time.time() - t
-assert r['status'] == 'ok', f'FAIL V6: {r}'
-print(f'V6 PASS ({latency:.2f}s):', r[\"summary\"][:80])
-
-proc.terminate()
-print('All validation tests passed.')
+import subprocess, json, struct, os, time
+p = subprocess.Popen(['dist\\\\native_host\\\\native_host.exe'],
+    stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=dict(os.environ))
+def send(o): d=json.dumps(o).encode(); p.stdin.write(struct.pack('=I',len(d))+d); p.stdin.flush()
+def recv(): n=struct.unpack('=I',p.stdout.read(4))[0]; return json.loads(p.stdout.read(n))
+send({'action':'ping','reqId':1}); r=recv()
+while r.get('status')=='loading': time.sleep(2); send({'action':'ping','reqId':1}); r=recv()
+print('ping:', r)
+send({'action':'summarize','text':'AI is transforming healthcare.','lang':'en','reqId':2})
+print('EN:', recv())
+send({'action':'summarize','text':'研究顯示全球超過11億人有視力障礙，老年用戶在數位平台上面臨字體過小的困難。','lang':'zh','reqId':3})
+print('ZH:', recv())
 "</code></pre>
-  </section>
-
-  <!-- HARDWARE -->
-  <section id="hardware">
-    <div class="section-label">Hardware</div>
-    <h2>Intel Chip Generation Guide</h2>
-    <p class="section-sub">Performance estimates for Phi-4 Mini INT4 (80-token summary output). Measured via OpenVINO on each device path.</p>
-    <table>
-      <tr>
-        <th>Generation</th>
-        <th>Example</th>
-        <th>Best Path</th>
-        <th>Avg Latency</th>
-        <th>Tokens/s</th>
-        <th>UX</th>
-      </tr>
-      <tr>
-        <td>13th gen (Raptor Lake)</td>
-        <td>i7-1360P</td>
-        <td>iGPU (Iris Xe)</td>
-        <td>3–5 s</td>
-        <td>16–27</td>
-        <td><span class="badge-warn">Marginal</span></td>
-      </tr>
-      <tr>
-        <td>Core Ultra 1 (Meteor Lake)</td>
-        <td>Ultra 7 165H</td>
-        <td>iGPU (Arc Xe)</td>
-        <td>1.6–2.7 s</td>
-        <td>30–50</td>
-        <td><span class="badge-ok">Acceptable</span></td>
-      </tr>
-      <tr>
-        <td>Core Ultra 200H (Arrow Lake)</td>
-        <td>Ultra 7 268H</td>
-        <td>NPU (13 TOPS)</td>
-        <td>2–3.2 s</td>
-        <td>25–40</td>
-        <td><span class="badge-ok">Acceptable</span></td>
-      </tr>
-      <tr>
-        <td>Core Ultra 2 (Lunar Lake)</td>
-        <td>Ultra 7 258V</td>
-        <td>NPU (48 TOPS)</td>
-        <td>0.9–1.5 s</td>
-        <td>55–85</td>
-        <td><span class="badge-ok">Ideal</span></td>
-      </tr>
-      <tr>
-        <td><strong>Panther Lake</strong></td>
-        <td><strong>Your machine</strong></td>
-        <td><strong>NPU (100+ TOPS)</strong></td>
-        <td><strong>&lt; 1 s (est.)</strong></td>
-        <td><strong>80–120+ (est.)</strong></td>
-        <td><span class="badge-ok">Ideal</span></td>
-      </tr>
-    </table>
-    <p style="font-size:12px;color:var(--muted);margin-top:8px;">* Panther Lake figures are estimates based on pre-launch Intel targets. Run benchmark.py to get actual numbers.</p>
-  </section>
-
-  <!-- FILES -->
-  <section id="files">
-    <div class="section-label">Reference</div>
-    <h2>File Structure</h2>
-    <div class="tree">
-      <span class="dir">ai-kwau/</span><br>
-      ├── <span class="dir">poc/</span><br>
-      │&nbsp;&nbsp; ├── <span class="dir">model_setup/</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">install_deps.bat</span>  &nbsp;<span class="comment">← run first to set up venv</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">download_convert.py</span>  &nbsp;<span class="comment">← download + INT4 conversion</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">benchmark.py</span>  &nbsp;<span class="comment">← NPU/GPU/CPU latency test</span><br>
-      │&nbsp;&nbsp; ├── <span class="dir">native_host/</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">native_host.py</span>  &nbsp;<span class="comment">← OpenVINO inference + stdio</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">host_manifest.json</span>  &nbsp;<span class="comment">← Edge host descriptor</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">register.py</span>  &nbsp;<span class="comment">← writes Windows Registry</span><br>
-      │&nbsp;&nbsp; ├── <span class="dir">extension/</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">manifest.json</span>  &nbsp;<span class="comment">← MV3: nativeMessaging, storage permissions</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">gaze_tracker.js</span>  &nbsp;<span class="comment">← GazeTracker: mouse sim or WebGazer webcam</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">background.js</span>  &nbsp;<span class="comment">← service worker + native bridge</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>  &nbsp;<span class="comment">← gazefocus/gazeblur → L1 effect + badge</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>  &nbsp;<span class="comment">← L1 effect + badge styles</span><br>
-      │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">[webgazer.js]</span>  &nbsp;<span class="comment">← optional: download separately for webcam mode</span><br>
-      │&nbsp;&nbsp; └── <span class="dir">models/</span>  &nbsp;<span class="comment">← auto-created by download_convert.py</span><br>
-      │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">phi4-mini-int4/</span>  &nbsp;<span class="comment">← ~1.8 GB OpenVINO IR + tokenizer</span><br>
-      ├── <span class="dir">doc/</span><br>
-      │&nbsp;&nbsp; └── <span class="file">index.html</span>  &nbsp;<span class="comment">← this file</span><br>
-      ├── <span class="file">CLAUDE.md</span>  &nbsp;<span class="comment">← project context for Claude Code (read on session start)</span><br>
-      ├── <span class="file">index.html</span>  &nbsp;<span class="comment">← EN presentation</span><br>
-      └── <span class="file">index-cht.html</span>  &nbsp;<span class="comment">← CHT presentation</span>
     </div>
+  </div>
 
-    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">Quick Start</h3>
-<pre><code># 1. Clone and enter project
-cd ai-kwau/poc/model_setup
+  <!-- Phase 4 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num p4">4</div>
+      <div class="phase-title"><span class="en">Browser End-to-End Test</span><span class="zh">瀏覽器端對端測試</span></div>
+      <div class="phase-tag"><span class="en">Final validation</span><span class="zh">最終驗證</span></div>
+    </div>
+    <div class="phase-body">
+      <p class="en">Navigate to any article, trigger gaze hold, verify yellow highlight appears, press Shift to read the bullet-point summary.</p>
+      <p class="zh">瀏覽任意文章，觸發視線停留，確認黃色段落提示出現，按 Shift 閱讀條列式摘要。</p>
+      <div class="step-list">
+        <div class="step"><div class="step-dot cmd">1</div><span><span class="en">Navigate to any news article (English or Chinese)</span><span class="zh">瀏覽任意新聞文章（英文或中文）</span></span></div>
+        <div class="step"><div class="step-dot cmd">2</div><span><span class="en">Hover mouse over a paragraph and hold 2 seconds</span><span class="zh">將滑鼠停留在段落上 2 秒</span></span></div>
+        <div class="step"><div class="step-dot cmd">3</div><span><span class="en">Paragraph text darkens + bold (L1 effect)</span><span class="zh">段落文字變深加粗（L1 效果）</span></span></div>
+        <div class="step"><div class="step-dot cmd">4</div><span><span class="en">After inference completes, paragraph background turns yellow</span><span class="zh">AI 推論完成後，段落背景變為黃色</span></span></div>
+        <div class="step"><div class="step-dot cmd">5</div><span><span class="en">Press Shift → paragraph text replaced with 3 bullet-point summary</span><span class="zh">按 Shift → 段落文字替換為 3 條摘要重點</span></span></div>
+        <div class="step"><div class="step-dot cmd">6</div><span><span class="en">Check </span><span class="zh">查看 </span><span class="inline-code">poc\native_host\aikwau_host.log</span><span class="en"> for timing and errors</span><span class="zh"> 確認時間與錯誤記錄</span></span></div>
+      </div>
+      <div class="test-box">
+        <div class="test-label"><span class="en">✅ Phase 4 Pass Criteria</span><span class="zh">✅ 階段 4 通過條件</span></div>
+        <ul>
+          <li><span class="en">L1 effect activates after 2s hover</span><span class="zh">滑鼠懸停 2 秒後 L1 效果啟動</span></li>
+          <li><span class="en">Paragraph turns yellow when summary is ready</span><span class="zh">摘要完成後段落背景變黃</span></li>
+          <li><span class="en">Shift replaces paragraph with readable bullet summary</span><span class="zh">按 Shift 段落替換為可讀的條列式摘要</span></li>
+          <li><span class="en">English article → English bullets; Chinese article → Traditional Chinese bullets</span><span class="zh">英文文章 → 英文摘要；中文文章 → 正體中文摘要</span></li>
+          <li><span class="en">No errors in DevTools Console or aikwau_host.log</span><span class="zh">DevTools Console 與 aikwau_host.log 無錯誤</span></li>
+          <li><span class="en">10 consecutive requests succeed without port disconnect</span><span class="zh">連續 10 次請求均成功，無連線中斷</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-# 2. Set up environment
-install_deps.bat
-.venv\Scripts\activate
+<!-- ═══════════════════════════════════════════════════════ KEY FINDINGS -->
+<section id="findings">
+  <div class="section-label"><span class="en">Key Findings</span><span class="zh">重要技術發現</span></div>
+  <h2><span class="en">Architecture Decisions &amp; Lessons Learned</span><span class="zh">架構決策與技術教訓</span></h2>
+  <p class="section-sub en">Critical discoveries made during development that shaped the current design. Read before modifying any of these systems.</p>
+  <p class="section-sub zh">開發過程中的關鍵發現，決定了目前架構設計。修改相關系統前請務必閱讀。</p>
 
-# 3. Convert model (one-time, ~15 min)
-python download_convert.py
+  <div class="finding red">
+    <div class="finding-label">🔴 <span class="en">CRT ABI Mismatch — PyInstaller Frozen Exe Crash</span><span class="zh">CRT ABI 不相容 — PyInstaller 凍結執行檔崩潰</span></div>
+    <p class="en"><strong>Root cause:</strong> <span class="inline-code">openvino_genai.dll</span> is compiled with MSVC v14.40+ which uses SRWLOCK-based <span class="inline-code">std::mutex</span>. PyInstaller bundles <span class="inline-code">msvcp140.dll</span> v14.31 which uses CRITICAL_SECTION layout. When the frozen exe loads the bundled CRT, the inlined mutex code in openvino_genai.dll reads NULL at offset 8 → crash at <span class="inline-code">mtx_do_lock+0x9c</span>.<br><br>
+    <strong>Fix:</strong> Drop exact-named CRT DLLs from the PyInstaller bundle so the exe falls back to System32's v14.44. Applied in both <span class="inline-code">native_host.spec</span> and <span class="inline-code">benchmark.spec</span>. Numpy's private <span class="inline-code">msvcp140-&lt;hash&gt;.dll</span> is preserved (exact-name match avoids it).</p>
+    <p class="zh"><strong>根本原因：</strong><span class="inline-code">openvino_genai.dll</span> 使用 MSVC v14.40+ 編譯，其 <span class="inline-code">std::mutex</span> 基於 SRWLOCK。PyInstaller 打包的 <span class="inline-code">msvcp140.dll</span> 為 v14.31，使用 CRITICAL_SECTION 版面配置。凍結執行檔載入打包的 CRT 後，openvino_genai.dll 的 mutex 內嵌程式碼在 offset 8 讀到 NULL → 崩潰於 <span class="inline-code">mtx_do_lock+0x9c</span>。<br><br>
+    <strong>修正方式：</strong>從 PyInstaller bundle 中精確刪除 CRT DLL，讓執行檔回退使用 System32 的 v14.44。已套用至 <span class="inline-code">native_host.spec</span> 與 <span class="inline-code">benchmark.spec</span>。Numpy 的私有 <span class="inline-code">msvcp140-&lt;hash&gt;.dll</span> 保留（精確名稱匹配排除之）。</p>
+<pre><code><span class="en"># In benchmark.spec / native_host.spec</span><span class="zh"># 在 benchmark.spec / native_host.spec 中</span>
+_CRT_EXACT = {
+    'msvcp140.dll', 'msvcp140_atomic_wait.dll',
+    'vcruntime140.dll', 'vcruntime140_1.dll',
+    'vccorlib140.dll', 'concrt140.dll',
+}
+def _is_crt(name):
+    b = os.path.basename(name).lower()
+    return b in _CRT_EXACT or b.startswith('api-ms-win-crt-')</code></pre>
+  </div>
 
-# 4. Benchmark on your hardware
-python benchmark.py
+  <div class="finding gold">
+    <div class="finding-label">🟡 <span class="en">Model Compatibility — Phi-4-mini vs Qwen2.5</span><span class="zh">模型相容性 — Phi-4-mini vs Qwen2.5</span></div>
+    <p class="en"><strong>Phi-4-mini:</strong> INCOMPATIBLE with NPU on OpenVINO 2026.2. Its custom architecture (<span class="inline-code">configuration_phi3.py</span>) causes garbled output on NPU. Produces clean output on CPU only.<br><br>
+    <strong>Qwen2.5-1.5B-Instruct:</strong> Standard transformer architecture. All three devices (NPU, GPU, CPU) produce clean, readable output. Selected as the production model.</p>
+    <p class="zh"><strong>Phi-4-mini：</strong>與 OpenVINO 2026.2 的 NPU 不相容。其自訂架構（<span class="inline-code">configuration_phi3.py</span>）導致 NPU 輸出亂碼，僅在 CPU 能正常輸出。<br><br>
+    <strong>Qwen2.5-1.5B-Instruct：</strong>標準 transformer 架構，NPU、GPU、CPU 三個裝置均能產生正確可讀的輸出。已選定為正式模型。</p>
+  </div>
 
-# 5. Register native host (after loading extension in Edge)
-cd ..\native_host
-python register.py --extension-id &lt;YOUR_EXTENSION_ID&gt;
+  <div class="finding gold">
+    <div class="finding-label">🟡 <span class="en">Qwen Chat Template Causes Early EOS</span><span class="zh">Qwen Chat Template 導致提前 EOS</span></div>
+    <p class="en">Using Qwen2.5's <span class="inline-code">&lt;|im_start|&gt;/&lt;|im_end|&gt;</span> chat template causes the model to emit EOS after the first bullet point only, producing incomplete summaries.<br><br>
+    <strong>Solution:</strong> Use raw completion prompts seeded with <span class="inline-code">1.</span> — the model outputs a full numbered list, which is then converted to <span class="inline-code">•</span> bullets by <span class="inline-code">_format_output()</span>.</p>
+    <p class="zh">使用 Qwen2.5 的 <span class="inline-code">&lt;|im_start|&gt;/&lt;|im_end|&gt;</span> chat template 會使模型在第一條重點後立即輸出 EOS，造成摘要不完整。<br><br>
+    <strong>解決方式：</strong>改用以 <span class="inline-code">1.</span> 為引子的 raw completion prompt，模型會輸出完整編號清單，再由 <span class="inline-code">_format_output()</span> 轉換為 <span class="inline-code">•</span> 條列格式。</p>
+<pre><code><span class="en"># English prompt</span><span class="zh"># 英文 prompt</span>
+"List 3 key points from the following paragraph (each point under 20 words):\n\n{text}\n\nKey points:\n1."
 
-# 6. Load extension in Edge
-#    edge://extensions → Developer mode → Load unpacked → select poc/extension/
+<span class="en"># Chinese prompt</span><span class="zh"># 中文 prompt</span>
+"列出以下文章的重點（3點）：\n\n{text}\n\n重點：\n1."</code></pre>
+  </div>
 
-# 7. Run MVP validation test suite
-cd ..\native_host
-python -c "import subprocess,json,struct; ..."  # see Validation section above</code></pre>
-  </section>
+  <div class="finding cyan">
+    <div class="finding-label">🔵 <span class="en">WebGazer CSP Issue — Must Run in MAIN World</span><span class="zh">WebGazer CSP 問題 — 必須在 MAIN World 執行</span></div>
+    <p class="en">WebGazer v3.x uses MediaPipe which dynamically loads JS — blocked by page CSP. WebGazer v2.1.2 uses TF.js which calls <span class="inline-code">new Function()</span> for WebGL shaders — blocked by MV3 isolated-world CSP (<span class="inline-code">unsafe-eval</span> not allowed).<br><br>
+    <strong>Solution:</strong> Run <span class="inline-code">webgazer.js</span> in MAIN world (where page CSP applies, not extension CSP). Bridge gaze coordinates to isolated world via DOM <span class="inline-code">CustomEvent</span> carrying <span class="inline-code">{x, y}</span> viewport coords only.</p>
+    <p class="zh">WebGazer v3.x 使用 MediaPipe，需動態載入 JS，被頁面 CSP 封鎖。WebGazer v2.1.2 使用 TF.js，其 WebGL shader 呼叫 <span class="inline-code">new Function()</span>，被 MV3 isolated world CSP 封鎖（不允許 <span class="inline-code">unsafe-eval</span>）。<br><br>
+    <strong>解決方式：</strong>在 MAIN world 執行 <span class="inline-code">webgazer.js</span>（適用頁面 CSP，不受 extension CSP 限制）。透過 DOM <span class="inline-code">CustomEvent</span>（只傳遞 <span class="inline-code">{x, y}</span> 座標）橋接至 isolated world。</p>
+  </div>
+
+  <div class="finding green">
+    <div class="finding-label">🟢 <span class="en">Language Detection &amp; Traditional Chinese Conversion</span><span class="zh">語言偵測與正體中文轉換</span></div>
+    <p class="en">Language is detected per-paragraph by CJK character ratio (not the page <span class="inline-code">lang</span> attribute). If more than 8% of characters are CJK → <span class="inline-code">'zh'</span>; else <span class="inline-code">'en'</span>.<br><br>
+    Qwen2.5 outputs Simplified Chinese even when instructed to use Traditional. Post-processing with <span class="inline-code">zhconv.convert(text, 'zh-tw')</span> converts simplified → traditional. Also strips markdown bold markers (<span class="inline-code">**text**</span>) emitted by Qwen.</p>
+    <p class="zh">語言依每段落的 CJK 字元比例偵測（非頁面 <span class="inline-code">lang</span> 屬性）。超過 8% 為 CJK → <span class="inline-code">'zh'</span>；否則 <span class="inline-code">'en'</span>。<br><br>
+    Qwen2.5 即使被指示輸出正體中文，仍會輸出簡體。後處理使用 <span class="inline-code">zhconv.convert(text, 'zh-tw')</span> 轉換簡體→正體，同時移除 Qwen 輸出的 Markdown 粗體標記（<span class="inline-code">**text**</span>）。</p>
+<pre><code><span class="en"># In content.js: per-paragraph language detection</span><span class="zh"># 在 content.js：每段落語言偵測</span>
+function detectTextLang(text) {
+    const cjk = (text.match(/[　-鿿豈-﫿]/g) || []).length;
+    return cjk / text.length > 0.08 ? 'zh' : 'en';
+}
+
+<span class="en"># In native_host.py: output post-processing</span><span class="zh"># 在 native_host.py：輸出後處理</span>
+def _format_output(raw, lang):
+    text = raw.strip()
+    if lang == 'zh':
+        import zhconv
+        text = zhconv.convert(text, 'zh-tw')          <span class="en"># simplified → traditional</span><span class="zh"># 簡體→正體</span>
+    text = re.sub(r'\*{1,2}([^*\n]+)\*{1,2}', r'\1', text)  <span class="en"># strip **bold**</span><span class="zh"># 移除 **粗體**</span>
+    text = re.sub(r'(?m)^\s*(?:\d+[.、）)]\s*|[-*]\s+)', '• ', text)  <span class="en"># → bullets</span><span class="zh"># → 條列</span>
+    return text.strip()</code></pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ HARDWARE -->
+<section id="hardware">
+  <div class="section-label"><span class="en">Hardware</span><span class="zh">硬體效能</span></div>
+  <h2><span class="en">Intel Chip Generation Guide</span><span class="zh">Intel 晶片世代效能指南</span></h2>
+  <p class="section-sub en">Performance for Qwen2.5-1.5B INT4 (~180 output tokens per summary). Panther Lake figures are actual measured results.</p>
+  <p class="section-sub zh">Qwen2.5-1.5B INT4 效能（每次摘要約 180 個輸出 token）。Panther Lake 為實測數值。</p>
+
+  <h3 class="sub"><span class="en">Panther Lake Actual Measurements</span><span class="zh">Panther Lake 實測結果</span></h3>
+  <table>
+    <tr>
+      <th><span class="en">Device</span><span class="zh">裝置</span></th>
+      <th><span class="en">Avg Latency</span><span class="zh">平均延遲</span></th>
+      <th><span class="en">Tokens/sec</span><span class="zh">生成速度</span></th>
+      <th><span class="en">Status</span><span class="zh">狀態</span></th>
+    </tr>
+    <tr>
+      <td>NPU (Intel AI Boost, 100+ TOPS)</td>
+      <td><strong>1.62 s</strong></td>
+      <td>37 tok/s</td>
+      <td><span class="badge-ok">✅ Clean output</span></td>
+    </tr>
+    <tr>
+      <td>GPU (iGPU)</td>
+      <td><strong>0.85 s</strong></td>
+      <td>71 tok/s</td>
+      <td><span class="badge-ok">✅ Clean output</span></td>
+    </tr>
+    <tr>
+      <td>CPU</td>
+      <td><strong>1.32 s</strong></td>
+      <td>45 tok/s</td>
+      <td><span class="badge-ok">✅ Clean output</span></td>
+    </tr>
+  </table>
+
+  <h3 class="sub"><span class="en">Estimated Performance by Generation</span><span class="zh">各世代效能估算</span></h3>
+  <table>
+    <tr>
+      <th><span class="en">Generation</span><span class="zh">世代</span></th>
+      <th><span class="en">Example</span><span class="zh">代表機型</span></th>
+      <th><span class="en">Best Path</span><span class="zh">最佳路徑</span></th>
+      <th><span class="en">Est. Latency</span><span class="zh">估計延遲</span></th>
+      <th><span class="en">UX</span><span class="zh">體驗</span></th>
+    </tr>
+    <tr>
+      <td><span class="en">13th gen (Raptor Lake)</span><span class="zh">第 13 代（Raptor Lake）</span></td>
+      <td>i7-1360P</td>
+      <td>CPU</td>
+      <td>4–8 s</td>
+      <td><span class="badge-warn"><span class="en">Slow</span><span class="zh">偏慢</span></span></td>
+    </tr>
+    <tr>
+      <td><span class="en">Core Ultra 1 (Meteor Lake)</span><span class="zh">Core Ultra 1（Meteor Lake）</span></td>
+      <td>Ultra 7 165H</td>
+      <td>iGPU (Arc Xe)</td>
+      <td>2–3 s</td>
+      <td><span class="badge-warn"><span class="en">Marginal</span><span class="zh">勉強可用</span></span></td>
+    </tr>
+    <tr>
+      <td><span class="en">Core Ultra 2 (Lunar Lake)</span><span class="zh">Core Ultra 2（Lunar Lake）</span></td>
+      <td>Ultra 7 258V</td>
+      <td>NPU (48 TOPS)</td>
+      <td>1.0–1.8 s</td>
+      <td><span class="badge-ok"><span class="en">Good</span><span class="zh">良好</span></span></td>
+    </tr>
+    <tr>
+      <td><strong><span class="en">Panther Lake (target)</span><span class="zh">Panther Lake（目標機型）</span></strong></td>
+      <td><strong>HP Laptop</strong></td>
+      <td><strong>NPU (100+ TOPS)</strong></td>
+      <td><strong>0.85–1.62 s ✅</strong></td>
+      <td><span class="badge-ok"><span class="en">Ideal</span><span class="zh">理想</span></span></td>
+    </tr>
+  </table>
+
+  <h3 class="sub"><span class="en">Latency Budget (Per Request)</span><span class="zh">延遲預算（每次請求）</span></h3>
+  <table>
+    <tr>
+      <th><span class="en">Stage</span><span class="zh">階段</span></th>
+      <th><span class="en">Description</span><span class="zh">說明</span></th>
+      <th><span class="en">Budget</span><span class="zh">預算</span></th>
+    </tr>
+    <tr><td><span class="en">Dwell detection</span><span class="zh">停留偵測</span></td><td><span class="en">content.js → gazefocus event</span><span class="zh">content.js → gazefocus 事件</span></td><td>= 2000 ms (fixed)</td></tr>
+    <tr><td><span class="en">IPC overhead</span><span class="zh">IPC 開銷</span></td><td><span class="en">Extension → background → native host</span><span class="zh">擴充功能 → background → 原生主機</span></td><td>&lt; 10 ms</td></tr>
+    <tr><td><span class="en">Model warm-up</span><span class="zh">模型預熱</span></td><td><span class="en">First request only (OV cache)</span><span class="zh">僅第一次請求（OV 快取後免預熱）</span></td><td>&lt; 15 s (one-time)</td></tr>
+    <tr><td><span class="en">Prompt build + tokenize</span><span class="zh">Prompt 建構 + tokenize</span></td><td><span class="en">Text truncated to 1200 chars</span><span class="zh">文字截斷至 1200 字元</span></td><td>&lt; 50 ms</td></tr>
+    <tr><td><span class="en">NPU inference (Panther Lake)</span><span class="zh">NPU 推論（Panther Lake）</span></td><td><span class="en">~180 output tokens</span><span class="zh">約 180 個輸出 token</span></td><td>0.85–1.62 s</td></tr>
+    <tr><td><span class="en">_format_output + IPC return</span><span class="zh">後處理 + IPC 回傳</span></td><td><span class="en">zhconv + regex + JSON encode</span><span class="zh">zhconv + regex + JSON 編碼</span></td><td>&lt; 30 ms</td></tr>
+    <tr><td><strong><span class="en">Total after dwell (Panther Lake)</span><span class="zh">停留後總時間（Panther Lake）</span></strong></td><td></td><td><strong>&lt; 2 s ✅</strong></td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════ FILES -->
+<section id="files">
+  <div class="section-label"><span class="en">Reference</span><span class="zh">參考資料</span></div>
+  <h2><span class="en">File Structure</span><span class="zh">檔案結構</span></h2>
+  <div class="tree">
+    <span class="dir">ai-kwau/</span><br>
+    ├── <span class="dir">poc/</span><br>
+    │&nbsp;&nbsp; ├── <span class="dir">model_setup/</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">install_deps.bat</span>&nbsp;&nbsp;<span class="comment en">← creates .venv, pip install openvino + zhconv</span><span class="comment zh">← 建立 .venv，安裝 openvino + zhconv</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">download_convert.py</span>&nbsp;&nbsp;<span class="comment en">← download Qwen2.5-1.5B, convert INT4 IR</span><span class="comment zh">← 下載 Qwen2.5-1.5B，轉換 INT4 IR</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">benchmark.py</span>&nbsp;&nbsp;<span class="comment en">← NPU/GPU/CPU latency test, frozen-exe aware</span><span class="comment zh">← NPU/GPU/CPU 延遲測試，支援凍結執行檔</span><br>
+    │&nbsp;&nbsp; ├── <span class="dir">native_host/</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">native_host.py</span>&nbsp;&nbsp;<span class="comment en">← LLMPipeline inference host (stdin/stdout)</span><span class="comment zh">← LLMPipeline 推論主機（stdin/stdout）</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">native_host.spec</span>&nbsp;&nbsp;<span class="comment en">← PyInstaller spec: CRT drop + zhconv bundle</span><span class="comment zh">← PyInstaller spec：CRT 剔除 + zhconv 打包</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">benchmark.spec</span>&nbsp;&nbsp;<span class="comment en">← PyInstaller spec: CRT drop + OV bundle</span><span class="comment zh">← PyInstaller spec：CRT 剔除 + OV 打包</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">host_manifest.json</span>&nbsp;&nbsp;<span class="comment en">← Edge native host descriptor</span><span class="comment zh">← Edge 原生主機描述檔</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">register.py</span>&nbsp;&nbsp;<span class="comment en">← writes HKCU registry key, creates run_host.bat</span><span class="comment zh">← 寫入 HKCU 機碼，建立 run_host.bat</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="dir">dist/</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── <span class="dir">native_host/</span>&nbsp;&nbsp;<span class="comment en">← native_host.exe + _internal/ (deployment source)</span><span class="comment zh">← native_host.exe + _internal/（部署來源）</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">benchmark/</span>&nbsp;&nbsp;<span class="comment en">← benchmark.exe + _internal/</span><span class="comment zh">← benchmark.exe + _internal/</span><br>
+    │&nbsp;&nbsp; ├── <span class="dir">extension/</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">manifest.json</span>&nbsp;&nbsp;<span class="comment en">← MV3 v0.3.0: three content_scripts entries</span><span class="comment zh">← MV3 v0.3.0：三個 content_scripts 項目</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">mode_bridge.js</span>&nbsp;&nbsp;<span class="comment en">← isolated, doc_start: storage → DOM attr</span><span class="comment zh">← isolated world，最早執行，設定 DOM 屬性</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">webgazer.js</span>&nbsp;&nbsp;<span class="comment en">← WebGazer v2.1.2 bundled (2.3 MB, MAIN world)</span><span class="comment zh">← WebGazer v2.1.2 已打包（2.3 MB，MAIN world）</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">gaze_tracker.js</span>&nbsp;&nbsp;<span class="comment en">← MAIN world: dwell timer → aikwau:gazefocus</span><span class="comment zh">← MAIN world：停留計時 → aikwau:gazefocus</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">background.js</span>&nbsp;&nbsp;<span class="comment en">← service worker, native messaging bridge</span><span class="comment zh">← service worker，原生訊息橋接</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>&nbsp;&nbsp;<span class="comment en">← isolated: L1, summary, yellow highlight, Shift-replace</span><span class="comment zh">← isolated：L1、摘要、黃色提示、Shift 替換</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>&nbsp;&nbsp;<span class="comment en">← L1/L2 styles, .aikwau-summary-ready, margin-note themes</span><span class="comment zh">← L1/L2 樣式、黃色提示、旁注主題</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">popup.html</span>&nbsp;&nbsp;<span class="comment en">← mode, L2, shift-replace, margin note, theme toggle</span><span class="comment zh">← 模式、L2、Shift 替換、旁注、主題切換 UI</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">popup.js</span>&nbsp;&nbsp;<span class="comment en">← storage reads/writes, tab messages</span><span class="comment zh">← 儲存讀寫，tab 訊息</span><br>
+    │&nbsp;&nbsp; └── <span class="dir">models/</span>&nbsp;&nbsp;<span class="comment en">← auto-created by download_convert.py</span><span class="comment zh">← 由 download_convert.py 自動建立</span><br>
+    │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">qwen2.5-1.5b-int4/</span>&nbsp;&nbsp;<span class="comment en">← ~800 MB OpenVINO IR + tokenizer</span><span class="comment zh">← 約 800 MB OpenVINO IR + tokenizer</span><br>
+    ├── <span class="dir">doc/</span><br>
+    │&nbsp;&nbsp; └── <span class="file">index.html</span>&nbsp;&nbsp;<span class="comment en">← this file</span><span class="comment zh">← 本文件</span><br>
+    ├── <span class="file">CLAUDE.md</span>&nbsp;&nbsp;<span class="comment en">← project context for Claude Code (AI assistant memory)</span><span class="comment zh">← Claude Code 專案上下文（AI 助理記憶）</span><br>
+    └── <span class="file">index.html</span>&nbsp;&nbsp;<span class="comment en">← English pitch presentation</span><span class="comment zh">← 英文簡報</span>
+  </div>
+
+  <h3 class="sub"><span class="en">Storage Keys Reference</span><span class="zh">Storage 鍵值參考</span></h3>
+  <table>
+    <tr>
+      <th><span class="en">Key</span><span class="zh">鍵名</span></th>
+      <th><span class="en">Values</span><span class="zh">可能值</span></th>
+      <th><span class="en">Description</span><span class="zh">說明</span></th>
+    </tr>
+    <tr><td><span class="inline-code">aikwau_gaze_mode</span></td><td><span class="inline-code">'mouse'</span> | <span class="inline-code">'webcam'</span></td><td><span class="en">Tracking mode</span><span class="zh">追蹤模式</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_l2_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">1.2× font size enlargement</span><span class="zh">1.2× 字型放大</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_shift_replace</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Shift key replaces paragraph with summary</span><span class="zh">Shift 替換段落為摘要</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_margin_note</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show summary as sidebar margin note</span><span class="zh">顯示旁注摘要</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_note_theme</span></td><td><span class="inline-code">'dark'</span> | <span class="inline-code">'light'</span></td><td><span class="en">Margin note color theme</span><span class="zh">旁注顏色主題</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_gaze_ring_visible</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show gaze ring indicator (webcam mode)</span><span class="zh">顯示視線環狀指示（眼球追蹤模式）</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_cal_points</span></td><td><span class="inline-code">9</span> | <span class="inline-code">25</span></td><td><span class="en">Calibration point count</span><span class="zh">校準點數量</span></td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ VALIDATION -->
+<section id="validation">
+  <div class="section-label"><span class="en">Validation</span><span class="zh">驗證測試</span></div>
+  <h2><span class="en">Test Matrix</span><span class="zh">測試矩陣</span></h2>
+  <p class="section-sub en">Structured validation to confirm the full PoC on Panther Lake hardware. Run in order.</p>
+  <p class="section-sub zh">在 Panther Lake 上驗證完整 PoC 的結構化測試矩陣，請依序執行。</p>
+
+  <table>
+    <tr>
+      <th>#</th>
+      <th><span class="en">Test Scenario</span><span class="zh">測試場景</span></th>
+      <th><span class="en">Pass Condition</span><span class="zh">通過條件</span></th>
+      <th><span class="en">Status</span><span class="zh">狀態</span></th>
+    </tr>
+    <tr>
+      <td><strong>V1</strong></td>
+      <td><span class="en">NPU / GPU / CPU detection</span><span class="zh">NPU / GPU / CPU 偵測</span></td>
+      <td><span class="en">benchmark.exe lists all devices</span><span class="zh">benchmark.exe 列出所有裝置</span></td>
+      <td><span class="badge-ok">✅ Done</span></td>
+    </tr>
+    <tr>
+      <td><strong>V2</strong></td>
+      <td><span class="en">Model load + warm-up</span><span class="zh">模型載入 + 預熱</span></td>
+      <td><span class="en">Load time printed, no crash</span><span class="zh">顯示載入時間，無崩潰</span></td>
+      <td><span class="badge-ok">✅ Done</span></td>
+    </tr>
+    <tr>
+      <td><strong>V3</strong></td>
+      <td><span class="en">NPU/GPU/CPU inference latency</span><span class="zh">NPU/GPU/CPU 推論延遲</span></td>
+      <td><span class="en">&lt; 2 s on Panther Lake NPU</span><span class="zh">Panther Lake NPU &lt; 2 秒</span></td>
+      <td><span class="badge-ok">✅ 0.85–1.62 s</span></td>
+    </tr>
+    <tr>
+      <td><strong>V4</strong></td>
+      <td><span class="en">native_host.exe ping</span><span class="zh">native_host.exe ping 測試</span></td>
+      <td><span class="inline-code">{"status":"ready"}</span></td>
+      <td><span class="badge-ok">✅ Done</span></td>
+    </tr>
+    <tr>
+      <td><strong>V5</strong></td>
+      <td><span class="en">English summarize (exe)</span><span class="zh">英文摘要（執行檔）</span></td>
+      <td><span class="en">English bullets returned</span><span class="zh">回傳英文條列摘要</span></td>
+      <td><span class="badge-ok">✅ Done</span></td>
+    </tr>
+    <tr>
+      <td><strong>V6</strong></td>
+      <td><span class="en">Chinese summarize (exe)</span><span class="zh">中文摘要（執行檔）</span></td>
+      <td><span class="en">Traditional Chinese bullets returned</span><span class="zh">回傳正體中文條列摘要</span></td>
+      <td><span class="badge-ok">✅ Done</span></td>
+    </tr>
+    <tr>
+      <td><strong>V7</strong></td>
+      <td><span class="en">Extension loads in Edge</span><span class="zh">擴充功能在 Edge 載入</span></td>
+      <td><span class="en">No manifest errors</span><span class="zh">無 manifest 錯誤</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V8</strong></td>
+      <td><span class="en">Native host registration</span><span class="zh">原生主機註冊</span></td>
+      <td><span class="en">Registry key exists, run_host.bat created</span><span class="zh">Registry key 存在，run_host.bat 建立</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V9</strong></td>
+      <td><span class="en">L1 visual trigger (mouse)</span><span class="zh">L1 視覺觸發（滑鼠）</span></td>
+      <td><span class="en">Text bold + dark after 2 s hover</span><span class="zh">停留 2 秒後文字加粗加深</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V10</strong></td>
+      <td><span class="en">Yellow highlight appears</span><span class="zh">黃色段落提示出現</span></td>
+      <td><span class="en">Paragraph background turns yellow when summary ready</span><span class="zh">摘要完成後段落背景變黃</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V11</strong></td>
+      <td><span class="en">Shift replaces paragraph</span><span class="zh">Shift 替換段落</span></td>
+      <td><span class="en">Paragraph text replaced with • bullets</span><span class="zh">段落文字替換為 • 條列摘要</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V12</strong></td>
+      <td><span class="en">Language auto-detection</span><span class="zh">語言自動偵測</span></td>
+      <td><span class="en">EN page → EN summary; ZH page → ZH summary</span><span class="zh">英文頁面 → 英文摘要；中文頁面 → 正體中文摘要</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V13</strong></td>
+      <td><span class="en">SPA navigation clears notes</span><span class="zh">SPA 換頁清除旁注</span></td>
+      <td><span class="en">Margin notes removed on pushState / popstate</span><span class="zh">pushState / popstate 後旁注被清除</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V14</strong></td>
+      <td><span class="en">Stability (10 requests)</span><span class="zh">穩定性（10 次請求）</span></td>
+      <td><span class="en">All succeed, no port disconnect</span><span class="zh">全部成功，無連線中斷</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+  </table>
+
+  <h3 class="sub"><span class="en">Quick Diagnostic Commands</span><span class="zh">快速診斷指令</span></h3>
+  <pre><code><span class="en"># Check available Intel devices</span><span class="zh"># 確認可用 Intel 裝置</span>
+python -c "import openvino as ov; print(ov.Core().available_devices)"
+
+<span class="en"># Check registry key</span><span class="zh"># 確認 Registry key</span>
+reg query HKCU\SOFTWARE\Microsoft\Edge\NativeMessagingHosts\com.hp.aikwau.summarizer
+
+<span class="en"># View native host logs</span><span class="zh"># 查看原生主機日誌</span>
+type poc\native_host\aikwau_host.log
+
+<span class="en"># Check extension storage (Edge DevTools → background service worker console)</span><span class="zh"># 查看擴充功能儲存（Edge DevTools → background service worker console）</span>
+chrome.storage.local.get(null, console.log)</code></pre>
+</section>
 
 </div>
 
 <footer>
-  AI Kwau PoC — Calvin Chen · Ava Lu · Thomas Chang · Yorke Lee
+  AI Kwau PoC — Calvin Chen · Ava Lu · Thomas Chang · Yorke Lee<br>
+  <span style="color:rgba(255,255,255,.2);font-size:11px;margin-top:4px;display:block;">
+    <span class="en">Updated 2026-06-28 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
+    <span class="zh">更新於 2026-06-28 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
+  </span>
 </footer>
 
+<script>
+function toggleLang() {
+  const html = document.documentElement;
+  const btn = document.getElementById('lang-btn');
+  if (html.lang === 'zh') {
+    html.lang = 'en';
+    btn.textContent = '切換中文';
+  } else {
+    html.lang = 'zh';
+    btn.textContent = 'Switch to EN';
+  }
+}
+</script>
 </body>
 </html>

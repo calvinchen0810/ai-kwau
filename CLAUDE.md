@@ -17,8 +17,9 @@ Primary target: Intel Panther Lake laptops (NPU 100+ TOPS), HP pre-install scena
 - **Gaze tracking**: Mouse hover 2s dwell (PoC default) OR WebGazer.js v2.1.2 (webcam, bundled). Toggled via extension popup.
 - **WebGazer world**: Runs in MAIN world (not isolated) to bypass MV3 extension CSP which blocks `new Function()` used by TF.js. Gaze events bridge to isolated world via DOM CustomEvents with (x,y) coordinates.
 - **Language detection**: Per-paragraph, based on CJK character ratio in the text (not page `lang` attribute). >8% CJK → Traditional Chinese summary; otherwise → English summary.
-- **Summary format**: Always bullet points (`• `). English paragraph → English bullets; Chinese paragraph → Traditional Chinese bullets (simplified→traditional via zhconv post-processing).
-- **Summary UX**: No floating badge. When summary is ready, paragraph gets a semi-transparent yellow background highlight. User presses Shift to replace paragraph text with summary.
+- **Summary format**: Always bullet points (`• `). English paragraph → English bullets; Chinese paragraph → Traditional Chinese bullets (simplified→traditional via zhconv post-processing). Preamble lines (e.g. "以下是三個重點：") are stripped. Output is capped to never exceed the original paragraph length.
+- **Summary UX**: No floating loading badge. When summary is ready, paragraph gets a semi-transparent **yellow** background (`aikwau-summary-ready`). Left-clicking the yellow paragraph replaces its text with the bullet summary and turns it **green** (`aikwau-summary-shown`). Clicking again restores the original text. Both colours are user-configurable from the extension popup.
+- **Click handler persistence**: Once a summary is fetched for a paragraph, the click handler stays on that element until SPA navigation — the user can click to toggle without hovering again.
 - **Frozen exe**: `native_host.exe` and `benchmark.exe` are PyInstaller onedir builds. CRT v14.31 (bundled by PyInstaller) must be dropped so the exe uses System32's v14.44 — see CRT ABI fix below.
 
 ## Repository Structure
@@ -27,7 +28,7 @@ Primary target: Intel Panther Lake laptops (NPU 100+ TOPS), HP pre-install scena
 ai-kwau/
 ├── index.html              # English presentation (10 slides, 960×540 scaler)
 ├── doc/
-│   └── index.html          # Developer documentation
+│   └── index.html          # Developer documentation (bilingual zh/en toggle)
 └── poc/
     ├── model_setup/
     │   ├── install_deps.bat         # Creates .venv, installs openvino + huggingface deps + zhconv
@@ -48,13 +49,13 @@ ai-kwau/
         ├── webgazer.js              # WebGazer v2.1.2 minified (2.3 MB, bundled, MAIN world)
         ├── gaze_tracker.js          # MAIN world: mouse/webcam tracking → document CustomEvents
         ├── background.js            # Service worker: manages native port, routes requests with reqId
-        ├── content.js               # Isolated world: gaze events → L1 + summary + yellow highlight
-        ├── content.css              # L1/L2 styles, summary-ready yellow, margin note, badge
+        ├── content.js               # Isolated world: gaze events → L1 + summary + click-toggle
+        ├── content.css              # L1/L2 styles, summary-ready/shown highlight states, badge
         ├── popup.html               # Extension popup UI
         └── popup.js                 # Popup logic: storage reads/writes + tab messages
 ```
 
-## Current State (as of 2026-06-27)
+## Current State (as of 2026-06-28)
 
 ### Completed
 - [x] OpenVINO model conversion on Panther Lake (Qwen2.5-1.5B INT4)
@@ -64,17 +65,20 @@ ai-kwau/
 - [x] 9-point / 25-point calibration UI
 - [x] Gaze ring visual indicator
 - [x] EMA smoothing on gaze coordinates
-- [x] Extension popup: mode switching, recalibrate, L2 toggle, shift-replace toggle, margin note toggle, note theme toggle
+- [x] Extension popup: mode switching, recalibrate, L2 toggle, highlight colour pickers
 - [x] `benchmark.exe` (PyInstaller frozen) — working, correct output, CRT fix applied
 - [x] `native_host.exe` (PyInstaller frozen) — working, ping/summarize end-to-end verified
 - [x] Summary prompt: raw completion format, 3 bullet points, English→English / Chinese→Traditional Chinese
 - [x] zhconv bundled in native_host.exe for simplified→traditional conversion
-- [x] Yellow paragraph highlight when summary ready (no loading badge)
-- [x] Shift key replaces paragraph text with summary
-- [x] Margin note: dark/light theme toggle, `white-space: pre-line`, 240px wide
-- [x] SPA navigation: clears margin notes on pushState/replaceState/popstate
+- [x] `_format_output`: strips preamble lines, strips markdown bold, caps output to ≤ original length
+- [x] Yellow paragraph highlight when summary ready; green when summary shown
+- [x] Left-click paragraph to toggle between original text and summary (persistent handler)
+- [x] Click again to restore original text
+- [x] User-configurable highlight colours (ready colour / shown colour) via popup colour pickers
+- [x] SPA navigation: clears all summary handlers on pushState/replaceState/popstate
 - [x] Webcam mode: badge fixed at right side (not cursor-following)
 - [x] Per-paragraph language detection by CJK character ratio
+- [x] `doc/index.html` updated with bilingual zh/en toggle
 - [ ] Native Messaging host registration and browser end-to-end test ← **next step**
 - [ ] L2 text enlargement
 
@@ -120,7 +124,7 @@ Using Qwen2.5's `<|im_start|>/<|im_end|>` chat template causes the model to emit
 - ZH: `列出以下文章的重點（3點）：\n\n{text}\n\n重點：\n1.`
 - EN: `List 3 key points from the following paragraph (each point under 20 words):\n\n{text}\n\nKey points:\n1.`
 
-The model outputs numbered lists; `_format_output()` converts to `•` bullets and strips markdown.
+The model outputs numbered lists; `_format_output()` converts to `•` bullets, strips preamble, and caps length.
 
 ## Immediate Next Step — Register Native Host
 
@@ -141,7 +145,6 @@ If ov_cache causes PermissionError during `--clean`: delete `dist\native_host\ov
 
 ### Step 3 — Test native host manually
 ```cmd
-# Set model path
 set AIKWAU_MODEL_DIR=C:\path\to\poc\models\qwen2.5-1.5b-int4
 set PYTHONUTF8=1
 python -c "
@@ -168,7 +171,8 @@ python register.py --extension-id <EXTENSION_ID>
 - `edge://extensions` → reload AI Kwau PoC
 - Navigate to any article, hover a paragraph 2 seconds (mouse mode)
 - Verify: text bold/dark (L1) + paragraph turns yellow when summary ready
-- Press Shift → paragraph text replaced with bullet-point summary
+- Click the yellow paragraph → text replaced with bullet summary, background turns green
+- Click again → original text restored, background back to yellow
 
 ## Extension Architecture
 
@@ -187,8 +191,11 @@ document_idle   [isolated]  content.js
                               └─> detectTextLang(text) → lang='zh'|'en'
                               └─> elementFromPoint(x, y) → triggerL1(el)
                               └─> chrome.runtime.sendMessage({type:'summarize', text, lang})
-                              └─> on response: markSummaryReady(el) → yellow highlight
-                              └─> Shift key → replace paragraph text with summary
+                              └─> on response: markSummaryReady(el, summary)
+                                  └─> adds .aikwau-summary-ready (yellow)
+                                  └─> installs persistent click handler on el
+                              └─> click → shows summary + .aikwau-summary-shown (green)
+                              └─> click again → restores original text + back to yellow
 ```
 
 ### Summary pipeline
@@ -200,16 +207,17 @@ document_idle   [isolated]  content.js
                                             [native_host.exe — PyInstaller frozen]
                                                 └─> build_prompt(text, lang)
                                                 └─> LLMPipeline.generate()
-                                                └─> _format_output(result, lang)
+                                                └─> _format_output(result, lang, orig_len)
                                                     ├─> zhconv.convert(..., 'zh-tw')  [if zh]
+                                                    ├─> strip preamble line (ends with ：or :)
                                                     ├─> strip markdown bold **...**
-                                                    └─> numbered list → • bullets
+                                                    ├─> numbered list → • bullets
+                                                    └─> cap output to ≤ orig_len chars
                                                 └─> send_msg({status:'ok', summary:'...'})
                                                         |
                                         [background.js] ──sendResponse──> [content.js]
-                                                                              └─> markSummaryReady(el)
-                                                                              └─> yellow highlight
-                                                                              └─> installShiftReplace
+                                                                              └─> markSummaryReady(el, summary)
+                                                                              └─> yellow highlight + click handler
 ```
 
 ## Key File Details
@@ -231,7 +239,7 @@ document_idle   [isolated]  content.js
 - `DEVICE_PRIORITY = "CPU"` — change to `"NPU,GPU,CPU"` on Panther Lake
 - Model loaded in background thread; ping returns `loading` while warming up
 - `build_prompt(text, lang)`: English → English bullets prompt; zh → Chinese bullets prompt
-- `_format_output(result, lang)`: zhconv zh→tw (if zh), strip `**md**`, numbered→`•` bullets
+- `_format_output(result, lang, orig_len)`: zhconv zh→tw, strip preamble line, strip `**md**`, numbered→`•` bullets, cap to `orig_len` chars
 - `OPENVINO_TOKENIZERS_PATH_GENAI` env var set in frozen init block for C++ plugin discovery
 
 ### `native_host.spec` / `benchmark.spec` — PyInstaller specs
@@ -241,34 +249,37 @@ document_idle   [isolated]  content.js
 - `openvino_telemetry` excluded to prevent telemetry thread crash in frozen env
 - Dev headers/cmake/tools filtered out by `_DEV_DIRS`
 
-### `content.js` — L1 + summary + yellow highlight (isolated world)
+### `content.js` — L1 + summary + click-toggle (isolated world)
 - `detectTextLang(text)`: counts CJK chars; >8% → `'zh'`, else `'en'`
-- `triggerL1(el, text)`: applies L1/L2, silently requests summary (no loading badge)
-- `markSummaryReady(el)`: adds `.aikwau-summary-ready` (yellow background)
-- `installShiftReplace(el, summary)`: always installed when summary is ready
-- Shift key pressed → `el.textContent = summary`, removes yellow, restores on next cleanup
+- `triggerL1(el, text)`: applies L1/L2, silently requests summary (no loading badge); skips if element already in `summaryReadyEls`
+- `markSummaryReady(el, summary)`: adds `.aikwau-summary-ready` (yellow) and installs persistent click handler; stored in `summaryReadyEls` Map
+- Click handler (per element, persists until SPA navigation):
+  - 1st click: saves `origText`, sets `el.textContent = summary`, switches to `.aikwau-summary-shown` (green)
+  - 2nd click: restores `origText`, switches back to `.aikwau-summary-ready` (yellow)
+- `clearAllSummaryEls()`: removes all click handlers, restores text if shown, clears classes — called on SPA navigation
+- `cleanup()`: only clears badge + `activeEl` ref; does NOT remove click handlers
+- `applyHighlightColors()`: injects `<style id="__aikwau_colors">` with user-chosen colours from storage
+- `hexToRgba(hex, alpha)`: converts hex colour + alpha to `rgba(...)` string
 - `compactSummary()`: preserves `\n` (only collapses spaces/tabs), supports 220-char limit
 - SPA navigation: `pushState`/`replaceState`/`popstate` all call `_clearOnNavigate()`
 - Webcam mode: badge positioned at right side (`positionBadgeRight`) instead of cursor
-- `isWebcamMode` flag read from storage at init
-- `noteTheme`: `'dark'`|`'light'`, applied to `.aikwau-margin-note--light` class
+- `isWebcamMode` flag read from storage at init; `colorReady` / `colorShown` also read at init
 
 ### `content.css`
 - `.aikwau-l1`: bold + dark text
 - `.aikwau-l2`: 1.2× font size
-- `.aikwau-summary-ready`: semi-transparent yellow background + gold outline (signals Shift available)
+- `.aikwau-summary-ready`: light yellow background + gold outline + `cursor:pointer` (signals clickable). Default: `rgba(255,238,0,0.15)`. Overridden by injected `<style>` from `applyHighlightColors()`.
+- `.aikwau-summary-shown`: light green background + green outline + `cursor:pointer` (summary is displayed). Default: `rgba(0,204,119,0.20)`. Overridden by injected `<style>`.
 - `.aikwau-badge`: floating summary badge (`white-space: pre-line` for bullet newlines)
-- `.aikwau-margin-note`: dark navy bg, white text, 240px wide, `white-space: pre-line`
-- `.aikwau-margin-note--light`: white bg, dark text override
 - `.aikwau-beacon`: edge arrow for blind-area interactive elements
 
 ### `popup.html` / `popup.js` — Popup UI
 - Mode: 滑鼠模式 / 眼球追蹤
-- Reading features: L2 toggle, Shift-replace toggle, margin note toggle
-- Margin note color: 黑底白字 / 白底黑字 (shown when margin note enabled)
+- Reading features: L2 toggle
+- Highlight colour pickers: "摘要就緒" (ready colour, default `#ffee00`) and "摘要顯示中" (shown colour, default `#00cc77`) — `<input type="color">` with live swatch preview; sends `gaze:highlight-colors` message to content.js
 - Webcam extras: panel visible, gaze ring visible, calibration points (9/25), recalibrate button
 - Heatmap: 24×14 grid heat visualization, clear button
-- Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_shift_replace`, `aikwau_margin_note`, `aikwau_note_theme`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`
+- Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_color_ready`, `aikwau_color_shown`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`
 
 ### `mode_bridge.js` — World bridge
 - Runs at `document_start` in isolated world
@@ -291,6 +302,11 @@ document_idle   [isolated]  content.js
 - Creates `run_host.bat` calling `native_host.exe` (not python, uses frozen exe)
 - Patches `host_manifest.json` with real `.bat` path and extension ID
 - Writes registry key `HKCU\...\com.hp.aikwau.summarizer` → `host_manifest.json`
+
+## Features Intentionally Removed
+
+- **Shift key replace**: Removed. Left-click on yellow paragraph is the only toggle mechanism.
+- **Margin note (旁注摘要)**: Removed entirely — no sidebar annotations, no `.aikwau-margin-note` CSS, no `aikwau_margin_note` storage key.
 
 ## WebGazer Notes
 

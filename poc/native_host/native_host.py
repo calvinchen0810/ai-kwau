@@ -134,8 +134,9 @@ def build_prompt(text: str, lang: str) -> str:
     )
 
 
-def _format_output(raw: str, lang: str) -> str:
-    """Normalise model output: convert to Traditional Chinese if zh, then numbers → • bullets."""
+def _format_output(raw: str, lang: str, orig_len: int = 0) -> str:
+    """Normalise model output: strip preamble, convert to Traditional Chinese if zh,
+    numbered list → • bullets, and ensure output is shorter than the original paragraph."""
     text = raw.strip()
     if lang == 'zh':
         try:
@@ -143,10 +144,25 @@ def _format_output(raw: str, lang: str) -> str:
             text = zhconv.convert(text, 'zh-tw')
         except ImportError:
             pass
-    text = re.sub(r'\*{1,2}([^*\n]+)\*{1,2}', r'\1', text)  # strip markdown bold/italic
+    # Strip markdown bold/italic
+    text = re.sub(r'\*{1,2}([^*\n]+)\*{1,2}', r'\1', text)
+    # Strip preamble line: first line that ends with ：or : before any numbered item
+    text = re.sub(r'\A[^\n]*[：:]\s*\n+', '', text)
+    # Convert numbered/bulleted list markers to •
     text = re.sub(r'(?m)^\s*(?:\d+[.、）)]\s*|\(\d+\)\s*|[-*]\s+)', '• ', text)
     text = re.sub(r'\n{3,}', '\n\n', text)
-    return text.strip()
+    text = text.strip()
+    # Ensure output is not longer than the original paragraph
+    if orig_len > 0 and len(text) > orig_len:
+        lines = text.split('\n')
+        kept, total = [], 0
+        for line in lines:
+            if kept and total + len(line) + 1 > orig_len:
+                break
+            kept.append(line)
+            total += len(line) + 1
+        text = '\n'.join(kept).strip()
+    return text
 
 
 # ── model loader (background thread) ─────────────────────────────────────────
@@ -263,11 +279,12 @@ def main():
                 send_msg({"status": "error", "message": "Model load timeout", "reqId": req_id})
             else:
                 try:
-                    lg     = msg.get("lang", "en")
-                    prompt = build_prompt(msg.get("text", ""), lg)
+                    lg        = msg.get("lang", "en")
+                    orig_text = msg.get("text", "")
+                    prompt    = build_prompt(orig_text, lg)
                     with _silence_fd1():
                         result = pipe_box[0].generate(prompt, max_new_tokens=180)
-                    summary = _format_output(result, lg)
+                    summary = _format_output(result, lg, orig_len=len(orig_text))
                     logging.info(f"Done: {summary[:180]}")
                     send_msg({"status": "ok", "summary": summary, "reqId": req_id})
                 except Exception as e:

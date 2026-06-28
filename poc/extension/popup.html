@@ -43,6 +43,11 @@
     .feat-sect .sect-lbl { font-size: 11px; color: #888; margin-bottom: 4px; }
     .feat-sect label { font-size: 12px; color: #333; margin: 3px 0; }
 
+    /* Color picker row */
+    .color-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 12px; color: #333; cursor: default; }
+    .color-row input[type="color"] { margin-left: auto; width: 32px; height: 22px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background: none; }
+    .color-swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid #bbb; flex-shrink: 0; }
+
     /* Heatmap section */
     .hm-section { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
     .hm-section h4 { margin: 0 0 6px; font-size: 12px; color: #333; }
@@ -63,14 +68,19 @@
   <div class="feat-sect">
     <div class="sect-lbl">閱讀增強</div>
     <label><input type="checkbox" id="l2Enabled"> L2 字型放大（注視時）</label>
-    <label><input type="checkbox" id="shiftReplace"> Shift 鍵取代段落文字</label>
-    <label><input type="checkbox" id="marginNote"> 旁注摘要（有右側空白時）</label>
-    <div id="noteThemeOpts" style="display:none; margin: 6px 0 0 20px;">
-      <div class="opts-label" style="font-size:11px; color:#888; margin-bottom:4px;">旁注顏色</div>
-      <div class="seg-ctrl">
-        <label id="segNoteDark"><input type="radio" name="notetheme" value="dark">黑底白字</label>
-        <label id="segNoteLight"><input type="radio" name="notetheme" value="light">白底黑字</label>
-      </div>
+  </div>
+
+  <div class="feat-sect">
+    <div class="sect-lbl">段落醒目顏色（點擊切換摘要）</div>
+    <div class="color-row">
+      <span class="color-swatch" id="swatchReady" style="background:rgba(255,238,0,0.5)"></span>
+      <span>摘要就緒</span>
+      <input type="color" id="colorReady" value="#ffee00" title="摘要就緒顏色">
+    </div>
+    <div class="color-row">
+      <span class="color-swatch" id="swatchShown" style="background:rgba(0,204,119,0.5)"></span>
+      <span>摘要顯示中</span>
+      <input type="color" id="colorShown" value="#00cc77" title="摘要顯示中顏色">
     </div>
   </div>
 

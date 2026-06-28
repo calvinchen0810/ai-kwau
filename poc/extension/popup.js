@@ -1,15 +1,15 @@
 const modeRadios      = document.querySelectorAll('input[name="mode"]');
 const calPtsRadios    = document.querySelectorAll('input[name="calpts"]');
-const noteThemeRadios = document.querySelectorAll('input[name="notetheme"]');
 const recalibrate     = document.getElementById('recalibrate');
 const calPointsOpts   = document.getElementById('calPointsOpts');
 const webcamToggles   = document.getElementById('webcamToggles');
 const panelVisible    = document.getElementById('panelVisible');
 const ringVisible     = document.getElementById('ringVisible');
 const l2Enabled       = document.getElementById('l2Enabled');
-const shiftReplace    = document.getElementById('shiftReplace');
-const marginNote      = document.getElementById('marginNote');
-const noteThemeOpts   = document.getElementById('noteThemeOpts');
+const colorReadyInput = document.getElementById('colorReady');
+const colorShownInput = document.getElementById('colorShown');
+const swatchReady     = document.getElementById('swatchReady');
+const swatchShown     = document.getElementById('swatchShown');
 const status          = document.getElementById('status');
 
 // ── Cal-points segmented control ─────────────────────────────────────────────
@@ -20,12 +20,6 @@ function setCalPtsUI(pts) {
   document.getElementById('segOpt25').classList.toggle('selected', val === '25');
 }
 
-function setNoteThemeUI(theme) {
-  noteThemeRadios.forEach(r => { r.checked = r.value === theme; });
-  document.getElementById('segNoteDark').classList.toggle('selected',  theme === 'dark');
-  document.getElementById('segNoteLight').classList.toggle('selected', theme === 'light');
-}
-
 function setWebcamExtras(show) {
   calPointsOpts.style.display  = show ? 'block' : 'none';
   webcamToggles.style.display  = show ? 'block' : 'none';
@@ -33,25 +27,30 @@ function setWebcamExtras(show) {
 }
 
 // ── Load saved preferences ────────────────────────────────────────────────────
+function updateSwatch(swatchEl, hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  swatchEl.style.background = `rgba(${r},${g},${b},0.5)`;
+}
+
 chrome.storage.local.get(
   ['aikwau_gaze_mode', 'aikwau_cal_points',
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
-   'aikwau_l2_enabled', 'aikwau_shift_replace', 'aikwau_margin_note', 'aikwau_note_theme'],
+   'aikwau_l2_enabled', 'aikwau_color_ready', 'aikwau_color_shown'],
   (data) => {
-    const mode  = data.aikwau_gaze_mode ?? 'mouse';
-    const pts   = data.aikwau_cal_points ?? 25;
-    const theme = data.aikwau_note_theme ?? 'dark';
+    const mode   = data.aikwau_gaze_mode ?? 'mouse';
+    const pts    = data.aikwau_cal_points ?? 25;
+    const cReady = data.aikwau_color_ready ?? '#ffee00';
+    const cShown = data.aikwau_color_shown ?? '#00cc77';
     document.querySelector(`input[value="${mode}"]`).checked = true;
     setWebcamExtras(mode === 'webcam');
     setCalPtsUI(pts);
-    setNoteThemeUI(theme);
-    panelVisible.checked  = data.aikwau_webcam_panel_visible !== false;
-    ringVisible.checked   = data.aikwau_gaze_ring_visible   !== false;
-    l2Enabled.checked     = data.aikwau_l2_enabled          !== false;  // default true
-    shiftReplace.checked  = data.aikwau_shift_replace       === true;   // default false
-    const mnEnabled       = data.aikwau_margin_note         === true;   // default false
-    marginNote.checked    = mnEnabled;
-    noteThemeOpts.style.display = mnEnabled ? 'block' : 'none';
+    panelVisible.checked = data.aikwau_webcam_panel_visible !== false;
+    ringVisible.checked  = data.aikwau_gaze_ring_visible   !== false;
+    l2Enabled.checked    = data.aikwau_l2_enabled          !== false;
+    colorReadyInput.value = cReady; updateSwatch(swatchReady, cReady);
+    colorShownInput.value = cShown; updateSwatch(swatchShown, cShown);
   }
 );
 
@@ -105,26 +104,18 @@ l2Enabled.addEventListener('change', () => {
   sendToTab({ type: 'gaze:l2-toggle', enabled });
 });
 
-shiftReplace.addEventListener('change', () => {
-  const enabled = shiftReplace.checked;
-  chrome.storage.local.set({ aikwau_shift_replace: enabled });
-  sendToTab({ type: 'gaze:shift-replace-toggle', enabled });
+colorReadyInput.addEventListener('input', () => {
+  const color = colorReadyInput.value;
+  updateSwatch(swatchReady, color);
+  chrome.storage.local.set({ aikwau_color_ready: color });
+  sendToTab({ type: 'gaze:highlight-colors', colorReady: color });
 });
 
-marginNote.addEventListener('change', () => {
-  const enabled = marginNote.checked;
-  chrome.storage.local.set({ aikwau_margin_note: enabled });
-  sendToTab({ type: 'gaze:margin-note-toggle', enabled });
-  noteThemeOpts.style.display = enabled ? 'block' : 'none';
-});
-
-noteThemeRadios.forEach(radio => {
-  radio.addEventListener('change', () => {
-    const theme = radio.value;
-    chrome.storage.local.set({ aikwau_note_theme: theme });
-    setNoteThemeUI(theme);
-    sendToTab({ type: 'gaze:note-theme-toggle', theme });
-  });
+colorShownInput.addEventListener('input', () => {
+  const color = colorShownInput.value;
+  updateSwatch(swatchShown, color);
+  chrome.storage.local.set({ aikwau_color_shown: color });
+  sendToTab({ type: 'gaze:highlight-colors', colorShown: color });
 });
 
 // ── Recalibrate ───────────────────────────────────────────────────────────────
