@@ -6,10 +6,7 @@ const webcamToggles   = document.getElementById('webcamToggles');
 const panelVisible    = document.getElementById('panelVisible');
 const ringVisible     = document.getElementById('ringVisible');
 const l2Enabled       = document.getElementById('l2Enabled');
-const colorReadyInput = document.getElementById('colorReady');
-const colorShownInput = document.getElementById('colorShown');
-const swatchReady     = document.getElementById('swatchReady');
-const swatchShown     = document.getElementById('swatchShown');
+const themeButtons    = document.querySelectorAll('.theme-btn');
 const status          = document.getElementById('status');
 
 // ── Cal-points segmented control ─────────────────────────────────────────────
@@ -27,30 +24,25 @@ function setWebcamExtras(show) {
 }
 
 // ── Load saved preferences ────────────────────────────────────────────────────
-function updateSwatch(swatchEl, hex) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  swatchEl.style.background = `rgba(${r},${g},${b},0.5)`;
+function setThemeUI(theme) {
+  themeButtons.forEach(btn => btn.classList.toggle('selected', btn.dataset.theme === theme));
 }
 
 chrome.storage.local.get(
   ['aikwau_gaze_mode', 'aikwau_cal_points',
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
-   'aikwau_l2_enabled', 'aikwau_color_ready', 'aikwau_color_shown'],
+   'aikwau_l2_enabled', 'aikwau_hc_theme'],
   (data) => {
-    const mode   = data.aikwau_gaze_mode ?? 'mouse';
-    const pts    = data.aikwau_cal_points ?? 25;
-    const cReady = data.aikwau_color_ready ?? '#ffee00';
-    const cShown = data.aikwau_color_shown ?? '#00cc77';
+    const mode  = data.aikwau_gaze_mode ?? 'mouse';
+    const pts   = data.aikwau_cal_points ?? 25;
+    const theme = data.aikwau_hc_theme ?? 'nightsky';
     document.querySelector(`input[value="${mode}"]`).checked = true;
     setWebcamExtras(mode === 'webcam');
     setCalPtsUI(pts);
     panelVisible.checked = data.aikwau_webcam_panel_visible !== false;
     ringVisible.checked  = data.aikwau_gaze_ring_visible   !== false;
     l2Enabled.checked    = data.aikwau_l2_enabled          !== false;
-    colorReadyInput.value = cReady; updateSwatch(swatchReady, cReady);
-    colorShownInput.value = cShown; updateSwatch(swatchShown, cShown);
+    setThemeUI(theme);
   }
 );
 
@@ -104,18 +96,15 @@ l2Enabled.addEventListener('change', () => {
   sendToTab({ type: 'gaze:l2-toggle', enabled });
 });
 
-colorReadyInput.addEventListener('input', () => {
-  const color = colorReadyInput.value;
-  updateSwatch(swatchReady, color);
-  chrome.storage.local.set({ aikwau_color_ready: color });
-  sendToTab({ type: 'gaze:highlight-colors', colorReady: color });
-});
-
-colorShownInput.addEventListener('input', () => {
-  const color = colorShownInput.value;
-  updateSwatch(swatchShown, color);
-  chrome.storage.local.set({ aikwau_color_shown: color });
-  sendToTab({ type: 'gaze:highlight-colors', colorShown: color });
+themeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const theme = btn.dataset.theme;
+    chrome.storage.local.set({ aikwau_hc_theme: theme }, () => {
+      setThemeUI(theme);
+      status.textContent = `已切換至 ${btn.textContent} 主題`;
+      setTimeout(() => { status.textContent = ''; }, 2000);
+    });
+  });
 });
 
 // ── Recalibrate ───────────────────────────────────────────────────────────────
