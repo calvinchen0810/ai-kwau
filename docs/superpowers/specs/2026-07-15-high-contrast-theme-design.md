@@ -52,7 +52,7 @@ pattern `applyHighlightColors()` used previously).
 
 - `mode_bridge.js` (isolated world, `document_start`) additionally reads
   `aikwau_hc_theme` from `chrome.storage.local` and sets
-  `document.documentElement.setAttribute('data-aikwau-hc-theme', theme || 'off')`.
+  `document.documentElement.setAttribute('data-aikwau-hc-theme', theme || 'nightsky')`.
   Unlike the existing one-shot `aikwau_gaze_mode` read (which requires a page
   reload to take effect), `mode_bridge.js` additionally registers a
   `chrome.storage.onChanged` listener for `aikwau_hc_theme` so the theme

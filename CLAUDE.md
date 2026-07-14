@@ -18,7 +18,8 @@ Primary target: Intel Panther Lake laptops (NPU 100+ TOPS), HP pre-install scena
 - **WebGazer world**: Runs in MAIN world (not isolated) to bypass MV3 extension CSP which blocks `new Function()` used by TF.js. Gaze events bridge to isolated world via DOM CustomEvents with (x,y) coordinates.
 - **Language detection**: Per-paragraph, based on CJK character ratio in the text (not page `lang` attribute). >8% CJK → Traditional Chinese summary; otherwise → English summary.
 - **Summary format**: Always bullet points (`• `). English paragraph → English bullets; Chinese paragraph → Traditional Chinese bullets (simplified→traditional via zhconv post-processing). Preamble lines (e.g. "以下是三個重點：") are stripped. Output is capped to never exceed the original paragraph length.
-- **Summary UX**: No floating loading badge. When summary is ready, paragraph gets a semi-transparent **yellow** background (`aikwau-summary-ready`). Left-clicking the yellow paragraph replaces its text with the bullet summary and turns it **green** (`aikwau-summary-shown`). Clicking again restores the original text. Both colours are user-configurable from the extension popup.
+- **Summary UX**: No floating loading badge. When summary is ready, paragraph gets an outline (`aikwau-summary-ready`, 2px). Left-clicking the paragraph replaces its text with the bullet summary and switches to a heavier outline + glow (`aikwau-summary-shown`, 3px). Clicking again restores the original text. Outline colours come from the active High Contrast theme (see below), not a user colour picker.
+- **High Contrast theme**: Popup lets the user pick one of 5 themes — `off` (default look, gold/green outlines), `aquatic`, `desert`, `dusk`, `nightsky` (default on fresh install) — stored in `aikwau_hc_theme`. `mode_bridge.js` sets `data-aikwau-hc-theme` on `<html>` and live-updates it via `chrome.storage.onChanged` (no reload needed); `content.css` has static per-theme rule blocks keyed on that attribute, recolouring L1 (background+text), summary ready/shown outlines, and blind-spot highlight/hint colours. Replaces the old custom colour-picker feature entirely.
 - **Click handler persistence**: Once a summary is fetched for a paragraph, the click handler stays on that element until SPA navigation — the user can click to toggle without hovering again.
 - **Frozen exe**: `native_host.exe` and `benchmark.exe` are PyInstaller onedir builds. CRT v14.31 (bundled by PyInstaller) must be dropped so the exe uses System32's v14.44 — see CRT ABI fix below.
 
@@ -38,11 +39,13 @@ ai-kwau/
     │   ├── native_host.py           # Inference host: reads stdin, runs LLMPipeline, writes stdout
     │   ├── host_manifest.json       # Edge native host descriptor (path/origin patched by register.py)
     │   ├── register.py              # Writes Windows Registry key + creates run_host.bat shim
+    │   ├── build_exe.bat            # One-click build: native_host + benchmark + register → dist/aikwau-dist/
     │   ├── benchmark.spec           # PyInstaller spec for benchmark.exe (shares native_host _internal)
     │   ├── native_host.spec         # PyInstaller spec for native_host.exe (onedir, CRT drop)
     │   └── dist/
     │       ├── benchmark/           # benchmark.exe + _internal/
-    │       └── native_host/         # native_host.exe + _internal/  ← deployment source
+    │       ├── native_host/         # native_host.exe + _internal/  ← deployment source
+    │       └── aikwau-dist/         # assembled transfer package (host/ + models/ + extension/)
     └── extension/
         ├── manifest.json            # MV3 v0.3.0: three content_scripts entries
         ├── mode_bridge.js           # Isolated world, document_start: reads storage → DOM attribute
@@ -55,7 +58,7 @@ ai-kwau/
         └── popup.js                 # Popup logic: storage reads/writes + tab messages
 ```
 
-## Current State (as of 2026-06-28)
+## Current State (as of 2026-07-14)
 
 ### Completed
 - [x] OpenVINO model conversion on Panther Lake (Qwen2.5-1.5B INT4)
@@ -65,20 +68,22 @@ ai-kwau/
 - [x] 9-point / 25-point calibration UI
 - [x] Gaze ring visual indicator
 - [x] EMA smoothing on gaze coordinates
-- [x] Extension popup: mode switching, recalibrate, L2 toggle, highlight colour pickers
+- [x] Extension popup: mode switching, recalibrate, L2 toggle, High Contrast theme buttons
 - [x] `benchmark.exe` (PyInstaller frozen) — working, correct output, CRT fix applied
 - [x] `native_host.exe` (PyInstaller frozen) — working, ping/summarize end-to-end verified
 - [x] Summary prompt: raw completion format, 3 bullet points, English→English / Chinese→Traditional Chinese
 - [x] zhconv bundled in native_host.exe for simplified→traditional conversion
 - [x] `_format_output`: strips preamble lines, strips markdown bold, caps output to ≤ original length
-- [x] Yellow paragraph highlight when summary ready; green when summary shown
+- [x] Outline paragraph highlight when summary ready; heavier outline + glow when summary shown
 - [x] Left-click paragraph to toggle between original text and summary (persistent handler)
 - [x] Click again to restore original text
-- [x] User-configurable highlight colours (ready colour / shown colour) via popup colour pickers
+- [x] High Contrast theme: 5 selectable themes (off/aquatic/desert/dusk/nightsky), live-applied via `data-aikwau-hc-theme` + static CSS, replacing the old colour-picker feature
 - [x] SPA navigation: clears all summary handlers on pushState/replaceState/popstate
 - [x] Webcam mode: badge fixed at right side (not cursor-following)
 - [x] Per-paragraph language detection by CJK character ratio
 - [x] `doc/index.html` updated with bilingual zh/en toggle
+- [x] Blind-spot area: in-viewport element highlighting + floating hint tooltip (replaces edge beacon)
+- [x] `build_exe.bat` fixed: uses `python -m PyInstaller` to avoid hardcoded venv launcher path
 - [ ] Native Messaging host registration and browser end-to-end test ← **next step**
 - [ ] L2 text enlargement
 
@@ -118,6 +123,10 @@ Numpy's private `msvcp140-<hash>.dll` is intentionally kept (exact-name match av
 - WebGazer v3.x: MediaPipe dynamically loads JS — blocked by page CSP.
 - WebGazer v2.1.2: TF.js uses `new Function()` for WebGL shaders — blocked by MV3 isolated-world CSP.
 - **Solution**: Run `webgazer.js` in MAIN world. Bridge via DOM CustomEvents `{x, y}`.
+
+### Key Finding: PyInstaller launcher hardcodes venv path
+
+`pyinstaller.exe` (the Windows launcher in `Scripts/`) bakes the absolute Python path at venv creation time. If the repo is moved or cloned to a different path, the launcher fails with `Unable to create process`. **Always use `python -m PyInstaller`** instead of calling `pyinstaller.exe` directly. `build_exe.bat` already uses `"%PYTHON%" -m PyInstaller` for this reason.
 
 ### Key Finding: Qwen Chat Template causes early EOS
 Using Qwen2.5's `<|im_start|>/<|im_end|>` chat template causes the model to emit EOS after the first bullet point. Use raw completion prompts instead:
@@ -249,42 +258,54 @@ document_idle   [isolated]  content.js
 - `openvino_telemetry` excluded to prevent telemetry thread crash in frozen env
 - Dev headers/cmake/tools filtered out by `_DEV_DIRS`
 
-### `content.js` — L1 + summary + click-toggle (isolated world)
+### `content.js` — L1 + summary + click-toggle + blind-spot (isolated world)
 - `detectTextLang(text)`: counts CJK chars; >8% → `'zh'`, else `'en'`
 - `triggerL1(el, text)`: applies L1/L2, silently requests summary (no loading badge); skips if element already in `summaryReadyEls`
-- `markSummaryReady(el, summary)`: adds `.aikwau-summary-ready` (yellow) and installs persistent click handler; stored in `summaryReadyEls` Map
+- `markSummaryReady(el, summary)`: adds `.aikwau-summary-ready` and installs persistent click handler; stored in `summaryReadyEls` Map. Outline colour comes entirely from CSS (`content.css`'s per-theme rule blocks) — content.js does no colour logic.
 - Click handler (per element, persists until SPA navigation):
-  - 1st click: saves `origText`, sets `el.textContent = summary`, switches to `.aikwau-summary-shown` (green)
-  - 2nd click: restores `origText`, switches back to `.aikwau-summary-ready` (yellow)
+  - 1st click: saves `origText`, sets `el.textContent = summary`, switches to `.aikwau-summary-shown` (heavier outline + glow)
+  - 2nd click: restores `origText`, switches back to `.aikwau-summary-ready`
 - `clearAllSummaryEls()`: removes all click handlers, restores text if shown, clears classes — called on SPA navigation
 - `cleanup()`: only clears badge + `activeEl` ref; does NOT remove click handlers
-- `applyHighlightColors()`: injects `<style id="__aikwau_colors">` with user-chosen colours from storage
-- `hexToRgba(hex, alpha)`: converts hex colour + alpha to `rgba(...)` string
 - `compactSummary()`: preserves `\n` (only collapses spaces/tabs), supports 220-char limit
-- SPA navigation: `pushState`/`replaceState`/`popstate` all call `_clearOnNavigate()`
+- SPA navigation: `pushState`/`replaceState`/`popstate` all call `_clearOnNavigate()` → clears summaries AND highlights (the `data-aikwau-hc-theme` attribute is untouched by this, since it's owned by `mode_bridge.js`, not content.js)
 - Webcam mode: badge positioned at right side (`positionBadgeRight`) instead of cursor
-- `isWebcamMode` flag read from storage at init; `colorReady` / `colorShown` also read at init
+- `isWebcamMode` flag read from storage at init
+- **Blind-spot area** (gaze heatmap 24×14 grid, accumulated every ≥200ms):
+  - `hmAccumulate(vx, vy)`: increments heatmap cell on each gaze event; persists to storage every 5s
+  - `coldCells()`: finds cells with 0 gaze data surrounded by ≥3 active cells (excludes unscrolled regions)
+  - `scanBlindButtons()`: called after each `hmSave()`; finds in-viewport interactive elements whose center falls in a cold cell; adds up to `MAX_HIGHLIGHTS=4` total (only adds, never removes on scan)
+  - `gazeCenter()`: computes weighted centroid of all hot cells → determines which side of element faces the user
+  - `updateHighlights(list)`: adds `.aikwau-highlight` border to element + creates `.aikwau-hint` tooltip on the hot side (toward gaze centroid); arrow on tooltip points toward element
+  - `positionHint(hintEl, rect, side)`: places hint adjacent to element edge, clamped to viewport
+  - `repositionAllHints()`: scroll/resize handler; hides hints for off-screen elements, repositions visible ones
+  - `clearAllHighlights()`: removes all borders and tooltips; called on manual clear (`clearHighlights` message) or SPA nav; also resets `hmCells` and cancels `hmSaveTimer` so cleared storage isn't overwritten
+  - `clearHighlights` message from popup: calls `clearAllHighlights()` + resets `hmCells.fill(0)` + cancels pending save timer
+  - **Known limitation**: `coldCells()` ≥3 neighbor rule misses far-left/far-right sticky sidebars when the entire column is cold (no active neighbors in that direction)
 
 ### `content.css`
-- `.aikwau-l1`: bold + dark text
+- `.aikwau-l1`: bold + dark text (base/`off`); themed blocks add a background colour + swap text colour
 - `.aikwau-l2`: 1.2× font size
-- `.aikwau-summary-ready`: light yellow background + gold outline + `cursor:pointer` (signals clickable). Default: `rgba(255,238,0,0.15)`. Overridden by injected `<style>` from `applyHighlightColors()`.
-- `.aikwau-summary-shown`: light green background + green outline + `cursor:pointer` (summary is displayed). Default: `rgba(0,204,119,0.20)`. Overridden by injected `<style>`.
+- `.aikwau-summary-ready`: outline-only (2px), `cursor:pointer` (signals clickable). Base/`off` colour: `#ffee00` (gold).
+- `.aikwau-summary-shown`: outline-only (3px) + glow, `cursor:pointer` (summary is displayed). Base/`off` colour: `#00cc77` (green).
 - `.aikwau-badge`: floating summary badge (`white-space: pre-line` for bullet newlines)
-- `.aikwau-beacon`: edge arrow for blind-area interactive elements
+- `.aikwau-highlight`: pulsing outline (`aikwau-hl-pulse` 2s, gold in base/`off`) applied to cold-zone interactive elements
+- `.aikwau-hint`: fixed-position capsule tooltip; `.aikwau-hint-icon` (gold `!` circle in base/`off`), `.aikwau-hint-label`, `.aikwau-hint-arrow`; `aikwau-hint-pulse` 2s breathing animation
+- **High Contrast themes**: `[data-aikwau-hc-theme="aquatic|desert|dusk|nightsky"]` attribute-selector blocks at the end of the file override `.aikwau-l1` (bg+text), `.aikwau-summary-ready`/`-shown` (outline-color/box-shadow), `.aikwau-highlight` (outline-color + `animation-name` to a themed `@keyframes` variant), and `.aikwau-hint-icon` (background). No dedicated `off` block — base rules above ARE the `off` appearance. See CLAUDE.md's Key Design Decisions and `docs/superpowers/specs/2026-07-15-high-contrast-theme-design.md` for the exact palette.
 
 ### `popup.html` / `popup.js` — Popup UI
 - Mode: 滑鼠模式 / 眼球追蹤
 - Reading features: L2 toggle
-- Highlight colour pickers: "摘要就緒" (ready colour, default `#ffee00`) and "摘要顯示中" (shown colour, default `#00cc77`) — `<input type="color">` with live swatch preview; sends `gaze:highlight-colors` message to content.js
+- High Contrast theme buttons: 5-button grid (`.theme-btn[data-theme]` = `off`/`aquatic`/`desert`/`dusk`/`nightsky`) in `#themeGrid`; click writes `aikwau_hc_theme` to storage and toggles `.selected` via `setThemeUI(theme)`. No `sendToTab` message needed — `mode_bridge.js`'s live `storage.onChanged` listener propagates the change.
 - Webcam extras: panel visible, gaze ring visible, calibration points (9/25), recalibrate button
-- Heatmap: 24×14 grid heat visualization, clear button
-- Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_color_ready`, `aikwau_color_shown`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`
+- Heatmap: 24×14 grid heat visualization, clear button — clicking clear: removes storage key AND sends `clearHighlights` to content.js (prevents stale `hmCells` from re-writing storage)
+- Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_hc_theme`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`
 
 ### `mode_bridge.js` — World bridge
 - Runs at `document_start` in isolated world
-- Sets `document.documentElement.setAttribute('data-aikwau-mode', 'mouse')` synchronously
-- Reads `chrome.storage.local.aikwau_gaze_mode` → updates attribute + fires `aikwau:mode-ready`
+- Sets `document.documentElement.setAttribute('data-aikwau-mode', 'mouse')` and `data-aikwau-hc-theme='nightsky'` synchronously (defaults, before storage read completes)
+- Reads `chrome.storage.local.{aikwau_gaze_mode, aikwau_hc_theme}` → updates both attributes + fires `aikwau:mode-ready` with `{mode, theme}`
+- `aikwau_gaze_mode` is a one-shot read — changing mode requires a page reload. `aikwau_hc_theme` is different: a `chrome.storage.onChanged` listener updates `data-aikwau-hc-theme` live, so theme switches apply with no reload.
 
 ### `gaze_tracker.js` — Gaze tracking (MAIN world)
 - Mouse mode: `mouseover` + 2000ms dwell → dispatch `aikwau:gazefocus {x, y}`
@@ -307,6 +328,7 @@ document_idle   [isolated]  content.js
 
 - **Shift key replace**: Removed. Left-click on yellow paragraph is the only toggle mechanism.
 - **Margin note (旁注摘要)**: Removed entirely — no sidebar annotations, no `.aikwau-margin-note` CSS, no `aikwau_margin_note` storage key.
+- **Edge beacon (`.aikwau-beacon`)**: Removed. Replaced by in-viewport `.aikwau-highlight` border + `.aikwau-hint` tooltip system.
 
 ## WebGazer Notes
 
@@ -360,10 +382,15 @@ print('ready:', r)
 send({'action':'summarize','text':'AI is transforming healthcare with new diagnostic tools.','lang':'en','reqId':2}); print(recv())
 "
 
-# Rebuild frozen exes (from poc/native_host/ with venv active)
+# Rebuild frozen exes — use build_exe.bat (assembles full transfer package)
+# From poc/native_host/ with venv active:
+.\build_exe.bat
+# Output: dist\aikwau-dist\ (host\ + models\ + extension\ + install.bat)
+
+# Or build individual specs manually (python -m PyInstaller avoids hardcoded launcher path):
 # Delete ov_cache first if PermissionError: rmdir /s /q dist\native_host\ov_cache
-pyinstaller --clean -y native_host.spec
-pyinstaller --clean -y benchmark.spec
+..\model_setup\.venv\Scripts\python.exe -m PyInstaller --clean -y native_host.spec
+..\model_setup\.venv\Scripts\python.exe -m PyInstaller --clean -y benchmark.spec
 
 # Run benchmark (frozen exe)
 dist\benchmark\benchmark.exe --model-dir C:\...\poc\models\qwen2.5-1.5b-int4
