@@ -5,7 +5,6 @@ pushd "%~dp0"
 REM ── Config ────────────────────────────────────────────────────────────────
 set VENV=%~dp0..\model_setup\.venv
 set PYTHON=%VENV%\Scripts\python.exe
-set PYINST=%VENV%\Scripts\pyinstaller.exe
 set DIST_ROOT=%~dp0dist
 set PKG=%DIST_ROOT%\aikwau-dist
 
@@ -42,7 +41,7 @@ echo.
 echo [1/3] Building native_host.exe (onedir) ...
 echo       This takes 3-5 minutes the first time.
 echo.
-"%PYINST%" native_host.spec --distpath "%DIST_ROOT%" --workpath build
+"%PYTHON%" -m PyInstaller native_host.spec --distpath "%DIST_ROOT%" --workpath build
 if errorlevel 1 (
     echo ERROR: native_host build failed.
     goto :fail
@@ -53,7 +52,7 @@ echo.
 echo [2/3] Building benchmark.exe (onedir) ...
 echo       Also takes 3-5 minutes (same OpenVINO stack).
 echo.
-"%PYINST%" benchmark.spec --distpath "%DIST_ROOT%" --workpath build
+"%PYTHON%" -m PyInstaller benchmark.spec --distpath "%DIST_ROOT%" --workpath build
 if errorlevel 1 (
     echo ERROR: benchmark build failed.
     goto :fail
@@ -62,7 +61,7 @@ if errorlevel 1 (
 REM ── Build 3/3 : register (onefile, ~8 MB) ─────────────────────────────────
 echo.
 echo [3/3] Building register.exe (onefile) ...
-"%PYINST%" register.spec --distpath "%DIST_ROOT%" --workpath build
+"%PYTHON%" -m PyInstaller register.spec --distpath "%DIST_ROOT%" --workpath build
 if errorlevel 1 (
     echo ERROR: register build failed.
     goto :fail

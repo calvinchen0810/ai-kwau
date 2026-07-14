@@ -6,6 +6,8 @@ const webcamToggles   = document.getElementById('webcamToggles');
 const panelVisible    = document.getElementById('panelVisible');
 const ringVisible     = document.getElementById('ringVisible');
 const l2Enabled       = document.getElementById('l2Enabled');
+const l2Scale         = document.getElementById('l2Scale');
+const l2ScaleLabel    = document.getElementById('l2ScaleLabel');
 const themeButtons    = document.querySelectorAll('.theme-btn');
 const status          = document.getElementById('status');
 
@@ -28,13 +30,19 @@ function setThemeUI(theme) {
   themeButtons.forEach(btn => btn.classList.toggle('selected', btn.dataset.theme === theme));
 }
 
+function setL2ScaleUI(scale) {
+  l2Scale.value = scale;
+  l2ScaleLabel.textContent = `${scale.toFixed(1)}×`;
+}
+
 chrome.storage.local.get(
   ['aikwau_gaze_mode', 'aikwau_cal_points',
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
-   'aikwau_l2_enabled', 'aikwau_hc_theme'],
+   'aikwau_l2_enabled', 'aikwau_l2_scale', 'aikwau_hc_theme'],
   (data) => {
     const mode  = data.aikwau_gaze_mode ?? 'mouse';
     const pts   = data.aikwau_cal_points ?? 25;
+    const scale = data.aikwau_l2_scale ?? 1.2;
     const theme = data.aikwau_hc_theme ?? 'nightsky';
     document.querySelector(`input[value="${mode}"]`).checked = true;
     setWebcamExtras(mode === 'webcam');
@@ -42,6 +50,7 @@ chrome.storage.local.get(
     panelVisible.checked = data.aikwau_webcam_panel_visible !== false;
     ringVisible.checked  = data.aikwau_gaze_ring_visible   !== false;
     l2Enabled.checked    = data.aikwau_l2_enabled          !== false;
+    setL2ScaleUI(scale);
     setThemeUI(theme);
   }
 );
@@ -96,6 +105,13 @@ l2Enabled.addEventListener('change', () => {
   sendToTab({ type: 'gaze:l2-toggle', enabled });
 });
 
+l2Scale.addEventListener('input', () => {
+  const scale = parseFloat(l2Scale.value);
+  l2ScaleLabel.textContent = `${scale.toFixed(1)}×`;
+  chrome.storage.local.set({ aikwau_l2_scale: scale });
+  sendToTab({ type: 'gaze:l2-scale', scale });
+});
+
 themeButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const theme = btn.dataset.theme;
@@ -121,7 +137,9 @@ recalibrate.addEventListener('click', () => {
 
 // ── Gaze heatmap ─────────────────────────────────────────────────────────────
 const HM_W = 24, HM_H = 14;
-const CW = 10, CH = 10;
+const CW = 13, CH = 13;
+const HM_CANVAS_W = HM_W * CW;  // 312, matches <canvas id="hmCanvas"> width
+const HM_CANVAS_H = HM_H * CH;  // 182, matches <canvas id="hmCanvas"> height
 
 const hmCanvas = document.getElementById('hmCanvas');
 const hmCtx    = hmCanvas.getContext('2d');
@@ -167,11 +185,11 @@ function boxBlur(cells, w, h) {
 function renderHeatmap(data) {
   if (!data || !Array.isArray(data.cells) || data.cells.length !== HM_W * HM_H) {
     hmCtx.fillStyle = '#0d1117';
-    hmCtx.fillRect(0, 0, 240, 140);
+    hmCtx.fillRect(0, 0, HM_CANVAS_W, HM_CANVAS_H);
     hmCtx.fillStyle = '#444';
-    hmCtx.font = '11px sans-serif';
+    hmCtx.font = '14px sans-serif';
     hmCtx.textAlign = 'center';
-    hmCtx.fillText('尚無視線資料', 120, 75);
+    hmCtx.fillText('尚無視線資料', HM_CANVAS_W / 2, HM_CANVAS_H / 2);
     hmStats.textContent = '尚無資料';
     return;
   }
@@ -180,7 +198,7 @@ function renderHeatmap(data) {
   const maxVal  = Math.max(...blurred, 1);
   const total   = data.totalPoints ?? data.cells.reduce((a, b) => a + b, 0);
 
-  const img = hmCtx.createImageData(240, 140);
+  const img = hmCtx.createImageData(HM_CANVAS_W, HM_CANVAS_H);
   for (let r = 0; r < HM_H; r++) {
     for (let c = 0; c < HM_W; c++) {
       const v = blurred[r * HM_W + c];
@@ -188,7 +206,7 @@ function renderHeatmap(data) {
       const [ri, gi, bi] = heatColor(t);
       for (let py = r * CH; py < (r + 1) * CH; py++) {
         for (let px = c * CW; px < (c + 1) * CW; px++) {
-          const i = (py * 240 + px) * 4;
+          const i = (py * HM_CANVAS_W + px) * 4;
           img.data[i] = ri; img.data[i+1] = gi; img.data[i+2] = bi; img.data[i+3] = 255;
         }
       }
@@ -198,7 +216,7 @@ function renderHeatmap(data) {
 
   if (total >= 50) {
     hmCtx.fillStyle = 'rgba(255,255,80,0.85)';
-    hmCtx.font = 'bold 7px sans-serif';
+    hmCtx.font = 'bold 9px sans-serif';
     hmCtx.textAlign = 'center';
     for (let r = 1; r < HM_H - 1; r++) {
       for (let c = 1; c < HM_W - 1; c++) {
@@ -221,7 +239,7 @@ function renderHeatmap(data) {
 (function drawLegend() {
   const lc = document.getElementById('hmLegend');
   const ctx = lc.getContext('2d');
-  const g = ctx.createLinearGradient(0, 0, 186, 0);
+  const g = ctx.createLinearGradient(0, 0, 240, 0);
   g.addColorStop(0,    'rgb(13,17,23)');
   g.addColorStop(0.05, 'rgb(10,45,160)');
   g.addColorStop(0.25, 'rgb(0,170,200)');
@@ -229,7 +247,7 @@ function renderHeatmap(data) {
   g.addColorStop(0.75, 'rgb(255,200,0)');
   g.addColorStop(1.0,  'rgb(255,40,0)');
   ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 186, 7);
+  ctx.fillRect(0, 0, 240, 9);
 })();
 
 function loadAndRender() {
@@ -245,5 +263,6 @@ hmClear.addEventListener('click', () => {
   chrome.storage.local.remove('aikwau_heatmap', () => {
     renderHeatmap(null);
     hmStats.textContent = '已清除';
+    sendToTab({ type: 'clearHighlights' });
   });
 });

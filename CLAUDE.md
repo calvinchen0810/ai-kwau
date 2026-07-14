@@ -260,7 +260,9 @@ document_idle   [isolated]  content.js
 
 ### `content.js` — L1 + summary + click-toggle + blind-spot (isolated world)
 - `detectTextLang(text)`: counts CJK chars; >8% → `'zh'`, else `'en'`
-- `triggerL1(el, text)`: applies L1/L2, silently requests summary (no loading badge); skips if element already in `summaryReadyEls`
+- `triggerL1(el, text)`: applies L1/L2, silently requests summary (no loading badge); skips if element already in `summaryReadyEls`. L2 sizing: captures `el.dataset.aikwauBase` (computed font-size in px) once, then sets an inline `font-size: base*l2Scale !important` — this inline style is what the browser actually renders; `content.css`'s `.aikwau-l2` class rule is only a fallback default and is always overridden when this runs.
+- `l2Scale` (module state, default `1.2`): read from `aikwau_l2_scale` at init; live-updated via the `gaze:l2-scale` message from popup.js (mirrors `gaze:l2-toggle`)
+- `reapplyL2Scale()`: on `gaze:l2-scale`, re-applies the new scale's inline font-size to every element currently carrying `.aikwau-l2` (via `document.querySelectorAll`), so dragging the popup slider live-resizes already-enlarged paragraphs without needing to re-gaze
 - `markSummaryReady(el, summary)`: adds `.aikwau-summary-ready` and installs persistent click handler; stored in `summaryReadyEls` Map. Outline colour comes entirely from CSS (`content.css`'s per-theme rule blocks) — content.js does no colour logic.
 - Click handler (per element, persists until SPA navigation):
   - 1st click: saves `origText`, sets `el.textContent = summary`, switches to `.aikwau-summary-shown` (heavier outline + glow)
@@ -285,7 +287,7 @@ document_idle   [isolated]  content.js
 
 ### `content.css`
 - `.aikwau-l1`: bold + dark text (base/`off`); themed blocks add a background colour + swap text colour
-- `.aikwau-l2`: 1.2× font size
+- `.aikwau-l2`: `font-size: 1.2em !important` fallback default only — the real size is an inline style content.js sets per-element (see below), which always wins the cascade over this class rule
 - `.aikwau-summary-ready`: outline-only (2px), `cursor:pointer` (signals clickable). Base/`off` colour: `#ffee00` (gold).
 - `.aikwau-summary-shown`: outline-only (3px) + glow, `cursor:pointer` (summary is displayed). Base/`off` colour: `#00cc77` (green).
 - `.aikwau-badge`: floating summary badge (`white-space: pre-line` for bullet newlines)
@@ -295,17 +297,18 @@ document_idle   [isolated]  content.js
 
 ### `popup.html` / `popup.js` — Popup UI
 - Mode: 滑鼠模式 / 眼球追蹤
-- Reading features: L2 toggle
+- Reading features: L2 toggle + L2 scale slider (`#l2Scale`, range 1.0–3.0, step 0.1, default 1.2×) with live numeric label (`#l2ScaleLabel`); `input` event writes `aikwau_l2_scale` to storage (persistence) AND sends `gaze:l2-scale` via `sendToTab` (live application — mirrors the existing `gaze:l2-toggle` pattern, since content.js owns the actual font-size logic, not a CSS variable)
 - High Contrast theme buttons: 5-button grid (`.theme-btn[data-theme]` = `off`/`aquatic`/`desert`/`dusk`/`nightsky`) in `#themeGrid`; click writes `aikwau_hc_theme` to storage and toggles `.selected` via `setThemeUI(theme)`. No `sendToTab` message needed — `mode_bridge.js`'s live `storage.onChanged` listener propagates the change.
 - Webcam extras: panel visible, gaze ring visible, calibration points (9/25), recalibrate button
 - Heatmap: 24×14 grid heat visualization, clear button — clicking clear: removes storage key AND sends `clearHighlights` to content.js (prevents stale `hmCells` from re-writing storage)
-- Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_hc_theme`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`
+- Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_l2_scale`, `aikwau_hc_theme`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`
 
 ### `mode_bridge.js` — World bridge
 - Runs at `document_start` in isolated world
 - Sets `document.documentElement.setAttribute('data-aikwau-mode', 'mouse')` and `data-aikwau-hc-theme='nightsky'` synchronously (defaults, before storage read completes)
 - Reads `chrome.storage.local.{aikwau_gaze_mode, aikwau_hc_theme}` → updates both attributes + fires `aikwau:mode-ready` with `{mode, theme}`
 - `aikwau_gaze_mode` is a one-shot read — changing mode requires a page reload. `aikwau_hc_theme` is different: a `chrome.storage.onChanged` listener updates `data-aikwau-hc-theme` live, so theme switches apply with no reload.
+- Does NOT own L2 scale — that's content.js's job (inline per-element style, not a CSS attribute/variable), since `.aikwau-l2` sizing must be pinned to each element's captured base font-size rather than cascade through a shared variable.
 
 ### `gaze_tracker.js` — Gaze tracking (MAIN world)
 - Mouse mode: `mouseover` + 2000ms dwell → dispatch `aikwau:gazefocus {x, y}`

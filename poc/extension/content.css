@@ -6,7 +6,10 @@
   transition: color 0.3s ease, font-weight 0.3s ease, font-size 0.25s ease;
 }
 
-/* ── L2: additional font enlargement (toggled via popup) ───────────── */
+/* ── L2: additional font enlargement (toggled + scaled via popup) ────
+   Actual sizing is applied by content.js as an inline style (base px ×
+   l2Scale) so it's pinned to each element's captured base font-size,
+   not a relative em cascade. This rule is only a fallback default. ── */
 .aikwau-l2 {
   font-size: 1.2em !important;
   line-height: 1.7 !important;

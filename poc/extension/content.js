@@ -19,6 +19,7 @@ window.__aikwauContentLoaded = true;
   let activeBadge       = null;
   let lastMouseX        = 0, lastMouseY = 0;
   let l2Enabled         = true;   // L2 font enlargement
+  let l2Scale           = 1.2;    // L2 enlargement multiplier (popup slider)
   let badgeTimer        = null;
   const summaryCache    = new Map(); // text-key → cached summary string
   // summaryReadyEls: el → { summary, origText, handler, shown }
@@ -67,6 +68,8 @@ window.__aikwauContentLoaded = true;
   }
 
   window.addEventListener('beforeunload', hmSave);
+  window.addEventListener('scroll', repositionAllHints, { passive: true });
+  window.addEventListener('resize', repositionAllHints, { passive: true });
 
   // ── Blind-area button scanner ─────────────────────────────────────────────
   const INTERACTIVE_SEL = [
@@ -79,10 +82,10 @@ window.__aikwauContentLoaded = true;
     '[role="link"]',
   ].join(', ');
 
-  const MIN_HM_POINTS = 50;   // need this many gaze samples before scanning
-  const MAX_BEACONS   = 4;    // max beacons on screen at once
+  const MIN_HM_POINTS  = 50;  // need this many gaze samples before scanning
+  const MAX_HIGHLIGHTS = 4;   // max highlighted elements at once
 
-  let beaconTargets = [];     // [{el, beaconEl}]
+  let highlightTargets = [];  // [{el, hintEl}]
 
   function coldCells() {
     const total = hmCells.reduce((a, b) => a + b, 0);
@@ -120,16 +123,20 @@ window.__aikwauContentLoaded = true;
 
   function scanBlindButtons() {
     const total = hmCells.reduce((a, b) => a + b, 0);
-    if (total < MIN_HM_POINTS) { updateBeacons([]); return; }
+    if (total < MIN_HM_POINTS) return;
 
     const cold = coldCells();
-    if (cold.size === 0) { updateBeacons([]); return; }
+    if (cold.size === 0) return;
+
+    // Already at cap — nothing to add
+    if (highlightTargets.length >= MAX_HIGHLIGHTS) return;
 
     const vw = window.innerWidth, vh = window.innerHeight;
+    const alreadyHighlighted = new Set(highlightTargets.map(h => h.el));
     const found = [];
 
     for (const el of document.querySelectorAll(INTERACTIVE_SEL)) {
-      // Skip extension-injected elements
+      if (alreadyHighlighted.has(el)) continue;
       if (el.id?.startsWith('__aikwau') || el.id?.startsWith('__ap')) continue;
       if (el.closest('[id^="__aikwau"]') || el.closest('[id^="__ap"]')) continue;
       const rect = el.getBoundingClientRect();
@@ -148,64 +155,115 @@ window.__aikwauContentLoaded = true;
       }
     }
 
-    // Keep the ones furthest from viewport center (most likely to be missed)
     found.sort((a, b) => b.dist - a.dist);
-    const top = found.slice(0, MAX_BEACONS);
-    updateBeacons(top);
+    updateHighlights(found.slice(0, MAX_HIGHLIGHTS - highlightTargets.length));
 
-    // Inform demo page how many were found
-    document.dispatchEvent(new CustomEvent('aikwau:demo-ready', { detail: { count: top.length } }));
+    document.dispatchEvent(new CustomEvent('aikwau:demo-ready',
+      { detail: { count: highlightTargets.length } }));
   }
 
-  function updateBeacons(list) {
-    const keep = new Set(list.map(i => i.el));
-    for (const { el, beaconEl } of beaconTargets) {
-      if (!keep.has(el)) beaconEl.remove();
-    }
-    beaconTargets = beaconTargets.filter(b => keep.has(b.el));
+  // Returns fractional heatmap grid coords for the weighted gaze centroid.
+  function gazeCenter() {
+    const total = hmCells.reduce((a, b) => a + b, 0);
+    if (total === 0) return null;
+    let wx = 0, wy = 0;
+    for (let r = 0; r < HM_H; r++)
+      for (let c = 0; c < HM_W; c++) {
+        const v = hmCells[r * HM_W + c];
+        wx += c * v; wy += r * v;
+      }
+    return { col: wx / total, row: wy / total };
+  }
 
-    const existingEls = new Set(beaconTargets.map(b => b.el));
+  // Place hintEl adjacent to rect on the given side, clamped to viewport.
+  function positionHint(hintEl, rect, side) {
+    const PAD = 6;
     const vw = window.innerWidth, vh = window.innerHeight;
-    const PAD = 10;
-    const edgeCount = { left: 0, right: 0, top: 0, bottom: 0 };
+    const hw = hintEl.offsetWidth  || 180;
+    const hh = hintEl.offsetHeight || 32;
+    let top, left;
+    switch (side) {
+      case 'left':   left = rect.left - hw - PAD;               top = rect.top + rect.height / 2 - hh / 2; break;
+      case 'right':  left = rect.right + PAD;                   top = rect.top + rect.height / 2 - hh / 2; break;
+      case 'top':    left = rect.left + rect.width / 2 - hw / 2; top = rect.top - hh - PAD;                break;
+      case 'bottom': left = rect.left + rect.width / 2 - hw / 2; top = rect.bottom + PAD;                  break;
+    }
+    hintEl.style.left = `${Math.max(PAD, Math.min(vw - hw - PAD, left))}px`;
+    hintEl.style.top  = `${Math.max(PAD, Math.min(vh - hh - PAD, top))}px`;
+  }
 
-    for (const item of list) {
-      const { cx, cy, el, label } = item;
-
-      // Nearest viewport edge
-      const nearest = { left: cx, right: vw - cx, top: cy, bottom: vh - cy };
-      const side = Object.keys(nearest).reduce((a, b) => nearest[a] < nearest[b] ? a : b);
-      const idx  = edgeCount[side]++;
-
-      if (existingEls.has(el)) continue;  // beacon already rendered
-
-      const beaconEl = document.createElement('div');
-      beaconEl.className = 'aikwau-beacon';
-      beaconEl.dataset.side = side;
-      const arrow   = { left: '◀', right: '▶', top: '▲', bottom: '▼' }[side];
-      const tagType = el.tagName === 'A' ? '連結' : '按鈕';
-      beaconEl.innerHTML =
-        `<span class="aikwau-beacon-arrow">${arrow}</span>` +
-        `<span class="aikwau-beacon-label">${tagType}：${label}</span>`;
-
-      // Position: stack beacons along the edge at the element's cross-axis coordinate
-      if (side === 'left' || side === 'right') {
-        const top = Math.max(PAD, Math.min(vh - 36, cy - 14)) + idx * 48;
-        beaconEl.style.cssText = `${side}:${PAD}px; top:${top}px;`;
+  // Reposition all hint tooltips after scroll / resize; hide hints for off-screen elements.
+  function repositionAllHints() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    for (const { el, hintEl } of highlightTargets) {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.width > 0 && rect.height > 0 &&
+                     rect.bottom > 0 && rect.top < vh &&
+                     rect.right > 0 && rect.left < vw;
+      if (inView) {
+        hintEl.style.display = '';
+        positionHint(hintEl, rect, hintEl.dataset.side);
       } else {
-        const left = Math.max(PAD, Math.min(vw - 200, cx - 80)) + idx * 210;
-        beaconEl.style.cssText = `${side}:${PAD}px; left:${left}px;`;
+        hintEl.style.display = 'none';
+      }
+    }
+  }
+
+  // Add gold border + floating hint tooltip to each newly discovered cold-zone element.
+  // Existing highlights are never removed by the scanner — only by clearAllHighlights().
+  function updateHighlights(list) {
+    const existingEls = new Set(highlightTargets.map(h => h.el));
+    const gc = gazeCenter();
+    const vw = window.innerWidth, vh = window.innerHeight;
+
+    for (const { el, cx, cy, label } of list) {
+      if (existingEls.has(el)) continue;
+
+      el.classList.add('aikwau-highlight');
+
+      // Determine which side of the element faces the gaze centroid (hot zone).
+      // The hint appears on that side so the user encounters it naturally.
+      let side = 'top';
+      if (gc) {
+        const gazePxX = (gc.col + 0.5) / HM_W * vw;
+        const gazePxY = (gc.row + 0.5) / HM_H * vh;
+        const dx = gazePxX - cx, dy = gazePxY - cy;
+        side = Math.abs(dx) > Math.abs(dy)
+          ? (dx > 0 ? 'right' : 'left')
+          : (dy > 0 ? 'bottom' : 'top');
       }
 
-      beaconEl.addEventListener('click', () => {
+      // Arrow on hint points toward the element (opposite of hint side).
+      const towardEl = { left: '▶', right: '◀', top: '▼', bottom: '▲' }[side];
+      const tagType  = el.tagName === 'A' ? '連結' : '按鈕';
+
+      const hintEl = document.createElement('div');
+      hintEl.className = 'aikwau-hint';
+      hintEl.dataset.side = side;
+      hintEl.innerHTML =
+        `<span class="aikwau-hint-icon">!</span>` +
+        `<span class="aikwau-hint-label">${tagType}：${label}</span>` +
+        `<span class="aikwau-hint-arrow">${towardEl}</span>`;
+
+      document.body.appendChild(hintEl);
+      positionHint(hintEl, el.getBoundingClientRect(), side);
+
+      hintEl.addEventListener('click', () => {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        el.classList.add('aikwau-l1');
-        setTimeout(() => el.classList.remove('aikwau-l1'), 1800);
+        el.focus?.();
       });
 
-      document.body.appendChild(beaconEl);
-      beaconTargets.push({ el, beaconEl });
+      highlightTargets.push({ el, hintEl });
     }
+  }
+
+  // Remove all highlight borders and hint tooltips. Called on manual clear or SPA nav.
+  function clearAllHighlights() {
+    for (const { el, hintEl } of highlightTargets) {
+      el.classList.remove('aikwau-highlight');
+      hintEl.remove();
+    }
+    highlightTargets = [];
   }
 
   // ── Demo page bridge ──────────────────────────────────────────────────────
@@ -226,12 +284,13 @@ window.__aikwauContentLoaded = true;
     hmCells.fill(0);
     hmDirty = false;
     chrome.storage.local.remove('aikwau_heatmap');
-    updateBeacons([]);
+    clearAllHighlights();
   });
 
   // ── SPA navigation: clear summaries on pushState / popstate ─────────────
   const _clearOnNavigate = () => {
     clearAllSummaryEls();
+    clearAllHighlights();
     cleanup();
   };
   window.addEventListener('popstate', _clearOnNavigate);
@@ -242,13 +301,23 @@ window.__aikwauContentLoaded = true;
 
   // ── Mode + feature-flag init ──────────────────────────────────────────────
   chrome.storage.local.get(
-    ['aikwau_gaze_mode', 'aikwau_l2_enabled'],
+    ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale'],
     (data) => {
       l2Enabled    = data.aikwau_l2_enabled !== false;
+      l2Scale      = data.aikwau_l2_scale ?? 1.2;
       isWebcamMode = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
       if (isWebcamMode) initWebcam();
     }
   );
+
+  // Re-applies the current l2Scale to every element already showing .aikwau-l2,
+  // so dragging the popup slider resizes on-page text live, no re-gaze needed.
+  function reapplyL2Scale() {
+    document.querySelectorAll('.aikwau-l2').forEach(el => {
+      const base = +el.dataset.aikwauBase;
+      if (!isNaN(base)) el.style.setProperty('font-size', `${(base * l2Scale).toFixed(1)}px`, 'important');
+    });
+  }
 
   // ── Gaze events from MAIN world (mouse mode: immediate; webcam mode: via dwell) ──
   document.addEventListener('aikwau:gazefocus', (e) => {
@@ -605,6 +674,15 @@ window.__aikwauContentLoaded = true;
       if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
     }
     if (msg.type === 'gaze:l2-toggle') { l2Enabled = msg.enabled; }
+    if (msg.type === 'gaze:l2-scale') { l2Scale = msg.scale; reapplyL2Scale(); }
+    if (msg.type === 'clearHighlights') {
+      clearAllHighlights();
+      // Also reset in-memory heatmap so a pending hmSaveTimer doesn't
+      // re-write stale data back to storage after the popup cleared it.
+      hmCells.fill(0);
+      hmDirty = false;
+      if (hmSaveTimer) { clearTimeout(hmSaveTimer); hmSaveTimer = null; }
+    }
   });
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -663,7 +741,7 @@ window.__aikwauContentLoaded = true;
       }
       el.classList.add('aikwau-l2');
       const base = +el.dataset.aikwauBase;
-      if (!isNaN(base)) el.style.setProperty('font-size', `${(base * 1.2).toFixed(1)}px`, 'important');
+      if (!isNaN(base)) el.style.setProperty('font-size', `${(base * l2Scale).toFixed(1)}px`, 'important');
     }
 
     // Already has a summary — nothing more to do
