@@ -53,8 +53,12 @@ pattern `applyHighlightColors()` used previously).
 - `mode_bridge.js` (isolated world, `document_start`) additionally reads
   `aikwau_hc_theme` from `chrome.storage.local` and sets
   `document.documentElement.setAttribute('data-aikwau-hc-theme', theme || 'off')`.
-  It listens for storage changes and updates the attribute live, same as the
-  existing gaze-mode attribute.
+  Unlike the existing one-shot `aikwau_gaze_mode` read (which requires a page
+  reload to take effect), `mode_bridge.js` additionally registers a
+  `chrome.storage.onChanged` listener for `aikwau_hc_theme` so the theme
+  attribute — and therefore the CSS — updates live, with no reload required.
+  This is a new capability, not a reuse of existing live-update behaviour
+  (there isn't any for gaze mode today).
 - `content.css` defines fixed rule blocks per theme, e.g.:
   ```css
   [data-aikwau-hc-theme="aquatic"] .aikwau-l1 { background:#003044; color:#eaffff; }
