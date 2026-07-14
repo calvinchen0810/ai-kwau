@@ -25,9 +25,6 @@ window.__aikwauContentLoaded = true;
   // Persists across gaze events — cleared only on SPA navigation
   const summaryReadyEls = new Map();
   let isWebcamMode = false;
-  let colorReady        = '#ffee00';
-  let colorShown        = '#00cc77';
-  let colorStyleEl      = null;
   document.addEventListener('mousemove', e => { lastMouseX = e.clientX; lastMouseY = e.clientY; }, { passive: true });
 
   // ── Gaze heatmap accumulator ──────────────────────────────────────────────
@@ -232,27 +229,6 @@ window.__aikwauContentLoaded = true;
     updateBeacons([]);
   });
 
-  // ── Highlight colour injection ────────────────────────────────────────────
-  function hexToRgba(hex, alpha) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r},${g},${b},${alpha})`;
-  }
-
-  function applyHighlightColors() {
-    if (!colorStyleEl) {
-      colorStyleEl = document.createElement('style');
-      colorStyleEl.id = '__aikwau_colors';
-      document.head.appendChild(colorStyleEl);
-    }
-    colorStyleEl.textContent =
-      `.aikwau-summary-ready{background-color:${hexToRgba(colorReady, 0.15)}!important;` +
-      `outline-color:${hexToRgba(colorReady, 0.40)}!important;}` +
-      `.aikwau-summary-shown{background-color:${hexToRgba(colorShown, 0.20)}!important;` +
-      `outline-color:${hexToRgba(colorShown, 0.50)}!important;}`;
-  }
-
   // ── SPA navigation: clear summaries on pushState / popstate ─────────────
   const _clearOnNavigate = () => {
     clearAllSummaryEls();
@@ -266,14 +242,10 @@ window.__aikwauContentLoaded = true;
 
   // ── Mode + feature-flag init ──────────────────────────────────────────────
   chrome.storage.local.get(
-    ['aikwau_gaze_mode', 'aikwau_l2_enabled',
-     'aikwau_color_ready', 'aikwau_color_shown'],
+    ['aikwau_gaze_mode', 'aikwau_l2_enabled'],
     (data) => {
-      l2Enabled  = data.aikwau_l2_enabled !== false;
-      colorReady = data.aikwau_color_ready ?? '#ffee00';
-      colorShown = data.aikwau_color_shown ?? '#00cc77';
-      isWebcamMode      = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
-      applyHighlightColors();
+      l2Enabled    = data.aikwau_l2_enabled !== false;
+      isWebcamMode = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
       if (isWebcamMode) initWebcam();
     }
   );
@@ -633,11 +605,6 @@ window.__aikwauContentLoaded = true;
       if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
     }
     if (msg.type === 'gaze:l2-toggle') { l2Enabled = msg.enabled; }
-    if (msg.type === 'gaze:highlight-colors') {
-      if (msg.colorReady) colorReady = msg.colorReady;
-      if (msg.colorShown) colorShown = msg.colorShown;
-      applyHighlightColors();
-    }
   });
 
   // ══════════════════════════════════════════════════════════════════════════
