@@ -1,5 +1,6 @@
 # Claude Code internal files
 .claude/
+.superpowers/
 
 # Python
 __pycache__/
