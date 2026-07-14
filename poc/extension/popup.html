@@ -43,10 +43,14 @@
     .feat-sect .sect-lbl { font-size: 11px; color: #888; margin-bottom: 4px; }
     .feat-sect label { font-size: 12px; color: #333; margin: 3px 0; }
 
-    /* Color picker row */
-    .color-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 12px; color: #333; cursor: default; }
-    .color-row input[type="color"] { margin-left: auto; width: 32px; height: 22px; padding: 1px 2px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background: none; }
-    .color-swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid #bbb; flex-shrink: 0; }
+    /* HC theme button grid */
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
+    .theme-btn {
+      font-size: 11px; padding: 6px 4px; border: 1px solid #ccc; border-radius: 4px;
+      background: #fff; color: #333; cursor: pointer;
+    }
+    .theme-btn:hover { background: #f0f0f0; }
+    .theme-btn.selected { background: #0058b0; color: #fff; border-color: #0058b0; font-weight: 600; }
 
     /* Heatmap section */
     .hm-section { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
@@ -71,16 +75,13 @@
   </div>
 
   <div class="feat-sect">
-    <div class="sect-lbl">段落醒目顏色（點擊切換摘要）</div>
-    <div class="color-row">
-      <span class="color-swatch" id="swatchReady" style="background:rgba(255,238,0,0.5)"></span>
-      <span>摘要就緒</span>
-      <input type="color" id="colorReady" value="#ffee00" title="摘要就緒顏色">
-    </div>
-    <div class="color-row">
-      <span class="color-swatch" id="swatchShown" style="background:rgba(0,204,119,0.5)"></span>
-      <span>摘要顯示中</span>
-      <input type="color" id="colorShown" value="#00cc77" title="摘要顯示中顏色">
+    <div class="sect-lbl">High Contrast 主題</div>
+    <div class="theme-grid" id="themeGrid">
+      <button type="button" class="theme-btn" data-theme="off">關閉</button>
+      <button type="button" class="theme-btn" data-theme="aquatic">Aquatic</button>
+      <button type="button" class="theme-btn" data-theme="desert">Desert</button>
+      <button type="button" class="theme-btn" data-theme="dusk">Dusk</button>
+      <button type="button" class="theme-btn" data-theme="nightsky">Night Sky</button>
     </div>
   </div>
 
