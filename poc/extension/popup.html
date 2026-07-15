@@ -46,14 +46,27 @@
     .l2-scale-row input[type="range"] { flex: 1; }
     .l2-scale-row span { font-size: 13px; color: #555; width: 34px; text-align: right; flex-shrink: 0; }
 
-    /* HC theme button grid */
+    /* HC theme button grid — each button previews its own theme's L1 colours */
     .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
     .theme-btn {
       font-size: 14px; padding: 10px 6px; border: 1px solid #ccc; border-radius: 4px;
       background: #fff; color: #333; cursor: pointer;
+      transition: box-shadow 0.15s ease, filter 0.15s ease;
     }
-    .theme-btn:hover { background: #f0f0f0; }
-    .theme-btn.selected { background: #0058b0; color: #fff; border-color: #0058b0; font-weight: 600; }
+    .theme-btn:hover { filter: brightness(1.15); border-color: #999; }
+    .theme-btn.selected { font-weight: 700; }
+
+    .theme-btn[data-theme="aquatic"]  { background: #003044; color: #eaffff; border-color: #00c2e0; }
+    .theme-btn[data-theme="desert"]   { background: #2b1400; color: #fff2d9; border-color: #d68a2e; }
+    .theme-btn[data-theme="dusk"]     { background: #2a0a3d; color: #f5e6ff; border-color: #d64fc0; }
+    .theme-btn[data-theme="nightsky"] { background: #05060f; color: #f0f4ff; border-color: #3a8fd6; }
+
+    /* Selected state: glow ring in the theme's own accent colour, not a background swap */
+    .theme-btn.selected[data-theme="off"]      { box-shadow: 0 0 0 2px #0058b0; }
+    .theme-btn.selected[data-theme="aquatic"]  { box-shadow: 0 0 0 2px #00e5ff, 0 0 8px #00e5ff; }
+    .theme-btn.selected[data-theme="desert"]   { box-shadow: 0 0 0 2px #ffb020, 0 0 8px #ffb020; }
+    .theme-btn.selected[data-theme="dusk"]     { box-shadow: 0 0 0 2px #ff4fd8, 0 0 8px #ff4fd8; }
+    .theme-btn.selected[data-theme="nightsky"] { box-shadow: 0 0 0 2px #4fc3ff, 0 0 8px #4fc3ff; }
 
     /* Heatmap section */
     .hm-section { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
@@ -85,10 +98,10 @@
     <div class="sect-lbl">High Contrast 主題</div>
     <div class="theme-grid" id="themeGrid">
       <button type="button" class="theme-btn" data-theme="off">關閉</button>
-      <button type="button" class="theme-btn" data-theme="aquatic">Aquatic</button>
-      <button type="button" class="theme-btn" data-theme="desert">Desert</button>
-      <button type="button" class="theme-btn" data-theme="dusk">Dusk</button>
-      <button type="button" class="theme-btn" data-theme="nightsky">Night Sky</button>
+      <button type="button" class="theme-btn" data-theme="aquatic">水域</button>
+      <button type="button" class="theme-btn" data-theme="desert">沙漠</button>
+      <button type="button" class="theme-btn" data-theme="dusk">黃昏</button>
+      <button type="button" class="theme-btn" data-theme="nightsky">夜空</button>
     </div>
   </div>
 

@@ -6,6 +6,17 @@
   transition: color 0.3s ease, font-weight 0.3s ease, font-size 0.25s ease;
 }
 
+/* Links don't inherit .aikwau-l1's color (an <a> rule targets the element
+   directly, which always wins over inherited ancestor colour) — restyle them
+   explicitly using the active HC theme's own accent colour, so they stay both
+   legible against the new background and distinguishable from body text.
+   Underline is forced so colour isn't the only cue identifying a link. */
+.aikwau-l1 a,
+.aikwau-l1 a:visited {
+  color: #ffee00 !important;
+  text-decoration: underline !important;
+}
+
 /* ── L2: additional font enlargement (toggled + scaled via popup) ────
    Actual sizing is applied by content.js as an inline style (base px ×
    l2Scale) so it's pinned to each element's captured base font-size,
@@ -33,6 +44,28 @@
   box-shadow: 0 0 6px #00cc77;
   transition: outline-color 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+}
+
+/* ── Summary state label: small tag overlapping the outline's top edge.
+   Positioned in document coordinates by content.js (position: absolute,
+   not fixed), so it scrolls with the page — no scroll listener needed. ── */
+.aikwau-summary-label {
+  position: absolute;
+  z-index: 2147483645;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: #1a1200;
+  background: #ffee00;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.aikwau-summary-label--shown {
+  background: #00cc77;
 }
 
 /* ── Summary badge ─────────────────────────────────────────────────── */
@@ -101,7 +134,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 10px 5px 7px;
+  padding: 6px;
   background: rgba(10, 10, 16, 0.92);
   border: 1.5px solid rgba(255, 200, 0, 0.85);
   border-radius: 999px;
@@ -113,9 +146,6 @@
   cursor: pointer;
   z-index: 2147483646;
   pointer-events: all;
-  white-space: nowrap;
-  max-width: 220px;
-  overflow: hidden;
   box-shadow: 0 2px 14px rgba(255, 190, 0, 0.30);
   user-select: none;
   animation: aikwau-hint-pulse 2s ease-in-out infinite;
@@ -141,12 +171,6 @@
   flex-shrink: 0;
 }
 
-.aikwau-hint-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-}
-
 .aikwau-hint-arrow {
   font-size: 9px;
   opacity: 0.80;
@@ -160,8 +184,12 @@
 
 /* ── High Contrast themes (data-aikwau-hc-theme) ─────────────────────── */
 [data-aikwau-hc-theme="aquatic"] .aikwau-l1 { background-color: #003044 !important; color: #eaffff !important; }
+[data-aikwau-hc-theme="aquatic"] .aikwau-l1 a,
+[data-aikwau-hc-theme="aquatic"] .aikwau-l1 a:visited { color: #00e5ff !important; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-summary-ready { outline-color: #00c2e0 !important; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-summary-shown { outline-color: #00e5ff !important; box-shadow: 0 0 6px #00e5ff; }
+[data-aikwau-hc-theme="aquatic"] .aikwau-summary-label { background: #00c2e0; }
+[data-aikwau-hc-theme="aquatic"] .aikwau-summary-label--shown { background: #00e5ff; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-highlight { outline-color: rgba(0, 229, 255, 0.75) !important; animation-name: aikwau-hl-pulse-aquatic; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-hint-icon { background: #00e5ff; }
 @keyframes aikwau-hl-pulse-aquatic {
@@ -170,8 +198,12 @@
 }
 
 [data-aikwau-hc-theme="desert"] .aikwau-l1 { background-color: #2b1400 !important; color: #fff2d9 !important; }
+[data-aikwau-hc-theme="desert"] .aikwau-l1 a,
+[data-aikwau-hc-theme="desert"] .aikwau-l1 a:visited { color: #ffb020 !important; }
 [data-aikwau-hc-theme="desert"] .aikwau-summary-ready { outline-color: #d68a2e !important; }
 [data-aikwau-hc-theme="desert"] .aikwau-summary-shown { outline-color: #ffb020 !important; box-shadow: 0 0 6px #ffb020; }
+[data-aikwau-hc-theme="desert"] .aikwau-summary-label { background: #d68a2e; }
+[data-aikwau-hc-theme="desert"] .aikwau-summary-label--shown { background: #ffb020; }
 [data-aikwau-hc-theme="desert"] .aikwau-highlight { outline-color: rgba(255, 176, 32, 0.75) !important; animation-name: aikwau-hl-pulse-desert; }
 [data-aikwau-hc-theme="desert"] .aikwau-hint-icon { background: #ffb020; }
 @keyframes aikwau-hl-pulse-desert {
@@ -180,8 +212,12 @@
 }
 
 [data-aikwau-hc-theme="dusk"] .aikwau-l1 { background-color: #2a0a3d !important; color: #f5e6ff !important; }
+[data-aikwau-hc-theme="dusk"] .aikwau-l1 a,
+[data-aikwau-hc-theme="dusk"] .aikwau-l1 a:visited { color: #ff4fd8 !important; }
 [data-aikwau-hc-theme="dusk"] .aikwau-summary-ready { outline-color: #d64fc0 !important; }
 [data-aikwau-hc-theme="dusk"] .aikwau-summary-shown { outline-color: #ff4fd8 !important; box-shadow: 0 0 6px #ff4fd8; }
+[data-aikwau-hc-theme="dusk"] .aikwau-summary-label { background: #d64fc0; }
+[data-aikwau-hc-theme="dusk"] .aikwau-summary-label--shown { background: #ff4fd8; }
 [data-aikwau-hc-theme="dusk"] .aikwau-highlight { outline-color: rgba(255, 79, 216, 0.75) !important; animation-name: aikwau-hl-pulse-dusk; }
 [data-aikwau-hc-theme="dusk"] .aikwau-hint-icon { background: #ff4fd8; }
 @keyframes aikwau-hl-pulse-dusk {
@@ -190,8 +226,12 @@
 }
 
 [data-aikwau-hc-theme="nightsky"] .aikwau-l1 { background-color: #05060f !important; color: #f0f4ff !important; }
+[data-aikwau-hc-theme="nightsky"] .aikwau-l1 a,
+[data-aikwau-hc-theme="nightsky"] .aikwau-l1 a:visited { color: #4fc3ff !important; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-summary-ready { outline-color: #3a8fd6 !important; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-summary-shown { outline-color: #4fc3ff !important; box-shadow: 0 0 6px #4fc3ff; }
+[data-aikwau-hc-theme="nightsky"] .aikwau-summary-label { background: #3a8fd6; }
+[data-aikwau-hc-theme="nightsky"] .aikwau-summary-label--shown { background: #4fc3ff; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-highlight { outline-color: rgba(79, 195, 255, 0.75) !important; animation-name: aikwau-hl-pulse-nightsky; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-hint-icon { background: #4fc3ff; }
 @keyframes aikwau-hl-pulse-nightsky {

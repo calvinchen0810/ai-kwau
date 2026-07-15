@@ -210,10 +210,16 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
       <p class="zh">Edge 擴充功能 ↔ Python 凍結執行檔，透過 Chrome Native Messaging（stdin/stdout 長度前綴 JSON）。Registry key 寫入 HKCU，不需管理員。</p>
     </div>
     <div class="card navy">
-      <div class="card-icon">🟡</div>
-      <h3><span class="en">Yellow Highlight UX</span><span class="zh">黃色提示 UX</span></h3>
-      <p class="en">When summary is ready, the paragraph gets a semi-transparent yellow highlight. Press Shift to replace paragraph text with bullet-point summary.</p>
-      <p class="zh">摘要完成後，段落背景變成半透明黃色提示。按 Shift 將段落文字替換為條列式摘要重點。</p>
+      <div class="card-icon">🏷️</div>
+      <h3><span class="en">Click-to-Reveal Summary</span><span class="zh">點擊展開摘要</span></h3>
+      <p class="en">When summary is ready, the paragraph gets a themed outline plus a small "點擊摘要" tag at its top-right. Click the paragraph to replace its text with the bullet summary (tag becomes "點擊還原"); click again to restore the original text.</p>
+      <p class="zh">摘要完成後，段落套用主題色外框，並在右上角顯示「點擊摘要」標籤。點擊段落即可將文字替換為條列摘要（標籤變成「點擊還原」），再次點擊則還原原文。</p>
+    </div>
+    <div class="card gold">
+      <div class="card-icon">🎨</div>
+      <h3><span class="en">High Contrast Themes</span><span class="zh">高對比主題</span></h3>
+      <p class="en">5 selectable themes (off / Aquatic / Desert / Dusk / Night Sky) recolour L1 text, summary outlines + tags, hyperlinks, and blind-spot highlights together — switching live via <span class="inline-code">chrome.storage.onChanged</span>, no page reload.</p>
+      <p class="zh">5 種可選主題（關閉 / Aquatic / Desert / Dusk / Night Sky）同時重新配色 L1 文字、摘要外框與標籤、超連結與盲點提示，透過 <span class="inline-code">chrome.storage.onChanged</span> 即時切換，不需重新整理頁面。</p>
     </div>
     <div class="card red">
       <div class="card-icon">🌐</div>
@@ -302,8 +308,8 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
       </div>
     </div>
     <div class="arch-down">↓</div>
-    <div class="arch-label en">summary JSON → content.js → yellow highlight → Shift → replace text</div>
-    <div class="arch-label zh">摘要 JSON → content.js → 黃色段落提示 → 按 Shift → 替換段落文字</div>
+    <div class="arch-label en">summary JSON → content.js → themed outline + tag label → click → replace text</div>
+    <div class="arch-label zh">摘要 JSON → content.js → 主題色外框 + 標籤 → 點擊 → 替換段落文字</div>
   </div>
 
   <h3 class="sub"><span class="en">User-visible Timeline</span><span class="zh">使用者可見流程時序</span></h3>
@@ -327,14 +333,14 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
       <div class="tl-label zh">NPU / GPU / CPU<br>正在生成摘要</div>
     </div>
     <div class="tl-step">
-      <div class="tl-dot">🟡</div>
+      <div class="tl-dot">🏷️</div>
       <div class="tl-day"><span class="en">Ready</span><span class="zh">摘要完成</span></div>
-      <div class="tl-label en">Paragraph turns yellow<br>Press Shift to read</div>
-      <div class="tl-label zh">段落背景變黃<br>按 Shift 展開摘要</div>
+      <div class="tl-label en">Themed outline + "點擊摘要"<br>tag appears on paragraph</div>
+      <div class="tl-label zh">段落套用主題外框<br>並顯示「點擊摘要」標籤</div>
     </div>
     <div class="tl-step">
-      <div class="tl-dot">⇧</div>
-      <div class="tl-day"><span class="en">Shift pressed</span><span class="zh">按下 Shift</span></div>
+      <div class="tl-dot">🖱</div>
+      <div class="tl-day"><span class="en">Click</span><span class="zh">點擊段落</span></div>
       <div class="tl-label en">Paragraph replaced<br>with bullet summary</div>
       <div class="tl-label zh">段落文字替換為<br>條列式摘要</div>
     </div>
@@ -371,8 +377,8 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
       <div class="arch-box highlight">
         <div class="ab-title" style="font-size:11px;color:rgba(0,180,216,.7);margin-bottom:6px;">document_idle · isolated</div>
         <div class="ab-title">content.js</div>
-        <div class="ab-sub en">Listens aikwau:gazefocus · detectTextLang · triggerL1 · markSummaryReady · installShiftReplace</div>
-        <div class="ab-sub zh">監聽 aikwau:gazefocus · 偵測語言 · 套用 L1 · 黃色提示 · 安裝 Shift 替換</div>
+        <div class="ab-sub en">Listens aikwau:gazefocus · detectTextLang · triggerL1 · markSummaryReady (click-to-toggle)</div>
+        <div class="ab-sub zh">監聽 aikwau:gazefocus · 偵測語言 · 套用 L1 · markSummaryReady（點擊切換摘要）</div>
       </div>
     </div>
   </div>
@@ -415,18 +421,18 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     </div>
     <div class="card navy">
       <h3><span class="en">L2 Text Enlargement</span><span class="zh">L2 文字放大</span></h3>
-      <p class="en">Toggle 1.2× font size on hovered paragraph. Applied together with L1.</p>
-      <p class="zh">切換視線段落 1.2× 字型放大，與 L1 同步套用。</p>
+      <p class="en">Toggle + adjustable slider (1.0×–3.0×, default 1.2×) on hovered paragraph. Dragging the slider live-resizes already-enlarged text immediately — no re-gaze needed. Applied together with L1.</p>
+      <p class="zh">開關 + 可調式拉桿（1.0×–3.0×，預設 1.2×）。拖曳拉桿時，已放大的段落會即時跟著變化，不需重新注視。與 L1 同步套用。</p>
     </div>
     <div class="card navy">
-      <h3><span class="en">Shift-Replace Toggle</span><span class="zh">Shift 替換開關</span></h3>
-      <p class="en">Enable/disable Shift key replacing paragraph text with summary.</p>
-      <p class="zh">開啟/關閉按 Shift 將段落替換為摘要的功能。</p>
+      <h3><span class="en">High Contrast Themes</span><span class="zh">高對比主題</span></h3>
+      <p class="en">5-button theme grid (off / Aquatic / Desert / Dusk / Night Sky), each button previewing its own theme's colours directly. Selection shown as a glow ring in the theme's own accent colour.</p>
+      <p class="zh">5 顆主題按鈕（關閉 / Aquatic / Desert / Dusk / Night Sky），每顆按鈕直接預覽該主題配色，選中狀態以該主題的強調色發光外框標示。</p>
     </div>
     <div class="card navy">
-      <h3><span class="en">Margin Note Theme</span><span class="zh">旁注顏色主題</span></h3>
-      <p class="en">Dark navy / white toggle for sidebar margin notes. Shown when margin note is enabled.</p>
-      <p class="zh">旁注摘要黑底白字 / 白底黑字切換，於旁注啟用時顯示。</p>
+      <h3><span class="en">Blind-Spot Highlights</span><span class="zh">盲點提示</span></h3>
+      <p class="en">Tracks a 24×14 gaze heatmap; interactive elements in never-gazed-at ("cold") zones get a pulsing outline plus a floating icon + arrow hint pointing back toward the element, from the user's gaze side.</p>
+      <p class="zh">追蹤 24×14 視線熱圖；從未被注視到的「冷區」互動元素會套用脈衝外框，並在使用者視線那一側顯示浮動提示（圖示 + 箭頭，指向該元素）。</p>
     </div>
     <div class="card navy">
       <h3><span class="en">Calibration</span><span class="zh">校準</span></h3>
@@ -583,22 +589,22 @@ print('ZH:', recv())
       <div class="phase-tag"><span class="en">Final validation</span><span class="zh">最終驗證</span></div>
     </div>
     <div class="phase-body">
-      <p class="en">Navigate to any article, trigger gaze hold, verify yellow highlight appears, press Shift to read the bullet-point summary.</p>
-      <p class="zh">瀏覽任意文章，觸發視線停留，確認黃色段落提示出現，按 Shift 閱讀條列式摘要。</p>
+      <p class="en">Navigate to any article, trigger gaze hold, verify the themed outline + tag label appear, click the paragraph to read the bullet-point summary.</p>
+      <p class="zh">瀏覽任意文章，觸發視線停留，確認主題外框與標籤出現，點擊段落閱讀條列式摘要。</p>
       <div class="step-list">
         <div class="step"><div class="step-dot cmd">1</div><span><span class="en">Navigate to any news article (English or Chinese)</span><span class="zh">瀏覽任意新聞文章（英文或中文）</span></span></div>
         <div class="step"><div class="step-dot cmd">2</div><span><span class="en">Hover mouse over a paragraph and hold 2 seconds</span><span class="zh">將滑鼠停留在段落上 2 秒</span></span></div>
         <div class="step"><div class="step-dot cmd">3</div><span><span class="en">Paragraph text darkens + bold (L1 effect)</span><span class="zh">段落文字變深加粗（L1 效果）</span></span></div>
-        <div class="step"><div class="step-dot cmd">4</div><span><span class="en">After inference completes, paragraph background turns yellow</span><span class="zh">AI 推論完成後，段落背景變為黃色</span></span></div>
-        <div class="step"><div class="step-dot cmd">5</div><span><span class="en">Press Shift → paragraph text replaced with 3 bullet-point summary</span><span class="zh">按 Shift → 段落文字替換為 3 條摘要重點</span></span></div>
+        <div class="step"><div class="step-dot cmd">4</div><span><span class="en">After inference completes, paragraph gets a themed outline + "點擊摘要" tag</span><span class="zh">AI 推論完成後，段落套用主題外框並顯示「點擊摘要」標籤</span></span></div>
+        <div class="step"><div class="step-dot cmd">5</div><span><span class="en">Click the paragraph → text replaced with 3 bullet-point summary, tag becomes "點擊還原"</span><span class="zh">點擊段落 → 文字替換為 3 條摘要重點，標籤變為「點擊還原」</span></span></div>
         <div class="step"><div class="step-dot cmd">6</div><span><span class="en">Check </span><span class="zh">查看 </span><span class="inline-code">poc\native_host\aikwau_host.log</span><span class="en"> for timing and errors</span><span class="zh"> 確認時間與錯誤記錄</span></span></div>
       </div>
       <div class="test-box">
         <div class="test-label"><span class="en">✅ Phase 4 Pass Criteria</span><span class="zh">✅ 階段 4 通過條件</span></div>
         <ul>
           <li><span class="en">L1 effect activates after 2s hover</span><span class="zh">滑鼠懸停 2 秒後 L1 效果啟動</span></li>
-          <li><span class="en">Paragraph turns yellow when summary is ready</span><span class="zh">摘要完成後段落背景變黃</span></li>
-          <li><span class="en">Shift replaces paragraph with readable bullet summary</span><span class="zh">按 Shift 段落替換為可讀的條列式摘要</span></li>
+          <li><span class="en">Paragraph gets themed outline + "點擊摘要" tag when summary is ready</span><span class="zh">摘要完成後段落套用主題外框與「點擊摘要」標籤</span></li>
+          <li><span class="en">Clicking the paragraph replaces it with a readable bullet summary</span><span class="zh">點擊段落後替換為可讀的條列式摘要</span></li>
           <li><span class="en">English article → English bullets; Chinese article → Traditional Chinese bullets</span><span class="zh">英文文章 → 英文摘要；中文文章 → 正體中文摘要</span></li>
           <li><span class="en">No errors in DevTools Console or aikwau_host.log</span><span class="zh">DevTools Console 與 aikwau_host.log 無錯誤</span></li>
           <li><span class="en">10 consecutive requests succeed without port disconnect</span><span class="zh">連續 10 次請求均成功，無連線中斷</span></li>
@@ -653,6 +659,14 @@ def _is_crt(name):
 "列出以下文章的重點（3點）：\n\n{text}\n\n重點：\n1."</code></pre>
   </div>
 
+  <div class="finding gold">
+    <div class="finding-label">🟡 <span class="en">Inline Style Always Beats a CSS Variable — Trace to the Real Mechanism</span><span class="zh">Inline Style 永遠贏過 CSS 變數 — 要追到真正生效的機制</span></div>
+    <p class="en">The L2 font-scale slider was first implemented as a CSS custom property (<span class="inline-code">--aikwau-l2-scale</span>) set by <span class="inline-code">mode_bridge.js</span>. It had zero visible effect: <span class="inline-code">content.js</span> independently sets an <strong>inline</strong> <span class="inline-code">font-size</span> with <span class="inline-code">!important</span> and a hardcoded <span class="inline-code">1.2</span> multiplier when applying <span class="inline-code">.aikwau-l2</span> — an inline <span class="inline-code">!important</span> style always wins over any stylesheet rule, even one that's also <span class="inline-code">!important</span>.<br><br>
+    <strong>Fix:</strong> Moved the live scale value into <span class="inline-code">content.js</span> itself (the file that actually owns the DOM mutation), updated via a <span class="inline-code">gaze:l2-scale</span> message mirroring the existing <span class="inline-code">gaze:l2-toggle</span> pattern, and removed the now-dead CSS-variable plumbing. Lesson: before styling an effect via CSS, grep the codebase for any inline style already setting that same property.</p>
+    <p class="zh">L2 字型放大拉桿最初以 CSS 自訂屬性（<span class="inline-code">--aikwau-l2-scale</span>）實作，由 <span class="inline-code">mode_bridge.js</span> 設定。結果完全無效：<span class="inline-code">content.js</span> 在套用 <span class="inline-code">.aikwau-l2</span> 時，會另外用 <span class="inline-code">!important</span> 設定<strong>行內</strong> <span class="inline-code">font-size</span>，且倍率寫死為 <span class="inline-code">1.2</span> — 行內 <span class="inline-code">!important</span> 樣式永遠贏過任何樣式表規則，即使對方也是 <span class="inline-code">!important</span>。<br><br>
+    <strong>修正方式：</strong>把即時倍率值改移到真正擁有該 DOM 操作的 <span class="inline-code">content.js</span> 裡，透過仿照既有 <span class="inline-code">gaze:l2-toggle</span> 模式的 <span class="inline-code">gaze:l2-scale</span> 訊息更新，並移除已無作用的 CSS 變數機制。教訓：用 CSS 調整某個效果之前，先搜尋程式碼庫是否已有行內樣式在設定同一個屬性。</p>
+  </div>
+
   <div class="finding cyan">
     <div class="finding-label">🔵 <span class="en">WebGazer CSP Issue — Must Run in MAIN World</span><span class="zh">WebGazer CSP 問題 — 必須在 MAIN World 執行</span></div>
     <p class="en">WebGazer v3.x uses MediaPipe which dynamically loads JS — blocked by page CSP. WebGazer v2.1.2 uses TF.js which calls <span class="inline-code">new Function()</span> for WebGL shaders — blocked by MV3 isolated-world CSP (<span class="inline-code">unsafe-eval</span> not allowed).<br><br>
@@ -682,6 +696,14 @@ def _format_output(raw, lang):
     text = re.sub(r'\*{1,2}([^*\n]+)\*{1,2}', r'\1', text)  <span class="en"># strip **bold**</span><span class="zh"># 移除 **粗體**</span>
     text = re.sub(r'(?m)^\s*(?:\d+[.、）)]\s*|[-*]\s+)', '• ', text)  <span class="en"># → bullets</span><span class="zh"># → 條列</span>
     return text.strip()</code></pre>
+  </div>
+
+  <div class="finding gold">
+    <div class="finding-label">🟡 <span class="en">Hyperlinks Inside L1 Don't Inherit — Ancestor Colour Never Reaches Them</span><span class="zh">L1 內的超連結不會繼承顏色 — 祖先元素的顏色傳不到它</span></div>
+    <p class="en">After darkening/theming a paragraph via <span class="inline-code">.aikwau-l1 { color: ... !important }</span>, any <span class="inline-code">&lt;a&gt;</span> inside it kept its original colour. Root cause: CSS inheritance only applies when <em>nothing</em> targets the element directly — the browser's own UA stylesheet (or the site's CSS) already has a rule targeting <span class="inline-code">a</span>/<span class="inline-code">a:visited</span> directly, so it never falls back to the paragraph's inherited colour, no matter how specific the ancestor rule is.<br><br>
+    <strong>Fix:</strong> Added explicit <span class="inline-code">.aikwau-l1 a, .aikwau-l1 a:visited</span> rules per theme, using that theme's own accent colour + a forced <span class="inline-code">text-decoration: underline</span> (so links stay identifiable by more than colour alone, for accessibility).</p>
+    <p class="zh">段落套用 <span class="inline-code">.aikwau-l1 { color: ... !important }</span> 變深/套色後，裡面的 <span class="inline-code">&lt;a&gt;</span> 依然維持原本顏色。根本原因：CSS 繼承只在「完全沒有規則直接命中該元素」時才生效 — 瀏覽器內建樣式表（或網站自己的 CSS）本來就有規則直接命中 <span class="inline-code">a</span>/<span class="inline-code">a:visited</span>，所以無論祖先規則的優先度多高，都不會退回去繼承段落的顏色。<br><br>
+    <strong>修正方式：</strong>為每個主題新增 <span class="inline-code">.aikwau-l1 a, .aikwau-l1 a:visited</span> 規則，套用該主題自己的強調色，並強制加上 <span class="inline-code">text-decoration: underline</span>（確保連結不只靠顏色辨識，符合無障礙原則）。</p>
   </div>
 </section>
 
@@ -798,13 +820,13 @@ def _format_output(raw, lang):
     │&nbsp;&nbsp; │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">benchmark/</span>&nbsp;&nbsp;<span class="comment en">← benchmark.exe + _internal/</span><span class="comment zh">← benchmark.exe + _internal/</span><br>
     │&nbsp;&nbsp; ├── <span class="dir">extension/</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">manifest.json</span>&nbsp;&nbsp;<span class="comment en">← MV3 v0.3.0: three content_scripts entries</span><span class="comment zh">← MV3 v0.3.0：三個 content_scripts 項目</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">mode_bridge.js</span>&nbsp;&nbsp;<span class="comment en">← isolated, doc_start: storage → DOM attr</span><span class="comment zh">← isolated world，最早執行，設定 DOM 屬性</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">mode_bridge.js</span>&nbsp;&nbsp;<span class="comment en">← isolated, doc_start: storage → DOM attr (gaze mode + HC theme, live)</span><span class="comment zh">← isolated world，最早執行，設定 DOM 屬性（模式 + 高對比主題，即時更新）</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">webgazer.js</span>&nbsp;&nbsp;<span class="comment en">← WebGazer v2.1.2 bundled (2.3 MB, MAIN world)</span><span class="comment zh">← WebGazer v2.1.2 已打包（2.3 MB，MAIN world）</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">gaze_tracker.js</span>&nbsp;&nbsp;<span class="comment en">← MAIN world: dwell timer → aikwau:gazefocus</span><span class="comment zh">← MAIN world：停留計時 → aikwau:gazefocus</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">background.js</span>&nbsp;&nbsp;<span class="comment en">← service worker, native messaging bridge</span><span class="comment zh">← service worker，原生訊息橋接</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>&nbsp;&nbsp;<span class="comment en">← isolated: L1, summary, yellow highlight, Shift-replace</span><span class="comment zh">← isolated：L1、摘要、黃色提示、Shift 替換</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>&nbsp;&nbsp;<span class="comment en">← L1/L2 styles, .aikwau-summary-ready, margin-note themes</span><span class="comment zh">← L1/L2 樣式、黃色提示、旁注主題</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">popup.html</span>&nbsp;&nbsp;<span class="comment en">← mode, L2, shift-replace, margin note, theme toggle</span><span class="comment zh">← 模式、L2、Shift 替換、旁注、主題切換 UI</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>&nbsp;&nbsp;<span class="comment en">← isolated: L1, click-to-toggle summary + tag label, L2 scale, blind-spot highlights</span><span class="comment zh">← isolated：L1、點擊切換摘要 + 標籤、L2 放大倍率、盲點提示</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>&nbsp;&nbsp;<span class="comment en">← L1/L2 styles, summary states + tag label, HC theme blocks, blind-spot highlight</span><span class="comment zh">← L1/L2 樣式、摘要狀態 + 標籤、高對比主題色塊、盲點提示</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">popup.html</span>&nbsp;&nbsp;<span class="comment en">← mode, L2 scale slider, HC theme buttons, heatmap</span><span class="comment zh">← 模式、L2 放大拉桿、高對比主題按鈕、熱圖 UI</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">popup.js</span>&nbsp;&nbsp;<span class="comment en">← storage reads/writes, tab messages</span><span class="comment zh">← 儲存讀寫，tab 訊息</span><br>
     │&nbsp;&nbsp; └── <span class="dir">models/</span>&nbsp;&nbsp;<span class="comment en">← auto-created by download_convert.py</span><span class="comment zh">← 由 download_convert.py 自動建立</span><br>
     │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">qwen2.5-1.5b-int4/</span>&nbsp;&nbsp;<span class="comment en">← ~800 MB OpenVINO IR + tokenizer</span><span class="comment zh">← 約 800 MB OpenVINO IR + tokenizer</span><br>
@@ -821,13 +843,14 @@ def _format_output(raw, lang):
       <th><span class="en">Values</span><span class="zh">可能值</span></th>
       <th><span class="en">Description</span><span class="zh">說明</span></th>
     </tr>
-    <tr><td><span class="inline-code">aikwau_gaze_mode</span></td><td><span class="inline-code">'mouse'</span> | <span class="inline-code">'webcam'</span></td><td><span class="en">Tracking mode</span><span class="zh">追蹤模式</span></td></tr>
-    <tr><td><span class="inline-code">aikwau_l2_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">1.2× font size enlargement</span><span class="zh">1.2× 字型放大</span></td></tr>
-    <tr><td><span class="inline-code">aikwau_shift_replace</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Shift key replaces paragraph with summary</span><span class="zh">Shift 替換段落為摘要</span></td></tr>
-    <tr><td><span class="inline-code">aikwau_margin_note</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show summary as sidebar margin note</span><span class="zh">顯示旁注摘要</span></td></tr>
-    <tr><td><span class="inline-code">aikwau_note_theme</span></td><td><span class="inline-code">'dark'</span> | <span class="inline-code">'light'</span></td><td><span class="en">Margin note color theme</span><span class="zh">旁注顏色主題</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_gaze_mode</span></td><td><span class="inline-code">'mouse'</span> | <span class="inline-code">'webcam'</span></td><td><span class="en">Tracking mode (one-shot read — needs page reload)</span><span class="zh">追蹤模式（單次讀取，需重新整理頁面）</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_l2_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">L2 font enlargement toggle</span><span class="zh">L2 字型放大開關</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_l2_scale</span></td><td><span class="inline-code">number</span> (1.0–3.0)</td><td><span class="en">L2 enlargement multiplier, default 1.2 — live-applied</span><span class="zh">L2 放大倍率，預設 1.2，即時套用</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_hc_theme</span></td><td><span class="inline-code">'off'</span> | <span class="inline-code">'aquatic'</span> | <span class="inline-code">'desert'</span> | <span class="inline-code">'dusk'</span> | <span class="inline-code">'nightsky'</span></td><td><span class="en">High Contrast theme, default 'nightsky' — live-applied via storage.onChanged</span><span class="zh">高對比主題，預設 'nightsky'，透過 storage.onChanged 即時套用</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_webcam_panel_visible</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show webcam preview panel (webcam mode)</span><span class="zh">顯示 Webcam 預覽視窗（眼球追蹤模式）</span></td></tr>
     <tr><td><span class="inline-code">aikwau_gaze_ring_visible</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show gaze ring indicator (webcam mode)</span><span class="zh">顯示視線環狀指示（眼球追蹤模式）</span></td></tr>
     <tr><td><span class="inline-code">aikwau_cal_points</span></td><td><span class="inline-code">9</span> | <span class="inline-code">25</span></td><td><span class="en">Calibration point count</span><span class="zh">校準點數量</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_heatmap</span></td><td><span class="inline-code">object</span></td><td><span class="en">Persisted 24×14 gaze heatmap ({cells, totalPoints, lastUpdated})</span><span class="zh">持久化的 24×14 視線熱圖資料</span></td></tr>
   </table>
 </section>
 
@@ -901,14 +924,14 @@ def _format_output(raw, lang):
     </tr>
     <tr>
       <td><strong>V10</strong></td>
-      <td><span class="en">Yellow highlight appears</span><span class="zh">黃色段落提示出現</span></td>
-      <td><span class="en">Paragraph background turns yellow when summary ready</span><span class="zh">摘要完成後段落背景變黃</span></td>
+      <td><span class="en">Themed outline + tag appear</span><span class="zh">主題外框與標籤出現</span></td>
+      <td><span class="en">Paragraph gets outline + "點擊摘要" tag when summary ready</span><span class="zh">摘要完成後段落套用外框與「點擊摘要」標籤</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
     <tr>
       <td><strong>V11</strong></td>
-      <td><span class="en">Shift replaces paragraph</span><span class="zh">Shift 替換段落</span></td>
-      <td><span class="en">Paragraph text replaced with • bullets</span><span class="zh">段落文字替換為 • 條列摘要</span></td>
+      <td><span class="en">Click replaces paragraph</span><span class="zh">點擊替換段落</span></td>
+      <td><span class="en">Paragraph text replaced with • bullets, tag becomes "點擊還原"</span><span class="zh">段落文字替換為 • 條列摘要，標籤變為「點擊還原」</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
     <tr>
@@ -919,14 +942,26 @@ def _format_output(raw, lang):
     </tr>
     <tr>
       <td><strong>V13</strong></td>
-      <td><span class="en">SPA navigation clears notes</span><span class="zh">SPA 換頁清除旁注</span></td>
-      <td><span class="en">Margin notes removed on pushState / popstate</span><span class="zh">pushState / popstate 後旁注被清除</span></td>
+      <td><span class="en">SPA navigation clears summary state</span><span class="zh">SPA 換頁清除摘要狀態</span></td>
+      <td><span class="en">Summary outlines/tags + blind-spot highlights removed on pushState / popstate</span><span class="zh">pushState / popstate 後摘要外框/標籤與盲點提示皆被清除</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
     <tr>
       <td><strong>V14</strong></td>
       <td><span class="en">Stability (10 requests)</span><span class="zh">穩定性（10 次請求）</span></td>
       <td><span class="en">All succeed, no port disconnect</span><span class="zh">全部成功，無連線中斷</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V15</strong></td>
+      <td><span class="en">High Contrast theme switch (live)</span><span class="zh">高對比主題切換（即時）</span></td>
+      <td><span class="en">Clicking each of the 5 popup theme buttons recolours L1/outlines/links/blind-spot on the page instantly, no reload</span><span class="zh">點擊 popup 內 5 顆主題按鈕，頁面上的 L1/外框/連結/盲點提示立即變色，不需重新整理</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V16</strong></td>
+      <td><span class="en">L2 scale slider (live)</span><span class="zh">L2 放大拉桿（即時）</span></td>
+      <td><span class="en">Dragging the popup L2 slider resizes an already-enlarged paragraph immediately, no re-gaze needed</span><span class="zh">拖曳 popup 內 L2 拉桿時，已放大的段落立即跟著調整大小，不需重新注視</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
   </table>
@@ -950,8 +985,8 @@ chrome.storage.local.get(null, console.log)</code></pre>
 <footer>
   AI Kwau PoC — Calvin Chen · Ava Lu · Thomas Chang · Yorke Lee<br>
   <span style="color:rgba(255,255,255,.2);font-size:11px;margin-top:4px;display:block;">
-    <span class="en">Updated 2026-06-28 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
-    <span class="zh">更新於 2026-06-28 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
+    <span class="en">Updated 2026-07-15 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
+    <span class="zh">更新於 2026-07-15 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
   </span>
 </footer>
 

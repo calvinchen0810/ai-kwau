@@ -18,7 +18,7 @@ Primary target: Intel Panther Lake laptops (NPU 100+ TOPS), HP pre-install scena
 - **WebGazer world**: Runs in MAIN world (not isolated) to bypass MV3 extension CSP which blocks `new Function()` used by TF.js. Gaze events bridge to isolated world via DOM CustomEvents with (x,y) coordinates.
 - **Language detection**: Per-paragraph, based on CJK character ratio in the text (not page `lang` attribute). >8% CJK → Traditional Chinese summary; otherwise → English summary.
 - **Summary format**: Always bullet points (`• `). English paragraph → English bullets; Chinese paragraph → Traditional Chinese bullets (simplified→traditional via zhconv post-processing). Preamble lines (e.g. "以下是三個重點：") are stripped. Output is capped to never exceed the original paragraph length.
-- **Summary UX**: No floating loading badge. When summary is ready, paragraph gets an outline (`aikwau-summary-ready`, 2px). Left-clicking the paragraph replaces its text with the bullet summary and switches to a heavier outline + glow (`aikwau-summary-shown`, 3px). Clicking again restores the original text. Outline colours come from the active High Contrast theme (see below), not a user colour picker.
+- **Summary UX**: No floating loading badge. When summary is ready, paragraph gets an outline (`aikwau-summary-ready`, 2px) plus a small "點擊摘要" tag label anchored at its top-right corner (since the outline alone was easy to miss). Left-clicking the paragraph replaces its text with the bullet summary, switches to a heavier outline + glow (`aikwau-summary-shown`, 3px), and the tag changes to "點擊還原". Clicking again restores the original text and tag. Outline/tag colours come from the active High Contrast theme (see below), not a user colour picker.
 - **High Contrast theme**: Popup lets the user pick one of 5 themes — `off` (default look, gold/green outlines), `aquatic`, `desert`, `dusk`, `nightsky` (default on fresh install) — stored in `aikwau_hc_theme`. `mode_bridge.js` sets `data-aikwau-hc-theme` on `<html>` and live-updates it via `chrome.storage.onChanged` (no reload needed); `content.css` has static per-theme rule blocks keyed on that attribute, recolouring L1 (background+text), summary ready/shown outlines, and blind-spot highlight/hint colours. Replaces the old custom colour-picker feature entirely.
 - **Click handler persistence**: Once a summary is fetched for a paragraph, the click handler stays on that element until SPA navigation — the user can click to toggle without hovering again.
 - **Frozen exe**: `native_host.exe` and `benchmark.exe` are PyInstaller onedir builds. CRT v14.31 (bundled by PyInstaller) must be dropped so the exe uses System32's v14.44 — see CRT ABI fix below.
@@ -58,7 +58,7 @@ ai-kwau/
         └── popup.js                 # Popup logic: storage reads/writes + tab messages
 ```
 
-## Current State (as of 2026-07-14)
+## Current State (as of 2026-07-15)
 
 ### Completed
 - [x] OpenVINO model conversion on Panther Lake (Qwen2.5-1.5B INT4)
@@ -82,10 +82,14 @@ ai-kwau/
 - [x] Webcam mode: badge fixed at right side (not cursor-following)
 - [x] Per-paragraph language detection by CJK character ratio
 - [x] `doc/index.html` updated with bilingual zh/en toggle
-- [x] Blind-spot area: in-viewport element highlighting + floating hint tooltip (replaces edge beacon)
+- [x] Blind-spot area: in-viewport element highlighting + floating hint tooltip (replaces edge beacon); hint tooltip is icon + arrow only (label text removed)
 - [x] `build_exe.bat` fixed: uses `python -m PyInstaller` to avoid hardcoded venv launcher path
+- [x] L2 text enlargement: adjustable slider (1.0×–3.0×, default 1.2×), live-applied via `gaze:l2-scale` message
+- [x] High Contrast theme buttons preview their own theme's colours directly; selected state shown as a glow ring in the theme's accent colour
+- [x] Hyperlinks inside `.aikwau-l1` recoloured per theme + forced underline (previously stayed unstyled, since `<a>`'s own colour rule never inherits from an ancestor)
+- [x] Summary state tag label ("點擊摘要"/"點擊還原") anchored at each paragraph's top-right corner, document-positioned so it scrolls with the page
+- [x] Popup UI enlarged (340px width, ~30% larger fonts/buttons/heatmap canvas) for readability
 - [ ] Native Messaging host registration and browser end-to-end test ← **next step**
-- [ ] L2 text enlargement
 
 ### Hardware Test Results (Panther Lake, Qwen2.5-1.5B INT4)
 | Device | Latency | Tokens/sec | Status |
@@ -179,9 +183,9 @@ python register.py --extension-id <EXTENSION_ID>
 ### Step 6 — Reload extension and test
 - `edge://extensions` → reload AI Kwau PoC
 - Navigate to any article, hover a paragraph 2 seconds (mouse mode)
-- Verify: text bold/dark (L1) + paragraph turns yellow when summary ready
-- Click the yellow paragraph → text replaced with bullet summary, background turns green
-- Click again → original text restored, background back to yellow
+- Verify: text bold/dark (L1) + paragraph gets a themed outline + "點擊摘要" tag when summary ready
+- Click the paragraph → text replaced with bullet summary, outline heavier + tag becomes "點擊還原"
+- Click again → original text restored, back to the "點擊摘要" outline/tag
 
 ## Extension Architecture
 
@@ -201,10 +205,10 @@ document_idle   [isolated]  content.js
                               └─> elementFromPoint(x, y) → triggerL1(el)
                               └─> chrome.runtime.sendMessage({type:'summarize', text, lang})
                               └─> on response: markSummaryReady(el, summary)
-                                  └─> adds .aikwau-summary-ready (yellow)
+                                  └─> adds .aikwau-summary-ready (themed outline) + "點擊摘要" label
                                   └─> installs persistent click handler on el
-                              └─> click → shows summary + .aikwau-summary-shown (green)
-                              └─> click again → restores original text + back to yellow
+                              └─> click → shows summary + .aikwau-summary-shown (themed outline) + "點擊還原" label
+                              └─> click again → restores original text + back to "點擊摘要"
 ```
 
 ### Summary pipeline
@@ -226,7 +230,7 @@ document_idle   [isolated]  content.js
                                                         |
                                         [background.js] ──sendResponse──> [content.js]
                                                                               └─> markSummaryReady(el, summary)
-                                                                              └─> yellow highlight + click handler
+                                                                              └─> themed outline + "點擊摘要" label + click handler
 ```
 
 ## Key File Details
@@ -263,11 +267,13 @@ document_idle   [isolated]  content.js
 - `triggerL1(el, text)`: applies L1/L2, silently requests summary (no loading badge); skips if element already in `summaryReadyEls`. L2 sizing: captures `el.dataset.aikwauBase` (computed font-size in px) once, then sets an inline `font-size: base*l2Scale !important` — this inline style is what the browser actually renders; `content.css`'s `.aikwau-l2` class rule is only a fallback default and is always overridden when this runs.
 - `l2Scale` (module state, default `1.2`): read from `aikwau_l2_scale` at init; live-updated via the `gaze:l2-scale` message from popup.js (mirrors `gaze:l2-toggle`)
 - `reapplyL2Scale()`: on `gaze:l2-scale`, re-applies the new scale's inline font-size to every element currently carrying `.aikwau-l2` (via `document.querySelectorAll`), so dragging the popup slider live-resizes already-enlarged paragraphs without needing to re-gaze
-- `markSummaryReady(el, summary)`: adds `.aikwau-summary-ready` and installs persistent click handler; stored in `summaryReadyEls` Map. Outline colour comes entirely from CSS (`content.css`'s per-theme rule blocks) — content.js does no colour logic.
+- `markSummaryReady(el, summary)`: adds `.aikwau-summary-ready` and installs persistent click handler; stored in `summaryReadyEls` Map. Outline colour comes entirely from CSS (`content.css`'s per-theme rule blocks) — content.js does no colour logic. Also creates a `.aikwau-summary-label` div ("點擊摘要"), appended to `document.body`, stored as `entry.labelEl`.
+- `positionSummaryLabel(labelEl, el)`: anchors the label to el's top-**right** corner using **document** coordinates (`rect.right/top + window.scrollX/scrollY - labelEl.offsetWidth`), not viewport ones — scrolls with the page automatically, no scroll listener needed (unlike the `position:fixed` blind-spot hints). Reads `labelEl.offsetWidth`, so the label's text must already be set and it must already be attached to the DOM before this runs.
+- `repositionAllSummaryLabels()`: re-anchors every active label; called on window `resize` and after any element's own toggle (toggling changes that paragraph's height, which can reflow — i.e. shift the page position of — every label below it).
 - Click handler (per element, persists until SPA navigation):
-  - 1st click: saves `origText`, sets `el.textContent = summary`, switches to `.aikwau-summary-shown` (heavier outline + glow)
-  - 2nd click: restores `origText`, switches back to `.aikwau-summary-ready`
-- `clearAllSummaryEls()`: removes all click handlers, restores text if shown, clears classes — called on SPA navigation
+  - 1st click: saves `origText`, sets `el.textContent = summary`, switches to `.aikwau-summary-shown` (heavier outline + glow), label text → "點擊還原" + `.aikwau-summary-label--shown`
+  - 2nd click: restores `origText`, switches back to `.aikwau-summary-ready`, label text → "點擊摘要"
+- `clearAllSummaryEls()`: removes all click handlers, restores text if shown, clears classes, removes each `entry.labelEl` — called on SPA navigation
 - `cleanup()`: only clears badge + `activeEl` ref; does NOT remove click handlers
 - `compactSummary()`: preserves `\n` (only collapses spaces/tabs), supports 220-char limit
 - SPA navigation: `pushState`/`replaceState`/`popstate` all call `_clearOnNavigate()` → clears summaries AND highlights (the `data-aikwau-hc-theme` attribute is untouched by this, since it's owned by `mode_bridge.js`, not content.js)
@@ -278,7 +284,7 @@ document_idle   [isolated]  content.js
   - `coldCells()`: finds cells with 0 gaze data surrounded by ≥3 active cells (excludes unscrolled regions)
   - `scanBlindButtons()`: called after each `hmSave()`; finds in-viewport interactive elements whose center falls in a cold cell; adds up to `MAX_HIGHLIGHTS=4` total (only adds, never removes on scan)
   - `gazeCenter()`: computes weighted centroid of all hot cells → determines which side of element faces the user
-  - `updateHighlights(list)`: adds `.aikwau-highlight` border to element + creates `.aikwau-hint` tooltip on the hot side (toward gaze centroid); arrow on tooltip points toward element
+  - `updateHighlights(list)`: adds `.aikwau-highlight` border to element + creates `.aikwau-hint` tooltip on the hot side (toward gaze centroid); tooltip is icon + arrow only (no label text — `elLabel()` was removed along with it)
   - `positionHint(hintEl, rect, side)`: places hint adjacent to element edge, clamped to viewport
   - `repositionAllHints()`: scroll/resize handler; hides hints for off-screen elements, repositions visible ones
   - `clearAllHighlights()`: removes all borders and tooltips; called on manual clear (`clearHighlights` message) or SPA nav; also resets `hmCells` and cancels `hmSaveTimer` so cleared storage isn't overwritten
@@ -286,19 +292,20 @@ document_idle   [isolated]  content.js
   - **Known limitation**: `coldCells()` ≥3 neighbor rule misses far-left/far-right sticky sidebars when the entire column is cold (no active neighbors in that direction)
 
 ### `content.css`
-- `.aikwau-l1`: bold + dark text (base/`off`); themed blocks add a background colour + swap text colour
+- `.aikwau-l1`: bold + dark text (base/`off`); themed blocks add a background colour + swap text colour. `.aikwau-l1 a`/`a:visited` are restyled separately (own accent colour per theme, gold `#ffee00` for `off`, forced `text-decoration: underline`) — a plain `<a>` colour rule always wins over inherited ancestor colour, so links need an explicit override or they'd stay unchanged after L1/theme darkens the paragraph around them.
 - `.aikwau-l2`: `font-size: 1.2em !important` fallback default only — the real size is an inline style content.js sets per-element (see below), which always wins the cascade over this class rule
 - `.aikwau-summary-ready`: outline-only (2px), `cursor:pointer` (signals clickable). Base/`off` colour: `#ffee00` (gold).
 - `.aikwau-summary-shown`: outline-only (3px) + glow, `cursor:pointer` (summary is displayed). Base/`off` colour: `#00cc77` (green).
+- `.aikwau-summary-label`: small pill tag ("點擊摘要"/"點擊還原"), `position: absolute` (document-anchored by content.js at the paragraph's top-right corner, not fixed), `pointer-events: none` so it never blocks page interaction. Background matches the paragraph's current outline colour per theme; `.aikwau-summary-label--shown` swaps to the shown-state colour.
 - `.aikwau-badge`: floating summary badge (`white-space: pre-line` for bullet newlines)
 - `.aikwau-highlight`: pulsing outline (`aikwau-hl-pulse` 2s, gold in base/`off`) applied to cold-zone interactive elements
-- `.aikwau-hint`: fixed-position capsule tooltip; `.aikwau-hint-icon` (gold `!` circle in base/`off`), `.aikwau-hint-label`, `.aikwau-hint-arrow`; `aikwau-hint-pulse` 2s breathing animation
-- **High Contrast themes**: `[data-aikwau-hc-theme="aquatic|desert|dusk|nightsky"]` attribute-selector blocks at the end of the file override `.aikwau-l1` (bg+text), `.aikwau-summary-ready`/`-shown` (outline-color/box-shadow), `.aikwau-highlight` (outline-color + `animation-name` to a themed `@keyframes` variant), and `.aikwau-hint-icon` (background). No dedicated `off` block — base rules above ARE the `off` appearance. See CLAUDE.md's Key Design Decisions and `docs/superpowers/specs/2026-07-15-high-contrast-theme-design.md` for the exact palette.
+- `.aikwau-hint`: fixed-position capsule tooltip, icon + arrow only (no label text); `.aikwau-hint-icon` (gold `!` circle in base/`off`), `.aikwau-hint-arrow`; `aikwau-hint-pulse` 2s breathing animation
+- **High Contrast themes**: `[data-aikwau-hc-theme="aquatic|desert|dusk|nightsky"]` attribute-selector blocks at the end of the file override `.aikwau-l1` (bg+text), `.aikwau-summary-ready`/`-shown` (outline-color/box-shadow), `.aikwau-summary-label`/`-label--shown` (background), `.aikwau-highlight` (outline-color + `animation-name` to a themed `@keyframes` variant), and `.aikwau-hint-icon` (background). No dedicated `off` block — base rules above ARE the `off` appearance. See CLAUDE.md's Key Design Decisions and `docs/superpowers/specs/2026-07-15-high-contrast-theme-design.md` for the exact palette.
 
 ### `popup.html` / `popup.js` — Popup UI
 - Mode: 滑鼠模式 / 眼球追蹤
 - Reading features: L2 toggle + L2 scale slider (`#l2Scale`, range 1.0–3.0, step 0.1, default 1.2×) with live numeric label (`#l2ScaleLabel`); `input` event writes `aikwau_l2_scale` to storage (persistence) AND sends `gaze:l2-scale` via `sendToTab` (live application — mirrors the existing `gaze:l2-toggle` pattern, since content.js owns the actual font-size logic, not a CSS variable)
-- High Contrast theme buttons: 5-button grid (`.theme-btn[data-theme]` = `off`/`aquatic`/`desert`/`dusk`/`nightsky`) in `#themeGrid`; click writes `aikwau_hc_theme` to storage and toggles `.selected` via `setThemeUI(theme)`. No `sendToTab` message needed — `mode_bridge.js`'s live `storage.onChanged` listener propagates the change.
+- High Contrast theme buttons: 5-button grid (`.theme-btn[data-theme]` = `off`/`aquatic`/`desert`/`dusk`/`nightsky`) in `#themeGrid`; click writes `aikwau_hc_theme` to storage and toggles `.selected` via `setThemeUI(theme)`. No `sendToTab` message needed — `mode_bridge.js`'s live `storage.onChanged` listener propagates the change. Each button previews its own theme's L1 background/text colours directly (`popup.html`'s `.theme-btn[data-theme="..."]` rules — same palette as `content.css`); selection is shown as a glow ring in the theme's own accent colour (`.theme-btn.selected[data-theme="..."]`), not a background swap, since the background is now taken by the theme preview.
 - Webcam extras: panel visible, gaze ring visible, calibration points (9/25), recalibrate button
 - Heatmap: 24×14 grid heat visualization, clear button — clicking clear: removes storage key AND sends `clearHighlights` to content.js (prevents stale `hmCells` from re-writing storage)
 - Storage keys: `aikwau_gaze_mode`, `aikwau_l2_enabled`, `aikwau_l2_scale`, `aikwau_hc_theme`, `aikwau_webcam_panel_visible`, `aikwau_gaze_ring_visible`, `aikwau_cal_points`

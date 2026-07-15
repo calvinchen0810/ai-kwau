@@ -22,7 +22,7 @@ window.__aikwauContentLoaded = true;
   let l2Scale           = 1.2;    // L2 enlargement multiplier (popup slider)
   let badgeTimer        = null;
   const summaryCache    = new Map(); // text-key → cached summary string
-  // summaryReadyEls: el → { summary, origText, handler, shown }
+  // summaryReadyEls: el → { summary, origText, handler, shown, labelEl }
   // Persists across gaze events — cleared only on SPA navigation
   const summaryReadyEls = new Map();
   let isWebcamMode = false;
@@ -70,6 +70,7 @@ window.__aikwauContentLoaded = true;
   window.addEventListener('beforeunload', hmSave);
   window.addEventListener('scroll', repositionAllHints, { passive: true });
   window.addEventListener('resize', repositionAllHints, { passive: true });
+  window.addEventListener('resize', repositionAllSummaryLabels, { passive: true });
 
   // ── Blind-area button scanner ─────────────────────────────────────────────
   const INTERACTIVE_SEL = [
@@ -109,18 +110,6 @@ window.__aikwauContentLoaded = true;
     return cold;
   }
 
-  function elLabel(el) {
-    const t = (
-      el.getAttribute('aria-label') ||
-      el.getAttribute('title') ||
-      el.innerText ||
-      el.value ||
-      el.getAttribute('placeholder') ||
-      el.tagName.toLowerCase()
-    ).trim();
-    return t.slice(0, 22) || el.tagName.toLowerCase();
-  }
-
   function scanBlindButtons() {
     const total = hmCells.reduce((a, b) => a + b, 0);
     if (total < MIN_HM_POINTS) return;
@@ -150,8 +139,7 @@ window.__aikwauContentLoaded = true;
       if (col < 0 || col >= HM_W || row < 0 || row >= HM_H) continue;
 
       if (cold.has(row * HM_W + col)) {
-        found.push({ el, cx, cy, label: elLabel(el),
-                     dist: Math.hypot(cx - vw / 2, cy - vh / 2) });
+        found.push({ el, cx, cy, dist: Math.hypot(cx - vw / 2, cy - vh / 2) });
       }
     }
 
@@ -216,7 +204,7 @@ window.__aikwauContentLoaded = true;
     const gc = gazeCenter();
     const vw = window.innerWidth, vh = window.innerHeight;
 
-    for (const { el, cx, cy, label } of list) {
+    for (const { el, cx, cy } of list) {
       if (existingEls.has(el)) continue;
 
       el.classList.add('aikwau-highlight');
@@ -235,14 +223,12 @@ window.__aikwauContentLoaded = true;
 
       // Arrow on hint points toward the element (opposite of hint side).
       const towardEl = { left: '▶', right: '◀', top: '▼', bottom: '▲' }[side];
-      const tagType  = el.tagName === 'A' ? '連結' : '按鈕';
 
       const hintEl = document.createElement('div');
       hintEl.className = 'aikwau-hint';
       hintEl.dataset.side = side;
       hintEl.innerHTML =
         `<span class="aikwau-hint-icon">!</span>` +
-        `<span class="aikwau-hint-label">${tagType}：${label}</span>` +
         `<span class="aikwau-hint-arrow">${towardEl}</span>`;
 
       document.body.appendChild(hintEl);
@@ -689,12 +675,39 @@ window.__aikwauContentLoaded = true;
   // SHARED: L1 effect + summarization badge
   // ══════════════════════════════════════════════════════════════════════════
 
+  // Positions a summary-state label at el's top-right corner. Uses document
+  // coordinates (scrollX/scrollY), not viewport ones, so it scrolls with the
+  // page naturally — no scroll listener needed, unlike the fixed-position
+  // blind-spot hints. Reads labelEl.offsetWidth, so its text must already be
+  // set and it must already be attached to the DOM before calling this.
+  function positionSummaryLabel(labelEl, el) {
+    const rect = el.getBoundingClientRect();
+    labelEl.style.left = `${rect.right + window.scrollX - labelEl.offsetWidth - 8}px`;
+    labelEl.style.top  = `${rect.top + window.scrollY - labelEl.offsetHeight / 2}px`;
+  }
+
+  // Re-anchors every active summary label. Needed after anything that can
+  // reflow the page (a window resize, or another paragraph's own toggle
+  // changing its height and shifting elements below it).
+  function repositionAllSummaryLabels() {
+    summaryReadyEls.forEach((entry, el) => {
+      if (entry.labelEl) positionSummaryLabel(entry.labelEl, el);
+    });
+  }
+
   // Install a persistent click handler on el that toggles between original/summary.
   // The handler stays until SPA navigation (_clearOnNavigate) removes it.
   function markSummaryReady(el, summary) {
     if (summaryReadyEls.has(el)) return; // already installed
     el.classList.add('aikwau-summary-ready');
-    const entry = { summary, origText: null, shown: false, handler: null };
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'aikwau-summary-label';
+    labelEl.textContent = '點擊摘要';
+    document.body.appendChild(labelEl);
+    positionSummaryLabel(labelEl, el);
+
+    const entry = { summary, origText: null, shown: false, handler: null, labelEl };
     entry.handler = (e) => {
       if (!el.classList.contains('aikwau-summary-ready') &&
           !el.classList.contains('aikwau-summary-shown')) return;
@@ -704,14 +717,19 @@ window.__aikwauContentLoaded = true;
         el.textContent = summary;
         el.classList.remove('aikwau-summary-ready');
         el.classList.add('aikwau-summary-shown');
+        entry.labelEl.textContent = '點擊還原';
+        entry.labelEl.classList.add('aikwau-summary-label--shown');
         entry.shown = true;
       } else {
         el.textContent = entry.origText;
         el.classList.remove('aikwau-summary-shown');
         el.classList.add('aikwau-summary-ready');
+        entry.labelEl.textContent = '點擊摘要';
+        entry.labelEl.classList.remove('aikwau-summary-label--shown');
         entry.shown = false;
       }
       activeBadge?.remove(); activeBadge = null;
+      repositionAllSummaryLabels();
     };
     el.addEventListener('click', entry.handler);
     summaryReadyEls.set(el, entry);
@@ -726,6 +744,7 @@ window.__aikwauContentLoaded = true;
                           'aikwau-l1', 'aikwau-l2');
       el.style.removeProperty('font-size');
       delete el.dataset.aikwauBase;
+      entry.labelEl?.remove();
     });
     summaryReadyEls.clear();
   }
