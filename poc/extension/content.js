@@ -18,8 +18,11 @@ window.__aikwauContentLoaded = true;
   let activeEl          = null;
   let activeBadge       = null;
   let lastMouseX        = 0, lastMouseY = 0;
+  let boldEnabled       = true;   // Bold font-weight
+  let contrastEnabled   = true;   // Background/text colour recolour
   let l2Enabled         = true;   // L2 font enlargement
   let l2Scale           = 1.2;    // L2 enlargement multiplier (popup slider)
+  let summaryEnabled    = true;   // Summary fetch + click-to-toggle
   let badgeTimer        = null;
   const summaryCache    = new Map(); // text-key → cached summary string
   // summaryReadyEls: el → { summary, origText, handler, shown, labelEl }
@@ -287,11 +290,15 @@ window.__aikwauContentLoaded = true;
 
   // ── Mode + feature-flag init ──────────────────────────────────────────────
   chrome.storage.local.get(
-    ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale'],
+    ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale',
+     'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled'],
     (data) => {
-      l2Enabled    = data.aikwau_l2_enabled !== false;
-      l2Scale      = data.aikwau_l2_scale ?? 1.2;
-      isWebcamMode = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
+      l2Enabled        = data.aikwau_l2_enabled !== false;
+      l2Scale          = data.aikwau_l2_scale ?? 1.2;
+      boldEnabled      = data.aikwau_bold_enabled !== false;
+      contrastEnabled  = data.aikwau_contrast_enabled !== false;
+      summaryEnabled   = data.aikwau_summary_enabled !== false;
+      isWebcamMode     = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
       if (isWebcamMode) initWebcam();
     }
   );
@@ -659,8 +666,11 @@ window.__aikwauContentLoaded = true;
       ringVisible = msg.visible;
       if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
     }
+    if (msg.type === 'gaze:bold-toggle') { boldEnabled = msg.enabled; }
+    if (msg.type === 'gaze:contrast-toggle') { contrastEnabled = msg.enabled; }
     if (msg.type === 'gaze:l2-toggle') { l2Enabled = msg.enabled; }
     if (msg.type === 'gaze:l2-scale') { l2Scale = msg.scale; reapplyL2Scale(); }
+    if (msg.type === 'gaze:summary-toggle') { summaryEnabled = msg.enabled; }
     if (msg.type === 'clearHighlights') {
       clearAllHighlights();
       // Also reset in-memory heatmap so a pending hmSaveTimer doesn't
@@ -741,7 +751,7 @@ window.__aikwauContentLoaded = true;
       el.removeEventListener('click', entry.handler);
       if (entry.shown && entry.origText !== null) el.textContent = entry.origText;
       el.classList.remove('aikwau-summary-ready', 'aikwau-summary-shown',
-                          'aikwau-l1', 'aikwau-l2');
+                          'aikwau-bold', 'aikwau-contrast', 'aikwau-l2');
       el.style.removeProperty('font-size');
       delete el.dataset.aikwauBase;
       entry.labelEl?.remove();
@@ -753,7 +763,10 @@ window.__aikwauContentLoaded = true;
     if (el === activeEl) return;
     cleanup();
     activeEl = el;
-    el.classList.add('aikwau-l1');
+
+    if (boldEnabled) el.classList.add('aikwau-bold');
+    if (contrastEnabled) el.classList.add('aikwau-contrast');
+
     if (l2Enabled) {
       if (!el.dataset.aikwauBase) {
         el.dataset.aikwauBase = parseFloat(getComputedStyle(el).fontSize);
@@ -762,6 +775,8 @@ window.__aikwauContentLoaded = true;
       const base = +el.dataset.aikwauBase;
       if (!isNaN(base)) el.style.setProperty('font-size', `${(base * l2Scale).toFixed(1)}px`, 'important');
     }
+
+    if (!summaryEnabled) return;
 
     // Already has a summary — nothing more to do
     if (summaryReadyEls.has(el)) return;
