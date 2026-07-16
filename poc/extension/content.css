@@ -1,18 +1,24 @@
-/* ── L1: text darkens + bold ───────────────────────────────────────── */
-.aikwau-l1 {
-  color: #080808 !important;
+/* ── Bold: font-weight only, no colour change ────────────────────────── */
+.aikwau-bold {
   font-weight: 700 !important;
   letter-spacing: 0.15px;
-  transition: color 0.3s ease, font-weight 0.3s ease, font-size 0.25s ease;
+  transition: font-weight 0.3s ease, font-size 0.25s ease;
 }
 
-/* Links don't inherit .aikwau-l1's color (an <a> rule targets the element
-   directly, which always wins over inherited ancestor colour) — restyle them
-   explicitly using the active HC theme's own accent colour, so they stay both
-   legible against the new background and distinguishable from body text.
-   Underline is forced so colour isn't the only cue identifying a link. */
-.aikwau-l1 a,
-.aikwau-l1 a:visited {
+/* ── Contrast: text/background colour, themed via data-aikwau-hc-theme ── */
+.aikwau-contrast {
+  color: #080808 !important;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Links don't inherit .aikwau-contrast's color (an <a> rule targets the
+   element directly, which always wins over inherited ancestor colour) —
+   restyle them explicitly using the active HC theme's own accent colour,
+   so they stay both legible against the new background and distinguishable
+   from body text. Underline is forced so colour isn't the only cue
+   identifying a link. */
+.aikwau-contrast a,
+.aikwau-contrast a:visited {
   color: #ffee00 !important;
   text-decoration: underline !important;
 }
@@ -183,9 +189,9 @@
 }
 
 /* ── High Contrast themes (data-aikwau-hc-theme) ─────────────────────── */
-[data-aikwau-hc-theme="aquatic"] .aikwau-l1 { background-color: #003044 !important; color: #eaffff !important; }
-[data-aikwau-hc-theme="aquatic"] .aikwau-l1 a,
-[data-aikwau-hc-theme="aquatic"] .aikwau-l1 a:visited { color: #00e5ff !important; }
+[data-aikwau-hc-theme="aquatic"] .aikwau-contrast { background-color: #003044 !important; color: #eaffff !important; }
+[data-aikwau-hc-theme="aquatic"] .aikwau-contrast a,
+[data-aikwau-hc-theme="aquatic"] .aikwau-contrast a:visited { color: #00e5ff !important; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-summary-ready { outline-color: #00c2e0 !important; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-summary-shown { outline-color: #00e5ff !important; box-shadow: 0 0 6px #00e5ff; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-summary-label { background: #00c2e0; }
@@ -197,9 +203,9 @@
   50%      { outline-color: rgba(0, 229, 255, 1.00); box-shadow: 0 0 0 5px rgba(0, 229, 255, 0.25), 0 0 14px rgba(0, 229, 255, 0.40); }
 }
 
-[data-aikwau-hc-theme="desert"] .aikwau-l1 { background-color: #2b1400 !important; color: #fff2d9 !important; }
-[data-aikwau-hc-theme="desert"] .aikwau-l1 a,
-[data-aikwau-hc-theme="desert"] .aikwau-l1 a:visited { color: #ffb020 !important; }
+[data-aikwau-hc-theme="desert"] .aikwau-contrast { background-color: #2b1400 !important; color: #fff2d9 !important; }
+[data-aikwau-hc-theme="desert"] .aikwau-contrast a,
+[data-aikwau-hc-theme="desert"] .aikwau-contrast a:visited { color: #ffb020 !important; }
 [data-aikwau-hc-theme="desert"] .aikwau-summary-ready { outline-color: #d68a2e !important; }
 [data-aikwau-hc-theme="desert"] .aikwau-summary-shown { outline-color: #ffb020 !important; box-shadow: 0 0 6px #ffb020; }
 [data-aikwau-hc-theme="desert"] .aikwau-summary-label { background: #d68a2e; }
@@ -211,9 +217,9 @@
   50%      { outline-color: rgba(255, 176, 32, 1.00); box-shadow: 0 0 0 5px rgba(255, 176, 32, 0.25), 0 0 14px rgba(255, 176, 32, 0.40); }
 }
 
-[data-aikwau-hc-theme="dusk"] .aikwau-l1 { background-color: #2a0a3d !important; color: #f5e6ff !important; }
-[data-aikwau-hc-theme="dusk"] .aikwau-l1 a,
-[data-aikwau-hc-theme="dusk"] .aikwau-l1 a:visited { color: #ff4fd8 !important; }
+[data-aikwau-hc-theme="dusk"] .aikwau-contrast { background-color: #2a0a3d !important; color: #f5e6ff !important; }
+[data-aikwau-hc-theme="dusk"] .aikwau-contrast a,
+[data-aikwau-hc-theme="dusk"] .aikwau-contrast a:visited { color: #ff4fd8 !important; }
 [data-aikwau-hc-theme="dusk"] .aikwau-summary-ready { outline-color: #d64fc0 !important; }
 [data-aikwau-hc-theme="dusk"] .aikwau-summary-shown { outline-color: #ff4fd8 !important; box-shadow: 0 0 6px #ff4fd8; }
 [data-aikwau-hc-theme="dusk"] .aikwau-summary-label { background: #d64fc0; }
@@ -225,9 +231,9 @@
   50%      { outline-color: rgba(255, 79, 216, 1.00); box-shadow: 0 0 0 5px rgba(255, 79, 216, 0.25), 0 0 14px rgba(255, 79, 216, 0.40); }
 }
 
-[data-aikwau-hc-theme="nightsky"] .aikwau-l1 { background-color: #05060f !important; color: #f0f4ff !important; }
-[data-aikwau-hc-theme="nightsky"] .aikwau-l1 a,
-[data-aikwau-hc-theme="nightsky"] .aikwau-l1 a:visited { color: #4fc3ff !important; }
+[data-aikwau-hc-theme="nightsky"] .aikwau-contrast { background-color: #05060f !important; color: #f0f4ff !important; }
+[data-aikwau-hc-theme="nightsky"] .aikwau-contrast a,
+[data-aikwau-hc-theme="nightsky"] .aikwau-contrast a:visited { color: #4fc3ff !important; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-summary-ready { outline-color: #3a8fd6 !important; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-summary-shown { outline-color: #4fc3ff !important; box-shadow: 0 0 6px #4fc3ff; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-summary-label { background: #3a8fd6; }
