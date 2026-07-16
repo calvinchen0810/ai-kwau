@@ -18,6 +18,7 @@ window.__aikwauContentLoaded = true;
   let activeEl          = null;
   let activeBadge       = null;
   let lastMouseX        = 0, lastMouseY = 0;
+  let masterEnabled     = true;   // Global kill switch for the whole feature
   let boldEnabled       = true;   // Bold font-weight
   let contrastEnabled   = true;   // Background/text colour recolour
   let l2Enabled         = true;   // L2 font enlargement
@@ -291,8 +292,10 @@ window.__aikwauContentLoaded = true;
   // ── Mode + feature-flag init ──────────────────────────────────────────────
   chrome.storage.local.get(
     ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale',
-     'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled'],
+     'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
+     'aikwau_master_enabled'],
     (data) => {
+      masterEnabled    = data.aikwau_master_enabled !== false;
       l2Enabled        = data.aikwau_l2_enabled !== false;
       l2Scale          = data.aikwau_l2_scale ?? 1.2;
       boldEnabled      = data.aikwau_bold_enabled !== false;
@@ -314,6 +317,7 @@ window.__aikwauContentLoaded = true;
 
   // ── Gaze events from MAIN world (mouse mode: immediate; webcam mode: via dwell) ──
   document.addEventListener('aikwau:gazefocus', (e) => {
+    if (!masterEnabled) return;
     const { x, y } = e.detail ?? {};
     if (x == null) return;
     hmAccumulate(x, y);
@@ -666,6 +670,10 @@ window.__aikwauContentLoaded = true;
       ringVisible = msg.visible;
       if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
     }
+    if (msg.type === 'gaze:master-toggle') {
+      masterEnabled = msg.enabled;
+      if (!masterEnabled) restoreAllEffects();
+    }
     if (msg.type === 'gaze:bold-toggle') { boldEnabled = msg.enabled; }
     if (msg.type === 'gaze:contrast-toggle') { contrastEnabled = msg.enabled; }
     if (msg.type === 'gaze:l2-toggle') { l2Enabled = msg.enabled; }
@@ -757,6 +765,22 @@ window.__aikwauContentLoaded = true;
       entry.labelEl?.remove();
     });
     summaryReadyEls.clear();
+  }
+
+  // Restores the page to its pre-AI-Kwau state when the master switch turns off.
+  // clearAllSummaryEls() only knows about elements tracked in summaryReadyEls (i.e.
+  // elements that got a summary); the querySelectorAll sweep below also catches
+  // elements that only received bold/contrast/enlarge (e.g. because 段落摘要 was
+  // off, or the summary fetch failed) and would otherwise be left highlighted.
+  function restoreAllEffects() {
+    clearAllSummaryEls();
+    document.querySelectorAll('.aikwau-bold, .aikwau-contrast, .aikwau-l2').forEach(el => {
+      el.classList.remove('aikwau-bold', 'aikwau-contrast', 'aikwau-l2');
+      el.style.removeProperty('font-size');
+      delete el.dataset.aikwauBase;
+    });
+    clearAllHighlights();
+    cleanup();
   }
 
   function triggerL1(el, text) {

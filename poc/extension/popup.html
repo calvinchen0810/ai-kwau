@@ -38,6 +38,19 @@
       background: #eef2ff; color: #0058b0; font-weight: 600;
     }
 
+    /* Master kill switch */
+    .master-toggle {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; margin-bottom: 10px;
+      border-radius: 8px; border: 1px solid #ccc;
+      background: #f5f5f5; cursor: pointer;
+      font-size: 16px; font-weight: 700; color: #888;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .master-toggle input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
+    .master-toggle.on { background: #e6f7ec; border-color: #2ecc71; color: #157347; }
+    #restBody.disabled { opacity: 0.4; pointer-events: none; }
+
     /* Reading features section */
     .feat-sect { margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px; }
     .feat-sect .sect-lbl { font-size: 13px; color: #888; margin-bottom: 4px; }
@@ -82,6 +95,13 @@
 </head>
 <body>
   <h3>AI Kwau ⚙️</h3>
+
+  <label class="master-toggle" id="masterToggleRow">
+    <input type="checkbox" id="masterEnabled" checked>
+    <span id="masterToggleLabel">AI Kwau 已啟用</span>
+  </label>
+
+  <div id="restBody">
   <label><input type="radio" name="mode" value="mouse"> 滑鼠模式（PoC）</label>
   <label><input type="radio" name="mode" value="webcam"> 眼球追蹤（Webcam）</label>
 
@@ -141,6 +161,7 @@
     </div>
     <div id="hmStats">尚無資料</div>
     <button id="hmClear">清除熱圖</button>
+  </div>
   </div>
 
   <script src="popup.js"></script>

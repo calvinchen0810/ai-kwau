@@ -1,3 +1,7 @@
+const masterEnabled     = document.getElementById('masterEnabled');
+const masterToggleRow   = document.getElementById('masterToggleRow');
+const masterToggleLabel = document.getElementById('masterToggleLabel');
+const restBody          = document.getElementById('restBody');
 const modeRadios      = document.querySelectorAll('input[name="mode"]');
 const calPtsRadios    = document.querySelectorAll('input[name="calpts"]');
 const recalibrate     = document.getElementById('recalibrate');
@@ -44,11 +48,19 @@ function setL2RowDisabled(disabled) {
   l2ScaleRow.classList.toggle('disabled', disabled);
 }
 
+function setMasterUI(enabled) {
+  masterEnabled.checked = enabled;
+  masterToggleRow.classList.toggle('on', enabled);
+  masterToggleLabel.textContent = enabled ? 'AI Kwau 已啟用' : 'AI Kwau 已停用';
+  restBody.classList.toggle('disabled', !enabled);
+}
+
 chrome.storage.local.get(
   ['aikwau_gaze_mode', 'aikwau_cal_points',
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
    'aikwau_l2_enabled', 'aikwau_l2_scale', 'aikwau_hc_theme',
-   'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled'],
+   'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
+   'aikwau_master_enabled'],
   (data) => {
     const mode  = data.aikwau_gaze_mode ?? 'mouse';
     const pts   = data.aikwau_cal_points ?? 25;
@@ -66,6 +78,7 @@ chrome.storage.local.get(
     contrastEnabled.checked = data.aikwau_contrast_enabled     !== false;
     summaryEnabled.checked  = data.aikwau_summary_enabled      !== false;
     setThemeUI(theme);
+    setMasterUI(data.aikwau_master_enabled !== false);
   }
 );
 
@@ -111,6 +124,13 @@ ringVisible.addEventListener('change', () => {
   const vis = ringVisible.checked;
   chrome.storage.local.set({ aikwau_gaze_ring_visible: vis });
   sendToTab({ type: 'gaze:ring-toggle', visible: vis });
+});
+
+masterEnabled.addEventListener('change', () => {
+  const enabled = masterEnabled.checked;
+  chrome.storage.local.set({ aikwau_master_enabled: enabled });
+  setMasterUI(enabled);
+  sendToTab({ type: 'gaze:master-toggle', enabled });
 });
 
 boldEnabled.addEventListener('change', () => {
