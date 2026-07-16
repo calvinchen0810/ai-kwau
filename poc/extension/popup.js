@@ -194,10 +194,24 @@ const CW = 13, CH = 13;
 const HM_CANVAS_W = HM_W * CW;  // 312, matches <canvas id="hmCanvas"> width
 const HM_CANVAS_H = HM_H * CH;  // 182, matches <canvas id="hmCanvas"> height
 
-const hmCanvas = document.getElementById('hmCanvas');
-const hmCtx    = hmCanvas.getContext('2d');
-const hmStats  = document.getElementById('hmStats');
-const hmClear  = document.getElementById('hmClear');
+const hmCanvas       = document.getElementById('hmCanvas');
+const hmCtx          = hmCanvas.getContext('2d');
+const hmStats        = document.getElementById('hmStats');
+const hmClear        = document.getElementById('hmClear');
+const hmBody         = document.getElementById('hmBody');
+const heatmapVisible = document.getElementById('heatmapVisible');
+
+chrome.storage.local.get('aikwau_heatmap_visible', ({ aikwau_heatmap_visible }) => {
+  const visible = aikwau_heatmap_visible !== false;
+  heatmapVisible.checked = visible;
+  hmBody.style.display = visible ? 'block' : 'none';
+});
+
+heatmapVisible.addEventListener('change', () => {
+  const visible = heatmapVisible.checked;
+  hmBody.style.display = visible ? 'block' : 'none';
+  chrome.storage.local.set({ aikwau_heatmap_visible: visible });
+});
 
 function heatColor(t) {
   const s = [

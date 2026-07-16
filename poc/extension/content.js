@@ -416,15 +416,28 @@ window.__aikwauContentLoaded = true;
   }
 
   // ── Zone-based paragraph finder (works in isolated world) ─────────────────
-  function findGazeTarget(gazeY) {
+  // Hysteresis: a new candidate must beat the current dwell target by more
+  // than this margin before we switch. Without it, noisy webcam gaze near a
+  // paragraph boundary — especially next to an already-enlarged (taller)
+  // neighbour — flips the target almost every frame, and each flip resets
+  // dwellGaze()'s 1.5s timer, so the target in the middle never dwells long
+  // enough to fire (root cause of paragraphs never getting enhanced when
+  // sandwiched between two already-processed ones).
+  const TARGET_HYSTERESIS_PX = 20;
+  function findGazeTarget(gazeY, currentEl) {
     const vh = window.innerHeight;
     let best = null, bestDist = Infinity;
+    let currentDist = Infinity;
     for (const el of document.querySelectorAll(SELECTORS)) {
       if ((el.innerText?.trim().length ?? 0) < MIN_TEXT_LEN) continue;
       const r = el.getBoundingClientRect();
       if (r.bottom < 0 || r.top > vh || r.height === 0) continue;
       const dist = Math.abs((r.top + r.height / 2) - gazeY);
       if (dist < bestDist) { bestDist = dist; best = el; }
+      if (el === currentEl) currentDist = dist;
+    }
+    if (currentEl && best !== currentEl && currentDist <= bestDist + TARGET_HYSTERESIS_PX) {
+      return currentEl;
     }
     return best;
   }
@@ -445,7 +458,7 @@ window.__aikwauContentLoaded = true;
     const sorted = [...gazeYHistory].sort((a, b) => a - b);
     const medianY = sorted[Math.floor(sorted.length / 2)];
 
-    const el = findGazeTarget(medianY);
+    const el = findGazeTarget(medianY, gazeCurrentEl);
     if (!el) { if (gazeCurrentEl) cancelGaze(); return; }
     if (el !== gazeCurrentEl) dwellGaze(el);
   }

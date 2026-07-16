@@ -137,6 +137,7 @@
         <input type="radio" name="calpts" value="25">25 點（精確）
       </label>
     </div>
+    <button id="recalibrate" style="display:none">重新校準</button>
   </div>
 
   <div id="webcamToggles" style="display:none; margin-top:6px;">
@@ -148,19 +149,21 @@
     </label>
   </div>
 
-  <button id="recalibrate" style="display:none">重新校準</button>
   <div id="status"></div>
 
   <div class="hm-section">
-    <h4>視線熱圖（頁面分佈）</h4>
-    <canvas id="hmCanvas" width="312" height="182"></canvas>
-    <div class="hm-legend">
-      <span>冷</span>
-      <canvas id="hmLegend" width="240" height="9"></canvas>
-      <span>熱</span>
+    <label><input type="checkbox" id="heatmapVisible" checked> 顯示視線熱圖</label>
+    <div id="hmBody">
+      <h4>視線熱圖（頁面分佈）</h4>
+      <canvas id="hmCanvas" width="312" height="182"></canvas>
+      <div class="hm-legend">
+        <span>冷</span>
+        <canvas id="hmLegend" width="240" height="9"></canvas>
+        <span>熱</span>
+      </div>
+      <div id="hmStats">尚無資料</div>
+      <button id="hmClear">清除熱圖</button>
     </div>
-    <div id="hmStats">尚無資料</div>
-    <button id="hmClear">清除熱圖</button>
   </div>
   </div>
 
