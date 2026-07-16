@@ -132,42 +132,13 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .iv-row.gold .iv-num{color:var(--goldd);}
   .iv-row.gold .iv-trigger{color:var(--goldd);background:rgba(246,174,45,.1);}
 
-  /* S5 Prototype Demo */
-  #s5{flex-direction:row;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
-  #s5 .demo-left{width:56%;padding:14px 16px 14px 28px;display:flex;flex-direction:column;gap:8px;}
-  #s5 .demo-right{width:44%;padding:20px 24px 14px 8px;display:flex;flex-direction:column;gap:10px;}
-  #s5 .s-top-row{padding:14px 28px 0;}
-  .browser-mock{background:#fff;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;flex:1;}
-  .bchrome{background:#f1f3f4;border-bottom:1px solid #dadce0;padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .bchrome-dots{display:flex;gap:5px;}
-  .bchrome-dot{width:10px;height:10px;border-radius:50%;}
-  .bchrome-url{flex:1;background:#fff;border:1px solid #dadce0;border-radius:18px;padding:3px 14px;font-size:11px;color:#555;font-family:'Sora',sans-serif;max-width:320px;margin:0 auto;text-align:center;}
-  .bchrome-ext{font-size:10px;font-family:'Sora',sans-serif;font-weight:700;color:#00b4d8;background:rgba(0,180,216,.12);padding:2px 8px;border-radius:4px;white-space:nowrap;}
-  .b5-vp{flex:1;padding:14px 16px;overflow:hidden;position:relative;cursor:default;}
-  .fake-nav5{display:flex;gap:14px;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:9px;}
-  .fake-nav5 span{font-family:'Sora',sans-serif;font-size:10px;color:#888;}
-  .fake-nav5 span.on{color:#0077b6;font-weight:700;border-bottom:2px solid #0077b6;padding-bottom:2px;}
-  .fake-h5{font-family:'Sora',sans-serif;font-size:10.5px;font-weight:600;color:#bbb;line-height:1.4;margin-bottom:6px;}
-  .fake-t5{font-size:9.5px;color:#bbb;line-height:1.7;margin-bottom:5px;padding:4px 6px;border-radius:5px;cursor:pointer;transition:color .3s,font-weight .3s,background .2s;}
-  .fake-t5:hover{background:rgba(0,180,216,.04);}
-  .gaze-halo5{position:absolute;width:48px;height:48px;border-radius:50%;background:rgba(0,180,216,.1);border:2px solid rgba(0,180,216,.5);box-shadow:0 0 0 8px rgba(0,180,216,.05);pointer-events:none;z-index:9;display:none;}
-  .l1-on{color:#080808!important;font-weight:700!important;letter-spacing:.15px;transition:color .35s,font-weight .35s;}
-  .l2-on{color:#080808!important;font-weight:800!important;font-size:1.18em!important;letter-spacing:.25px;transition:color .35s,font-weight .35s,font-size .3s;}
-  #sum-badge{position:absolute;z-index:20;font-family:-apple-system,'Segoe UI',sans-serif;font-size:10px;line-height:1.55;padding:7px 11px;border-radius:8px;pointer-events:none;max-width:230px;display:none;}
-  .sum-badge-loading{background:#0d1f3c;color:rgba(0,180,216,.8);border-left:3px solid rgba(0,180,216,.4);}
-  .sum-badge-ready{background:#0d1f3c;color:rgba(255,255,255,.9);border-left:3px solid #00b4d8;box-shadow:0 4px 16px rgba(0,0,0,.35);}
-  @keyframes aikwau-in{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
-  .demo-hint{font-family:'Sora',sans-serif;font-size:10px;color:var(--muted);text-align:center;padding:4px 0;border-top:1px solid rgba(0,0,0,.07);flex-shrink:0;}
-  .bench-panel{background:var(--navy);border-radius:12px;padding:16px 18px;flex:1;}
-  .bench-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
-  .bench-sub{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:12px;}
-  .bench-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-  .bench-label{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#fff;min-width:38px;}
-  .bench-bar-wrap{flex:1;background:rgba(255,255,255,.08);border-radius:4px;height:14px;overflow:hidden;}
-  .bench-bar{height:100%;border-radius:4px;transition:width .6s ease;}
-  .bench-val{font-family:'Sora',sans-serif;font-size:10px;color:rgba(255,255,255,.55);min-width:80px;text-align:right;}
-  .bench-note{font-size:9.5px;color:rgba(255,255,255,.35);line-height:1.55;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);}
-  .demo-video-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+  /* S5 Live Demo transition */
+  #s5{flex-direction:column;background:var(--navy);align-items:center;justify-content:center;text-align:center;}
+  #s5 .demo-icon{font-size:64px;margin-bottom:18px;}
+  #s5 .demo-title{font-family:'Sora',sans-serif;font-size:44px;font-weight:800;color:#fff;margin-bottom:10px;}
+  #s5 .demo-sub{font-size:16px;color:rgba(255,255,255,.6);max-width:600px;line-height:1.6;margin-bottom:26px;}
+  #s5 .demo-chip-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:640px;}
+  #s5 .demo-chip{font-size:12.5px;font-weight:600;color:var(--cyanl);background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);padding:6px 16px;border-radius:20px;}
 
   /* S6 Journey */
   #s6{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
@@ -339,7 +310,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 
 <div id="toolbar">
   <span class="logo">AI Kwau · Final</span>
-  <span class="counter" id="counter">1 / 12</span>
+  <span class="counter" id="counter">1 / 13</span>
   <div class="spacer"></div>
   <button class="tbtn" id="btn-edit" onclick="toggleEdit()">✏️ Edit</button>
   <button class="tbtn" id="btn-move" onclick="toggleMove()">↖ Move</button>
@@ -361,12 +332,12 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="agenda">
             <div class="ag-item"><span class="ag-num">01</span>Problem Statement</div>
             <div class="ag-item"><span class="ag-num">02</span>Proposed Solution</div>
-            <div class="ag-item"><span class="ag-num">03</span>Functional Prototype</div>
-            <div class="ag-item"><span class="ag-num">04</span>User Experience Flow</div>
-            <div class="ag-item"><span class="ag-num">05</span>AI Architecture</div>
-            <div class="ag-item"><span class="ag-num">06</span>Value &amp; Impact</div>
-            <div class="ag-item"><span class="ag-num">07</span>Competitor Study</div>
-            <div class="ag-item"><span class="ag-num">08</span>Validation &amp; KPIs</div>
+            <div class="ag-item"><span class="ag-num">03</span>User Experience Flow</div>
+            <div class="ag-item"><span class="ag-num">04</span>Value &amp; Impact / Curb-Cut</div>
+            <div class="ag-item"><span class="ag-num">05</span>Competitor Study</div>
+            <div class="ag-item"><span class="ag-num">06</span>Functional Prototype Demo</div>
+            <div class="ag-item"><span class="ag-num">07</span>Validation &amp; User Testing</div>
+            <div class="ag-item"><span class="ag-num">08</span>Success Metrics / KPIs</div>
           </div>
           <div style="margin-top:14px;padding-top:11px;border-top:1px solid rgba(255,255,255,.08);">
             <div style="font-family:'Sora',sans-serif;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(144,224,239,.5);margin-bottom:5px;">Team</div>
@@ -444,7 +415,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
                 <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);">👁️ Eye Position</div></div>
                 <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);">🧑 Face Distance</div></div>
                 <div style="padding:6px 10px;background:rgba(246,174,45,.1);border-radius:8px;border-left:3px solid rgba(201,146,42,.45);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);">🗺️ Gaze Heatmap</div><div class="lnode-body">Builds visual field map</div></div>
-                <div style="padding:6px 10px;background:rgba(6,214,160,.08);border-radius:8px;border-left:3px solid rgba(5,150,105,.45);"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#059669;">📊 Gaze Stability</div><div class="lnode-body">Stable→solid ring · Jitter→dashed ring</div></div>
               </div>
             </div>
             <div class="larr"><div class="larr-line">→</div></div>
@@ -457,7 +427,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <div class="larr"><div class="larr-line">→</div></div>
             <div class="lnode" style="flex:1.1;">
               <div class="lnode-head"><div class="lnode-icon">✨</div><div><div class="lnode-title">Act</div></div></div>
-              <div style="padding:9px 11px;background:rgba(0,119,182,.07);border-radius:9px;border:1px solid rgba(0,119,182,.2);margin-bottom:8px;margin-top:10px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px;">👁 Visible Area</div><div class="lnode-body">Progressive layering ◎①②③④⑤ + 🤖 AI Summary</div></div>
+              <div style="padding:9px 11px;background:rgba(0,119,182,.07);border-radius:9px;border:1px solid rgba(0,119,182,.2);margin-bottom:8px;margin-top:10px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px;">👁 Visible Area</div><div class="lnode-body">Progressive text enhancement + 🤖 AI Summary</div></div>
               <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);margin-bottom:8px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:3px;">🗺️ Blind Spot</div><div class="lnode-body">✦ Focus Attraction</div></div>
               <div style="font-family:'Sora',sans-serif;font-size:10px;color:var(--muted);text-align:right;letter-spacing:.5px;">See next slide →</div>
             </div>
@@ -488,13 +458,9 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         <div class="split-wrap">
           <div class="split-half">
             <div class="half-header cyan"><div style="font-size:22px;">👁</div><div><div class="half-title cyan">Visible Area</div><div class="half-sub">Progressively triggered by hold time</div></div></div>
-            <div class="iv-row always"><div class="iv-num">◎</div><div class="iv-title">Gaze Ring</div><div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">Always-on</div></div>
-            <div class="iv-row always"><div class="iv-num">①</div><div class="iv-title">Smart Cursor</div><div class="iv-trigger" style="color:#06d6a0;background:rgba(6,214,160,.1);">Always-on</div></div>
-            <div class="iv-row"><div class="iv-num">②</div><div class="iv-title">L1 Text Layer<div class="iv-en">Darker + Bold</div></div><div class="iv-trigger">Short hold</div></div>
+            <div class="iv-row"><div class="iv-num">①</div><div class="iv-title">L1 Text Layer<div class="iv-en">Darker + Bold</div></div><div class="iv-trigger">Short hold</div></div>
             <div class="iv-row ai"><div class="iv-num">🤖</div><div class="iv-title">AI Paragraph Summary<div class="iv-en">Qwen2.5-1.5B INT4 · On-device · GPU 0.85s</div></div><div class="iv-trigger" style="color:var(--cyan);background:rgba(0,180,216,.1);">2s hold</div></div>
-            <div class="iv-row"><div class="iv-num">③</div><div class="iv-title">L2 Component Layer<div class="iv-en">L1 + Font Size Larger</div></div><div class="iv-trigger">Mid hold</div></div>
-            <div class="iv-row"><div class="iv-num">④</div><div class="iv-title">Voice Reading</div><div class="iv-trigger">Long hold</div></div>
-            <div class="iv-row" style="border-left-color:rgba(5,150,105,.5);"><div class="iv-num" style="color:#059669;">⑤</div><div class="iv-title">L3 Full-page Structure</div><div class="iv-trigger" style="color:#059669;background:rgba(6,214,160,.08);">Unusual eye movement</div></div>
+            <div class="iv-row"><div class="iv-num">②</div><div class="iv-title">L2 Component Layer<div class="iv-en">L1 + Adjustable Font Size (1.0×–3.0×)</div></div><div class="iv-trigger">Mid hold</div></div>
           </div>
           <div class="split-divider"><div class="split-badge">AI<br>FORK</div></div>
           <div class="split-half">
@@ -506,114 +472,10 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
       </div>
 
-      <!-- S5 Functional Prototype Demo -->
-      <div class="slide" id="s5" style="flex-direction:column;">
-        <div style="padding:14px 28px 6px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);">
-          <div class="step-badge" style="margin-bottom:0;">3 · Functional Prototype</div>
-          <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--navy);">Live Demo — L1 Enhancement + AI Summary</div>
-        </div>
-        <div style="flex:1;display:flex;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);padding:8px 16px 10px;">
-          <!-- Left: browser mockup -->
-          <div class="demo-left" style="width:56%;padding:0 12px 0 16px;display:flex;flex-direction:column;">
-            <div class="browser-mock" style="flex:1;">
-              <div class="bchrome">
-                <div class="bchrome-dots"><div style="background:#ff5f56" class="bchrome-dot"></div><div style="background:#febc2e" class="bchrome-dot"></div><div style="background:#28c840" class="bchrome-dot"></div></div>
-                <div class="bchrome-url">bbc.com/news/health/accessibility</div>
-                <div class="bchrome-ext">AI Kwau ✓</div>
-              </div>
-              <div class="b5-vp" id="b5vp">
-                <div class="gaze-halo5" id="mock-halo-5"></div>
-                <div id="sum-badge"></div>
-                <div class="fake-nav5"><span class="on">Health</span><span>Tech</span><span>Science</span></div>
-                <div class="fake-h5">New Study: Digital Eye Strain Now Affects 71% of Extended Screen Users</div>
-                <div class="fake-t5" id="ft1">Researchers at Stanford found that prolonged screen exposure exceeding four hours daily significantly increases eye strain risk, particularly among adults over 40 who use computers for work.</div>
-                <div class="fake-t5" id="ft2">The study identified poor contrast settings and small font sizes as the two leading causes of visual fatigue in office environments, affecting productivity and long-term eye health.</div>
-                <div class="fake-t5" id="ft3">Participants who used adaptive text enhancement tools reported a 38% reduction in reported eye discomfort after two weeks of regular use during their normal browsing sessions.</div>
-              </div>
-            </div>
-            <div class="demo-hint" id="demo-hint">👆 Hover any paragraph · hold 2 s → L1 darker+bold + AI Summary · click for L2</div>
-          </div>
-          <!-- Right: benchmark -->
-          <div style="width:44%;padding:0 14px 0 8px;display:flex;flex-direction:column;gap:8px;">
-            <div class="bench-panel">
-              <div class="bench-title">On-Device Performance</div>
-              <div class="bench-sub">Panther Lake · Qwen2.5-1.5B-Instruct INT4</div>
-              <div class="bench-row">
-                <div class="bench-label">GPU</div>
-                <div class="bench-bar-wrap"><div class="bench-bar" style="width:100%;background:var(--cyan);"></div></div>
-                <div class="bench-val">0.85 s &nbsp;·&nbsp; 71 tok/s</div>
-              </div>
-              <div class="bench-row">
-                <div class="bench-label">CPU</div>
-                <div class="bench-bar-wrap"><div class="bench-bar" style="width:63%;background:rgba(144,224,239,.6);"></div></div>
-                <div class="bench-val">1.32 s &nbsp;·&nbsp; 45 tok/s</div>
-              </div>
-              <div class="bench-row">
-                <div class="bench-label">NPU</div>
-                <div class="bench-bar-wrap"><div class="bench-bar" style="width:52%;background:rgba(246,174,45,.7);"></div></div>
-                <div class="bench-val">1.62 s &nbsp;·&nbsp; 37 tok/s</div>
-              </div>
-              <div class="bench-note">All three devices produce clean EN + ZH output ✅<br>GPU currently fastest on Panther Lake — OpenVINO NPU LLM kernels maturing</div>
-            </div>
-            <div class="demo-video-box">
-              <div style="font-size:26px;">🎬</div>
-              <div>
-                <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--navy);">Full Demo Video</div>
-                <div style="font-size:11px;color:var(--muted);margin-top:2px;">End-to-end: webcam calibration → gaze hold → L1/L2 → AI summary badge appearing</div>
-              </div>
-            </div>
-            <div style="background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.2);border-radius:10px;padding:10px 14px;">
-              <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px;">🤖 AI Summary — How It Works</div>
-              <div style="font-size:11px;color:var(--muted);line-height:1.6;">Gaze holds 2s → L1 activates → Qwen2.5 summarizes in 2 sentences → badge appears inline · Auto-dismissed after 12s</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- S6 UX Journey -->
-      <div class="slide" id="s6">
-        <div class="s-top">
-          <div class="step-badge">4 · User Experience Flow</div>
-          <div class="slide-title" style="font-size:30px;">User Journey Map</div>
-        </div>
-        <div class="journey">
-          <div class="j-step">
-            <div class="j-icon">🏭</div>
-            <div class="j-name">Pre-installed</div>
-            <div class="j-desc">Ready at boot<br>No setup needed</div>
-            <div class="j-detail">HP factory image<br>Edge extension pre-loaded</div>
-          </div>
-          <div class="j-step">
-            <div class="j-icon">🎯</div>
-            <div class="j-name">One-time Setup</div>
-            <div class="j-desc">9-point gaze calibration<br>Done once · ~60 seconds</div>
-            <div class="j-detail">Webcam calibration UI<br>or skip → mouse sim mode</div>
-          </div>
-          <div class="j-step">
-            <div class="j-icon">🌐</div>
-            <div class="j-name">Browse Normally</div>
-            <div class="j-desc">AI runs silently<br>No habit change</div>
-            <div class="j-detail">Gaze ring follows focus<br>Smart cursor always-on</div>
-          </div>
-          <div class="j-step gold">
-            <div class="j-icon">✨</div>
-            <div class="j-name">Gaze Holds 2s</div>
-            <div class="j-desc">L1 text darkens + bold<br>AI Summary appears</div>
-            <div class="j-detail">🤖 Qwen2.5 · GPU 0.85s<br>EN + ZH auto-detected</div>
-          </div>
-          <div class="j-step">
-            <div class="j-icon">📖</div>
-            <div class="j-name">Read Faster</div>
-            <div class="j-desc">Summary aids comprehension<br>Badge dismisses after 12s</div>
-            <div class="j-detail">Click for L2 text enlarge<br>Move gaze to next para</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- S7 AI Architecture -->
+      <!-- S7 AI Architecture (Proposed Solution sub-page) -->
       <div class="slide" id="s7">
         <div class="s-top">
-          <div class="step-badge" style="background:var(--gold);color:var(--navy);">5 · AI Architecture</div>
+          <div class="step-badge">2 · Proposed Solution</div>
           <div class="slide-title">On-Device AI Stack</div>
           <div class="slide-sub">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
         </div>
@@ -670,10 +532,46 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
               <div class="rchip-num" style="color:#fff;">1.62s</div>
               <div class="rchip-lbl" style="color:rgba(255,255,255,.4);">NPU · 37 tok/s</div>
             </div>
-            <div style="flex:1;background:rgba(246,174,45,.08);border:1px solid rgba(246,174,45,.25);border-radius:10px;padding:7px 14px;display:flex;align-items:center;gap:8px;">
-              <div style="font-size:16px;">🔍</div>
-              <div style="font-size:10.5px;color:rgba(255,255,255,.6);line-height:1.55;">Phi-4 Mini abandoned — custom arch causes garbled output on NPU<br>Qwen2.5 standard arch: all 3 devices produce clean EN + ZH ✅</div>
-            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6 UX Journey -->
+      <div class="slide" id="s6">
+        <div class="s-top">
+          <div class="step-badge">3 · User Experience Flow</div>
+          <div class="slide-title" style="font-size:30px;">User Journey Map</div>
+        </div>
+        <div class="journey">
+          <div class="j-step">
+            <div class="j-icon">🏭</div>
+            <div class="j-name">Pre-installed</div>
+            <div class="j-desc">Ready at boot<br>No setup needed</div>
+            <div class="j-detail">HP factory image<br>Edge extension pre-loaded</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">🎯</div>
+            <div class="j-name">One-time Setup</div>
+            <div class="j-desc">9-point gaze calibration<br>Done once · ~60 seconds</div>
+            <div class="j-detail">Webcam calibration UI<br>or skip → mouse sim mode</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">🌐</div>
+            <div class="j-name">Browse Normally</div>
+            <div class="j-desc">AI runs silently<br>No habit change</div>
+            <div class="j-detail">Gaze ring follows focus<br>Smart cursor always-on</div>
+          </div>
+          <div class="j-step gold">
+            <div class="j-icon">✨</div>
+            <div class="j-name">Gaze Holds 2s</div>
+            <div class="j-desc">L1 text darkens + bold<br>AI Summary appears</div>
+            <div class="j-detail">🤖 Qwen2.5 · GPU 0.85s<br>EN + ZH auto-detected</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon">📖</div>
+            <div class="j-name">Read Faster</div>
+            <div class="j-desc">Summary aids comprehension<br>Badge dismisses after 12s</div>
+            <div class="j-detail">Click for L2 text enlarge<br>Move gaze to next para</div>
           </div>
         </div>
       </div>
@@ -681,7 +579,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       <!-- S8 Value: Curb-Cut Effect -->
       <div class="slide" id="s8">
         <div class="s-top">
-          <div class="step-badge" style="background:var(--gold);color:var(--navy);">6 · Value &amp; Impact</div>
+          <div class="step-badge" style="background:var(--gold);color:var(--navy);">4 · Value &amp; Impact / Curb-Cut</div>
           <div class="slide-title">Curb-Cut Effect — From 20% to Everyday Users<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">The same solution works for everyday users — not just vision-impaired</span></div>
         </div>
         <div class="cards-row">
@@ -711,7 +609,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       <!-- S9 Competitors -->
       <div class="slide" id="s9">
         <div class="s-top">
-          <div class="step-badge">7 · Competitor Study</div>
+          <div class="step-badge">5 · Competitor Study</div>
           <div class="slide-title" style="font-size:30px;">Competition &amp; What Makes HP Different</div>
         </div>
         <div class="comp-wrap">
@@ -736,10 +634,25 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
       </div>
 
+      <!-- S5 Functional Prototype Demo (Live Demo transition) -->
+      <div class="slide" id="s5">
+        <div class="step-badge">6 · Functional Prototype Demo</div>
+        <div class="demo-icon">🎬</div>
+        <div class="demo-title">Live Demo</div>
+        <div class="demo-sub">Switching to the actual Microsoft Edge extension now — real webpage, real gaze/mouse trigger, real on-device AI summary.</div>
+        <div class="demo-chip-row">
+          <div class="demo-chip">L1 Text Enhancement</div>
+          <div class="demo-chip">AI Paragraph Summary</div>
+          <div class="demo-chip">High Contrast Themes</div>
+          <div class="demo-chip">Mouse / Webcam Mode</div>
+          <div class="demo-chip">Adjustable Font Size</div>
+        </div>
+      </div>
+
       <!-- S10 Validation & User Testing -->
       <div class="slide" id="s10">
         <div class="s-left">
-          <div class="step-badge">8 · Validation &amp; User Testing</div>
+          <div class="step-badge">7 · Validation &amp; User Testing</div>
           <div class="slide-title" style="color:#fff;font-size:26px;">Prototype Testing &amp; Design Iteration</div>
           <div style="margin-top:16px;">
             <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,180,216,.7);margin-bottom:10px;">Technical Validation ✅</div>
@@ -747,11 +660,21 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Phi-4 Mini → Qwen2.5</strong> — NPU output was corrupted (custom arch)</div></div>
             <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>GPU 0.85s latency</strong> — meets &lt; 1s target on Panther Lake</div></div>
             <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Language detection</strong> — EN / ZH auto-detected from document.lang</div></div>
-            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Badge positioning</strong> — viewport-aware, no overlap with content</div></div>
+            <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>Click-to-toggle summary UX</strong> — outline + tag label, replaces floating badge</div></div>
             <div class="vcheck"><div class="vcheck-dot">✓</div><div class="vcheck-tx"><strong>10 consecutive requests</strong> — zero port disconnect, stable</div></div>
           </div>
         </div>
         <div class="s-right" style="padding:24px 28px;display:flex;flex-direction:column;gap:10px;">
+          <div style="background:rgba(6,214,160,.06);border:1px solid rgba(6,214,160,.25);border-radius:11px;padding:12px 16px;">
+            <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:#059669;margin-bottom:8px;">✨ New Features Added (This Round)</div>
+            <div style="font-size:11.5px;color:var(--muted);line-height:1.55;">
+              <div>• AI paragraph summary — click-to-reveal, no more floating badge</div>
+              <div>• High Contrast themes — 5 selectable palettes, live switching</div>
+              <div>• Mouse-hover mode — no webcam required, same L1/summary flow</div>
+              <div>• Adjustable font size — 1.0×–3.0× live slider (was fixed 1.2×)</div>
+              <div>• Hyperlink contrast fix — links recoloured + underlined per theme</div>
+            </div>
+          </div>
           <div class="iter-card">
             <div class="iter-title">Design Iterations from PoC Testing</div>
             <div class="iter-row"><span class="from">3s dwell</span> <span style="color:var(--muted);">→</span> <span class="to">2s dwell</span> <span style="font-size:11px;color:var(--muted);margin-left:4px;">Team feedback: 3s felt too slow</span></div>
@@ -773,7 +696,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       <!-- S11 KPIs -->
       <div class="slide" id="s11">
         <div class="s-top">
-          <div class="step-badge">8 · Success Metrics</div>
+          <div class="step-badge">8 · Success Metrics / KPIs</div>
           <div class="slide-title">KPIs — How We Measure Success</div>
           <div class="slide-sub">Three dimensions: user experience · technical performance · adoption</div>
         </div>
@@ -833,20 +756,21 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 
 <!-- MOBILE -->
 <div id="mobile-view">
-  <div class="mc"><div class="mh dark"><div class="m-tag">Final Presentation</div><div class="m-title">AI<span>·</span>Kwau</div><div class="m-sub">Webcam × AI — making every PC understand your vision</div></div><div style="padding:6px 0;"><div class="m-ag"><div class="m-agn">01</div><div class="m-agt">Problem Statement</div></div><div class="m-ag"><div class="m-agn">02</div><div class="m-agt">Proposed Solution</div></div><div class="m-ag"><div class="m-agn">03</div><div class="m-agt">Functional Prototype</div></div><div class="m-ag"><div class="m-agn">04</div><div class="m-agt">User Experience Flow</div></div><div class="m-ag"><div class="m-agn">05</div><div class="m-agt">AI Architecture</div></div><div class="m-ag"><div class="m-agn">06</div><div class="m-agt">Value &amp; Impact</div></div><div class="m-ag"><div class="m-agn">07</div><div class="m-agt">Competitor Study</div></div><div class="m-ag"><div class="m-agn">08</div><div class="m-agt">Validation &amp; KPIs</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">Final Presentation</div><div class="m-title">AI<span>·</span>Kwau</div><div class="m-sub">Webcam × AI — making every PC understand your vision</div></div><div style="padding:6px 0;"><div class="m-ag"><div class="m-agn">01</div><div class="m-agt">Problem Statement</div></div><div class="m-ag"><div class="m-agn">02</div><div class="m-agt">Proposed Solution</div></div><div class="m-ag"><div class="m-agn">03</div><div class="m-agt">User Experience Flow</div></div><div class="m-ag"><div class="m-agn">04</div><div class="m-agt">Value &amp; Impact / Curb-Cut</div></div><div class="m-ag"><div class="m-agn">05</div><div class="m-agt">Competitor Study</div></div><div class="m-ag"><div class="m-agn">06</div><div class="m-agt">Functional Prototype Demo</div></div><div class="m-ag"><div class="m-agn">07</div><div class="m-agt">Validation &amp; User Testing</div></div><div class="m-ag"><div class="m-agn">08</div><div class="m-agt">Success Metrics / KPIs</div></div></div></div>
   <div class="mc"><div class="mh light"><div class="m-tag lt">1 · Problem Statement</div><div class="m-title dk">20% Target Users</div></div><div class="m-grid"><div class="m-ac c3"><div class="icon">🌫️</div><div class="mpct">53%</div><div class="name">Overall Dimness / Fog</div></div><div class="m-ac c2"><div class="icon">🔭</div><div class="mpct">41%</div><div class="name">Peripheral Vision Loss</div></div><div class="m-ac c5"><div class="icon">📖</div><div class="mpct">35%</div><div class="name">Reading Difficulty</div></div><div class="m-ac c1"><div class="icon">🔵</div><div class="mpct">24%</div><div class="name">Central Vision Blur</div></div><div class="m-ac c4"><div class="icon">💡</div><div class="mpct">24%</div><div class="name">Light Sensitivity</div></div></div></div>
   <div class="mc"><div class="mh dark"><div class="m-tag">1 · Problem Statement</div><div class="m-title">Five Pain Points</div><div class="m-ev"><span class="m-evn">59%</span> never used any assistive tool</div></div><div class="m-list"><div class="m-pain"><div class="m-pn">71%</div><div class="m-pt">Eye strain from long screen time</div></div><div class="m-pain"><div class="m-pn">65%</div><div class="m-pt">Text too small to read</div></div><div class="m-pain"><div class="m-pn">47%</div><div class="m-pt">Low screen contrast</div></div><div class="m-pain"><div class="m-pn">24%</div><div class="m-pt">Cursor hard to track</div></div><div class="m-pain"><div class="m-pn">18%</div><div class="m-pt">Can't find buttons or links</div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">3 · Functional Prototype</div><div class="m-title">Live Demo</div><div class="m-sub">L1 Enhancement + AI Summary</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-ficon">🖱</div><div class="m-fname">Mouse / Gaze Hold 2s → L1</div></div><div class="m-fen">Text darkens + bold · badge shows "Summarising…"</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">🤖</div><div class="m-fname">AI Summary Badge</div><div class="m-ftag">GPU: 0.85s</div></div><div class="m-fen">Qwen2.5-1.5B INT4 · EN + ZH · On-device</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">⚡</div><div class="m-fname">Panther Lake Benchmark</div></div><div class="m-fen">GPU 71 tok/s · CPU 45 tok/s · NPU 37 tok/s</div></div></div></div>
-  <div class="mc"><div class="mh light"><div class="m-tag lt">4 · User Experience Flow</div><div class="m-title dk">User Journey</div></div><div class="m-list"><div class="m-jstep"><div class="m-jicon">🏭</div><div><div class="m-jname">Pre-installed</div><div class="m-jdesc">Ready at boot · No setup</div></div></div><div class="m-jstep"><div class="m-jicon">🎯</div><div><div class="m-jname">One-time Setup</div><div class="m-jdesc">9-point calibration · ~60s</div></div></div><div class="m-jstep"><div class="m-jicon">🌐</div><div><div class="m-jname">Browse Normally</div><div class="m-jdesc">AI runs silently</div></div></div><div class="m-jstep" style="background:rgba(246,174,45,.1);border-left:3px solid var(--gold);"><div class="m-jicon" style="border-color:var(--gold);">✨</div><div><div class="m-jname">Gaze Holds 2s</div><div class="m-jdesc">L1 + AI Summary</div></div></div><div class="m-jstep"><div class="m-jicon">📖</div><div><div class="m-jname">Read Faster</div><div class="m-jdesc">Summary aids comprehension</div></div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">5 · AI Architecture</div><div class="m-title">On-Device AI Stack</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-ficon">🌐</div><div class="m-fname">Edge Extension</div><div class="m-ftag">MV3</div></div><div class="m-fen">gaze_tracker.js + content.js + background.js</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">🧠</div><div class="m-fname">Qwen2.5-1.5B INT4</div><div class="m-ftag">OpenVINO</div></div><div class="m-fen">GPU 0.85s · CPU 1.32s · NPU 1.62s on Panther Lake</div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag" style="background:rgba(246,174,45,.15);border-color:rgba(246,174,45,.4);color:var(--goldd);">6 · Value &amp; Impact</div><div class="m-title">Curb-Cut Effect</div><div class="m-sub">From 20% to everyday users</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px;">☀️ Screen glare · 🌞 Outdoor sunlight · 😵 Eye strain — same experience as vision-impaired users</div><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;">📰 Busy readers — AI summary saves reading time for everyone</div></div></div>
-  <div class="mc"><div class="mh light"><div class="m-tag lt">7 · Competitor Study</div><div class="m-title dk">HP Differentiation</div></div><div class="m-list"><div class="m-comp"><div class="m-cname">Windows Magnifier / Narrator</div><div class="m-cgap">Manual-only, no gaze awareness</div></div><div class="m-comp"><div class="m-cname">ZoomText / SuperNova</div><div class="m-cgap">Magnify-only, no AI summary</div></div><div class="m-comp"><div class="m-cname">Cloud AI Extensions</div><div class="m-cgap">Privacy risk, requires internet</div></div></div><div class="m-hp"><div class="m-hpt">HP Strengths</div><div class="m-hpi"><div class="ic">📷</div><div class="tx"><strong>Built-in webcam</strong> — zero extra cost</div></div><div class="m-hpi"><div class="ic">🔒</div><div class="tx"><strong>On-device AI</strong> — privacy-first</div></div><div class="m-hpi"><div class="ic">🤖</div><div class="tx"><strong>AI summary</strong> — unique, no competitor has this</div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">8 · Validation &amp; KPIs</div><div class="m-title">Results &amp; Metrics</div></div><div class="m-list"><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>GPU 0.85s latency</strong> — meets &lt; 1s target</div></div><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>Clean EN + ZH output</strong> on all 3 devices</div></div><div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Target:</strong> summary helpful ≥ 4/5 · retention &gt; 60%</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">2 · Proposed Solution</div><div class="m-title">On-Device AI Stack</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-ficon">🌐</div><div class="m-fname">Edge Extension</div><div class="m-ftag">MV3</div></div><div class="m-fen">gaze_tracker.js + content.js + background.js</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">🧠</div><div class="m-fname">Qwen2.5-1.5B INT4</div><div class="m-ftag">OpenVINO</div></div><div class="m-fen">GPU 0.85s · CPU 1.32s · NPU 1.62s on Panther Lake</div></div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">3 · User Experience Flow</div><div class="m-title dk">User Journey</div></div><div class="m-list"><div class="m-jstep"><div class="m-jicon">🏭</div><div><div class="m-jname">Pre-installed</div><div class="m-jdesc">Ready at boot · No setup</div></div></div><div class="m-jstep"><div class="m-jicon">🎯</div><div><div class="m-jname">One-time Setup</div><div class="m-jdesc">9-point calibration · ~60s</div></div></div><div class="m-jstep"><div class="m-jicon">🌐</div><div><div class="m-jname">Browse Normally</div><div class="m-jdesc">AI runs silently</div></div></div><div class="m-jstep" style="background:rgba(246,174,45,.1);border-left:3px solid var(--gold);"><div class="m-jicon" style="border-color:var(--gold);">✨</div><div><div class="m-jname">Gaze Holds 2s</div><div class="m-jdesc">L1 + AI Summary</div></div></div><div class="m-jstep"><div class="m-jicon">📖</div><div><div class="m-jname">Read Faster</div><div class="m-jdesc">Summary aids comprehension</div></div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag" style="background:rgba(246,174,45,.15);border-color:rgba(246,174,45,.4);color:var(--goldd);">4 · Value &amp; Impact</div><div class="m-title">Curb-Cut Effect</div><div class="m-sub">From 20% to everyday users</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px;">☀️ Screen glare · 🌞 Outdoor sunlight · 😵 Eye strain — same experience as vision-impaired users</div><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;">📰 Busy readers — AI summary saves reading time for everyone</div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">5 · Competitor Study</div><div class="m-title dk">HP Differentiation</div></div><div class="m-list"><div class="m-comp"><div class="m-cname">Windows Magnifier / Narrator</div><div class="m-cgap">Manual-only, no gaze awareness</div></div><div class="m-comp"><div class="m-cname">ZoomText / SuperNova</div><div class="m-cgap">Magnify-only, no AI summary</div></div><div class="m-comp"><div class="m-cname">Cloud AI Extensions</div><div class="m-cgap">Privacy risk, requires internet</div></div></div><div class="m-hp"><div class="m-hpt">HP Strengths</div><div class="m-hpi"><div class="ic">📷</div><div class="tx"><strong>Built-in webcam</strong> — zero extra cost</div></div><div class="m-hpi"><div class="ic">🔒</div><div class="tx"><strong>On-device AI</strong> — privacy-first</div></div><div class="m-hpi"><div class="ic">🤖</div><div class="tx"><strong>AI summary</strong> — unique, no competitor has this</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">6 · Functional Prototype Demo</div><div class="m-title">🎬 Live Demo</div><div class="m-sub">Switching to the real Edge extension now</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:13px;color:var(--muted);line-height:1.6;">L1 Text Enhancement · AI Paragraph Summary · High Contrast Themes · Mouse / Webcam Mode · Adjustable Font Size</div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">7 · Validation &amp; User Testing</div><div class="m-title">Results &amp; New Features</div></div><div class="m-list"><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>GPU 0.85s latency</strong> — meets &lt; 1s target</div></div><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>Clean EN + ZH output</strong> on all 3 devices</div></div><div class="m-sum"><div class="m-si">✨</div><div class="m-st"><strong>New this round:</strong> click-to-reveal summary · High Contrast themes · mouse mode · adjustable font size · hyperlink contrast fix</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">8 · Success Metrics / KPIs</div><div class="m-title">KPIs</div></div><div class="m-list"><div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Target:</strong> summary helpful ≥ 4/5 · retention &gt; 60% (pending user survey)</div></div></div></div>
   <div class="mc"><div class="mh dark"><div class="m-tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary</div><div class="m-title">AI Kwau</div><div class="m-sub">Zero hardware cost · Built for 20% · Benefits 80%</div></div><div class="m-list"><div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Problem:</strong> 5 conditions × 5 pain points · real users</div></div><div class="m-sum"><div class="m-si">🤖</div><div class="m-st"><strong>Solution:</strong> Browser extension · on-device AI · no habit change</div></div><div class="m-sum"><div class="m-si">🖥️</div><div class="m-st"><strong>Prototype:</strong> GPU 0.85s · Qwen2.5 working on Panther Lake</div></div><div class="m-sum"><div class="m-si">📈</div><div class="m-st"><strong>Impact:</strong> Curb-Cut Effect — from 20% to 80%</div></div><div class="m-sum"><div class="m-si">🏆</div><div class="m-st"><strong>HP Edge:</strong> Active sensing · Built-in webcam · Privacy-first</div></div></div></div>
 </div><!-- /mobile-view -->
 
 <script>
-let cur=0,total=12;
+let cur=0,total=13;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<total;i++){
   const d=document.createElement('div');
@@ -941,75 +865,6 @@ function saveAsNew(){
   a.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!DOCTYPE html>\n'+c.documentElement.outerHTML);
   a.download='ai-kwau-final-edited.html';a.click();
 }
-
-// S5 interactive prototype demo
-(function(){
-  const vp=document.getElementById('b5vp');
-  if(!vp)return;
-  const halo=document.getElementById('mock-halo-5');
-  const sumBadge=document.getElementById('sum-badge');
-  const hint=document.getElementById('demo-hint');
-  const tgts=vp.querySelectorAll('.fake-t5');
-  let t1=null,t2=null,_cur=null;
-  function scl(){const m=(document.getElementById('scaler').style.transform||'').match(/scale\(([^)]+)\)/);return m?parseFloat(m[1]):1;}
-  vp.addEventListener('mousemove',(e)=>{
-    if(!halo)return;
-    const r=vp.getBoundingClientRect(),s=scl();
-    halo.style.left=((e.clientX-r.left)/s-24)+'px';
-    halo.style.top=((e.clientY-r.top)/s-24)+'px';
-    halo.style.display='block';
-  });
-  vp.addEventListener('mouseleave',()=>{
-    if(halo)halo.style.display='none';
-    clearTimeout(t1);clearTimeout(t2);
-    tgts.forEach(el=>el.classList.remove('l1-on','l2-on'));
-    if(sumBadge){sumBadge.style.display='none';sumBadge.className='';}
-    if(hint)hint.textContent='👆 Hover any paragraph · hold 2 s → L1 darker+bold + AI Summary · click for L2';
-    _cur=null;
-  });
-  tgts.forEach(el=>{
-    el.addEventListener('mouseenter',()=>{
-      if(editMode||moveMode)return;
-      if(_cur===el)return;
-      clearTimeout(t1);clearTimeout(t2);
-      tgts.forEach(e2=>e2.classList.remove('l1-on','l2-on'));
-      if(sumBadge){sumBadge.style.display='none';}
-      _cur=el;
-      if(hint)hint.textContent='⏳ Sensing gaze hold… (2s)';
-      t1=setTimeout(()=>{
-        el.classList.add('l1-on');
-        if(sumBadge){
-          const r2=el.getBoundingClientRect();
-          const r3=vp.getBoundingClientRect();
-          const s=scl();
-          sumBadge.className='sum-badge-loading';
-          sumBadge.textContent='🤖 Summarising…';
-          sumBadge.style.top=Math.max(2,((r2.top-r3.top)/s-38))+'px';
-          sumBadge.style.left=((r2.left-r3.left)/s)+'px';
-          sumBadge.style.display='block';
-          sumBadge.style.animation='aikwau-in .22s ease';
-        }
-        if(hint)hint.textContent='✅ L1 active · AI running on GPU (Qwen2.5)…';
-        t2=setTimeout(()=>{
-          if(sumBadge){
-            sumBadge.className='sum-badge-ready';
-            sumBadge.textContent='🤖 Screen fatigue affects 71% of extended users — mostly untreated due to limited tool awareness.';
-            sumBadge.style.animation='aikwau-in .22s ease';
-          }
-          if(hint)hint.textContent='✅ Summary ready (0.85s) · Click paragraph for L2 text enlarge';
-        },1400);
-      },2000);
-    });
-    el.addEventListener('mouseleave',()=>{if(_cur===el)_cur=null;});
-    el.addEventListener('click',(e)=>{
-      e.stopPropagation();
-      if(el.classList.contains('l1-on')){
-        el.classList.add('l2-on');
-        if(hint)hint.textContent='✅ L2 active · Text enlarged · Move away to reset';
-      }
-    });
-  });
-})();
 
 document.getElementById('slide-wrapper').addEventListener('touchstart',e=>{window._tx=e.touches[0].clientX;},{passive:true});
 document.getElementById('slide-wrapper').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-window._tx;if(Math.abs(dx)>40){dx<0?next():prev();}},{passive:true});
