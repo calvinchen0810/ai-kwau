@@ -45,6 +45,7 @@
     .l2-scale-row { display: flex; align-items: center; gap: 8px; margin: 6px 0 3px 26px; }
     .l2-scale-row input[type="range"] { flex: 1; }
     .l2-scale-row span { font-size: 13px; color: #555; width: 34px; text-align: right; flex-shrink: 0; }
+    .l2-scale-row.disabled { opacity: 0.45; pointer-events: none; }
 
     /* HC theme button grid — each button previews its own theme's L1 colours */
     .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
@@ -87,11 +88,14 @@
 
   <div class="feat-sect">
     <div class="sect-lbl">閱讀增強</div>
-    <label><input type="checkbox" id="l2Enabled"> L2 字型放大（注視時）</label>
-    <div class="l2-scale-row">
+    <label><input type="checkbox" id="boldEnabled"> 文字加粗</label>
+    <label><input type="checkbox" id="l2Enabled"> 字型放大</label>
+    <div class="l2-scale-row" id="l2ScaleRow">
       <input type="range" id="l2Scale" min="1" max="3" step="0.1" value="1.2">
       <span id="l2ScaleLabel">1.2×</span>
     </div>
+    <label><input type="checkbox" id="contrastEnabled"> 加強對比</label>
+    <label><input type="checkbox" id="summaryEnabled"> 段落摘要</label>
   </div>
 
   <div class="feat-sect">

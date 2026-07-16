@@ -5,9 +5,13 @@ const calPointsOpts   = document.getElementById('calPointsOpts');
 const webcamToggles   = document.getElementById('webcamToggles');
 const panelVisible    = document.getElementById('panelVisible');
 const ringVisible     = document.getElementById('ringVisible');
+const boldEnabled     = document.getElementById('boldEnabled');
 const l2Enabled       = document.getElementById('l2Enabled');
 const l2Scale         = document.getElementById('l2Scale');
 const l2ScaleLabel    = document.getElementById('l2ScaleLabel');
+const l2ScaleRow      = document.getElementById('l2ScaleRow');
+const contrastEnabled = document.getElementById('contrastEnabled');
+const summaryEnabled  = document.getElementById('summaryEnabled');
 const themeButtons    = document.querySelectorAll('.theme-btn');
 const status          = document.getElementById('status');
 
@@ -35,10 +39,16 @@ function setL2ScaleUI(scale) {
   l2ScaleLabel.textContent = `${scale.toFixed(1)}×`;
 }
 
+function setL2RowDisabled(disabled) {
+  l2Scale.disabled = disabled;
+  l2ScaleRow.classList.toggle('disabled', disabled);
+}
+
 chrome.storage.local.get(
   ['aikwau_gaze_mode', 'aikwau_cal_points',
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
-   'aikwau_l2_enabled', 'aikwau_l2_scale', 'aikwau_hc_theme'],
+   'aikwau_l2_enabled', 'aikwau_l2_scale', 'aikwau_hc_theme',
+   'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled'],
   (data) => {
     const mode  = data.aikwau_gaze_mode ?? 'mouse';
     const pts   = data.aikwau_cal_points ?? 25;
@@ -47,10 +57,14 @@ chrome.storage.local.get(
     document.querySelector(`input[value="${mode}"]`).checked = true;
     setWebcamExtras(mode === 'webcam');
     setCalPtsUI(pts);
-    panelVisible.checked = data.aikwau_webcam_panel_visible !== false;
-    ringVisible.checked  = data.aikwau_gaze_ring_visible   !== false;
-    l2Enabled.checked    = data.aikwau_l2_enabled          !== false;
+    panelVisible.checked    = data.aikwau_webcam_panel_visible !== false;
+    ringVisible.checked     = data.aikwau_gaze_ring_visible    !== false;
+    boldEnabled.checked     = data.aikwau_bold_enabled         !== false;
+    l2Enabled.checked       = data.aikwau_l2_enabled           !== false;
+    setL2RowDisabled(!l2Enabled.checked);
     setL2ScaleUI(scale);
+    contrastEnabled.checked = data.aikwau_contrast_enabled     !== false;
+    summaryEnabled.checked  = data.aikwau_summary_enabled      !== false;
     setThemeUI(theme);
   }
 );
@@ -99,10 +113,29 @@ ringVisible.addEventListener('change', () => {
   sendToTab({ type: 'gaze:ring-toggle', visible: vis });
 });
 
+boldEnabled.addEventListener('change', () => {
+  const enabled = boldEnabled.checked;
+  chrome.storage.local.set({ aikwau_bold_enabled: enabled });
+  sendToTab({ type: 'gaze:bold-toggle', enabled });
+});
+
 l2Enabled.addEventListener('change', () => {
   const enabled = l2Enabled.checked;
   chrome.storage.local.set({ aikwau_l2_enabled: enabled });
+  setL2RowDisabled(!enabled);
   sendToTab({ type: 'gaze:l2-toggle', enabled });
+});
+
+contrastEnabled.addEventListener('change', () => {
+  const enabled = contrastEnabled.checked;
+  chrome.storage.local.set({ aikwau_contrast_enabled: enabled });
+  sendToTab({ type: 'gaze:contrast-toggle', enabled });
+});
+
+summaryEnabled.addEventListener('change', () => {
+  const enabled = summaryEnabled.checked;
+  chrome.storage.local.set({ aikwau_summary_enabled: enabled });
+  sendToTab({ type: 'gaze:summary-toggle', enabled });
 });
 
 l2Scale.addEventListener('input', () => {
