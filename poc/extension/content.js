@@ -24,13 +24,19 @@ window.__aikwauContentLoaded = true;
   let l2Enabled         = true;   // L2 font enlargement
   let l2Scale           = 1.2;    // L2 enlargement multiplier (popup slider)
   let summaryEnabled    = true;   // Summary fetch + click-to-toggle
+  let cursorRingEnabled = false;  // Mode-independent real-mouse-pointer ring
+  let cursorRing        = null;
   let badgeTimer        = null;
   const summaryCache    = new Map(); // text-key → cached summary string
   // summaryReadyEls: el → { summary, origText, handler, shown, labelEl }
   // Persists across gaze events — cleared only on SPA navigation
   const summaryReadyEls = new Map();
   let isWebcamMode = false;
-  document.addEventListener('mousemove', e => { lastMouseX = e.clientX; lastMouseY = e.clientY; }, { passive: true });
+  document.addEventListener('mousemove', e => {
+    lastMouseX = e.clientX; lastMouseY = e.clientY;
+    moveCursorRing(e.clientX, e.clientY);
+  }, { passive: true });
+  document.addEventListener('mouseleave', () => { if (cursorRing) cursorRing.style.display = 'none'; });
 
   // ── Gaze heatmap accumulator ──────────────────────────────────────────────
   const HM_W = 24, HM_H = 14;
@@ -293,15 +299,16 @@ window.__aikwauContentLoaded = true;
   chrome.storage.local.get(
     ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale',
      'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
-     'aikwau_master_enabled'],
+     'aikwau_master_enabled', 'aikwau_cursor_ring_enabled'],
     (data) => {
-      masterEnabled    = data.aikwau_master_enabled !== false;
-      l2Enabled        = data.aikwau_l2_enabled !== false;
-      l2Scale          = data.aikwau_l2_scale ?? 1.2;
-      boldEnabled      = data.aikwau_bold_enabled !== false;
-      contrastEnabled  = data.aikwau_contrast_enabled !== false;
-      summaryEnabled   = data.aikwau_summary_enabled !== false;
-      isWebcamMode     = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
+      masterEnabled     = data.aikwau_master_enabled !== false;
+      l2Enabled         = data.aikwau_l2_enabled !== false;
+      l2Scale           = data.aikwau_l2_scale ?? 1.2;
+      boldEnabled       = data.aikwau_bold_enabled !== false;
+      contrastEnabled   = data.aikwau_contrast_enabled !== false;
+      summaryEnabled    = data.aikwau_summary_enabled !== false;
+      cursorRingEnabled = data.aikwau_cursor_ring_enabled === true;
+      isWebcamMode      = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
       if (isWebcamMode) initWebcam();
     }
   );
@@ -506,6 +513,23 @@ window.__aikwauContentLoaded = true;
     gazeRing.style.top = `${y}px`;
   }
 
+  // ── Cursor ring: enhances the real mouse pointer, mode-independent ────────
+  function ensureCursorRing() {
+    if (cursorRing) return;
+    cursorRing = document.createElement('div');
+    cursorRing.id = '__aikwau_cursor_ring';
+    cursorRing.className = 'aikwau-cursor-ring';
+    document.body.appendChild(cursorRing);
+  }
+
+  function moveCursorRing(x, y) {
+    if (!cursorRingEnabled) { if (cursorRing) cursorRing.style.display = 'none'; return; }
+    ensureCursorRing();
+    cursorRing.style.display = 'block';
+    cursorRing.style.left = `${x}px`;
+    cursorRing.style.top = `${y}px`;
+  }
+
   // ── Loading overlay ───────────────────────────────────────────────────────
   let loadingOverlay = null;
 
@@ -682,6 +706,10 @@ window.__aikwauContentLoaded = true;
     if (msg.type === 'gaze:ring-toggle') {
       ringVisible = msg.visible;
       if (gazeRing) gazeRing.style.display = ringVisible ? 'block' : 'none';
+    }
+    if (msg.type === 'gaze:cursor-ring-toggle') {
+      cursorRingEnabled = msg.enabled;
+      if (!cursorRingEnabled && cursorRing) cursorRing.style.display = 'none';
     }
     if (msg.type === 'gaze:master-toggle') {
       masterEnabled = msg.enabled;

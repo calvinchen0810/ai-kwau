@@ -16,6 +16,7 @@ const l2ScaleLabel    = document.getElementById('l2ScaleLabel');
 const l2ScaleRow      = document.getElementById('l2ScaleRow');
 const contrastEnabled = document.getElementById('contrastEnabled');
 const summaryEnabled  = document.getElementById('summaryEnabled');
+const cursorRingEnabled = document.getElementById('cursorRingEnabled');
 const themeButtons    = document.querySelectorAll('.theme-btn');
 const status          = document.getElementById('status');
 
@@ -60,7 +61,7 @@ chrome.storage.local.get(
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
    'aikwau_l2_enabled', 'aikwau_l2_scale', 'aikwau_hc_theme',
    'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
-   'aikwau_master_enabled'],
+   'aikwau_master_enabled', 'aikwau_cursor_ring_enabled'],
   (data) => {
     const mode  = data.aikwau_gaze_mode ?? 'mouse';
     const pts   = data.aikwau_cal_points ?? 25;
@@ -79,6 +80,7 @@ chrome.storage.local.get(
     summaryEnabled.checked  = data.aikwau_summary_enabled      !== false;
     setThemeUI(theme);
     setMasterUI(data.aikwau_master_enabled !== false);
+    cursorRingEnabled.checked = data.aikwau_cursor_ring_enabled === true;
   }
 );
 
@@ -124,6 +126,12 @@ ringVisible.addEventListener('change', () => {
   const vis = ringVisible.checked;
   chrome.storage.local.set({ aikwau_gaze_ring_visible: vis });
   sendToTab({ type: 'gaze:ring-toggle', visible: vis });
+});
+
+cursorRingEnabled.addEventListener('change', () => {
+  const enabled = cursorRingEnabled.checked;
+  chrome.storage.local.set({ aikwau_cursor_ring_enabled: enabled });
+  sendToTab({ type: 'gaze:cursor-ring-toggle', enabled });
 });
 
 masterEnabled.addEventListener('change', () => {

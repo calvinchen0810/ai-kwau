@@ -188,6 +188,21 @@
   50%       { opacity: 1.00; box-shadow: 0 3px 24px rgba(255, 215, 0, 0.65); }
 }
 
+/* ── Cursor ring: enhances the real mouse pointer, mode-independent ──── */
+.aikwau-cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 238, 0, 0.8);
+  box-shadow: 0 0 10px rgba(255, 238, 0, 0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transform: translate(-50%, -50%);
+  transition: left 0.08s ease-out, top 0.08s ease-out;
+  display: none;
+}
+
 /* ── High Contrast themes (data-aikwau-hc-theme) ─────────────────────── */
 [data-aikwau-hc-theme="aquatic"] .aikwau-contrast { background-color: #003044 !important; color: #eaffff !important; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-contrast a,
@@ -198,6 +213,7 @@
 [data-aikwau-hc-theme="aquatic"] .aikwau-summary-label--shown { background: #00e5ff; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-highlight { outline-color: rgba(0, 229, 255, 0.75) !important; animation-name: aikwau-hl-pulse-aquatic; }
 [data-aikwau-hc-theme="aquatic"] .aikwau-hint-icon { background: #00e5ff; }
+[data-aikwau-hc-theme="aquatic"] .aikwau-cursor-ring { border-color: rgba(0, 229, 255, 0.8); box-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
 @keyframes aikwau-hl-pulse-aquatic {
   0%, 100% { outline-color: rgba(0, 194, 224, 0.50); box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.08); }
   50%      { outline-color: rgba(0, 229, 255, 1.00); box-shadow: 0 0 0 5px rgba(0, 229, 255, 0.25), 0 0 14px rgba(0, 229, 255, 0.40); }
@@ -212,6 +228,7 @@
 [data-aikwau-hc-theme="desert"] .aikwau-summary-label--shown { background: #ffb020; }
 [data-aikwau-hc-theme="desert"] .aikwau-highlight { outline-color: rgba(255, 176, 32, 0.75) !important; animation-name: aikwau-hl-pulse-desert; }
 [data-aikwau-hc-theme="desert"] .aikwau-hint-icon { background: #ffb020; }
+[data-aikwau-hc-theme="desert"] .aikwau-cursor-ring { border-color: rgba(255, 176, 32, 0.8); box-shadow: 0 0 10px rgba(255, 176, 32, 0.5); }
 @keyframes aikwau-hl-pulse-desert {
   0%, 100% { outline-color: rgba(214, 138, 46, 0.50); box-shadow: 0 0 0 3px rgba(255, 176, 32, 0.08); }
   50%      { outline-color: rgba(255, 176, 32, 1.00); box-shadow: 0 0 0 5px rgba(255, 176, 32, 0.25), 0 0 14px rgba(255, 176, 32, 0.40); }
@@ -226,6 +243,7 @@
 [data-aikwau-hc-theme="dusk"] .aikwau-summary-label--shown { background: #ff4fd8; }
 [data-aikwau-hc-theme="dusk"] .aikwau-highlight { outline-color: rgba(255, 79, 216, 0.75) !important; animation-name: aikwau-hl-pulse-dusk; }
 [data-aikwau-hc-theme="dusk"] .aikwau-hint-icon { background: #ff4fd8; }
+[data-aikwau-hc-theme="dusk"] .aikwau-cursor-ring { border-color: rgba(255, 79, 216, 0.8); box-shadow: 0 0 10px rgba(255, 79, 216, 0.5); }
 @keyframes aikwau-hl-pulse-dusk {
   0%, 100% { outline-color: rgba(214, 79, 192, 0.50); box-shadow: 0 0 0 3px rgba(255, 79, 216, 0.08); }
   50%      { outline-color: rgba(255, 79, 216, 1.00); box-shadow: 0 0 0 5px rgba(255, 79, 216, 0.25), 0 0 14px rgba(255, 79, 216, 0.40); }
@@ -240,6 +258,7 @@
 [data-aikwau-hc-theme="nightsky"] .aikwau-summary-label--shown { background: #4fc3ff; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-highlight { outline-color: rgba(79, 195, 255, 0.75) !important; animation-name: aikwau-hl-pulse-nightsky; }
 [data-aikwau-hc-theme="nightsky"] .aikwau-hint-icon { background: #4fc3ff; }
+[data-aikwau-hc-theme="nightsky"] .aikwau-cursor-ring { border-color: rgba(79, 195, 255, 0.8); box-shadow: 0 0 10px rgba(79, 195, 255, 0.5); }
 @keyframes aikwau-hl-pulse-nightsky {
   0%, 100% { outline-color: rgba(58, 143, 214, 0.50); box-shadow: 0 0 0 3px rgba(79, 195, 255, 0.08); }
   50%      { outline-color: rgba(79, 195, 255, 1.00); box-shadow: 0 0 0 5px rgba(79, 195, 255, 0.25), 0 0 14px rgba(79, 195, 255, 0.40); }
