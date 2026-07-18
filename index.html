@@ -153,11 +153,23 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .j-detail{font-size:10px;color:var(--accent);background:rgba(0,119,182,.07);border:1px solid rgba(0,119,182,.2);border-radius:8px;padding:4px 8px;line-height:1.5;text-align:center;margin-top:6px;width:100%;}
 
   /* S7 Architecture */
-  #s7{flex-direction:column;background:var(--navy);}
+  #s7{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s7 .s-top{padding:20px 44px 10px;}
-  #s7 .s-top .slide-title{color:#fff;font-size:28px;}
-  #s7 .s-top .slide-sub{color:rgba(255,255,255,.45);font-size:13px;}
+  #s7 .s-top .slide-title{color:var(--navy);font-size:28px;}
+  #s7 .s-top .slide-sub{color:var(--muted);font-size:13px;}
   #s7 .arch-wrap{flex:1;padding:0 32px 14px;display:flex;flex-direction:column;gap:8px;}
+  #s7 .abox{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);}
+  #s7 .abox.cyan{background:rgba(0,180,216,.09);border-color:rgba(0,180,216,.3);}
+  #s7 .abox.gold{background:rgba(246,174,45,.1);border-color:rgba(201,146,42,.3);}
+  #s7 .abox.green{background:rgba(6,214,160,.1);border-color:rgba(6,214,160,.3);}
+  #s7 .abox-title{color:var(--navy);}
+  #s7 .abox-sub{color:var(--muted);}
+  #s7 .aarr{color:rgba(0,0,0,.25);}
+  #s7 .arch-mid{color:var(--muted);border-top-color:rgba(0,0,0,.08);border-bottom-color:rgba(0,0,0,.08);}
+  #s7 .result-chips{border-top-color:rgba(0,0,0,.1);}
+  #s7 .rchip{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);}
+  #s7 .rchip-num{color:var(--navy);}
+  #s7 .rchip-lbl{color:var(--muted);}
   .arch-row7{display:flex;align-items:stretch;gap:0;}
   .abox{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:10px 12px;text-align:center;}
   .abox.cyan{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.35);}
@@ -199,17 +211,17 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .hp-item .tx strong{color:var(--cyanl);}
 
   /* S10 Validation */
-  #s10{flex-direction:column;background:var(--navy);}
+  #s10{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s10 .s-top{padding:20px 40px 8px;}
-  #s10 .s-top .slide-title{color:#fff;font-size:26px;}
-  #s10 .s-top .slide-sub{color:rgba(255,255,255,.45);font-size:13px;}
+  #s10 .s-top .slide-title{color:var(--navy);font-size:26px;}
+  #s10 .s-top .slide-sub{color:var(--muted);font-size:13px;}
   #s10 .val-body{flex:1;display:flex;padding:0 44px 18px;min-height:0;}
   #s10 .val-left{flex:1;display:flex;flex-direction:column;justify-content:space-between;}
   #s10 .val-hdr{display:grid;grid-template-columns:1fr 22px 1fr;gap:10px;padding:0 4px 6px;}
-  #s10 .val-row{display:grid;grid-template-columns:1fr 22px 1fr;gap:10px;align-items:center;background:rgba(255,255,255,.04);border-radius:9px;padding:10px 14px;}
-  #s10 .val-fb{font-size:14px;color:rgba(255,255,255,.6);}
-  #s10 .val-arr{text-align:center;color:rgba(0,180,216,.5);font-size:14px;}
-  #s10 .val-ship{font-size:14.5px;color:#06d6a0;font-weight:700;}
+  #s10 .val-row{display:grid;grid-template-columns:1fr 22px 1fr;gap:10px;align-items:center;background:rgba(0,119,182,.05);border-radius:9px;padding:10px 14px;}
+  #s10 .val-fb{font-size:14px;color:var(--text);}
+  #s10 .val-arr{text-align:center;color:rgba(0,119,182,.5);font-size:14px;}
+  #s10 .val-ship{font-size:14.5px;color:#059669;font-weight:700;}
   .vcheck{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;background:rgba(6,214,160,.06);border-left:3px solid rgba(6,214,160,.5);margin-bottom:6px;}
   .vcheck-dot{width:18px;height:18px;border-radius:50%;background:rgba(6,214,160,.2);border:2px solid #06d6a0;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;margin-top:1px;}
   .vcheck-tx{font-size:12px;color:rgba(255,255,255,.85);line-height:1.5;}
@@ -221,15 +233,15 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .iter-row .to{color:#059669;font-weight:700;font-family:'Sora',sans-serif;font-size:11px;}
 
   /* S11 Future Roadmap */
-  #s11{flex-direction:column;background:var(--navy);}
+  #s11{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s11 .s-top{padding:24px 48px 10px;}
-  #s11 .s-top .slide-title{color:#fff;font-size:34px;}
-  #s11 .s-top .slide-sub{color:rgba(255,255,255,.45);font-size:14px;}
+  #s11 .s-top .slide-title{color:var(--navy);font-size:34px;}
+  #s11 .s-top .slide-sub{color:var(--muted);font-size:14px;}
   #s11 .rm-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;padding:0 48px 28px;}
-  .rm-card{background:rgba(246,174,45,.06);border:1px solid rgba(246,174,45,.22);border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:8px;}
+  .rm-card{background:rgba(246,174,45,.08);border:1px solid rgba(201,146,42,.25);border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:8px;}
   .rm-icon{font-size:26px;}
-  .rm-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:rgba(255,255,255,.9);}
-  .rm-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.5;}
+  .rm-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--navy);}
+  .rm-sub{font-size:13px;color:var(--muted);line-height:1.5;}
 
   /* S13 KPIs */
   #skpi{flex-direction:column;}
@@ -529,18 +541,18 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="result-chips">
             <div class="rchip" style="background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);">
               <div class="rchip-num" style="color:var(--cyan);">0.85s</div>
-              <div class="rchip-lbl" style="color:rgba(255,255,255,.5);">GPU · 71 tok/s ⭐</div>
+              <div class="rchip-lbl" style="color:var(--muted);">GPU · 71 tok/s ⭐</div>
             </div>
-            <div class="rchip" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);">
-              <div class="rchip-num" style="color:#fff;">1.32s</div>
-              <div class="rchip-lbl" style="color:rgba(255,255,255,.4);">CPU · 45 tok/s</div>
+            <div class="rchip">
+              <div class="rchip-num">1.32s</div>
+              <div class="rchip-lbl">CPU · 45 tok/s</div>
             </div>
-            <div class="rchip" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);">
-              <div class="rchip-num" style="color:#fff;">1.62s</div>
-              <div class="rchip-lbl" style="color:rgba(255,255,255,.4);">NPU · 37 tok/s</div>
+            <div class="rchip">
+              <div class="rchip-num">1.62s</div>
+              <div class="rchip-lbl">NPU · 37 tok/s</div>
             </div>
           </div>
-          <div style="margin-top:10px;text-align:center;font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.5px;">Test Environment · KentoI (Intel Panther Lake)</div>
+          <div style="margin-top:10px;text-align:center;font-family:'Sora',sans-serif;font-size:11px;color:var(--muted);letter-spacing:.5px;">Test Environment · KentoI (Intel Panther Lake)</div>
         </div>
       </div>
 
@@ -667,9 +679,9 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <!-- Feedback → Shipped table -->
           <div class="val-left">
             <div class="val-hdr">
-              <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);">User Feedback</div>
+              <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">User Feedback</div>
               <div></div>
-              <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(6,214,160,.6);">Shipped ✅</div>
+              <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#059669;">Shipped ✅</div>
             </div>
             <div class="val-row"><div class="val-fb">Needed more than text highlight</div><div class="val-arr">→</div><div class="val-ship">AI Paragraph Summary</div></div>
             <div class="val-row"><div class="val-fb">Floating badge was distracting</div><div class="val-arr">→</div><div class="val-ship">Click-to-reveal, replaces text</div></div>
