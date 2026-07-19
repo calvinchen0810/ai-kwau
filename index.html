@@ -141,9 +141,9 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s5 .demo-chip{font-size:12.5px;font-weight:600;color:var(--cyanl);background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);padding:6px 16px;border-radius:20px;}
 
   /* S6 Journey */
-  #s6{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);justify-content:center;}
-  #s6 .s-top{padding:0 48px 20px;}
-  #s6 .journey{display:flex;align-items:center;padding:0 28px;gap:0;}
+  #s6{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #s6 .s-top{padding:22px 48px 8px;}
+  #s6 .journey{flex:1;display:flex;align-items:center;padding:0 28px 20px;gap:0;}
   .j-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 4px;}
   .j-step:not(:last-child)::after{content:'→';position:absolute;right:-12px;top:20px;font-size:20px;color:var(--cyan);font-family:'Sora',sans-serif;z-index:2;}
   .j-icon{width:68px;height:68px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px;border:3px solid var(--cyan);flex-shrink:0;}
@@ -157,7 +157,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s7 .s-top{padding:20px 44px 10px;}
   #s7 .s-top .slide-title{color:var(--navy);font-size:34px;}
   #s7 .s-top .slide-sub{color:var(--muted);font-size:13px;}
-  #s7 .arch-wrap{flex:1;padding:0 32px 14px;display:flex;flex-direction:column;gap:8px;}
+  #s7 .arch-wrap{flex:1;padding:0 32px 14px;display:flex;flex-direction:column;gap:8px;justify-content:space-between;}
   #s7 .abox{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);}
   #s7 .abox.cyan{background:rgba(0,180,216,.09);border-color:rgba(0,180,216,.3);}
   #s7 .abox.gold{background:rgba(246,174,45,.1);border-color:rgba(201,146,42,.3);}
@@ -170,7 +170,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s7 .rchip{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);}
   #s7 .rchip-num{color:var(--navy);}
   #s7 .rchip-lbl{color:var(--muted);}
-  #s7 .arch-world-row{flex:1;display:flex;align-items:stretch;gap:0;}
+  #s7 .arch-world-row{display:flex;align-items:stretch;gap:0;}
   .world-box{flex:1;border-radius:14px;padding:12px 16px;display:flex;flex-direction:column;gap:8px;}
   .world-box.browser{background:rgba(0,119,182,.05);border:2px solid rgba(0,119,182,.25);}
   .world-box.os{background:rgba(246,174,45,.07);border:2px solid rgba(201,146,42,.28);}
@@ -192,6 +192,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .os-icon{font-size:20px;flex-shrink:0;}
   .os-name{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--navy);line-height:1.2;}
   .os-sub-lbl{font-size:10px;color:var(--muted);margin-top:1px;}
+  .br-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,119,182,.06);border-radius:9px;border:1px solid rgba(0,119,182,.2);}
   .arch-row7{display:flex;align-items:stretch;gap:0;}
   .abox{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:10px 12px;text-align:center;}
   .abox.cyan{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.35);}
@@ -402,7 +403,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <path d="M20 180L20 166M20 180L34 180" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
             <path d="M180 180L166 180M180 180L180 166" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
           </svg>
-          <div class="eye-cap">GAZE TRACKING AI</div>
         </div>
       </div>
 
@@ -441,8 +441,8 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
               <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
                 <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--accent);">👁️ Eye Position</div></div>
                 <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--accent);">🧑 Face Angle</div></div>
-                <div style="padding:6px 10px;background:rgba(0,119,182,.06);border-radius:8px;border-left:3px solid rgba(0,119,182,.35);"><div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--accent);">🖱️ Mouse Enhance</div></div>
                 <div style="padding:6px 10px;background:rgba(246,174,45,.1);border-radius:8px;border-left:3px solid rgba(201,146,42,.45);"><div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--goldd);">🗺️ Gaze Heatmap</div><div class="lnode-body">Builds visual field map</div></div>
+                <div style="padding:6px 10px;background:rgba(6,214,160,.1);border-radius:8px;border-left:3px solid rgba(6,214,160,.4);"><div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:700;color:var(--green);">🖱️ Mouse Movement</div></div>
               </div>
             </div>
             <div class="larr"><div class="larr-line">→</div></div>
@@ -456,6 +456,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
               <div class="lnode-head"><div class="lnode-icon">✨</div><div><div class="lnode-title">Act</div></div></div>
               <div style="padding:9px 11px;background:rgba(0,119,182,.07);border-radius:9px;border:1px solid rgba(0,119,182,.2);margin-bottom:8px;margin-top:10px;position:relative;"><div class="ai-badge" style="top:6px;right:6px;">AI</div><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px;">👁 Visible Area</div><div class="lnode-body">Progressive text enhancement<br>🤖 AI Summary</div></div>
               <div style="padding:9px 11px;background:rgba(246,174,45,.1);border-radius:9px;border:1px solid rgba(201,146,42,.3);margin-bottom:8px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--goldd);margin-bottom:3px;">🗺️ Blind Area</div><div class="lnode-body">✦ Focus Attraction</div></div>
+              <div style="padding:9px 11px;background:rgba(6,214,160,.08);border-radius:9px;border:1px solid rgba(6,214,160,.3);margin-bottom:8px;"><div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">🖱️ Mouse Cursor Enhance</div><div class="lnode-body">✦ Pointer amplification</div></div>
               <div style="font-family:'Sora',sans-serif;font-size:10px;color:var(--muted);text-align:right;letter-spacing:.5px;">See next slide →</div>
             </div>
           </div>
@@ -485,9 +486,9 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="split-divider"></div>
           <div class="split-half">
             <div class="half-header gold"><div style="font-size:22px;">🗺️</div><div><div class="half-title gold">Blind Area</div><div class="half-sub">Unvisited area → AI switches mode</div></div></div>
-            <div class="iv-row gold"><div class="iv-num">✦</div><div class="iv-title">Focus Attraction<div class="iv-en">Mutually exclusive with contrast</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Auto-trigger</div></div>
             <div class="iv-row gold"><div class="iv-num">📊</div><div class="iv-title">GMM Heatmap<div class="iv-en">Gaussian Mixture Model</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Background</div></div>
             <div class="iv-row gold"><div class="iv-num">💡</div><div class="iv-title">Pulse Dot<div class="iv-en">Boundary indicator</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Visual edge</div></div>
+            <div class="iv-row gold"><div class="iv-num">✦</div><div class="iv-title">Focus Attraction<div class="iv-en">Mutually exclusive with contrast</div></div><div class="iv-trigger" style="color:var(--goldd);background:rgba(246,174,45,.1);">Auto-trigger</div></div>
           </div>
         </div>
       </div>
@@ -504,18 +505,9 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <!-- Browser World -->
             <div class="world-box browser">
               <div class="world-hdr">🌐 Browser World</div>
-              <div class="sub-world main-w">
-                <div class="sub-lbl main-w">MAIN world</div>
-                <div class="w-item">👁 Gaze Tracking</div>
-                <div class="w-item">⏱ Dwell Detection</div>
-              </div>
-              <div class="ce-bridge">↓ &nbsp;CustomEvent (x, y)</div>
-              <div class="sub-world iso-w">
-                <div class="sub-lbl iso-w">Isolated world</div>
-                <div class="w-item">🎨 Theme Bridge</div>
-                <div class="w-item">✨ Content Enhancement</div>
-                <div class="w-item">⚙️ Service Worker</div>
-              </div>
+              <div class="br-item"><div class="os-icon">👁️</div><div><div class="os-name">Gaze Tracking</div><div class="os-sub-lbl">Mouse hover · Webcam</div></div></div>
+              <div class="br-item"><div class="os-icon">✨</div><div><div class="os-name">Content Enhancement</div><div class="os-sub-lbl">Text enhancement · AI Summary</div></div></div>
+              <div class="br-item"><div class="os-icon">⚙️</div><div><div class="os-name">Service Worker</div><div class="os-sub-lbl">Native port routing</div></div></div>
             </div>
             <!-- Native Messaging Bridge -->
             <div class="nm-col">
@@ -644,14 +636,13 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       <div class="slide" id="s5">
         <div class="step-badge">6 · Functional Prototype Demo</div>
         <div class="demo-icon">🎬</div>
-        <div class="demo-title">Live Demo</div>
-        <div class="demo-sub">Switching to the actual Microsoft Edge extension now — real webpage, real gaze/mouse trigger, real on-device AI summary.</div>
+        <div class="demo-title">Demo Video</div>
         <div class="demo-chip-row">
           <div class="demo-chip">Text Enhancement</div>
           <div class="demo-chip">AI Paragraph Summary</div>
           <div class="demo-chip">High Contrast Themes</div>
           <div class="demo-chip">Mouse / Webcam Mode</div>
-          <div class="demo-chip">Adjustable Font Size</div>
+          <div class="demo-chip">Blind-Spot Highlights</div>
           <div class="demo-chip">Mouse Cursor Enhance</div>
         </div>
       </div>
@@ -674,11 +665,11 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             </div>
             <div class="val-row"><div class="val-fb">Needed more than text highlight</div><div class="val-arr">→</div><div class="val-ship">AI Paragraph Summary</div></div>
             <div class="val-row"><div class="val-fb">Floating badge was distracting</div><div class="val-arr">→</div><div class="val-ship">Click-to-reveal, replaces text</div></div>
+            <div class="val-row"><div class="val-fb">Fixed font size too small</div><div class="val-arr">→</div><div class="val-ship">Font Slider (1.0×–3.0×)</div></div>
+            <div class="val-row"><div class="val-fb">Links invisible in highlighted text</div><div class="val-arr">→</div><div class="val-ship">Hyperlink Recolor per Theme</div></div>
             <div class="val-row"><div class="val-fb">Low contrast, hard to read</div><div class="val-arr">→</div><div class="val-ship">High Contrast Themes (Windows style)</div></div>
             <div class="val-row"><div class="val-fb">No webcam, privacy concerns</div><div class="val-arr">→</div><div class="val-ship">Mouse-hover Mode</div></div>
             <div class="val-row"><div class="val-fb">No control over which features</div><div class="val-arr">→</div><div class="val-ship">Independent Feature Toggles</div></div>
-            <div class="val-row"><div class="val-fb">Fixed font size too small</div><div class="val-arr">→</div><div class="val-ship">Font Slider (1.0×–3.0×)</div></div>
-            <div class="val-row"><div class="val-fb">Links invisible in highlighted text</div><div class="val-arr">→</div><div class="val-ship">Hyperlink Recolor per Theme</div></div>
           </div>
 
         </div>
@@ -720,33 +711,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         <div class="s-top">
           <div class="step-badge">9 · Success Metrics / KPIs</div>
           <div class="slide-title">KPIs — How We Measure Success</div>
-          <div class="slide-sub">Three dimensions: user experience · technical performance · adoption</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-card cyan">
-            <div class="kpi-icon">👁</div>
-            <div class="kpi-cat">User Experience</div>
-            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>AI summary rated helpful ≥ 4/5</div></div>
-            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>L1 activation feels natural (qualitative)</div></div>
-            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>No missed gaze detections &gt; 10%</div></div>
-            <div class="kpi-item"><div class="kpi-dot cyan"></div><div>CVS eye strain score reduction after use</div></div>
-          </div>
-          <div class="kpi-card gold">
-            <div class="kpi-icon">⚡</div>
-            <div class="kpi-cat">Technical Performance</div>
-            <div class="kpi-item"><div class="kpi-dot gold"></div><div>Summary latency &lt; 2s &nbsp;<span class="kpi-achieved">GPU: 0.85s ✅</span></div></div>
-            <div class="kpi-item"><div class="kpi-dot gold"></div><div>Zero crashes in 10 consecutive requests &nbsp;<span class="kpi-achieved">✅</span></div></div>
-            <div class="kpi-item"><div class="kpi-dot gold"></div><div>ENG + CHT clean output on all devices &nbsp;<span class="kpi-achieved">✅</span></div></div>
-            <div class="kpi-item"><div class="kpi-dot gold"></div><div>Model loads in &lt; 15s (warm-up once)</div></div>
-          </div>
-          <div class="kpi-card green">
-            <div class="kpi-icon">📈</div>
-            <div class="kpi-cat">Adoption &amp; Impact</div>
-            <div class="kpi-item"><div class="kpi-dot green"></div><div>7-day extension retention &gt; 60%</div></div>
-            <div class="kpi-item"><div class="kpi-dot green"></div><div>Per-session AI summary triggers &gt; 5</div></div>
-            <div class="kpi-item"><div class="kpi-dot green"></div><div>Reduction in re-reading same paragraph</div></div>
-            <div class="kpi-item"><div class="kpi-dot green"></div><div>Curb-Cut: non-impaired users adopt ≥ 30%</div></div>
-          </div>
         </div>
       </div>
 
@@ -754,9 +718,8 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       <div class="slide" id="s12">
         <div class="s-left">
           <div class="tag" style="color:#90e0ef;background:rgba(144,224,239,.1);border-color:rgba(144,224,239,.3);">Summary</div>
-          <div class="slide-title">AI Kwau<span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.4);display:block;margin-top:4px;">Webcam × AI — see clearly, understand instantly</span></div>
+          <div class="slide-title"><span style="position:relative;display:inline-block;">AI Kwau<span style="position:absolute;left:100%;bottom:70%;font-family:'Sora',sans-serif;font-size:13px;font-weight:400;color:rgba(255,255,255,.5);letter-spacing:2px;white-space:nowrap;margin-left:6px;">愛看有</span></span><span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.4);display:block;margin-top:4px;">Webcam × AI — see clearly, understand instantly</span></div>
           <div class="slide-sub">Zero hardware cost.<br>Built for 20%, benefits 80%.</div>
-          <div style="margin-top:20px;display:inline-block;padding:11px 20px;background:var(--cyan);border-radius:11px;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--navy);">🎬 Live Demo Available</div>
         </div>
         <div class="s-right" style="flex-direction:column;justify-content:center;gap:9px;padding:30px;">
           <div class="sum-item"><div class="ic">🎯</div><div class="tx"><strong>Problem:</strong> 5 pain points · 59% never used any assistive tool</div></div>
