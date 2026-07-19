@@ -170,6 +170,28 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s7 .rchip{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1);}
   #s7 .rchip-num{color:var(--navy);}
   #s7 .rchip-lbl{color:var(--muted);}
+  #s7 .arch-world-row{flex:1;display:flex;align-items:stretch;gap:0;}
+  .world-box{flex:1;border-radius:14px;padding:12px 16px;display:flex;flex-direction:column;gap:8px;}
+  .world-box.browser{background:rgba(0,119,182,.05);border:2px solid rgba(0,119,182,.25);}
+  .world-box.os{background:rgba(246,174,45,.07);border:2px solid rgba(201,146,42,.28);}
+  .world-hdr{font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:var(--accent);margin-bottom:2px;}
+  .world-box.os .world-hdr{color:var(--goldd);}
+  .sub-world{border-radius:9px;padding:8px 12px;flex:1;display:flex;flex-direction:column;gap:5px;}
+  .sub-world.main-w{background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.3);}
+  .sub-world.iso-w{background:rgba(0,119,182,.06);border:1px solid rgba(0,119,182,.2);}
+  .sub-lbl{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+  .sub-lbl.main-w{color:var(--cyan);}
+  .sub-lbl.iso-w{color:var(--accent);}
+  .w-item{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--navy);line-height:1.4;}
+  .ce-bridge{text-align:center;font-family:'Sora',sans-serif;font-size:11px;color:var(--cyan);font-weight:600;letter-spacing:.5px;padding:2px 0;flex-shrink:0;}
+  .nm-col{width:90px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:0 6px;}
+  .nm-lbl{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-align:center;line-height:1.4;}
+  .nm-arr{font-size:26px;color:var(--accent);opacity:.55;}
+  .nm-sub{font-family:'Sora',sans-serif;font-size:9px;color:var(--muted);text-align:center;letter-spacing:.3px;}
+  .os-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(201,146,42,.07);border-radius:9px;border:1px solid rgba(201,146,42,.2);}
+  .os-icon{font-size:20px;flex-shrink:0;}
+  .os-name{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--navy);line-height:1.2;}
+  .os-sub-lbl{font-size:10px;color:var(--muted);margin-top:1px;}
   .arch-row7{display:flex;align-items:stretch;gap:0;}
   .abox{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:10px 12px;text-align:center;}
   .abox.cyan{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.35);}
@@ -478,43 +500,36 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="slide-sub">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
         </div>
         <div class="arch-wrap">
-          <div class="arch-row7">
-            <div class="abox cyan">
-              <div class="abox-icon">🌐</div>
-              <div class="abox-title">Edge Extension</div>
-              <div class="abox-sub">gaze_tracker.js<br>content.js · CSS</div>
+          <div class="arch-world-row">
+            <!-- Browser World -->
+            <div class="world-box browser">
+              <div class="world-hdr">🌐 Browser World</div>
+              <div class="sub-world main-w">
+                <div class="sub-lbl main-w">MAIN world</div>
+                <div class="w-item">👁 Gaze Tracking</div>
+                <div class="w-item">⏱ Dwell Detection</div>
+              </div>
+              <div class="ce-bridge">↓ &nbsp;CustomEvent (x, y)</div>
+              <div class="sub-world iso-w">
+                <div class="sub-lbl iso-w">Isolated world</div>
+                <div class="w-item">🎨 Theme Bridge</div>
+                <div class="w-item">✨ Content Enhancement</div>
+                <div class="w-item">⚙️ Service Worker</div>
+              </div>
             </div>
-            <div class="aarr">→</div>
-            <div class="abox cyan">
-              <div class="abox-icon">⚙️</div>
-              <div class="abox-title">Service Worker</div>
-              <div class="abox-sub">background.js<br>reqId routing</div>
+            <!-- Native Messaging Bridge -->
+            <div class="nm-col">
+              <div class="nm-lbl">Native<br>Messaging</div>
+              <div class="nm-arr">↔</div>
+              <div class="nm-sub">stdin / stdout</div>
             </div>
-            <div class="aarr">→</div>
-            <div class="abox cyan">
-              <div class="abox-icon">🐍</div>
-              <div class="abox-title">Native Host</div>
-              <div class="abox-sub">native_host.py<br>stdin / stdout JSON</div>
-            </div>
-          </div>
-          <div class="arch-mid">↓ &nbsp; Native Messaging · Length-prefixed JSON · Windows Registry HKCU &nbsp; ↓</div>
-          <div class="arch-row7">
-            <div class="abox gold">
-              <div class="abox-icon">🧠</div>
-              <div class="abox-title">Qwen2.5-1.5B</div>
-              <div class="abox-sub">INT4 sym<br>group_size=128</div>
-            </div>
-            <div class="aarr">→</div>
-            <div class="abox gold">
-              <div class="abox-icon">🔬</div>
-              <div class="abox-title">OpenVINO GenAI</div>
-              <div class="abox-sub">LLMPipeline<br>v2026.2</div>
-            </div>
-            <div class="aarr">→</div>
-            <div class="abox green">
-              <div class="abox-icon">⚡</div>
-              <div class="abox-title">Intel Hardware</div>
-              <div class="abox-sub">GPU → NPU → CPU<br>auto-fallback</div>
+            <!-- OS World -->
+            <div class="world-box os">
+              <div class="world-hdr">⚙️ OS World</div>
+              <div class="os-item"><div class="os-icon">📦</div><div><div class="os-name">Native Host</div><div class="os-sub-lbl">PyInstaller · Windows</div></div></div>
+              <div class="os-item"><div class="os-icon">🔬</div><div><div class="os-name">OpenVINO GenAI</div><div class="os-sub-lbl">Inference Runtime</div></div></div>
+              <div class="os-item"><div class="os-icon">🧠</div><div><div class="os-name">Qwen2.5-1.5B INT4</div><div class="os-sub-lbl">On-device AI Model</div></div></div>
+              <div class="os-item"><div class="os-icon">🀄</div><div><div class="os-name">Text Post-processing</div><div class="os-sub-lbl">Simplified → Traditional Chinese</div></div></div>
             </div>
           </div>
           <div class="result-chips">
