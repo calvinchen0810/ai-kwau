@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <style>
-    body { font-family: sans-serif; width: 340px; padding: 16px; margin: 0; }
-    h3 { margin: 0 0 10px; font-size: 18px; color: #1a1a2e; }
-    label { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 16px; cursor: pointer; }
-    button { margin-top: 8px; width: 100%; padding: 10px; font-size: 15px; cursor: pointer;
+    body { font-family: sans-serif; width: 340px; padding: 10px 16px; margin: 0; }
+    h3 { margin: 0 0 6px; font-size: 18px; color: #1a1a2e; }
+    label { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 16px; cursor: pointer; }
+    button { margin-top: 6px; width: 100%; padding: 7px; font-size: 15px; cursor: pointer;
              border: 1px solid #ccc; border-radius: 4px; background: #f5f5f5; }
     button:hover { background: #e0e0e0; }
-    #status { font-size: 13px; color: #666; margin-top: 6px; }
+    #status { font-size: 13px; color: #666; margin-top: 3px; min-height: 1px; }
 
     /* Cal points segmented control */
-    #calPointsOpts { display: none; margin: 8px 0 0; }
+    #calPointsOpts { display: none; margin: 5px 0 0; }
     #calPointsOpts .opts-label {
-      font-size: 13px; color: #666; margin-bottom: 5px;
+      font-size: 13px; color: #666; margin-bottom: 3px;
     }
     .seg-ctrl {
       display: flex;
@@ -25,7 +25,7 @@
       text-align: center;
     }
     .seg-ctrl label {
-      flex: 1; margin: 0; padding: 10px 6px;
+      flex: 1; margin: 0; padding: 6px 6px;
       cursor: pointer; justify-content: center;
       color: #555; background: #fff;
       border-right: 1px solid #ccc;
@@ -38,32 +38,31 @@
       background: #eef2ff; color: #0058b0; font-weight: 600;
     }
 
-    /* Master kill switch */
+    /* Master kill switch — compact power-button icon, lives in the header row */
     .master-toggle {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; margin-bottom: 10px;
-      border-radius: 8px; border: 1px solid #ccc;
-      background: #f5f5f5; cursor: pointer;
-      font-size: 16px; font-weight: 700; color: #888;
+      width: 26px; height: 26px; padding: 0; margin: 0;
+      border-radius: 50%; border: 1.5px solid #ccc;
+      background: #f5f5f5; color: #999;
+      font-size: 14px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
       transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
-    .master-toggle input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
     .master-toggle.on { background: #e6f7ec; border-color: #2ecc71; color: #157347; }
     #restBody.disabled { opacity: 0.4; pointer-events: none; }
 
     /* Reading features section */
-    .feat-sect { margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px; }
-    .feat-sect .sect-lbl { font-size: 13px; color: #888; margin-bottom: 4px; }
-    .feat-sect label { font-size: 15px; color: #333; margin: 3px 0; }
-    .l2-scale-row { display: flex; align-items: center; gap: 8px; margin: 6px 0 3px 26px; }
+    .feat-sect { margin-top: 6px; border-top: 1px solid #eee; padding-top: 5px; }
+    .feat-sect .sect-lbl { font-size: 13px; color: #888; margin-bottom: 2px; }
+    .feat-sect label { font-size: 15px; color: #333; margin: 1px 0; }
+    .l2-scale-row { display: flex; align-items: center; gap: 8px; margin: 3px 0 2px 26px; }
     .l2-scale-row input[type="range"] { flex: 1; }
     .l2-scale-row span { font-size: 13px; color: #555; width: 34px; text-align: right; flex-shrink: 0; }
     .l2-scale-row.disabled { opacity: 0.45; pointer-events: none; }
 
     /* HC theme button grid — each button previews its own theme's L1 colours */
-    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-top: 3px; }
     .theme-btn {
-      font-size: 14px; padding: 10px 6px; border: 1px solid #ccc; border-radius: 4px;
+      font-size: 14px; padding: 6px 6px; border: 1px solid #ccc; border-radius: 4px;
       background: #fff; color: #333; cursor: pointer;
       transition: box-shadow 0.15s ease, filter 0.15s ease;
     }
@@ -81,28 +80,16 @@
     .theme-btn.selected[data-theme="dusk"]     { box-shadow: 0 0 0 2px #ff4fd8, 0 0 8px #ff4fd8; }
     .theme-btn.selected[data-theme="nightsky"] { box-shadow: 0 0 0 2px #4fc3ff, 0 0 8px #4fc3ff; }
 
-    /* Heatmap section */
-    .hm-section { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
-    .hm-section h4 { margin: 0 0 6px; font-size: 15px; color: #333; }
-    #hmCanvas { display: block; border: 1px solid #bbb; border-radius: 3px; image-rendering: pixelated; }
-    .hm-legend { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
-    #hmLegend { flex: 1; height: 9px; border-radius: 2px; }
-    .hm-legend span { font-size: 11px; color: #888; }
-    #hmStats { font-size: 12px; color: #777; margin-top: 4px; }
-    #hmClear { margin-top: 5px; color: #b00; border-color: #d88; background: #fff; }
-    #hmClear:hover { background: #fff0f0; }
   </style>
 </head>
 <body>
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
     <h3 style="margin:0;">AI Kwau ⚙️</h3>
-    <button type="button" id="langToggle" style="width:auto; margin:0; padding:5px 12px; font-size:12px;">EN</button>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button type="button" id="langToggle" style="width:auto; margin:0; padding:5px 12px; font-size:12px;">EN</button>
+      <button type="button" id="masterEnabled" class="master-toggle on" aria-pressed="true">⏻</button>
+    </div>
   </div>
-
-  <label class="master-toggle" id="masterToggleRow">
-    <input type="checkbox" id="masterEnabled" checked>
-    <span id="masterToggleLabel" data-i18n="masterOn">AI Kwau 已啟用</span>
-  </label>
 
   <div id="restBody">
   <label><input type="radio" name="mode" value="mouse"> <span data-i18n="modeMouse">滑鼠模式（PoC）</span></label>
@@ -146,31 +133,16 @@
     <button id="recalibrate" style="display:none" data-i18n="recalibrate">重新校準</button>
   </div>
 
-  <div id="webcamToggles" style="display:none; margin-top:6px;">
-    <label style="font-size:15px; color:#444; display:flex; align-items:center; gap:8px; margin:3px 0; cursor:pointer;">
+  <div id="webcamToggles" style="display:none; margin-top:4px;">
+    <label style="font-size:15px; color:#444; display:flex; align-items:center; gap:8px; margin:1px 0; cursor:pointer;">
       <input type="checkbox" id="panelVisible" checked> <span data-i18n="showWebcamPanel">顯示 Webcam 視窗</span>
     </label>
-    <label style="font-size:15px; color:#444; display:flex; align-items:center; gap:8px; margin:3px 0; cursor:pointer;">
+    <label style="font-size:15px; color:#444; display:flex; align-items:center; gap:8px; margin:1px 0; cursor:pointer;">
       <input type="checkbox" id="ringVisible" checked> <span data-i18n="showGazeRing">顯示注視藍圈</span>
     </label>
   </div>
 
   <div id="status"></div>
-
-  <div class="hm-section">
-    <label><input type="checkbox" id="heatmapVisible" checked> <span data-i18n="showHeatmap">顯示視線熱圖</span></label>
-    <div id="hmBody">
-      <h4 data-i18n="heatmapTitle">視線熱圖（頁面分佈）</h4>
-      <canvas id="hmCanvas" width="312" height="182"></canvas>
-      <div class="hm-legend">
-        <span data-i18n="cold">冷</span>
-        <canvas id="hmLegend" width="240" height="9"></canvas>
-        <span data-i18n="hot">熱</span>
-      </div>
-      <div id="hmStats" data-i18n="noData">尚無資料</div>
-      <button id="hmClear" data-i18n="clearHeatmap">清除熱圖</button>
-    </div>
-  </div>
   </div>
 
   <script src="i18n.js"></script>

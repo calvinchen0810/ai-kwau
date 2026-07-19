@@ -31,12 +31,6 @@
     recalibrate:     { zh: '重新校準',                en: 'Recalibrate' },
     showWebcamPanel: { zh: '顯示 Webcam 視窗',        en: 'Show Webcam Panel' },
     showGazeRing:    { zh: '顯示注視藍圈',            en: 'Show Gaze Ring' },
-    showHeatmap:     { zh: '顯示視線熱圖',            en: 'Show Gaze Heatmap' },
-    heatmapTitle:    { zh: '視線熱圖（頁面分佈）',     en: 'Gaze Heatmap (Page Distribution)' },
-    cold:            { zh: '冷',                      en: 'Cold' },
-    hot:             { zh: '熱',                      en: 'Hot' },
-    noData:          { zh: '尚無資料',                en: 'No data yet' },
-    clearHeatmap:    { zh: '清除熱圖',                en: 'Clear Heatmap' },
 
     // ── Popup: dynamic status messages ──────────────────────────────────────
     savedReload:     { zh: '已儲存，請重新整理頁面生效', en: 'Saved — reload the page to apply' },
@@ -44,9 +38,6 @@
     switchedTheme:   { zh: '已切換至 {name} 主題',      en: 'Switched to {name} theme' },
     reloadFirst:     { zh: '請先重新整理頁面',          en: 'Please reload the page first' },
     calUIOpened:     { zh: '校準 UI 已開啟',           en: 'Calibration UI opened' },
-    noGazeData:      { zh: '尚無視線資料',             en: 'No gaze data yet' },
-    gazePointsStats: { zh: '視線點：{n} 　最後更新：{time}', en: 'Gaze points: {n}   Last updated: {time}' },
-    cleared:         { zh: '已清除',                   en: 'Cleared' },
 
     // ── content.js: on-page dynamic UI ──────────────────────────────────────
     webcamTitle:     { zh: 'AI Kwau 眼球追蹤',                          en: 'AI Kwau Eye Tracking' },
