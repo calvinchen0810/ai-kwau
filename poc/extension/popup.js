@@ -20,6 +20,27 @@ const cursorRingEnabled = document.getElementById('cursorRingEnabled');
 const blindSpotVisible = document.getElementById('blindSpotVisible');
 const themeButtons    = document.querySelectorAll('.theme-btn');
 const status          = document.getElementById('status');
+const langToggleBtn   = document.getElementById('langToggle');
+
+// ── i18n ────────────────────────────────────────────────────────────────────
+let uiLang = 'zh';
+function t(key, vars) { return AIKWAU_I18N.t(key, uiLang, vars); }
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  langToggleBtn.textContent = uiLang === 'zh' ? 'EN' : '中文';
+  setMasterUI(masterEnabled.checked);
+  loadAndRender();
+}
+
+langToggleBtn.addEventListener('click', () => {
+  uiLang = uiLang === 'zh' ? 'en' : 'zh';
+  chrome.storage.local.set({ aikwau_ui_lang: uiLang });
+  applyI18n();
+  sendToTab({ type: 'gaze:ui-lang-toggle', lang: uiLang });
+});
 
 // ── Cal-points segmented control ─────────────────────────────────────────────
 function setCalPtsUI(pts) {
@@ -53,7 +74,7 @@ function setL2RowDisabled(disabled) {
 function setMasterUI(enabled) {
   masterEnabled.checked = enabled;
   masterToggleRow.classList.toggle('on', enabled);
-  masterToggleLabel.textContent = enabled ? 'AI Kwau 已啟用' : 'AI Kwau 已停用';
+  masterToggleLabel.textContent = t(enabled ? 'masterOn' : 'masterOff');
   restBody.classList.toggle('disabled', !enabled);
 }
 
@@ -62,12 +83,13 @@ chrome.storage.local.get(
    'aikwau_webcam_panel_visible', 'aikwau_gaze_ring_visible',
    'aikwau_l2_enabled', 'aikwau_l2_scale', 'aikwau_hc_theme',
    'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
-   'aikwau_master_enabled', 'aikwau_cursor_ring_enabled'],
+   'aikwau_master_enabled', 'aikwau_cursor_ring_enabled', 'aikwau_ui_lang'],
   (data) => {
     const mode  = data.aikwau_gaze_mode ?? 'mouse';
     const pts   = data.aikwau_cal_points ?? 25;
     const scale = data.aikwau_l2_scale ?? 1.2;
     const theme = data.aikwau_hc_theme ?? 'nightsky';
+    uiLang = data.aikwau_ui_lang ?? 'zh';
     document.querySelector(`input[value="${mode}"]`).checked = true;
     setWebcamExtras(mode === 'webcam');
     setCalPtsUI(pts);
@@ -82,6 +104,7 @@ chrome.storage.local.get(
     setThemeUI(theme);
     setMasterUI(data.aikwau_master_enabled !== false);
     cursorRingEnabled.checked = data.aikwau_cursor_ring_enabled === true;
+    applyI18n();
   }
 );
 
@@ -91,7 +114,7 @@ modeRadios.forEach(radio => {
     const mode = radio.value;
     chrome.storage.local.set({ aikwau_gaze_mode: mode }, () => {
       setWebcamExtras(mode === 'webcam');
-      status.textContent = '已儲存，請重新整理頁面生效';
+      status.textContent = t('savedReload');
       setTimeout(() => { status.textContent = ''; }, 2500);
     });
   });
@@ -103,7 +126,7 @@ calPtsRadios.forEach(radio => {
     const pts = Number(radio.value);
     chrome.storage.local.set({ aikwau_cal_points: pts }, () => {
       setCalPtsUI(pts);
-      status.textContent = `已切換至 ${pts} 點校準`;
+      status.textContent = t('switchedCalPts', { n: pts });
       setTimeout(() => { status.textContent = ''; }, 2000);
     });
   });
@@ -179,7 +202,7 @@ themeButtons.forEach(btn => {
     const theme = btn.dataset.theme;
     chrome.storage.local.set({ aikwau_hc_theme: theme }, () => {
       setThemeUI(theme);
-      status.textContent = `已切換至 ${btn.textContent} 主題`;
+      status.textContent = t('switchedTheme', { name: btn.textContent });
       setTimeout(() => { status.textContent = ''; }, 2000);
     });
   });
@@ -190,7 +213,7 @@ recalibrate.addEventListener('click', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     if (!tab) return;
     chrome.tabs.sendMessage(tab.id, { type: 'gaze:recalibrate' }, () => {
-      status.textContent = chrome.runtime.lastError ? '請先重新整理頁面' : '校準 UI 已開啟';
+      status.textContent = chrome.runtime.lastError ? t('reloadFirst') : t('calUIOpened');
       if (!chrome.runtime.lastError) window.close();
       setTimeout(() => { status.textContent = ''; }, 2500);
     });
@@ -275,8 +298,8 @@ function renderHeatmap(data) {
     hmCtx.fillStyle = '#444';
     hmCtx.font = '14px sans-serif';
     hmCtx.textAlign = 'center';
-    hmCtx.fillText('尚無視線資料', HM_CANVAS_W / 2, HM_CANVAS_H / 2);
-    hmStats.textContent = '尚無資料';
+    hmCtx.fillText(t('noGazeData'), HM_CANVAS_W / 2, HM_CANVAS_H / 2);
+    hmStats.textContent = t('noData');
     return;
   }
 
@@ -319,7 +342,7 @@ function renderHeatmap(data) {
   const updated = data.lastUpdated
     ? new Date(data.lastUpdated).toLocaleTimeString('zh-TW', { hour12: false })
     : '—';
-  hmStats.textContent = `視線點：${total} 　最後更新：${updated}`;
+  hmStats.textContent = t('gazePointsStats', { n: total, time: updated });
 }
 
 (function drawLegend() {
@@ -348,7 +371,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 hmClear.addEventListener('click', () => {
   chrome.storage.local.remove('aikwau_heatmap', () => {
     renderHeatmap(null);
-    hmStats.textContent = '已清除';
+    hmStats.textContent = t('cleared');
     sendToTab({ type: 'clearHighlights' });
   });
 });

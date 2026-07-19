@@ -94,82 +94,86 @@
   </style>
 </head>
 <body>
-  <h3>AI Kwau ⚙️</h3>
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+    <h3 style="margin:0;">AI Kwau ⚙️</h3>
+    <button type="button" id="langToggle" style="width:auto; margin:0; padding:5px 12px; font-size:12px;">EN</button>
+  </div>
 
   <label class="master-toggle" id="masterToggleRow">
     <input type="checkbox" id="masterEnabled" checked>
-    <span id="masterToggleLabel">AI Kwau 已啟用</span>
+    <span id="masterToggleLabel" data-i18n="masterOn">AI Kwau 已啟用</span>
   </label>
 
   <div id="restBody">
-  <label><input type="radio" name="mode" value="mouse"> 滑鼠模式（PoC）</label>
-  <label><input type="radio" name="mode" value="webcam"> 眼球追蹤（Webcam）</label>
+  <label><input type="radio" name="mode" value="mouse"> <span data-i18n="modeMouse">滑鼠模式（PoC）</span></label>
+  <label><input type="radio" name="mode" value="webcam"> <span data-i18n="modeWebcam">眼球追蹤（Webcam）</span></label>
 
-  <label><input type="checkbox" id="cursorRingEnabled"> 強化滑鼠指標</label>
-  <label><input type="checkbox" id="blindSpotVisible" checked> 顯示盲點提示</label>
+  <label><input type="checkbox" id="cursorRingEnabled"> <span data-i18n="cursorRing">強化滑鼠指標</span></label>
+  <label><input type="checkbox" id="blindSpotVisible" checked> <span data-i18n="blindSpot">顯示盲點提示</span></label>
 
   <div class="feat-sect">
-    <div class="sect-lbl">閱讀增強</div>
-    <label><input type="checkbox" id="boldEnabled"> 文字加粗</label>
-    <label><input type="checkbox" id="l2Enabled"> 字型放大</label>
+    <div class="sect-lbl" data-i18n="sectReading">閱讀增強</div>
+    <label><input type="checkbox" id="boldEnabled"> <span data-i18n="bold">文字加粗</span></label>
+    <label><input type="checkbox" id="l2Enabled"> <span data-i18n="enlarge">字型放大</span></label>
     <div class="l2-scale-row" id="l2ScaleRow">
       <input type="range" id="l2Scale" min="1" max="3" step="0.1" value="1.2">
       <span id="l2ScaleLabel">1.2×</span>
     </div>
-    <label><input type="checkbox" id="contrastEnabled"> 加強對比</label>
-    <label><input type="checkbox" id="summaryEnabled"> 段落摘要</label>
+    <label><input type="checkbox" id="contrastEnabled"> <span data-i18n="contrast">加強對比</span></label>
+    <label><input type="checkbox" id="summaryEnabled"> <span data-i18n="summary">段落摘要</span></label>
   </div>
 
   <div class="feat-sect">
-    <div class="sect-lbl">高對比主題</div>
+    <div class="sect-lbl" data-i18n="sectTheme">高對比主題</div>
     <div class="theme-grid" id="themeGrid">
-      <button type="button" class="theme-btn" data-theme="aquatic">水域</button>
-      <button type="button" class="theme-btn" data-theme="desert">沙漠</button>
-      <button type="button" class="theme-btn" data-theme="dusk">黃昏</button>
-      <button type="button" class="theme-btn" data-theme="nightsky">夜空</button>
+      <button type="button" class="theme-btn" data-theme="aquatic" data-i18n="themeAquatic">水域</button>
+      <button type="button" class="theme-btn" data-theme="desert" data-i18n="themeDesert">沙漠</button>
+      <button type="button" class="theme-btn" data-theme="dusk" data-i18n="themeDusk">黃昏</button>
+      <button type="button" class="theme-btn" data-theme="nightsky" data-i18n="themeNightsky">夜空</button>
     </div>
   </div>
 
   <div id="calPointsOpts">
-    <div class="opts-label">校準點數量</div>
+    <div class="opts-label" data-i18n="calPointsLabel">校準點數量</div>
     <div class="seg-ctrl">
       <label id="segOpt9">
-        <input type="radio" name="calpts" value="9">9 點（快速）
+        <input type="radio" name="calpts" value="9"><span data-i18n="cal9">9 點（快速）</span>
       </label>
       <label id="segOpt25">
-        <input type="radio" name="calpts" value="25">25 點（精確）
+        <input type="radio" name="calpts" value="25"><span data-i18n="cal25">25 點（精確）</span>
       </label>
     </div>
-    <button id="recalibrate" style="display:none">重新校準</button>
+    <button id="recalibrate" style="display:none" data-i18n="recalibrate">重新校準</button>
   </div>
 
   <div id="webcamToggles" style="display:none; margin-top:6px;">
     <label style="font-size:15px; color:#444; display:flex; align-items:center; gap:8px; margin:3px 0; cursor:pointer;">
-      <input type="checkbox" id="panelVisible" checked> 顯示 Webcam 視窗
+      <input type="checkbox" id="panelVisible" checked> <span data-i18n="showWebcamPanel">顯示 Webcam 視窗</span>
     </label>
     <label style="font-size:15px; color:#444; display:flex; align-items:center; gap:8px; margin:3px 0; cursor:pointer;">
-      <input type="checkbox" id="ringVisible" checked> 顯示注視藍圈
+      <input type="checkbox" id="ringVisible" checked> <span data-i18n="showGazeRing">顯示注視藍圈</span>
     </label>
   </div>
 
   <div id="status"></div>
 
   <div class="hm-section">
-    <label><input type="checkbox" id="heatmapVisible" checked> 顯示視線熱圖</label>
+    <label><input type="checkbox" id="heatmapVisible" checked> <span data-i18n="showHeatmap">顯示視線熱圖</span></label>
     <div id="hmBody">
-      <h4>視線熱圖（頁面分佈）</h4>
+      <h4 data-i18n="heatmapTitle">視線熱圖（頁面分佈）</h4>
       <canvas id="hmCanvas" width="312" height="182"></canvas>
       <div class="hm-legend">
-        <span>冷</span>
+        <span data-i18n="cold">冷</span>
         <canvas id="hmLegend" width="240" height="9"></canvas>
-        <span>熱</span>
+        <span data-i18n="hot">熱</span>
       </div>
-      <div id="hmStats">尚無資料</div>
-      <button id="hmClear">清除熱圖</button>
+      <div id="hmStats" data-i18n="noData">尚無資料</div>
+      <button id="hmClear" data-i18n="clearHeatmap">清除熱圖</button>
     </div>
   </div>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

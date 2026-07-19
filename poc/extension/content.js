@@ -27,6 +27,8 @@ window.__aikwauContentLoaded = true;
   let cursorRingEnabled = false;  // Mode-independent real-mouse-pointer ring
   let cursorRing        = null;
   let blindSpotVisible  = true;   // Display-only: scanBlindButtons() keeps running when false
+  let uiLang            = 'zh';   // On-page dynamic UI language, mirrors the popup's toggle
+  function t(key, vars) { return AIKWAU_I18N.t(key, uiLang, vars); }
   let badgeTimer        = null;
   const summaryCache    = new Map(); // text-key → cached summary string
   // summaryReadyEls: el → { summary, origText, handler, shown, labelEl }
@@ -306,7 +308,8 @@ window.__aikwauContentLoaded = true;
   chrome.storage.local.get(
     ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale',
      'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
-     'aikwau_master_enabled', 'aikwau_cursor_ring_enabled', 'aikwau_blindspot_visible'],
+     'aikwau_master_enabled', 'aikwau_cursor_ring_enabled', 'aikwau_blindspot_visible',
+     'aikwau_ui_lang'],
     (data) => {
       masterEnabled     = data.aikwau_master_enabled !== false;
       l2Enabled         = data.aikwau_l2_enabled !== false;
@@ -317,6 +320,7 @@ window.__aikwauContentLoaded = true;
       cursorRingEnabled = data.aikwau_cursor_ring_enabled === true;
       blindSpotVisible  = data.aikwau_blindspot_visible !== false;
       applyBlindSpotVisibility();
+      uiLang            = data.aikwau_ui_lang ?? 'zh';
       isWebcamMode      = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
       if (isWebcamMode) initWebcam();
     }
@@ -424,7 +428,7 @@ window.__aikwauContentLoaded = true;
       if (loadingOverlay) {
         const msg = loadingOverlay.querySelector('#__aikwau_load_msg');
         if (msg) {
-          msg.textContent = `相機錯誤：${e.detail?.message} — 請允許此網站存取相機再重新整理`;
+          msg.textContent = t('cameraError', { msg: e.detail?.message });
           msg.style.color = '#f66';
         }
       }
@@ -553,8 +557,8 @@ window.__aikwauContentLoaded = true;
       fontFamily: 'system-ui, sans-serif', color: '#fff',
     });
     loadingOverlay.innerHTML = `
-      <div style="font-size:20px;font-weight:600;margin-bottom:12px">AI Kwau 眼球追蹤</div>
-      <div id="__aikwau_load_msg" style="font-size:14px;color:#aaa">正在啟動相機與 MediaPipe 模型...</div>
+      <div style="font-size:20px;font-weight:600;margin-bottom:12px">${t('webcamTitle')}</div>
+      <div id="__aikwau_load_msg" style="font-size:14px;color:#aaa">${t('startingCamera')}</div>
       <div style="margin-top:20px;width:40px;height:40px;border:3px solid #333;border-top-color:#0088ff;border-radius:50%;animation:__aikwau_spin 0.8s linear infinite"></div>
       <style>@keyframes __aikwau_spin{to{transform:rotate(360deg)}}</style>
     `;
@@ -588,14 +592,14 @@ window.__aikwauContentLoaded = true;
 
     overlay.innerHTML = `
       <div style="position:absolute;top:20px;width:100%;text-align:center">
-        <div style="font-size:18px;font-weight:600;margin-bottom:6px">眼球追蹤校準 (MediaPipe)</div>
-        <div style="font-size:13px;color:#aaa;margin-bottom:10px">注視每個藍色圓點，然後點擊它。請確保臉部在鏡頭中央。</div>
-        <div id="__aikwau_cal_prog" style="font-size:13px;color:#4af">0 / ${numPoints} 完成</div>
+        <div style="font-size:18px;font-weight:600;margin-bottom:6px">${t('calTitle')}</div>
+        <div style="font-size:13px;color:#aaa;margin-bottom:10px">${t('calInstruction')}</div>
+        <div id="__aikwau_cal_prog" style="font-size:13px;color:#4af">${t('calProgress', { done: 0, total: numPoints })}</div>
       </div>
     `;
 
     const skipBtn = document.createElement('button');
-    skipBtn.textContent = `跳過校準（需至少 ${SKIP_MIN} 點）`;
+    skipBtn.textContent = t('skipCalibration', { min: SKIP_MIN });
     Object.assign(skipBtn.style, {
       position: 'absolute', bottom: '24px', right: '24px',
       padding: '8px 20px', background: 'transparent',
@@ -652,7 +656,7 @@ window.__aikwauContentLoaded = true;
     };
 
     skipBtn.onclick = () => {
-      if (currentIdx < SKIP_MIN) { alert(`請至少完成 ${SKIP_MIN} 個校準點。`); return; }
+      if (currentIdx < SKIP_MIN) { alert(t('skipAlert', { min: SKIP_MIN })); return; }
       finish();
     };
 
@@ -672,7 +676,7 @@ window.__aikwauContentLoaded = true;
         document.dispatchEvent(new CustomEvent('aikwau:calibrate', { detail: { screenX, screenY } }));
 
         currentIdx++;
-        overlay.querySelector('#__aikwau_cal_prog').textContent = `${currentIdx} / ${numPoints} 完成`;
+        overlay.querySelector('#__aikwau_cal_prog').textContent = t('calProgress', { done: currentIdx, total: numPoints });
         if (currentIdx >= POINTS.length) {
           finish();
         } else {
@@ -692,7 +696,7 @@ window.__aikwauContentLoaded = true;
       if (loadingOverlay) {
         const el = loadingOverlay.querySelector('#__aikwau_load_msg');
         if (el) {
-          el.textContent = `注入錯誤：${msg.message}`;
+          el.textContent = t('injectionError', { msg: msg.message });
           el.style.color = '#f66';
         }
       }
@@ -724,6 +728,7 @@ window.__aikwauContentLoaded = true;
       blindSpotVisible = msg.visible;
       applyBlindSpotVisibility();
     }
+    if (msg.type === 'gaze:ui-lang-toggle') { uiLang = msg.lang; }
     if (msg.type === 'gaze:master-toggle') {
       masterEnabled = msg.enabled;
       if (!masterEnabled) restoreAllEffects();
@@ -775,7 +780,7 @@ window.__aikwauContentLoaded = true;
 
     const labelEl = document.createElement('div');
     labelEl.className = 'aikwau-summary-label';
-    labelEl.textContent = '點擊摘要';
+    labelEl.textContent = t('clickSummary');
     document.body.appendChild(labelEl);
     positionSummaryLabel(labelEl, el);
 
@@ -789,14 +794,14 @@ window.__aikwauContentLoaded = true;
         el.textContent = summary;
         el.classList.remove('aikwau-summary-ready');
         el.classList.add('aikwau-summary-shown');
-        entry.labelEl.textContent = '點擊還原';
+        entry.labelEl.textContent = t('clickRestore');
         entry.labelEl.classList.add('aikwau-summary-label--shown');
         entry.shown = true;
       } else {
         el.textContent = entry.origText;
         el.classList.remove('aikwau-summary-shown');
         el.classList.add('aikwau-summary-ready');
-        entry.labelEl.textContent = '點擊摘要';
+        entry.labelEl.textContent = t('clickSummary');
         entry.labelEl.classList.remove('aikwau-summary-label--shown');
         entry.shown = false;
       }
