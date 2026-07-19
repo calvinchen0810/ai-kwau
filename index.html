@@ -192,6 +192,7 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   .os-icon{font-size:20px;flex-shrink:0;}
   .os-name{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--navy);line-height:1.2;}
   .os-sub-lbl{font-size:10px;color:var(--muted);margin-top:1px;}
+  .br-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(0,119,182,.06);border-radius:9px;border:1px solid rgba(0,119,182,.2);}
   .arch-row7{display:flex;align-items:stretch;gap:0;}
   .abox{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:10px 12px;text-align:center;}
   .abox.cyan{background:rgba(0,180,216,.1);border-color:rgba(0,180,216,.35);}
@@ -504,18 +505,9 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <!-- Browser World -->
             <div class="world-box browser">
               <div class="world-hdr">🌐 Browser World</div>
-              <div class="sub-world main-w">
-                <div class="sub-lbl main-w">MAIN world</div>
-                <div class="w-item">👁 Gaze Tracking</div>
-                <div class="w-item">⏱ Dwell Detection</div>
-              </div>
-              <div class="ce-bridge">↓ &nbsp;CustomEvent (x, y)</div>
-              <div class="sub-world iso-w">
-                <div class="sub-lbl iso-w">Isolated world</div>
-                <div class="w-item">🎨 Theme Bridge</div>
-                <div class="w-item">✨ Content Enhancement</div>
-                <div class="w-item">⚙️ Service Worker</div>
-              </div>
+              <div class="br-item"><div class="os-icon">👁️</div><div><div class="os-name">Gaze Tracking</div><div class="os-sub-lbl">Mouse hover · Webcam</div></div></div>
+              <div class="br-item"><div class="os-icon">✨</div><div><div class="os-name">Content Enhancement</div><div class="os-sub-lbl">L1 · L2 · AI Summary</div></div></div>
+              <div class="br-item"><div class="os-icon">⚙️</div><div><div class="os-name">Service Worker</div><div class="os-sub-lbl">Native port routing</div></div></div>
             </div>
             <!-- Native Messaging Bridge -->
             <div class="nm-col">
