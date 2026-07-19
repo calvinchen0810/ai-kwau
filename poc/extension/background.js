@@ -68,11 +68,19 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       return chrome.scripting.executeScript({
         target: { tabId },
         world: 'MAIN',
+        files: ['heatmap_render.js'],
+      });
+    })
+    .then(() => {
+      console.log('[aikwau/bg] Step 3 done — heatmap_render.js injected');
+      return chrome.scripting.executeScript({
+        target: { tabId },
+        world: 'MAIN',
         files: ['gaze_webcam.js'],
       });
     })
     .then(() => {
-      console.log('[aikwau/bg] Step 3 done — gaze_webcam.js injected');
+      console.log('[aikwau/bg] Step 4 done — gaze_webcam.js injected');
     })
     .catch(err => {
       console.error('[aikwau/bg] Script injection failed:', err);

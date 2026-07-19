@@ -78,7 +78,23 @@ window.__aikwauContentLoaded = true;
       }
     });
     scanBlindButtons();
+    dispatchHeatmapData();
   }
+
+  // Bridges hmCells to gaze_webcam.js (MAIN world, no chrome.storage access —
+  // same reason calibration data is bridged via aikwau:requestCalibration).
+  // Pushed on every hmSave() (~5s cadence) and once on request, so the panel
+  // gets an immediate snapshot even before the next accumulation cycle.
+  function dispatchHeatmapData() {
+    document.dispatchEvent(new CustomEvent('aikwau:heatmapData', {
+      detail: {
+        cells:       hmCells.slice(),
+        totalPoints: hmCells.reduce((a, b) => a + b, 0),
+        lastUpdated: Date.now(),
+      },
+    }));
+  }
+  document.addEventListener('aikwau:requestHeatmap', dispatchHeatmapData);
 
   window.addEventListener('beforeunload', hmSave);
   window.addEventListener('scroll', repositionAllHints, { passive: true });
@@ -739,13 +755,28 @@ window.__aikwauContentLoaded = true;
     if (msg.type === 'gaze:l2-scale') { l2Scale = msg.scale; reapplyL2Scale(); }
     if (msg.type === 'gaze:summary-toggle') { summaryEnabled = msg.enabled; }
     if (msg.type === 'clearHighlights') {
-      clearAllHighlights();
-      // Also reset in-memory heatmap so a pending hmSaveTimer doesn't
-      // re-write stale data back to storage after the popup cleared it.
-      hmCells.fill(0);
-      hmDirty = false;
-      if (hmSaveTimer) { clearTimeout(hmSaveTimer); hmSaveTimer = null; }
+      clearHeatmapState();
     }
+  });
+
+  // Resets in-memory heatmap + highlights. Shared by the popup's clearHighlights
+  // message and the webcam panel's aikwau:clearHeatmap event — also cancels any
+  // pending hmSaveTimer so it doesn't re-write stale data back to storage after
+  // the caller clears it.
+  function clearHeatmapState() {
+    clearAllHighlights();
+    hmCells.fill(0);
+    hmDirty = false;
+    if (hmSaveTimer) { clearTimeout(hmSaveTimer); hmSaveTimer = null; }
+  }
+
+  // Webcam panel (MAIN world) has no chrome.storage access, so its "清除熱圖"
+  // button asks content.js to do the actual clearing, then pushes the now-empty
+  // state back so the panel's mini heatmap re-renders immediately.
+  document.addEventListener('aikwau:clearHeatmap', () => {
+    chrome.storage.local.remove('aikwau_heatmap');
+    clearHeatmapState();
+    dispatchHeatmapData();
   });
 
   // ══════════════════════════════════════════════════════════════════════════

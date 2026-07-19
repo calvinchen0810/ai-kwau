@@ -33,6 +33,8 @@
   let minCal  = 12;  // minimum calibration points before regression activates (updated via aikwau:setcalpoints)
   const MAP_W   = 240;
   const MAP_H   = 135; // 16:9 minimap
+  const HM_MAP_W = 240;
+  const HM_MAP_H = 112; // 24×14 grid at 10×8px/cell — fits the 240px panel width exactly
 
   // ── Floating camera panel ─────────────────────────────────────────────────
   const panel = document.createElement('div');
@@ -63,6 +65,14 @@
     '<button id="__ap_verify" style="display:none;width:100%;padding:5px 0;' +
     'background:#0d2040;border:none;border-top:1px solid #1e3060;' +
     'color:#4af;font-size:11px;cursor:pointer;">驗證模式</button>' +
+    `<div id="__ap_hm_wrap" style="display:none;border-top:1px solid #1e1e2e;">` +
+    '<div style="padding:3px 6px 0;font-size:9px;color:#556;letter-spacing:0.5px;">視線熱圖</div>' +
+    `<canvas id="__ap_heatmap" width="${HM_MAP_W}" height="${HM_MAP_H}" style="display:block;"></canvas>` +
+    '<div id="__ap_hm_stats" style="padding:2px 6px 4px;font-size:9px;color:#667;text-align:right;"></div>' +
+    '<button id="__ap_hm_clear" style="width:100%;padding:5px 0;' +
+    'background:#2a0d0d;border:none;border-top:1px solid #3a1515;' +
+    'color:#f88;font-size:11px;cursor:pointer;">清除熱圖</button>' +
+    '</div>' +
     '<div id="__ap_status" style="padding:3px 6px;background:rgba(0,0,0,0.75);' +
     'font-size:11px;color:#aaa;text-align:center;border-radius:0 0 8px 8px;">正在啟動相機...</div>';
   document.body.appendChild(panel);
@@ -124,6 +134,11 @@
   const displayCtx    = displayCanvas.getContext('2d');
   const irisInfoEl    = panel.querySelector('#__ap_iris');
   const verifyBtn  = panel.querySelector('#__ap_verify');
+  const hmWrap     = panel.querySelector('#__ap_hm_wrap');
+  const hmCanvas   = panel.querySelector('#__ap_heatmap');
+  const hmCtx      = hmCanvas.getContext('2d');
+  const hmStatsEl  = panel.querySelector('#__ap_hm_stats');
+  const hmClearBtn = panel.querySelector('#__ap_hm_clear');
 
   // ── State ─────────────────────────────────────────────────────────────────
   let latestIris     = null;  // {x, y, yaw, pitch}
@@ -337,6 +352,27 @@
     }
   }
 
+  // ── Compact gaze heatmap (page-viewport attention, bridged from content.js) ──
+  // content.js owns chrome.storage; this MAIN-world script has no such access,
+  // so data arrives via aikwau:heatmapData (pushed every ~5s + once on request)
+  // — same bridging pattern already used for calibration data.
+  function renderMiniHeatmap(data) {
+    const result = AIKWAU_HEATMAP_RENDER.drawGrid(
+      hmCtx, HM_MAP_W, HM_MAP_H,
+      HM_MAP_W / AIKWAU_HEATMAP_RENDER.HM_W, HM_MAP_H / AIKWAU_HEATMAP_RENDER.HM_H,
+      data?.cells ?? null,
+      { noDataText: '尚無視線資料', showColdMarkers: true }
+    );
+    const total = data?.totalPoints ?? result.total;
+    hmStatsEl.textContent = result.hasData ? `${total} 視線點` : '';
+  }
+
+  document.addEventListener('aikwau:heatmapData', (e) => renderMiniHeatmap(e.detail));
+
+  hmClearBtn.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('aikwau:clearHeatmap'));
+  });
+
   // ── Calibration overlay events ────────────────────────────────────────────
   document.addEventListener('aikwau:calstart', () => {
     panel.style.display = 'none';
@@ -532,8 +568,8 @@
     drawBox(33,  133, 159, 145);   // left  eye
     drawBox(263, 362, 386, 374);   // right eye
 
-    // Iris centres — cyan (left) / magenta (right), white outline
-    [[468, '#00ddff'], [473, '#ff44cc']].forEach(([idx, col]) => {
+    // Iris centres — both blue, white outline
+    [[468, '#00ddff'], [473, '#00ddff']].forEach(([idx, col]) => {
       const p = toDisp(idx);
       dc.beginPath(); dc.arc(p.x, p.y, 8, 0, Math.PI * 2);
       dc.fillStyle = col; dc.fill();
@@ -636,6 +672,9 @@
     irisInfoEl.style.display = 'block';
     mapCanvas.style.display  = 'block';
     drawMinimap();
+    hmWrap.style.display = 'block';
+    renderMiniHeatmap(null);
+    document.dispatchEvent(new CustomEvent('aikwau:requestHeatmap'));
     statusEl.textContent = '正在載入 MediaPipe...';
 
     const fm = initFaceMesh();
