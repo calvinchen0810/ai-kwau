@@ -194,8 +194,8 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     <div class="card cyan">
       <div class="card-icon">👁</div>
       <h3><span class="en">Gaze Hold Trigger</span><span class="zh">視線停留觸發</span></h3>
-      <p class="en">Mouse hover 2 s (default) or real webcam eye tracking via WebGazer v2.1.2. When held, L1 visual enhancement activates and AI summarization begins silently.</p>
-      <p class="zh">預設以滑鼠懸停 2 秒模擬，或使用 WebGazer v2.1.2 真實眼球追蹤。停留後立即套用 L1 視覺增強，並靜默送出摘要請求。</p>
+      <p class="en">Mouse hover 1.5 s (default) or real webcam eye tracking via WebGazer v2.1.2. When held, reading-enhancement effects activate and AI summarization begins silently — each independently toggleable from the popup.</p>
+      <p class="zh">預設以滑鼠懸停 1.5 秒模擬，或使用 WebGazer v2.1.2 真實眼球追蹤。停留後套用閱讀增強效果，並靜默送出摘要請求 — 每項效果都可在彈出選單獨立開關。</p>
     </div>
     <div class="card gold">
       <div class="card-icon">🤖</div>
@@ -218,14 +218,32 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     <div class="card gold">
       <div class="card-icon">🎨</div>
       <h3><span class="en">High Contrast Themes</span><span class="zh">高對比主題</span></h3>
-      <p class="en">5 selectable themes (off / Aquatic / Desert / Dusk / Night Sky) recolour L1 text, summary outlines + tags, hyperlinks, and blind-spot highlights together — switching live via <span class="inline-code">chrome.storage.onChanged</span>, no page reload.</p>
-      <p class="zh">5 種可選主題（關閉 / Aquatic / Desert / Dusk / Night Sky）同時重新配色 L1 文字、摘要外框與標籤、超連結與盲點提示，透過 <span class="inline-code">chrome.storage.onChanged</span> 即時切換，不需重新整理頁面。</p>
+      <p class="en">4 selectable themes (Aquatic / Desert / Dusk / Night Sky) recolour contrast text, summary outlines + tags, hyperlinks, and blind-spot highlights together — switching live via <span class="inline-code">chrome.storage.onChanged</span>, no page reload. Independent of the separate 加強對比 (Contrast) reading toggle — the theme keeps colouring summary/blind-spot UI even when Contrast is off.</p>
+      <p class="zh">4 種可選主題（Aquatic / Desert / Dusk / Night Sky）同時重新配色對比文字、摘要外框與標籤、超連結與盲點提示，透過 <span class="inline-code">chrome.storage.onChanged</span> 即時切換，不需重新整理頁面。主題選擇獨立於「加強對比」開關之外 — 即使對比關閉，摘要/盲點提示的顏色仍會跟著主題變化。</p>
+    </div>
+    <div class="card navy">
+      <div class="card-icon">🎛️</div>
+      <h3><span class="en">Independent Reading Toggles</span><span class="zh">獨立閱讀增強開關</span></h3>
+      <p class="en">Bold / Enlarge / Contrast / Summary are four fully independent popup checkboxes (default all on). Toggling one never affects the others — e.g. Bold can stay on while Contrast is off, keeping the page's original colours.</p>
+      <p class="zh">加粗 / 放大 / 對比 / 摘要 是彈出選單裡 4 個完全獨立的開關（預設全開）。切換其中一個不會影響其他項目 — 例如可以只開加粗、關閉對比，讓段落保留原本頁面色彩。</p>
+    </div>
+    <div class="card green">
+      <div class="card-icon">🔌</div>
+      <h3><span class="en">Master Switch</span><span class="zh">全域主開關</span></h3>
+      <p class="en">A single switch at the top of the popup instantly disables the whole feature and restores every already-enhanced paragraph on the current page to its original text/styling — unlike the four reading toggles, which only affect future gaze triggers.</p>
+      <p class="zh">彈出選單最上方的大開關可立即停用整個功能，並將目前頁面上所有已套用效果的段落還原成原始文字/樣式 — 跟另外 4 個閱讀增強開關不同，那些只影響「之後新觸發」的段落。</p>
     </div>
     <div class="card red">
       <div class="card-icon">🌐</div>
       <h3><span class="en">Bilingual Summaries</span><span class="zh">中英文自動摘要</span></h3>
       <p class="en">Language detected per paragraph by CJK character ratio. English paragraphs → English bullets; Chinese paragraphs → Traditional Chinese bullets (via zhconv).</p>
       <p class="zh">每段落依 CJK 字元比例自動偵測語言。英文段落 → 英文摘要；中文段落 → 正體中文摘要（透過 zhconv 後處理）。</p>
+    </div>
+    <div class="card cyan">
+      <div class="card-icon">🖱</div>
+      <h3><span class="en">Cursor Enhancement Ring</span><span class="zh">強化滑鼠指標</span></h3>
+      <p class="en">Optional 40 px ring (default off) that follows the real OS mouse pointer via the page's global <span class="inline-code">mousemove</span> listener — mode-independent, works alongside mouse or webcam tracking, coloured per the active High Contrast theme.</p>
+      <p class="zh">可選的 40px 圓圈指標（預設關閉），透過頁面全域 <span class="inline-code">mousemove</span> 監聽器即時跟隨真實滑鼠游標 — 不分滑鼠/眼球追蹤模式皆可使用，顏色隨目前的高對比主題變化。</p>
     </div>
     <div class="card cyan">
       <div class="card-icon">📦</div>
@@ -321,10 +339,10 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
       <div class="tl-label zh">使用者看向段落</div>
     </div>
     <div class="tl-step">
-      <div class="tl-dot">2s</div>
-      <div class="tl-day"><span class="en">L1 + request</span><span class="zh">L1 + 請求</span></div>
-      <div class="tl-label en">Text bold + dark<br>Summary requested silently</div>
-      <div class="tl-label zh">文字加粗加深<br>靜默送出摘要請求</div>
+      <div class="tl-dot">1.5s</div>
+      <div class="tl-day"><span class="en">Enhance + request</span><span class="zh">增強 + 請求</span></div>
+      <div class="tl-label en">Bold/enlarge/contrast applied<br>Summary requested silently</div>
+      <div class="tl-label zh">套用加粗/放大/對比<br>靜默送出摘要請求</div>
     </div>
     <div class="tl-step">
       <div class="tl-dot">~s</div>
@@ -401,8 +419,8 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     <div class="card cyan">
       <div class="card-icon">🖱</div>
       <h3><span class="en">Mouse Simulation (Default)</span><span class="zh">滑鼠模擬（預設）</span></h3>
-      <p class="en">Hover any paragraph for 2 seconds. No webcam, no calibration. Works on any machine. Use for PoC demo.</p>
-      <p class="zh">停留在任意段落 2 秒即觸發。不需攝影機、不需校準。任何機器均可使用，適合 PoC 展示。</p>
+      <p class="en">Hover any paragraph for 1.5 seconds. No webcam, no calibration. Works on any machine. Use for PoC demo.</p>
+      <p class="zh">停留在任意段落 1.5 秒即觸發。不需攝影機、不需校準。任何機器均可使用，適合 PoC 展示。</p>
     </div>
     <div class="card gold">
       <div class="card-icon">👁</div>
@@ -413,21 +431,33 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
   </div>
 
   <h3 class="sub"><span class="en">Popup Controls</span><span class="zh">彈出選單功能</span></h3>
+  <p class="section-sub en" style="margin-bottom:16px;">Layout top-to-bottom: master switch → mode + cursor ring → 閱讀增強 (4 independent toggles) → High Contrast theme → calibration → heatmap.</p>
+  <p class="section-sub zh" style="margin-bottom:16px;">由上到下排列：全域主開關 → 模式選擇 + 強化滑鼠指標 → 閱讀增強（4 個獨立開關）→ 高對比主題 → 校準 → 視線熱圖。</p>
   <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+    <div class="card navy">
+      <h3><span class="en">Master Switch</span><span class="zh">全域主開關</span></h3>
+      <p class="en">Big switch at the very top. Off → immediately restores every already-enhanced paragraph on the page and stops all future gaze triggers (bold/enlarge/contrast/summary/heatmap accumulation). Rest of the popup greys out while off.</p>
+      <p class="zh">位於彈出選單最上方的大開關。關閉時立即還原頁面上所有已增強的段落，並停止之後所有注視觸發（加粗/放大/對比/摘要/熱圖累積）。關閉時其餘選單項目會灰階不可互動。</p>
+    </div>
     <div class="card navy">
       <h3><span class="en">Mode Switch</span><span class="zh">模式切換</span></h3>
       <p class="en">Mouse mode / Webcam mode toggle. Reloads page tracking on switch.</p>
       <p class="zh">滑鼠模式 / 眼球追蹤切換，切換後重新初始化追蹤。</p>
     </div>
     <div class="card navy">
-      <h3><span class="en">L2 Text Enlargement</span><span class="zh">L2 文字放大</span></h3>
-      <p class="en">Toggle + adjustable slider (1.0×–3.0×, default 1.2×) on hovered paragraph. Dragging the slider live-resizes already-enlarged text immediately — no re-gaze needed. Applied together with L1.</p>
-      <p class="zh">開關 + 可調式拉桿（1.0×–3.0×，預設 1.2×）。拖曳拉桿時，已放大的段落會即時跟著變化，不需重新注視。與 L1 同步套用。</p>
+      <h3><span class="en">Cursor Enhancement Ring</span><span class="zh">強化滑鼠指標</span></h3>
+      <p class="en">Independent checkbox (default off). Mode-independent — a themed ring follows the real mouse pointer regardless of mouse/webcam mode.</p>
+      <p class="zh">獨立 checkbox（預設關閉）。不分模式 — 主題色圓圈會跟隨真實滑鼠游標，不論目前是滑鼠或眼球追蹤模式。</p>
+    </div>
+    <div class="card navy">
+      <h3><span class="en">Reading Enhancement (4 toggles)</span><span class="zh">閱讀增強（4 個開關）</span></h3>
+      <p class="en"><strong>文字加粗</strong> (bold weight only) · <strong>字型放大</strong> (slider 1.0×–3.0×, default 1.2×, live-resizes without re-gaze; slider greys out when off) · <strong>加強對比</strong> (background/text recolour, themed) · <strong>段落摘要</strong> (AI fetch + click-to-toggle). All four default on and are fully independent — e.g. disabling Contrast leaves Bold/Enlarge/Summary unaffected.</p>
+      <p class="zh"><strong>文字加粗</strong>（只管字重）· <strong>字型放大</strong>（拉桿 1.0×–3.0×，預設 1.2×，即時調整不需重新注視；關閉時拉桿灰階）· <strong>加強對比</strong>（背景/文字變色，隨主題）· <strong>段落摘要</strong>（AI 摘要 + 點擊切換）。4 個都預設開啟且完全獨立 — 例如關閉「對比」不影響加粗/放大/摘要。</p>
     </div>
     <div class="card navy">
       <h3><span class="en">High Contrast Themes</span><span class="zh">高對比主題</span></h3>
-      <p class="en">5-button theme grid (off / Aquatic / Desert / Dusk / Night Sky), each button previewing its own theme's colours directly. Selection shown as a glow ring in the theme's own accent colour.</p>
-      <p class="zh">5 顆主題按鈕（關閉 / Aquatic / Desert / Dusk / Night Sky），每顆按鈕直接預覽該主題配色，選中狀態以該主題的強調色發光外框標示。</p>
+      <p class="en">4-button theme grid (Aquatic / Desert / Dusk / Night Sky), each button previewing its own theme's colours directly. Selection shown as a glow ring in the theme's own accent colour. Independent of the Contrast toggle — always recolours summary outlines + blind-spot hints.</p>
+      <p class="zh">4 顆主題按鈕（Aquatic / Desert / Dusk / Night Sky），每顆按鈕直接預覽該主題配色，選中狀態以該主題的強調色發光外框標示。獨立於「加強對比」開關之外 — 摘要外框與盲點提示的顏色永遠跟著主題變化。</p>
     </div>
     <div class="card navy">
       <h3><span class="en">Blind-Spot Highlights</span><span class="zh">盲點提示</span></h3>
@@ -436,13 +466,13 @@ footer{background:var(--navy);padding:28px 40px;text-align:center;color:rgba(255
     </div>
     <div class="card navy">
       <h3><span class="en">Calibration</span><span class="zh">校準</span></h3>
-      <p class="en">9-point / 25-point calibration overlay. Recalibrate button. Only shown in webcam mode.</p>
-      <p class="zh">9 點 / 25 點校準介面，含重新校準按鈕，僅在眼球追蹤模式顯示。</p>
+      <p class="en">9-point / 25-point calibration overlay. Recalibrate button (now grouped directly under the point-count selector). Only shown in webcam mode.</p>
+      <p class="zh">9 點 / 25 點校準介面，重新校準按鈕已移到點數選擇區塊正下方。僅在眼球追蹤模式顯示。</p>
     </div>
     <div class="card navy">
-      <h3><span class="en">Heatmap</span><span class="zh">熱點圖</span></h3>
-      <p class="en">24×14 grid heat visualization of gaze distribution. Clear button resets.</p>
-      <p class="zh">24×14 網格視線分布熱點圖，附清除按鈕。</p>
+      <h3><span class="en">Heatmap</span><span class="zh">視線熱圖</span></h3>
+      <p class="en">24×14 grid heat visualization of gaze distribution, with a clear button. A separate 「顯示視線熱圖」checkbox collapses the canvas/legend/stats/clear-button block — purely a display toggle, accumulation in <span class="inline-code">content.js</span> keeps running underneath regardless.</p>
+      <p class="zh">24×14 網格視線分布熱點圖，附清除按鈕。另有獨立的「顯示視線熱圖」checkbox 可收合 canvas/圖例/統計/清除按鈕整塊 — 純粹是顯示開關，<span class="inline-code">content.js</span> 背後的累積邏輯不受影響，持續運作。</p>
     </div>
   </div>
 
@@ -593,8 +623,8 @@ print('ZH:', recv())
       <p class="zh">瀏覽任意文章，觸發視線停留，確認主題外框與標籤出現，點擊段落閱讀條列式摘要。</p>
       <div class="step-list">
         <div class="step"><div class="step-dot cmd">1</div><span><span class="en">Navigate to any news article (English or Chinese)</span><span class="zh">瀏覽任意新聞文章（英文或中文）</span></span></div>
-        <div class="step"><div class="step-dot cmd">2</div><span><span class="en">Hover mouse over a paragraph and hold 2 seconds</span><span class="zh">將滑鼠停留在段落上 2 秒</span></span></div>
-        <div class="step"><div class="step-dot cmd">3</div><span><span class="en">Paragraph text darkens + bold (L1 effect)</span><span class="zh">段落文字變深加粗（L1 效果）</span></span></div>
+        <div class="step"><div class="step-dot cmd">2</div><span><span class="en">Hover mouse over a paragraph and hold 1.5 seconds</span><span class="zh">將滑鼠停留在段落上 1.5 秒</span></span></div>
+        <div class="step"><div class="step-dot cmd">3</div><span><span class="en">Paragraph gets bold + enlarged + recoloured (per the four independent reading toggles)</span><span class="zh">段落套用加粗 + 放大 + 對比變色（依 4 個獨立開關的目前狀態）</span></span></div>
         <div class="step"><div class="step-dot cmd">4</div><span><span class="en">After inference completes, paragraph gets a themed outline + "點擊摘要" tag</span><span class="zh">AI 推論完成後，段落套用主題外框並顯示「點擊摘要」標籤</span></span></div>
         <div class="step"><div class="step-dot cmd">5</div><span><span class="en">Click the paragraph → text replaced with 3 bullet-point summary, tag becomes "點擊還原"</span><span class="zh">點擊段落 → 文字替換為 3 條摘要重點，標籤變為「點擊還原」</span></span></div>
         <div class="step"><div class="step-dot cmd">6</div><span><span class="en">Check </span><span class="zh">查看 </span><span class="inline-code">poc\native_host\aikwau_host.log</span><span class="en"> for timing and errors</span><span class="zh"> 確認時間與錯誤記錄</span></span></div>
@@ -602,7 +632,7 @@ print('ZH:', recv())
       <div class="test-box">
         <div class="test-label"><span class="en">✅ Phase 4 Pass Criteria</span><span class="zh">✅ 階段 4 通過條件</span></div>
         <ul>
-          <li><span class="en">L1 effect activates after 2s hover</span><span class="zh">滑鼠懸停 2 秒後 L1 效果啟動</span></li>
+          <li><span class="en">Reading enhancement activates after 1.5s hover</span><span class="zh">滑鼠懸停 1.5 秒後閱讀增強效果啟動</span></li>
           <li><span class="en">Paragraph gets themed outline + "點擊摘要" tag when summary is ready</span><span class="zh">摘要完成後段落套用主題外框與「點擊摘要」標籤</span></li>
           <li><span class="en">Clicking the paragraph replaces it with a readable bullet summary</span><span class="zh">點擊段落後替換為可讀的條列式摘要</span></li>
           <li><span class="en">English article → English bullets; Chinese article → Traditional Chinese bullets</span><span class="zh">英文文章 → 英文摘要；中文文章 → 正體中文摘要</span></li>
@@ -705,6 +735,12 @@ def _format_output(raw, lang):
     <p class="zh">段落套用 <span class="inline-code">.aikwau-l1 { color: ... !important }</span> 變深/套色後，裡面的 <span class="inline-code">&lt;a&gt;</span> 依然維持原本顏色。根本原因：CSS 繼承只在「完全沒有規則直接命中該元素」時才生效 — 瀏覽器內建樣式表（或網站自己的 CSS）本來就有規則直接命中 <span class="inline-code">a</span>/<span class="inline-code">a:visited</span>，所以無論祖先規則的優先度多高，都不會退回去繼承段落的顏色。<br><br>
     <strong>修正方式：</strong>為每個主題新增 <span class="inline-code">.aikwau-l1 a, .aikwau-l1 a:visited</span> 規則，套用該主題自己的強調色，並強制加上 <span class="inline-code">text-decoration: underline</span>（確保連結不只靠顏色辨識，符合無障礙原則）。</p>
   </div>
+
+  <div class="finding gold">
+    <div class="finding-label">🟡 <span class="en">L1 Split Into Independent Bold + Contrast Classes</span><span class="zh">L1 拆分為獨立的加粗與對比 class</span></div>
+    <p class="en">The original <span class="inline-code">.aikwau-l1</span> class bundled font-weight and colour/background into one always-on effect — users had no way to enable one without the other. It was split into <span class="inline-code">.aikwau-bold</span> (font-weight only) and <span class="inline-code">.aikwau-contrast</span> (colour/background, still the target of all HC theme colour blocks and the <span class="inline-code">.aikwau-contrast a</span> link-colour fix). <span class="inline-code">triggerL1()</span> in <span class="inline-code">content.js</span> now gates each of four effects (bold/contrast/enlarge/summary) behind its own boolean, plus a new page-wide <span class="inline-code">masterEnabled</span> kill switch that — unlike the four per-effect toggles, which only affect future gaze triggers — immediately restores every already-enhanced paragraph when turned off via a <span class="inline-code">restoreAllEffects()</span> sweep.</p>
+    <p class="zh">原本的 <span class="inline-code">.aikwau-l1</span> class 把字重與顏色/背景綁在同一個永遠一起套用的效果裡 — 使用者無法只開其中一項。後來拆成 <span class="inline-code">.aikwau-bold</span>（只管字重）與 <span class="inline-code">.aikwau-contrast</span>（顏色/背景，也是所有高對比主題色塊與 <span class="inline-code">.aikwau-contrast a</span> 連結顏色修正的套用目標）。<span class="inline-code">content.js</span> 的 <span class="inline-code">triggerL1()</span> 現在把 4 個效果（加粗/對比/放大/摘要）各自用獨立布林值控制，另外新增一個全頁面的 <span class="inline-code">masterEnabled</span> 主開關 — 跟另外 4 個各自的開關不同（那些只影響之後新觸發的段落），主開關關閉時會立即透過 <span class="inline-code">restoreAllEffects()</span> 把頁面上所有已增強的段落還原。</p>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════ HARDWARE -->
@@ -788,7 +824,7 @@ def _format_output(raw, lang):
       <th><span class="en">Description</span><span class="zh">說明</span></th>
       <th><span class="en">Budget</span><span class="zh">預算</span></th>
     </tr>
-    <tr><td><span class="en">Dwell detection</span><span class="zh">停留偵測</span></td><td><span class="en">content.js → gazefocus event</span><span class="zh">content.js → gazefocus 事件</span></td><td>= 2000 ms (fixed)</td></tr>
+    <tr><td><span class="en">Dwell detection</span><span class="zh">停留偵測</span></td><td><span class="en">content.js → gazefocus event</span><span class="zh">content.js → gazefocus 事件</span></td><td>= 1500 ms (fixed)</td></tr>
     <tr><td><span class="en">IPC overhead</span><span class="zh">IPC 開銷</span></td><td><span class="en">Extension → background → native host</span><span class="zh">擴充功能 → background → 原生主機</span></td><td>&lt; 10 ms</td></tr>
     <tr><td><span class="en">Model warm-up</span><span class="zh">模型預熱</span></td><td><span class="en">First request only (OV cache)</span><span class="zh">僅第一次請求（OV 快取後免預熱）</span></td><td>&lt; 15 s (one-time)</td></tr>
     <tr><td><span class="en">Prompt build + tokenize</span><span class="zh">Prompt 建構 + tokenize</span></td><td><span class="en">Text truncated to 1200 chars</span><span class="zh">文字截斷至 1200 字元</span></td><td>&lt; 50 ms</td></tr>
@@ -824,9 +860,9 @@ def _format_output(raw, lang):
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">webgazer.js</span>&nbsp;&nbsp;<span class="comment en">← WebGazer v2.1.2 bundled (2.3 MB, MAIN world)</span><span class="comment zh">← WebGazer v2.1.2 已打包（2.3 MB，MAIN world）</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">gaze_tracker.js</span>&nbsp;&nbsp;<span class="comment en">← MAIN world: dwell timer → aikwau:gazefocus</span><span class="comment zh">← MAIN world：停留計時 → aikwau:gazefocus</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">background.js</span>&nbsp;&nbsp;<span class="comment en">← service worker, native messaging bridge</span><span class="comment zh">← service worker，原生訊息橋接</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>&nbsp;&nbsp;<span class="comment en">← isolated: L1, click-to-toggle summary + tag label, L2 scale, blind-spot highlights</span><span class="comment zh">← isolated：L1、點擊切換摘要 + 標籤、L2 放大倍率、盲點提示</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>&nbsp;&nbsp;<span class="comment en">← L1/L2 styles, summary states + tag label, HC theme blocks, blind-spot highlight</span><span class="comment zh">← L1/L2 樣式、摘要狀態 + 標籤、高對比主題色塊、盲點提示</span><br>
-    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">popup.html</span>&nbsp;&nbsp;<span class="comment en">← mode, L2 scale slider, HC theme buttons, heatmap</span><span class="comment zh">← 模式、L2 放大拉桿、高對比主題按鈕、熱圖 UI</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.js</span>&nbsp;&nbsp;<span class="comment en">← isolated: master switch, 4 independent reading toggles, cursor ring, click-to-toggle summary + tag label, L2 scale, blind-spot highlights</span><span class="comment zh">← isolated：全域主開關、4 個獨立閱讀增強開關、滑鼠指標圓圈、點擊切換摘要 + 標籤、L2 放大倍率、盲點提示</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">content.css</span>&nbsp;&nbsp;<span class="comment en">← .aikwau-bold / .aikwau-contrast / .aikwau-l2 styles, cursor ring, summary states + tag label, HC theme blocks (4 themes), blind-spot highlight</span><span class="comment zh">← .aikwau-bold / .aikwau-contrast / .aikwau-l2 樣式、滑鼠指標圓圈、摘要狀態 + 標籤、高對比主題色塊（4 種）、盲點提示</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">popup.html</span>&nbsp;&nbsp;<span class="comment en">← master switch, mode, cursor ring, 4 reading toggles, L2 scale slider, HC theme buttons (4), heatmap + visibility toggle</span><span class="comment zh">← 全域主開關、模式、滑鼠指標圓圈、4 個閱讀增強開關、L2 放大拉桿、高對比主題按鈕（4 個）、熱圖 + 顯示開關</span><br>
     │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">popup.js</span>&nbsp;&nbsp;<span class="comment en">← storage reads/writes, tab messages</span><span class="comment zh">← 儲存讀寫，tab 訊息</span><br>
     │&nbsp;&nbsp; └── <span class="dir">models/</span>&nbsp;&nbsp;<span class="comment en">← auto-created by download_convert.py</span><span class="comment zh">← 由 download_convert.py 自動建立</span><br>
     │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="dir">qwen2.5-1.5b-int4/</span>&nbsp;&nbsp;<span class="comment en">← ~800 MB OpenVINO IR + tokenizer</span><span class="comment zh">← 約 800 MB OpenVINO IR + tokenizer</span><br>
@@ -844,12 +880,18 @@ def _format_output(raw, lang):
       <th><span class="en">Description</span><span class="zh">說明</span></th>
     </tr>
     <tr><td><span class="inline-code">aikwau_gaze_mode</span></td><td><span class="inline-code">'mouse'</span> | <span class="inline-code">'webcam'</span></td><td><span class="en">Tracking mode (one-shot read — needs page reload)</span><span class="zh">追蹤模式（單次讀取，需重新整理頁面）</span></td></tr>
-    <tr><td><span class="inline-code">aikwau_l2_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">L2 font enlargement toggle</span><span class="zh">L2 字型放大開關</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_master_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Global kill switch, default true. Off → restores page + blocks all future gaze triggers</span><span class="zh">全域主開關，預設 true。關閉 → 還原頁面並擋掉之後所有注視觸發</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_bold_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">文字加粗 toggle, default true — font-weight only</span><span class="zh">文字加粗開關，預設 true — 只管字重</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_contrast_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">加強對比 toggle, default true — background/text recolour, independent of the HC theme picker</span><span class="zh">加強對比開關，預設 true — 背景/文字變色，獨立於高對比主題選擇之外</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_l2_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">字型放大 (L2) toggle, default true</span><span class="zh">字型放大 (L2) 開關，預設 true</span></td></tr>
     <tr><td><span class="inline-code">aikwau_l2_scale</span></td><td><span class="inline-code">number</span> (1.0–3.0)</td><td><span class="en">L2 enlargement multiplier, default 1.2 — live-applied</span><span class="zh">L2 放大倍率，預設 1.2，即時套用</span></td></tr>
-    <tr><td><span class="inline-code">aikwau_hc_theme</span></td><td><span class="inline-code">'off'</span> | <span class="inline-code">'aquatic'</span> | <span class="inline-code">'desert'</span> | <span class="inline-code">'dusk'</span> | <span class="inline-code">'nightsky'</span></td><td><span class="en">High Contrast theme, default 'nightsky' — live-applied via storage.onChanged</span><span class="zh">高對比主題，預設 'nightsky'，透過 storage.onChanged 即時套用</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_summary_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">段落摘要 toggle, default true — off skips summary fetch/outline/tag entirely</span><span class="zh">段落摘要開關，預設 true — 關閉時完全跳過摘要抓取/外框/標籤</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_cursor_ring_enabled</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">強化滑鼠指標 toggle, default false — mode-independent</span><span class="zh">強化滑鼠指標開關，預設 false — 不分模式</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_hc_theme</span></td><td><span class="inline-code">'aquatic'</span> | <span class="inline-code">'desert'</span> | <span class="inline-code">'dusk'</span> | <span class="inline-code">'nightsky'</span></td><td><span class="en">High Contrast theme, default 'nightsky' — live-applied via storage.onChanged. ('off' is no longer a popup option but remains a legal legacy value — content.css's base rules are its appearance)</span><span class="zh">高對比主題，預設 'nightsky'，透過 storage.onChanged 即時套用。（'off' 已從 popup 移除，但仍是合法的舊值 — content.css 的基礎樣式即為其外觀）</span></td></tr>
     <tr><td><span class="inline-code">aikwau_webcam_panel_visible</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show webcam preview panel (webcam mode)</span><span class="zh">顯示 Webcam 預覽視窗（眼球追蹤模式）</span></td></tr>
     <tr><td><span class="inline-code">aikwau_gaze_ring_visible</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Show gaze ring indicator (webcam mode)</span><span class="zh">顯示視線環狀指示（眼球追蹤模式）</span></td></tr>
     <tr><td><span class="inline-code">aikwau_cal_points</span></td><td><span class="inline-code">9</span> | <span class="inline-code">25</span></td><td><span class="en">Calibration point count</span><span class="zh">校準點數量</span></td></tr>
+    <tr><td><span class="inline-code">aikwau_heatmap_visible</span></td><td><span class="inline-code">true</span> | <span class="inline-code">false</span></td><td><span class="en">Popup display toggle for the heatmap canvas/legend/stats block, default true — accumulation is unaffected</span><span class="zh">popup 內熱圖 canvas/圖例/統計區塊的顯示開關，預設 true — 不影響背後累積邏輯</span></td></tr>
     <tr><td><span class="inline-code">aikwau_heatmap</span></td><td><span class="inline-code">object</span></td><td><span class="en">Persisted 24×14 gaze heatmap ({cells, totalPoints, lastUpdated})</span><span class="zh">持久化的 24×14 視線熱圖資料</span></td></tr>
   </table>
 </section>
@@ -918,8 +960,8 @@ def _format_output(raw, lang):
     </tr>
     <tr>
       <td><strong>V9</strong></td>
-      <td><span class="en">L1 visual trigger (mouse)</span><span class="zh">L1 視覺觸發（滑鼠）</span></td>
-      <td><span class="en">Text bold + dark after 2 s hover</span><span class="zh">停留 2 秒後文字加粗加深</span></td>
+      <td><span class="en">Reading enhancement trigger (mouse)</span><span class="zh">閱讀增強觸發（滑鼠）</span></td>
+      <td><span class="en">Text bold + enlarged + recoloured after 1.5 s hover</span><span class="zh">停留 1.5 秒後文字加粗、放大、變色</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
     <tr>
@@ -955,13 +997,31 @@ def _format_output(raw, lang):
     <tr>
       <td><strong>V15</strong></td>
       <td><span class="en">High Contrast theme switch (live)</span><span class="zh">高對比主題切換（即時）</span></td>
-      <td><span class="en">Clicking each of the 5 popup theme buttons recolours L1/outlines/links/blind-spot on the page instantly, no reload</span><span class="zh">點擊 popup 內 5 顆主題按鈕，頁面上的 L1/外框/連結/盲點提示立即變色，不需重新整理</span></td>
+      <td><span class="en">Clicking each of the 4 popup theme buttons recolours contrast text/outlines/links/blind-spot on the page instantly, no reload</span><span class="zh">點擊 popup 內 4 顆主題按鈕，頁面上的對比文字/外框/連結/盲點提示立即變色，不需重新整理</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
     <tr>
       <td><strong>V16</strong></td>
       <td><span class="en">L2 scale slider (live)</span><span class="zh">L2 放大拉桿（即時）</span></td>
       <td><span class="en">Dragging the popup L2 slider resizes an already-enlarged paragraph immediately, no re-gaze needed</span><span class="zh">拖曳 popup 內 L2 拉桿時，已放大的段落立即跟著調整大小，不需重新注視</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V17</strong></td>
+      <td><span class="en">Independent reading toggles</span><span class="zh">獨立閱讀增強開關</span></td>
+      <td><span class="en">Disabling any one of Bold/Enlarge/Contrast/Summary leaves the other three working normally on a newly-gazed paragraph</span><span class="zh">關閉加粗/放大/對比/摘要其中一項，其餘三項在新注視的段落上仍正常運作</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V18</strong></td>
+      <td><span class="en">Master switch restore</span><span class="zh">全域主開關還原</span></td>
+      <td><span class="en">Turning the master switch off immediately restores an already-enhanced paragraph on the current page to its original text/styling</span><span class="zh">關閉全域主開關後，頁面上已增強的段落立即還原成原始文字/樣式</span></td>
+      <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
+    </tr>
+    <tr>
+      <td><strong>V19</strong></td>
+      <td><span class="en">Cursor ring follows real pointer</span><span class="zh">滑鼠指標圓圈跟隨真實游標</span></td>
+      <td><span class="en">Enabling 強化滑鼠指標 shows a themed ring that tracks the OS mouse pointer in both mouse and webcam mode</span><span class="zh">開啟「強化滑鼠指標」後，主題色圓圈在滑鼠與眼球追蹤模式下都能跟隨真實游標</span></td>
       <td><span class="badge-warn"><span class="en">Pending</span><span class="zh">待測</span></span></td>
     </tr>
   </table>
@@ -985,8 +1045,8 @@ chrome.storage.local.get(null, console.log)</code></pre>
 <footer>
   AI Kwau PoC — Calvin Chen · Ava Lu · Thomas Chang · Yorke Lee<br>
   <span style="color:rgba(255,255,255,.2);font-size:11px;margin-top:4px;display:block;">
-    <span class="en">Updated 2026-07-15 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
-    <span class="zh">更新於 2026-07-15 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
+    <span class="en">Updated 2026-07-19 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
+    <span class="zh">更新於 2026-07-19 · Qwen2.5-1.5B INT4 · OpenVINO GenAI · PyInstaller onedir</span>
   </span>
 </footer>
 

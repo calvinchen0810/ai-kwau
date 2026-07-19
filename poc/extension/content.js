@@ -26,6 +26,7 @@ window.__aikwauContentLoaded = true;
   let summaryEnabled    = true;   // Summary fetch + click-to-toggle
   let cursorRingEnabled = false;  // Mode-independent real-mouse-pointer ring
   let cursorRing        = null;
+  let blindSpotVisible  = true;   // Display-only: scanBlindButtons() keeps running when false
   let badgeTimer        = null;
   const summaryCache    = new Map(); // text-key → cached summary string
   // summaryReadyEls: el → { summary, origText, handler, shown, labelEl }
@@ -262,6 +263,12 @@ window.__aikwauContentLoaded = true;
     highlightTargets = [];
   }
 
+  // Display-only toggle: scanBlindButtons()/updateHighlights() keep tracking
+  // targets in highlightTargets regardless — this just hides the rendering.
+  function applyBlindSpotVisibility() {
+    document.body.classList.toggle('aikwau-blindspot-hidden', !blindSpotVisible);
+  }
+
   // ── Demo page bridge ──────────────────────────────────────────────────────
   document.addEventListener('aikwau:demo-populate', () => {
     // Gaussian gaze centered on reading area (roughly top-center of main content)
@@ -299,7 +306,7 @@ window.__aikwauContentLoaded = true;
   chrome.storage.local.get(
     ['aikwau_gaze_mode', 'aikwau_l2_enabled', 'aikwau_l2_scale',
      'aikwau_bold_enabled', 'aikwau_contrast_enabled', 'aikwau_summary_enabled',
-     'aikwau_master_enabled', 'aikwau_cursor_ring_enabled'],
+     'aikwau_master_enabled', 'aikwau_cursor_ring_enabled', 'aikwau_blindspot_visible'],
     (data) => {
       masterEnabled     = data.aikwau_master_enabled !== false;
       l2Enabled         = data.aikwau_l2_enabled !== false;
@@ -308,6 +315,8 @@ window.__aikwauContentLoaded = true;
       contrastEnabled   = data.aikwau_contrast_enabled !== false;
       summaryEnabled    = data.aikwau_summary_enabled !== false;
       cursorRingEnabled = data.aikwau_cursor_ring_enabled === true;
+      blindSpotVisible  = data.aikwau_blindspot_visible !== false;
+      applyBlindSpotVisibility();
       isWebcamMode      = (data.aikwau_gaze_mode ?? 'mouse') === 'webcam';
       if (isWebcamMode) initWebcam();
     }
@@ -710,6 +719,10 @@ window.__aikwauContentLoaded = true;
     if (msg.type === 'gaze:cursor-ring-toggle') {
       cursorRingEnabled = msg.enabled;
       if (!cursorRingEnabled && cursorRing) cursorRing.style.display = 'none';
+    }
+    if (msg.type === 'gaze:blindspot-toggle') {
+      blindSpotVisible = msg.visible;
+      applyBlindSpotVisibility();
     }
     if (msg.type === 'gaze:master-toggle') {
       masterEnabled = msg.enabled;

@@ -17,6 +17,7 @@ const l2ScaleRow      = document.getElementById('l2ScaleRow');
 const contrastEnabled = document.getElementById('contrastEnabled');
 const summaryEnabled  = document.getElementById('summaryEnabled');
 const cursorRingEnabled = document.getElementById('cursorRingEnabled');
+const blindSpotVisible = document.getElementById('blindSpotVisible');
 const themeButtons    = document.querySelectorAll('.theme-btn');
 const status          = document.getElementById('status');
 
@@ -219,6 +220,16 @@ heatmapVisible.addEventListener('change', () => {
   const visible = heatmapVisible.checked;
   hmBody.style.display = visible ? 'block' : 'none';
   chrome.storage.local.set({ aikwau_heatmap_visible: visible });
+});
+
+chrome.storage.local.get('aikwau_blindspot_visible', ({ aikwau_blindspot_visible }) => {
+  blindSpotVisible.checked = aikwau_blindspot_visible !== false;
+});
+
+blindSpotVisible.addEventListener('change', () => {
+  const visible = blindSpotVisible.checked;
+  chrome.storage.local.set({ aikwau_blindspot_visible: visible });
+  sendToTab({ type: 'gaze:blindspot-toggle', visible });
 });
 
 function heatColor(t) {
