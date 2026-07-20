@@ -523,21 +523,23 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
               <div class="os-item"><div class="os-icon">🧠</div><div><div class="os-name">Qwen2.5-1.5B INT4</div><div class="os-sub-lbl">On-device AI Model</div></div></div>
             </div>
           </div>
-          <div class="result-chips">
-            <div class="rchip" style="background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);">
-              <div class="rchip-num" style="color:var(--cyan);">0.85s</div>
-              <div class="rchip-lbl" style="color:var(--muted);">GPU · 71 tok/s ⭐</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div class="result-chips">
+              <div class="rchip" style="background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);">
+                <div class="rchip-num" style="color:var(--cyan);">0.85s</div>
+                <div class="rchip-lbl" style="color:var(--muted);">GPU · 71 tok/s ⭐</div>
+              </div>
+              <div class="rchip">
+                <div class="rchip-num">1.32s</div>
+                <div class="rchip-lbl">CPU · 45 tok/s</div>
+              </div>
+              <div class="rchip">
+                <div class="rchip-num">1.62s</div>
+                <div class="rchip-lbl">NPU · 37 tok/s</div>
+              </div>
             </div>
-            <div class="rchip">
-              <div class="rchip-num">1.32s</div>
-              <div class="rchip-lbl">CPU · 45 tok/s</div>
-            </div>
-            <div class="rchip">
-              <div class="rchip-num">1.62s</div>
-              <div class="rchip-lbl">NPU · 37 tok/s</div>
-            </div>
+            <div style="text-align:center;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.5px;">Test Environment · KentoI (Intel Panther Lake)</div>
           </div>
-          <div style="margin-top:2px;text-align:center;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.5px;">Test Environment · KentoI (Intel Panther Lake)</div>
         </div>
       </div>
 
