@@ -13,145 +13,62 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Serif TC', 'Georgia', '宋體', serif; background: var(--bg); color: #1a2b3c; line-height: 1.9; }
 
-  /* ── Summary bar ─────────────────────────────────────────────── */
-  #summary-bar {
+  /* ── Top bar (sticky wrapper) ────────────────────────────── */
+  #top-bar {
     position: sticky; top: 0; z-index: 100;
-    background: var(--navy);
-    display: flex; align-items: center; gap: 0;
+    display: flex; flex-direction: column;
     box-shadow: 0 2px 12px rgba(0,0,0,.35);
-    overflow: hidden;
   }
-  .sb-logo {
+
+  /* Tab switcher */
+  #tab-bar {
+    background: #0a1828;
+    display: flex; align-items: center; gap: 0;
+    padding: 0 0 0 130px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .tab-logo {
+    position: absolute; left: 0;
     padding: 0 18px; font-family: sans-serif; font-size: 13px;
     font-weight: 700; color: var(--cyan); white-space: nowrap;
-    border-right: 1px solid rgba(255,255,255,.08);
-    height: 48px; display: flex; align-items: center;
+    height: 38px; display: flex; align-items: center;
+  }
+  .tab-btn {
+    font-family: sans-serif; font-size: 12px; font-weight: 700;
+    color: rgba(255,255,255,.45); background: none; border: none;
+    padding: 0 22px; height: 38px; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    letter-spacing: .5px;
+  }
+  .tab-btn:hover { color: rgba(255,255,255,.75); }
+  .tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+  /* Summary bar */
+  #summary-bar {
+    background: var(--navy);
+    display: flex; align-items: center; gap: 0;
+    overflow: hidden;
   }
   .sb-cell {
     flex: 1; display: flex; flex-direction: column; align-items: center;
     justify-content: center; padding: 4px 12px;
-    border-right: 1px solid rgba(255,255,255,.08);
-    min-width: 0;
+    border-right: 1px solid rgba(255,255,255,.08); min-width: 0;
   }
   .sb-cell:last-child { border-right: none; }
-  .sb-label {
-    font-family: sans-serif; font-size: 9px; font-weight: 700;
-    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px;
-  }
-  .sb-time {
-    font-family: 'Courier New', monospace; font-size: 20px; font-weight: 700;
-    letter-spacing: 2px;
-  }
-  .sb-diff {
-    font-family: sans-serif; font-size: 10px; font-weight: 600;
-    margin-top: 1px; height: 14px;
-  }
-  .c1 .sb-label { color: #a0aec0; }
-  .c1 .sb-time  { color: #fff; }
-  .c2 .sb-label { color: var(--cyan); }
-  .c2 .sb-time  { color: var(--cyan); }
-  .c2 .sb-diff  { color: rgba(144,224,239,.7); }
-  .c3 .sb-label { color: var(--green); }
-  .c3 .sb-time  { color: var(--green); }
-  .c3 .sb-diff  { color: rgba(6,214,160,.7); }
+  .sb-label { font-family: sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; }
+  .sb-time  { font-family: 'Courier New', monospace; font-size: 20px; font-weight: 700; letter-spacing: 2px; }
+  .sb-diff  { font-family: sans-serif; font-size: 10px; font-weight: 600; margin-top: 1px; height: 14px; }
+  .c1 .sb-label { color: #a0aec0; } .c1 .sb-time { color: #fff; }
+  .c2 .sb-label { color: var(--cyan); } .c2 .sb-time { color: var(--cyan); } .c2 .sb-diff { color: rgba(144,224,239,.7); }
+  .c3 .sb-label { color: var(--green); } .c3 .sb-time { color: var(--green); } .c3 .sb-diff { color: rgba(6,214,160,.7); }
 
-  /* ── Layout ──────────────────────────────────────────────────── */
+  /* ── Layout ───────────────────────────────────────────────── */
   .container { max-width: 800px; margin: 0 auto; padding: 36px 20px 80px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
 
-  /* ── Scenario card ───────────────────────────────────────────── */
-  .scenario-card {
-    background: #fff; border-radius: 16px; overflow: hidden;
-    margin-bottom: 48px;
-    box-shadow: 0 2px 16px rgba(0,0,0,.07);
-  }
-
-  /* ── Scenario header ─────────────────────────────────────────── */
-  .sc-header {
-    padding: 18px 32px 16px;
-    display: flex; align-items: center; gap: 20px;
-    border-bottom: 1px solid rgba(0,0,0,.07);
-  }
-  .sc-num {
-    font-family: sans-serif; font-size: 28px; font-weight: 800;
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .sc-info { flex: 1; }
-  .sc-title { font-family: sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-  .sc-sub   { font-family: sans-serif; font-size: 12px; color: var(--muted); }
-
-  /* feature badges */
-  .feat-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-  .feat-off {
-    font-family: sans-serif; font-size: 10px; font-weight: 600;
-    background: rgba(0,0,0,.06); color: #888;
-    border: 1px solid rgba(0,0,0,.1); border-radius: 20px;
-    padding: 2px 10px;
-  }
-  .feat-on {
-    font-family: sans-serif; font-size: 10px; font-weight: 700;
-    border-radius: 20px; padding: 2px 10px;
-  }
-  .feat-on.cyan  { background: rgba(0,180,216,.12); color: var(--accent); border: 1px solid rgba(0,180,216,.35); }
-  .feat-on.green { background: rgba(6,214,160,.12); color: #059669;       border: 1px solid rgba(6,214,160,.4); }
-
-  /* timer strip */
-  .sc-timer {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 32px; background: rgba(0,0,0,.025);
-    border-bottom: 1px solid rgba(0,0,0,.06);
-  }
-  .sc-clock {
-    font-family: 'Courier New', monospace; font-size: 26px; font-weight: 700;
-    letter-spacing: 3px; min-width: 80px;
-  }
-  .tbtn {
-    font-family: sans-serif; font-size: 11px; font-weight: 700;
-    padding: 6px 16px; border-radius: 6px; border: none; cursor: pointer;
-    transition: all .15s;
-  }
-  .tbtn:disabled { opacity: .35; cursor: not-allowed; }
-  .tbtn.start { background: var(--green); color: var(--navy); }
-  .tbtn.stop  { background: #e74c3c; color: #fff; }
-  .tbtn.reset { background: rgba(0,0,0,.08); color: var(--muted); }
-  .tbtn:not(:disabled):hover { filter: brightness(1.08); }
-  .sc-result {
-    font-family: sans-serif; font-size: 12px; font-weight: 600;
-    margin-left: 4px;
-  }
-
-  /* ── Article body ────────────────────────────────────────────── */
-  .article-body { padding: 32px 36px 36px; }
-  .article-title {
-    font-size: 22px; font-weight: 700; color: var(--navy);
-    line-height: 1.4; margin-bottom: 24px;
-    padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,.07);
-    font-family: sans-serif;
-  }
-  .article-body p {
-    font-size: 17px; line-height: 2.05; color: #2c3e50;
-    margin-bottom: 22px; text-align: justify; text-indent: 2em;
-  }
-  .article-body p:last-child { margin-bottom: 0; }
-
-  /* scenario colour accents */
-  .s1 .sc-header { border-top: 4px solid #94a3b8; }
-  .s1 .sc-num    { background: rgba(0,0,0,.06); color: var(--muted); }
-  .s1 .sc-title  { color: var(--muted); }
-  .s1 .sc-clock  { color: #555; }
-
-  .s2 .sc-header { border-top: 4px solid var(--cyan); }
-  .s2 .sc-num    { background: rgba(0,180,216,.12); color: var(--accent); }
-  .s2 .sc-title  { color: var(--accent); }
-  .s2 .sc-clock  { color: var(--accent); }
-
-  .s3 .sc-header { border-top: 4px solid var(--green); }
-  .s3 .sc-num    { background: rgba(6,214,160,.12); color: #059669; }
-  .s3 .sc-title  { color: #059669; }
-  .s3 .sc-clock  { color: #059669; }
-
-  /* ── Intro banner ────────────────────────────────────────────── */
+  /* ── Intro banner ─────────────────────────────────────────── */
   .intro {
     font-family: sans-serif; font-size: 13px; line-height: 1.75;
     color: var(--muted); background: #fff;
@@ -161,216 +78,455 @@
   .intro strong { color: var(--accent); }
   .intro ol { margin: 8px 0 0 20px; }
   .intro li { margin-bottom: 4px; }
+
+  /* ── Scenario card ────────────────────────────────────────── */
+  .scenario-card { background: #fff; border-radius: 16px; overflow: hidden; margin-bottom: 48px; box-shadow: 0 2px 16px rgba(0,0,0,.07); }
+
+  /* header */
+  .sc-header { padding: 18px 32px 16px; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid rgba(0,0,0,.07); }
+  .sc-num { font-family: sans-serif; font-size: 28px; font-weight: 800; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sc-info { flex: 1; }
+  .sc-title { font-family: sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .sc-sub   { font-family: sans-serif; font-size: 12px; color: var(--muted); }
+  .feat-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .feat-off { font-family: sans-serif; font-size: 10px; font-weight: 600; background: rgba(0,0,0,.06); color: #888; border: 1px solid rgba(0,0,0,.1); border-radius: 20px; padding: 2px 10px; }
+  .feat-on  { font-family: sans-serif; font-size: 10px; font-weight: 700; border-radius: 20px; padding: 2px 10px; }
+  .feat-on.cyan  { background: rgba(0,180,216,.12); color: var(--accent); border: 1px solid rgba(0,180,216,.35); }
+  .feat-on.green { background: rgba(6,214,160,.12); color: #059669; border: 1px solid rgba(6,214,160,.4); }
+
+  /* timer strip */
+  .sc-timer { display: flex; align-items: center; gap: 10px; padding: 10px 32px; background: rgba(0,0,0,.025); border-bottom: 1px solid rgba(0,0,0,.06); }
+  .sc-clock { font-family: 'Courier New', monospace; font-size: 26px; font-weight: 700; letter-spacing: 3px; min-width: 80px; }
+  .tbtn { font-family: sans-serif; font-size: 11px; font-weight: 700; padding: 6px 16px; border-radius: 6px; border: none; cursor: pointer; transition: all .15s; }
+  .tbtn:disabled { opacity: .35; cursor: not-allowed; }
+  .tbtn.start { background: var(--green); color: var(--navy); }
+  .tbtn.stop  { background: #e74c3c; color: #fff; }
+  .tbtn.reset { background: rgba(0,0,0,.08); color: var(--muted); }
+  .tbtn:not(:disabled):hover { filter: brightness(1.08); }
+  .sc-result { font-family: sans-serif; font-size: 12px; font-weight: 600; margin-left: 4px; }
+
+  /* article body */
+  .article-body { padding: 32px 36px 36px; }
+  .article-title { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.4; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,.07); font-family: sans-serif; }
+  .article-body p { font-size: 17px; line-height: 2.05; color: #2c3e50; margin-bottom: 22px; text-align: justify; text-indent: 2em; }
+  .article-body p:last-child { margin-bottom: 0; }
+
+  /* colour accents */
+  .s1 .sc-header { border-top: 4px solid #94a3b8; } .s1 .sc-num { background: rgba(0,0,0,.06); color: var(--muted); } .s1 .sc-title { color: var(--muted); } .s1 .sc-clock { color: #555; }
+  .s2 .sc-header { border-top: 4px solid var(--cyan); } .s2 .sc-num { background: rgba(0,180,216,.12); color: var(--accent); } .s2 .sc-title { color: var(--accent); } .s2 .sc-clock { color: var(--accent); }
+  .s3 .sc-header { border-top: 4px solid var(--green); } .s3 .sc-num { background: rgba(6,214,160,.12); color: #059669; } .s3 .sc-title { color: #059669; } .s3 .sc-clock { color: #059669; }
 </style>
 </head>
 <body>
 
-<!-- Sticky summary bar -->
-<div id="summary-bar">
-  <div class="sb-logo">AI Kwau 閱讀測試</div>
-  <div class="sb-cell c1">
-    <div class="sb-label">① 無功能</div>
-    <div class="sb-time" id="bar1">--:--</div>
-    <div class="sb-diff" id="diff1"></div>
+<div id="top-bar">
+  <div id="tab-bar">
+    <span class="tab-logo">AI Kwau 閱讀測試</span>
+    <button class="tab-btn active" onclick="switchTab(1)">1000 字</button>
+    <button class="tab-btn"        onclick="switchTab(2)">2000 字</button>
+    <button class="tab-btn"        onclick="switchTab(3)">3000 字</button>
   </div>
-  <div class="sb-cell c2">
-    <div class="sb-label">② 粗體 + 高對比</div>
-    <div class="sb-time" id="bar2">--:--</div>
-    <div class="sb-diff" id="diff2"></div>
-  </div>
-  <div class="sb-cell c3">
-    <div class="sb-label">③ + AI 摘要</div>
-    <div class="sb-time" id="bar3">--:--</div>
-    <div class="sb-diff" id="diff3"></div>
+  <div id="summary-bar">
+    <div class="sb-cell c1">
+      <div class="sb-label">① 無功能</div>
+      <div class="sb-time" id="bar1">--:--</div>
+      <div class="sb-diff" id="diff1"></div>
+    </div>
+    <div class="sb-cell c2">
+      <div class="sb-label">② 粗體 + 高對比</div>
+      <div class="sb-time" id="bar2">--:--</div>
+      <div class="sb-diff" id="diff2"></div>
+    </div>
+    <div class="sb-cell c3">
+      <div class="sb-label">③ + AI 摘要</div>
+      <div class="sb-time" id="bar3">--:--</div>
+      <div class="sb-diff" id="diff3"></div>
+    </div>
   </div>
 </div>
 
 <div class="container">
 
+<!-- ══════════════════════════════════════════════════════════
+     TAB 1 — 1000 字
+══════════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-1">
   <div class="intro">
-    <strong>測試說明：</strong> 三篇文章各自獨立閱讀一次，每篇對應不同的 AI Kwau 設定。<br>
-    閱讀前按該文章的「▶ 開始」，確認理解內容後按「⏹ 完成」。上方工具列會即時顯示三組時間與差異。
+    <strong>測試說明（1000 字）：</strong> 三篇文章各自獨立閱讀一次，每篇對應不同的 AI Kwau 設定。閱讀前按「▶ 開始」，確認理解內容後按「⏹ 完成」。
     <ol>
-      <li><strong>文章一</strong>：關閉所有 AI Kwau 功能（或不安裝），純粹閱讀</li>
-      <li><strong>文章二</strong>：僅開啟「粗體加深」＋「高對比主題」，懸停段落觸發即可</li>
-      <li><strong>文章三</strong>：同時開啟粗體、高對比，並點擊摘要查看 AI 重點整理</li>
+      <li><strong>文章一</strong>：關閉所有功能，純粹閱讀</li>
+      <li><strong>文章二</strong>：僅開啟粗體加深 ＋ 高對比主題，懸停段落觸發即可</li>
+      <li><strong>文章三</strong>：粗體、高對比，並點擊摘要查看 AI 重點</li>
     </ol>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       Scenario 1 — No features
-  ════════════════════════════════════════════════════════ -->
   <div class="scenario-card s1">
     <div class="sc-header">
       <div class="sc-num">①</div>
       <div class="sc-info">
         <div class="sc-title">控制組：不開啟任何功能</div>
-        <div class="sc-sub">請確認 AI Kwau 功能已全部關閉，或使用未安裝擴充功能的瀏覽器</div>
-        <div class="feat-row">
-          <span class="feat-off">✕ 粗體加深</span>
-          <span class="feat-off">✕ 高對比</span>
-          <span class="feat-off">✕ 字型放大</span>
-          <span class="feat-off">✕ AI 摘要</span>
-        </div>
+        <div class="sc-sub">請確認 AI Kwau 已全部關閉，或使用未安裝擴充功能的瀏覽器</div>
+        <div class="feat-row"><span class="feat-off">✕ 粗體加深</span><span class="feat-off">✕ 高對比</span><span class="feat-off">✕ AI 摘要</span></div>
       </div>
     </div>
     <div class="sc-timer">
-      <div class="sc-clock" id="clk1">00:00</div>
-      <button class="tbtn start" id="s1-start" onclick="startT(1)">▶ 開始</button>
-      <button class="tbtn stop"  id="s1-stop"  onclick="stopT(1)"  disabled>⏹ 完成</button>
-      <button class="tbtn reset" id="s1-reset" onclick="resetT(1)" disabled>↺</button>
-      <div class="sc-result" id="res1"></div>
+      <div class="sc-clock" id="clk-t1s1">00:00</div>
+      <button class="tbtn start" id="btn-t1s1-start" onclick="startT(1,1)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t1s1-stop"  onclick="stopT(1,1)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t1s1-reset" onclick="resetT(1,1)" disabled>↺</button>
+      <div class="sc-result" id="res-t1s1"></div>
     </div>
     <div class="article-body">
       <div class="article-title">人工智慧如何重塑現代醫療照護</div>
-
       <p>隨著人工智慧技術的快速發展，醫療照護領域正在經歷一場前所未有的革命。傳統的診斷流程往往依賴醫師多年累積的臨床經驗，然而人工智慧系統透過分析龐大的醫療數據，能夠在數秒內識別出人類肉眼難以察覺的細微異常。以影像診斷為例，深度學習演算法在偵測早期肺癌、乳癌及眼底病變等疾病方面，已展現出媲美甚至超越資深放射科醫師的準確率。這不僅大幅縮短了患者等待診斷結果的時間，更為偏遠地區提供了接受高品質醫療評估的機會，讓醫療資源的分配不再受到地理位置的嚴重限制。</p>
-
       <p>在藥物研發領域，人工智慧的介入同樣帶來革命性的突破。一種新藥從實驗室研究到獲得監管機構核准，傳統上需要耗費超過十年的時間與數十億美元的資本投入。然而，透過機器學習模型對分子結構的預測與篩選，研究人員得以在極短的時間內從數百萬種化合物中鎖定最具潛力的候選分子。在 COVID-19 疫情期間，人工智慧技術的應用使疫苗研發周期大幅壓縮，印證了其在公共衛生緊急事件中所扮演的關鍵角色。製藥公司也逐漸將人工智慧整合至臨床試驗設計，以提升受試者招募效率與試驗成功率，進一步降低藥物開發的整體成本。</p>
-
       <p>個人化醫療是人工智慧在醫療領域另一項重要應用方向。每位患者的基因組成、生活習慣與環境暴露因子各異，傳統的標準化治療方案無法充分照顧個別差異。透過整合電子病歷、基因定序資料與穿戴式裝置的即時生理監測數據，人工智慧能夠為每位患者量身打造最適合的治療計畫。腫瘤學領域已開始利用人工智慧分析患者的腫瘤基因突變特徵，預測特定標靶藥物的治療反應，從而避免無效療程帶來的副作用與醫療資源浪費，讓患者在最短的時間內接受最有效的個人化治療方案。</p>
-
       <p>儘管人工智慧在醫療領域展現出巨大潛力，相關的倫理議題與挑戰仍不容忽視。醫療數據的隱私保護、演算法決策的透明度，以及人工智慧輔助診斷的法律責任歸屬，都是亟待社會各界共同面對的課題。此外，若人工智慧系統的訓練數據存在偏差，可能導致特定族群在醫療照護上遭受不公平的對待。因此，如何確保人工智慧技術的應用符合醫療倫理原則，並在技術創新與人文關懷之間取得平衡，將是未來醫療體系面臨的核心挑戰。唯有建立完善的監管框架與跨領域合作機制，方能讓人工智慧真正成為全人類健康福祉的守護者。</p>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       Scenario 2 — Bold + High Contrast
-  ════════════════════════════════════════════════════════ -->
   <div class="scenario-card s2">
     <div class="sc-header">
       <div class="sc-num">②</div>
       <div class="sc-info">
         <div class="sc-title">文字強化：粗體加深 ＋ 高對比主題</div>
-        <div class="sc-sub">開啟粗體加深與高對比（建議選 Nightsky），懸停段落約 2 秒觸發 L1 效果，不點開摘要</div>
-        <div class="feat-row">
-          <span class="feat-on cyan">✓ 粗體加深</span>
-          <span class="feat-on cyan">✓ 高對比主題</span>
-          <span class="feat-off">✕ AI 摘要（不點擊）</span>
-        </div>
+        <div class="sc-sub">開啟粗體加深與高對比（建議 Nightsky），懸停段落約 2 秒觸發 L1，不點摘要</div>
+        <div class="feat-row"><span class="feat-on cyan">✓ 粗體加深</span><span class="feat-on cyan">✓ 高對比主題</span><span class="feat-off">✕ AI 摘要（不點擊）</span></div>
       </div>
     </div>
     <div class="sc-timer">
-      <div class="sc-clock" id="clk2">00:00</div>
-      <button class="tbtn start" id="s2-start" onclick="startT(2)">▶ 開始</button>
-      <button class="tbtn stop"  id="s2-stop"  onclick="stopT(2)"  disabled>⏹ 完成</button>
-      <button class="tbtn reset" id="s2-reset" onclick="resetT(2)" disabled>↺</button>
-      <div class="sc-result" id="res2"></div>
+      <div class="sc-clock" id="clk-t1s2">00:00</div>
+      <button class="tbtn start" id="btn-t1s2-start" onclick="startT(1,2)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t1s2-stop"  onclick="stopT(1,2)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t1s2-reset" onclick="resetT(1,2)" disabled>↺</button>
+      <div class="sc-result" id="res-t1s2"></div>
     </div>
     <div class="article-body">
       <div class="article-title">5G 技術如何推動智慧城市的實現</div>
-
       <p>第五代行動通訊技術（5G）的廣泛部署，正為智慧城市的建設奠定堅實的基礎設施基礎。與前一代技術相比，5G 具備超高速傳輸、極低延遲與大規模裝置連接等核心優勢，使城市中數以億計的感測器、攝影機與智慧裝置得以實現穩定的即時通訊。在交通管理領域，5G 網路支援車聯網技術的落地，讓車輛與交通號誌之間能夠進行毫秒級的資訊交換，有效減少路口事故的發生並優化車流疏導效率。路燈根據實際人流自動調節亮度、廢棄物收集車依據感測器數據規劃最佳路線，這些場景在 5G 時代正逐步從概念走向日常現實。</p>
-
       <p>在公共安全層面，5G 技術賦予城市管理者前所未有的監控與應變能力。高解析度監控攝影機透過 5G 網路將畫面即時傳輸至指揮中心，配合人臉辨識與行為分析演算法，執法人員能夠在人群中快速鎖定可疑人物或走失兒童。在緊急救援情境中，救護車可透過 5G 網路將患者的生命徵象資料即時傳送至醫院，使醫療團隊在患者抵達前便完成術前準備工作。無人機搭載 5G 模組執行災區搜救任務，不僅能夠深入人員難以到達的危險區域，更可同步傳輸高畫質空拍影像，為現場指揮人員提供更全面準確的態勢掌握。</p>
-
       <p>能源管理是智慧城市發展的核心議題之一，5G 技術在此扮演著不可或缺的角色。傳統電網採用單向供電模式，難以因應再生能源供電不穩定的特性。透過 5G 連接的智慧電錶與分散式能源管理系統，電網營運商得以即時掌握各區域的用電負荷，動態調配電力資源，大幅提升能源使用效率。在建築層面，配備 5G 感測器的智慧大廈能夠即時監測室內溫度、濕度與人員分佈，自動調節空調與照明系統，達到顯著節能減碳的目標。部分城市已開始試驗以 5G 技術整合太陽能板、儲能設備與電動車充電樁，建構自給自足的社區微電網系統。</p>
-
       <p>然而，5G 智慧城市的建設並非毫無阻礙。龐大的基礎建設投資、涵蓋面廣的法規整合挑戰，以及公民對個人隱私遭受監控的疑慮，都是各城市政府必須審慎應對的問題。5G 基地台的密集布建需要取得大量私有土地使用授權，也引發部分居民對電磁波輻射健康影響的憂慮。此外，高度數位化的城市基礎設施也面臨日益嚴峻的網路安全威脅，一旦遭受惡意攻擊，可能造成交通癱瘓、電力中斷等嚴重後果。因此，在積極推動 5G 智慧城市建設的同時，如何保障資料安全、確保科技紅利為全體市民所共享，將是決定智慧城市能否真正實現美好願景的關鍵因素。</p>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       Scenario 3 — Full: Bold + Contrast + AI Summary
-  ════════════════════════════════════════════════════════ -->
   <div class="scenario-card s3">
     <div class="sc-header">
       <div class="sc-num">③</div>
       <div class="sc-info">
         <div class="sc-title">完整功能：粗體 ＋ 高對比 ＋ AI 摘要</div>
-        <div class="sc-sub">懸停段落觸發強化效果，出現「點擊摘要」標籤後點擊查看 AI 重點，確認理解即可繼續</div>
-        <div class="feat-row">
-          <span class="feat-on green">✓ 粗體加深</span>
-          <span class="feat-on green">✓ 高對比主題</span>
-          <span class="feat-on green">✓ AI 摘要（點擊閱讀）</span>
-        </div>
+        <div class="sc-sub">懸停觸發強化效果，出現「點擊摘要」後點擊查看 AI 重點，確認理解後繼續</div>
+        <div class="feat-row"><span class="feat-on green">✓ 粗體加深</span><span class="feat-on green">✓ 高對比主題</span><span class="feat-on green">✓ AI 摘要（點擊閱讀）</span></div>
       </div>
     </div>
     <div class="sc-timer">
-      <div class="sc-clock" id="clk3">00:00</div>
-      <button class="tbtn start" id="s3-start" onclick="startT(3)">▶ 開始</button>
-      <button class="tbtn stop"  id="s3-stop"  onclick="stopT(3)"  disabled>⏹ 完成</button>
-      <button class="tbtn reset" id="s3-reset" onclick="resetT(3)" disabled>↺</button>
-      <div class="sc-result" id="res3"></div>
+      <div class="sc-clock" id="clk-t1s3">00:00</div>
+      <button class="tbtn start" id="btn-t1s3-start" onclick="startT(1,3)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t1s3-stop"  onclick="stopT(1,3)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t1s3-reset" onclick="resetT(1,3)" disabled>↺</button>
+      <div class="sc-result" id="res-t1s3"></div>
     </div>
     <div class="article-body">
       <div class="article-title">遠距工作如何重塑現代職場文化</div>
-
-      <p>新冠疫情的爆發猶如一場巨大的社會實驗，迫使全球數以億計的工作者在一夕之間從辦公室轉換至家中工作。令許多企業主管感到意外的是，這場被動的轉型並未如預期般導致生產力崩潰，反而催生了一套全新的工作典範。隨著疫情趨於緩和，許多企業選擇維持彈性工作制度，員工得以自行決定工作地點與時間，打破了長期以來「坐辦公室才算工作」的傳統思維。調查數據顯示，能夠靈活選擇工作模式的員工，在工作滿意度與留任意願方面均顯著高於被要求全天候返回辦公室的同儕，這一趨勢促使企業領導者重新審視辦公室空間存在的真正意義。</p>
-
+      <p>新冠疫情的爆發猶如一場巨大的社會實驗，迫使全球數以億計的工作者在一夕之間從辦公室轉換至家中工作。令許多企業主管感到意外的是，這場被動的轉型並未如預期般導致生產力崩潰，反而催生了一套全新的工作典範。隨著疫情趨於緩和，許多企業選擇維持彈性工作制度，員工得以自行決定工作地點與時間，打破了長期以來「坐辦公室才算工作」的傳統思維。調查數據顯示，能夠靈活選擇工作模式的員工，在工作滿意度與留任意願方面均顯著高於被要求全天候返回辦公室的同儕。</p>
       <p>遠距工作的普及不僅改變了個人的工作體驗，更對都市地理格局產生了深遠的影響。當工作地點不再局限於公司所在的城市，許多工作者開始選擇離開高房價、高生活成本的大都市，遷往環境宜人的中小型城市甚至鄉村地區。部分國家與地區為吸引遠距工作者帶動地方經濟，紛紛推出「數位遊牧簽證」，讓外籍工作者得以合法長期居留。與此同時，傳統商辦大樓的空置率在多個主要城市持續攀升，迫使開發商與城市規劃者重新思考這些空間的再利用方式，共享辦公空間與混合用途開發因此成為極具潛力的新興解決方案。</p>
+      <p>然而，遠距工作並非適合所有人的萬靈丹，其背後潛藏的挑戰同樣不容小覷。家庭環境中的噪音干擾、缺乏與同事面對面互動的孤立感，以及工作與生活邊界模糊導致的過勞問題，是許多遠距工作者共同面臨的困境。對於職場新鮮人而言，少了辦公室中非正式的知識傳承機會，技能提升的速度可能相對緩慢，職涯發展也因此受到一定程度的影響。此外，遠距工作對穩定網路連線與數位設備的高度依賴，也凸顯了數位落差問題的嚴重性。</p>
+      <p>面對遠距工作帶來的機遇與挑戰，企業與個人都需要建立新的技能組合與工作思維。對於企業而言，如何透過數位工具維繫團隊凝聚力、建立跨時區的溝通協作文化，以及公平評估遠距員工的工作績效，成為人力資源管理的全新課題。許多企業開始投資同步與非同步溝通工具，並重新設計績效考核制度，從單純計算出勤時數轉向以成果導向評估員工貢獻。對於個人而言，自律能力、非同步溝通技巧與數位工具的熟練運用，正逐漸成為職場競爭力的核心要素。</p>
+    </div>
+  </div>
+</div><!-- /panel-1 -->
 
-      <p>然而，遠距工作並非適合所有人的萬靈丹，其背後潛藏的挑戰同樣不容小覷。家庭環境中的噪音干擾、缺乏與同事面對面互動的孤立感，以及工作與生活邊界模糊導致的過勞問題，是許多遠距工作者共同面臨的困境。對於職場新鮮人而言，少了辦公室中非正式的知識傳承機會，技能提升的速度可能相對緩慢，職涯發展也因此受到一定程度的影響。此外，遠距工作對穩定網路連線與數位設備的高度依賴，也凸顯了數位落差問題的嚴重性，並非所有工作者都擁有足以支援高效遠距工作的理想居家環境與完善設備條件。</p>
+<!-- ══════════════════════════════════════════════════════════
+     TAB 2 — 2000 字
+══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-2">
+  <div class="intro">
+    <strong>測試說明（2000 字）：</strong> 三篇文章各自獨立閱讀一次，每篇對應不同的 AI Kwau 設定。閱讀前按「▶ 開始」，確認理解內容後按「⏹ 完成」。
+    <ol>
+      <li><strong>文章一</strong>：關閉所有功能，純粹閱讀</li>
+      <li><strong>文章二</strong>：僅開啟粗體加深 ＋ 高對比主題，懸停段落觸發即可</li>
+      <li><strong>文章三</strong>：粗體、高對比，並點擊摘要查看 AI 重點</li>
+    </ol>
+  </div>
 
-      <p>面對遠距工作帶來的機遇與挑戰，企業與個人都需要建立新的技能組合與工作思維。對於企業而言，如何透過數位工具維繫團隊凝聚力、建立跨時區的溝通協作文化，以及公平評估遠距員工的工作績效，成為人力資源管理的全新課題。許多企業開始投資同步與非同步溝通工具，並重新設計績效考核制度，從單純計算出勤時數轉向以成果導向評估員工貢獻。對於個人而言，自律能力、非同步溝通技巧與數位工具的熟練運用，正逐漸成為職場競爭力的核心要素。遠距工作的全面興起，或許將引領我們進入一個以成果為本、以信任為基礎的嶄新工作文明。</p>
+  <div class="scenario-card s1">
+    <div class="sc-header">
+      <div class="sc-num">①</div>
+      <div class="sc-info">
+        <div class="sc-title">控制組：不開啟任何功能</div>
+        <div class="sc-sub">請確認 AI Kwau 已全部關閉，或使用未安裝擴充功能的瀏覽器</div>
+        <div class="feat-row"><span class="feat-off">✕ 粗體加深</span><span class="feat-off">✕ 高對比</span><span class="feat-off">✕ AI 摘要</span></div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk-t2s1">00:00</div>
+      <button class="tbtn start" id="btn-t2s1-start" onclick="startT(2,1)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t2s1-stop"  onclick="stopT(2,1)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t2s1-reset" onclick="resetT(2,1)" disabled>↺</button>
+      <div class="sc-result" id="res-t2s1"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">資訊安全威脅如何催生零信任架構</div>
+      <p>在數位轉型浪潮席捲全球的今日，企業面臨的資訊安全威脅已今非昔比。傳統的網路安全架構建立在「城堡護城河」的思維之上，企業內部網路被視為安全的可信任區域，防火牆則扮演抵禦外部攻擊的第一道防線。然而，隨著雲端服務的普及、行動辦公的興起以及遠距工作的全面擴張，企業的網路邊界早已模糊難辨。攻擊者不再需要突破防火牆，只需取得一組合法的員工帳號密碼，便可在企業內部網路中如入無人之境，自由存取敏感資料。近年來，多起知名企業遭受資料外洩事件的根源，正是源於這種對「內部即安全」的過度信任假設，讓犯罪者得以利用合法憑證橫行於企業內網，造成難以估計的財務損失與聲譽傷害。</p>
+      <p>勒索軟體攻擊的爆炸式增長，進一步暴露了傳統邊界防禦架構的致命弱點。攻擊者往往透過網路釣魚郵件或供應鏈漏洞取得初始立足點，隨後利用企業內部過度寬鬆的存取權限，在網路中進行橫向移動，最終加密關鍵業務數據以勒索鉅額贖金。美國殖民地管線公司遭受攻擊導致燃油供應中斷、愛爾蘭衛生服務局的醫療系統被迫全面停擺，這些震驚全球的資安事件清楚說明，單純依賴外圍防禦已無法應對現代威脅態勢。企業的資安思維必須從「如何阻止攻擊者入侵」轉向「假設攻擊者已在內部，如何最小化損害」，這正是零信任架構誕生的核心思想背景。</p>
+      <p>零信任架構的核心原則可以用一句話概括：「從不信任，始終驗證」（Never Trust, Always Verify）。在零信任模型中，無論請求來自企業內部網路或外部環境，任何存取資源的請求都必須經過嚴格的身份驗證與授權審查。多因素驗證、裝置健康狀態檢查、最小權限原則（Principle of Least Privilege）以及持續性的行為監控，共同構成零信任架構的技術基石。使用者只能存取完成當前工作任務所需的最低限度資源，即便帳號遭到入侵，攻擊者所能造成的破壞也因此被嚴格限縮在一個極小的範圍之內，大幅降低了資料外洩的整體風險。</p>
+      <p>微分段（Micro-segmentation）是零信任架構落地實施的關鍵技術之一。傳統網路架構將企業網路視為一個整體，一旦攻擊者突破外圍防線便可自由移動；微分段則將網路切割成數個獨立的細小區域，各區域之間的流量均受到嚴格管控。即便攻擊者成功入侵某個區段，也無法輕易跨越至其他業務系統。軟體定義網路（SDN）技術的成熟，使得微分段的動態部署與管理變得更加靈活可行。搭配身份感知代理（Identity-Aware Proxy）機制，企業得以針對每一次資源存取請求實施細顆粒度的策略管控，確保正確的人在正確的時間以正確的裝置存取正確的資源。</p>
+      <p>在實際導入零信任架構的過程中，企業普遍面臨現有 IT 基礎設施的整合挑戰。許多企業擁有大量老舊的內部系統，這些系統在設計之初並未考慮現代身份驗證機制，強行套用零信任原則可能導致業務中斷或效能下降。因此，業界普遍建議採取漸進式導入策略，優先針對存取敏感數據的高風險系統實施零信任管控，再逐步擴展至整個企業環境。Gartner 的研究指出，到 2025 年，超過 60% 的企業將以零信任作為主要的安全架構，但真正完整實施零信任的企業比例仍相對有限，多數企業仍處於部分導入的轉型過渡階段，這也凸顯了零信任架構在實踐層面的複雜性。</p>
+      <p>展望未來，零信任架構將與人工智慧、機器學習技術深度融合，進一步提升企業應對動態威脅的能力。以 AI 驅動的行為分析系統能夠建立每位使用者與裝置的正常行為基線，一旦偵測到異常存取模式便即時觸發自動化應變措施，大幅縮短從威脅偵測到隔離處置的反應時間。隨著量子運算技術的逐步成熟，現有加密標準面臨被破解的長期風險，零信任架構也必須預先整合後量子密碼學標準，以確保企業資產在量子運算時代的長期安全。對於現代企業而言，零信任不僅是一套技術框架，更代表著一種從根本上重塑資安文化的組織轉型過程，唯有將安全思維內化為企業 DNA 的一部分，方能在瞬息萬變的威脅環境中立於不敗之地。</p>
     </div>
   </div>
 
-</div>
+  <div class="scenario-card s2">
+    <div class="sc-header">
+      <div class="sc-num">②</div>
+      <div class="sc-info">
+        <div class="sc-title">文字強化：粗體加深 ＋ 高對比主題</div>
+        <div class="sc-sub">開啟粗體加深與高對比（建議 Nightsky），懸停段落約 2 秒觸發 L1，不點摘要</div>
+        <div class="feat-row"><span class="feat-on cyan">✓ 粗體加深</span><span class="feat-on cyan">✓ 高對比主題</span><span class="feat-off">✕ AI 摘要（不點擊）</span></div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk-t2s2">00:00</div>
+      <button class="tbtn start" id="btn-t2s2-start" onclick="startT(2,2)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t2s2-stop"  onclick="stopT(2,2)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t2s2-reset" onclick="resetT(2,2)" disabled>↺</button>
+      <div class="sc-result" id="res-t2s2"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">雲端運算如何重塑企業的數位基礎架構</div>
+      <p>雲端運算的興起，徹底顛覆了企業建構與管理數位基礎架構的方式。在雲端時代到來之前，企業必須自行購置、安裝並維護大量實體伺服器與網路設備，高昂的資本支出與持續的運維成本往往成為中小型企業擴展業務的沉重枷鎖。雲端服務的出現，將 IT 基礎設施的採購模式從一次性大額投資轉變為按需付費的彈性消費，企業只需為實際使用的運算資源付費，大幅降低了進入數位化的門檻。如今，AWS、Microsoft Azure 與 Google Cloud 三大雲端巨頭已主導全球雲端市場，為數百萬家企業提供從基礎運算到人工智慧服務的全方位雲端能力，深刻改變了各行各業的競爭格局。</p>
+      <p>彈性伸縮（Elasticity）是雲端運算最具革命性的特性之一。傳統企業在規劃 IT 基礎設施時，必須根據業務高峰需求預先採購足夠的伺服器，這導致在非高峰時段大量運算資源閒置浪費。電商平台在購物節期間面臨的流量洪峰，往往是平日的數十倍；若依賴自有機房，不是服務崩潰就是平時養著大量閒置設備。雲端運算讓企業得以在幾分鐘內根據實際負載自動擴展或收縮運算資源，真正實現「用多少、付多少」的精準成本管控。容器化技術與 Kubernetes 容器編排平台的普及，進一步提升了雲端資源調度的靈活性與效率，使微服務架構成為現代雲原生應用的標準設計模式。</p>
+      <p>混合雲（Hybrid Cloud）與多雲（Multi-Cloud）策略的興起，反映了企業在雲端轉型過程中對靈活性與風險分散的實際需求。將所有業務系統全面遷移至單一公有雲，固然能夠享受最大化的規模效益，但也帶來供應商鎖定與資料主權等方面的隱憂。混合雲架構允許企業將高度敏感的核心業務數據保留在自有私有雲或本地機房，同時利用公有雲的彈性運算能力應對業務高峰。金融業、醫療業等受嚴格法規監管的行業，尤其傾向於採用混合雲模式，在享受雲端優勢的同時確保法規合規性。根據 IDC 的研究，超過 70% 的企業已採用多雲策略，以避免對單一供應商的過度依賴。</p>
+      <p>雲端轉型對企業 IT 部門的角色定位產生了深刻影響。在自建機房時代，IT 人員的核心工作是維護硬體設備、管理作業系統與安裝軟體更新；雲端時代則要求 IT 部門從「基礎設施守門員」轉型為「業務創新推動者」。DevOps 文化的興起與基礎設施即程式碼（Infrastructure as Code）的廣泛採用，使得系統部署與配置管理實現了高度自動化。開發工程師得以透過 Terraform 或 Ansible 等工具，以程式碼的方式定義並快速部署完整的雲端環境，大幅縮短了從需求提出到系統上線的交付周期，讓企業能夠以更快的速度回應市場變化與客戶需求。</p>
+      <p>雲端安全是企業推動雲端轉型時最常被提及的顧慮。「雲端是否比自建機房更安全？」這個問題並無絕對答案，因為安全性在很大程度上取決於企業自身的配置與管理水準。根據 Gartner 的評估，99% 的雲端安全事故源於客戶自身的配置錯誤，而非雲端服務商的基礎設施漏洞。主要雲端服務商均投入龐大資源建構防禦體系，其安全能力往往遠超一般企業自建機房的水準。雲端服務商提供的原生安全工具，包括身份存取管理、加密金鑰管理服務、雲端安全態勢管理，為企業提供了全面的安全防護基礎，但前提是企業必須具備充分的雲端安全知識，正確配置並持續監控這些工具的運作狀態。</p>
+      <p>隨著生成式 AI 技術的爆發性發展，雲端運算正在迎來新一波成長浪潮。訓練大型語言模型需要消耗龐大的 GPU 運算資源，這對一般企業而言幾乎是不可承受的自建成本；雲端服務商提供的 AI 加速器租用服務，讓中小型企業也能以合理的成本試驗與部署生成式 AI 應用。雲端廠商也紛紛將自家研發的 AI 模型作為 API 服務開放給企業使用，進一步降低了 AI 能力整合的技術門檻。未來，隨著邊緣運算的普及，雲端的計算能力將逐步延伸至更靠近資料產生源頭的地點，雲端與邊緣的協同運算架構將成為下一代數位基礎設施的主流形態，引領企業邁向更智慧、更自主的數位未來。</p>
+    </div>
+  </div>
+
+  <div class="scenario-card s3">
+    <div class="sc-header">
+      <div class="sc-num">③</div>
+      <div class="sc-info">
+        <div class="sc-title">完整功能：粗體 ＋ 高對比 ＋ AI 摘要</div>
+        <div class="sc-sub">懸停觸發強化效果，出現「點擊摘要」後點擊查看 AI 重點，確認理解後繼續</div>
+        <div class="feat-row"><span class="feat-on green">✓ 粗體加深</span><span class="feat-on green">✓ 高對比主題</span><span class="feat-on green">✓ AI 摘要（點擊閱讀）</span></div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk-t2s3">00:00</div>
+      <button class="tbtn start" id="btn-t2s3-start" onclick="startT(2,3)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t2s3-stop"  onclick="stopT(2,3)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t2s3-reset" onclick="resetT(2,3)" disabled>↺</button>
+      <div class="sc-result" id="res-t2s3"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">大數據分析如何改變企業的決策模式</div>
+      <p>在資訊爆炸的數位時代，資料已被譽為新時代的石油，而大數據分析技術則是提煉這批原油、萃取商業洞察的精煉廠。企業每日產生的交易紀錄、網頁瀏覽行為、社群媒體互動與感測器數據，共同構成一座蘊藏無限商機的資訊寶庫。然而，傳統的數據分析工具面對如此龐大的非結構化資料往往力不從心，直到 Hadoop 分散式運算框架與 Spark 即時處理引擎的出現，企業才真正獲得駕馭海量資料的技術能力。如今，大數據分析已從少數科技巨頭的專屬利器，逐漸普及至零售、金融、製造、醫療等各行各業，成為企業建立競爭優勢的核心戰略工具。</p>
+      <p>預測性分析（Predictive Analytics）是大數據技術最具實際商業價值的應用之一。零售巨頭亞馬遜透過分析消費者的瀏覽歷史、購買記錄與搜尋關鍵字，建構出精準的個人化推薦模型，據估計其推薦引擎貢獻了整體營收的 35% 以上。製造業則利用設備感測器資料建立預測性維護模型，在生產線設備故障發生之前提前發出預警，將意外停機的損失降至最低。金融機構透過分析客戶的交易行為模式，建立即時詐騙偵測系統，在交易發生的瞬間判斷風險等級並觸發適當的阻斷措施。這些應用共同說明，大數據預測分析的價值在於將「事後補救」轉變為「事前預防」，從根本上改變企業應對風險與機遇的方式。</p>
+      <p>大數據分析正在徹底改寫企業的決策文化。傳統的企業決策高度依賴管理者的個人直覺與有限的市場調查報告，這種依賴主觀判斷的模式在商業環境穩定時尚可運作，但在市場快速變遷的今日卻顯得力不從心。資料驅動決策的理念要求每一項重大業務決策都必須以客觀數據為依據，管理者的直覺仍有其價值，但必須接受數據的驗證與挑戰。Netflix 取消哪些原創劇集、Spotify 如何調整每日推薦播放清單、Uber 如何動態定價，這些日常商業決策的背後，都有一套精密的數據分析機制在默默運作，確保每一個選擇都能最大化商業效益。</p>
+      <p>建立有效的大數據分析能力，需要企業在技術、人才與組織文化三個層面同步投入。技術層面，現代數據平台通常採用數據湖加數據倉庫的混合架構，前者儲存原始的非結構化資料，後者則存放經過清洗整理的結構化數據，供商業智慧工具進行報表與視覺化分析。人才層面，能夠橫跨統計學、程式設計與業務理解的數據科學家依然供不應求，企業往往面臨招聘困難與人才流失的雙重壓力。文化層面，讓組織各層級的管理者養成「先看數據、再做決定」的思維習慣，需要長期持續的教育訓練與制度配套，這往往是大數據轉型中最難克服的軟性挑戰。</p>
+      <p>資料品質與資料治理是大數據分析成效的根本保障。「垃圾進，垃圾出」的道理人人皆知，但企業在實際執行中往往低估了數據清洗與整合的複雜程度。來自不同業務系統的數據格式各異、定義不統一、更新頻率不一致，若未經妥善整合便直接套用分析模型，得出的結論不僅毫無參考價值，甚至可能導致嚴重的決策失誤。建立完善的資料治理框架，明確界定數據的所有權、品質標準、存取權限與生命周期管理政策，是確保大數據分析可信度的先決條件。歐盟 GDPR 與個人資料保護法對個人數據的嚴格規範，也要求企業在追求商業洞察的同時，確實履行保護消費者隱私的法律義務。</p>
+      <p>生成式 AI 的崛起正在為大數據分析開啟一個全新的應用維度。過去，數據分析的洞察往往停留在報表與圖表的層次，需要具備專業背景的分析師才能解讀並轉化為行動方案。如今，以自然語言為介面的 AI 分析工具讓業務人員得以直接以口語化的問題查詢數據，系統自動生成分析報告並提供決策建議，大幅降低了數據分析的使用門檻。然而，過度依賴 AI 生成的分析結論也帶來新的風險：若模型訓練數據存在偏差，或使用者缺乏批判性思考能力，AI 的結論可能強化而非糾正既有的決策盲點。未來，如何培養兼具數據素養與批判性思維的複合型人才，將是企業能否真正發揮大數據分析潛力的關鍵所在。</p>
+    </div>
+  </div>
+</div><!-- /panel-2 -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 3 — 3000 字
+══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-3">
+  <div class="intro">
+    <strong>測試說明（3000 字）：</strong> 三篇文章各自獨立閱讀一次，每篇對應不同的 AI Kwau 設定。閱讀前按「▶ 開始」，確認理解內容後按「⏹ 完成」。
+    <ol>
+      <li><strong>文章一</strong>：關閉所有功能，純粹閱讀</li>
+      <li><strong>文章二</strong>：僅開啟粗體加深 ＋ 高對比主題，懸停段落觸發即可</li>
+      <li><strong>文章三</strong>：粗體、高對比，並點擊摘要查看 AI 重點</li>
+    </ol>
+  </div>
+
+  <div class="scenario-card s1">
+    <div class="sc-header">
+      <div class="sc-num">①</div>
+      <div class="sc-info">
+        <div class="sc-title">控制組：不開啟任何功能</div>
+        <div class="sc-sub">請確認 AI Kwau 已全部關閉，或使用未安裝擴充功能的瀏覽器</div>
+        <div class="feat-row"><span class="feat-off">✕ 粗體加深</span><span class="feat-off">✕ 高對比</span><span class="feat-off">✕ AI 摘要</span></div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk-t3s1">00:00</div>
+      <button class="tbtn start" id="btn-t3s1-start" onclick="startT(3,1)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t3s1-stop"  onclick="stopT(3,1)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t3s1-reset" onclick="resetT(3,1)" disabled>↺</button>
+      <div class="sc-result" id="res-t3s1"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">物聯網如何將智慧家庭帶入日常生活</div>
+      <p>物聯網（Internet of Things，IoT）的概念最早可追溯至 1990 年代，但真正驅動其大規模普及的關鍵，是無線通訊成本的急劇下降、微型感測器的技術突破，以及雲端運算基礎設施的成熟完善。如今，全球連網裝置的數量已突破 150 億個，預計在 2030 年前將進一步攀升至 300 億個以上。智慧家庭作為物聯網最貼近日常生活的應用場景，讓人與居住空間的互動方式發生了根本性的轉變。從能夠辨識語音指令的智慧音箱，到可遠端監控的智慧門鎖，再到根據用電習慣自動學習調節的恆溫器，物聯網裝置正悄然重塑現代人對「家」的定義與期待。</p>
+      <p>智慧家庭的核心價值在於「情境感知」與「自動化」。傳統居家環境中，燈光、冷氣、熱水器等家電設備各自獨立運作，使用者必須逐一手動操作。物聯網技術讓各裝置得以相互感知並協同運作，形成一套能夠理解居住者生活習慣的智慧生態系統。當智慧感測器偵測到居住者清晨起床時，窗簾自動緩緩開啟，咖啡機開始預熱，恆溫器調整至舒適溫度，播放輕柔音樂的音響隨之啟動，整個早晨程序在無需任何人工介入的情況下自動完成。這種「家感知你的存在」的居住體驗，過去只存在於科幻電影的想像之中，如今已成為許多家庭觸手可及的日常現實。</p>
+      <p>能源管理是智慧家庭最具實質經濟效益的應用領域。傳統家庭的能源使用往往存在大量的隱性浪費，例如忘記關閉的冷氣、無人房間持續亮著的電燈，以及老舊電器的低效運作。智慧恆溫器透過學習居住者的作息規律，在房間即將有人使用前提前調節溫度，在外出期間自動進入節能模式，有效避免不必要的能耗。智慧電錶即時回傳每個電器的用電數據，讓居住者清楚掌握能源消耗的分布情形，進而調整用電習慣。研究數據顯示，導入智慧家庭能源管理系統的家庭，平均可降低 10% 至 25% 的電費支出，長期累積下來是相當可觀的節省效益。</p>
+      <p>居家安全是推動消費者採購智慧家庭裝置的最主要動機之一。傳統保全系統往往需要高昂的安裝費用與持續的月費支出，且功能相對有限；物聯網智慧安全系統則以更親民的價格提供更全面的防護能力。高畫質智慧攝影機搭配 AI 人臉辨識技術，能夠區分家庭成員、訪客與陌生人，並在異常情況發生時即時推送通知至使用者的智慧型手機。智慧門鎖支援指紋解鎖、數字密碼與遠端授權等多種進門方式，既省去忘帶鑰匙的困擾，也能讓住戶遠端授權外送員或維修人員短暫進入，大幅提升居家生活的便利性與安全感。</p>
+      <p>智慧家庭在高齡照護領域展現出獨特的社會價值。隨著全球人口老化問題日趨嚴峻，如何讓銀髮族在維持自主生活的同時獲得適切的安全保障，成為各國社會政策的重要課題。物聯網感測器可以監測長者的日常活動規律，當偵測到異常，例如長者超過特定時間未離開臥室、如廁頻率異常增加，或夜間跌倒，便立即通知家屬或緊急救援單位。智慧藥盒透過提醒通知與自動分藥功能，協助長者按時服藥，減少因漏服或誤服藥物帶來的健康風險。這些應用不僅提升了長者的生活品質，也減輕了家庭照護者的心理負擔，讓「在宅老化」成為更可行的選項。</p>
+      <p>互通性（Interoperability）長期以來是智慧家庭生態系碎片化的核心問題。市場上各家智慧家庭裝置往往採用各自私有的通訊協定，消費者購買了來自不同品牌的裝置，卻發現它們無法相互溝通，必須安裝多個 App 分別管理。為解決這一痛點，蘋果、Google、Amazon、三星等科技巨頭聯手推動了 Matter 標準的制定與推廣。Matter 是一套基於 IP 的開放標準，讓支援該標準的裝置無論品牌為何，均能在同一個智慧家庭平台中無縫運作。隨著 Matter 認證裝置的持續增加，消費者將不再受限於單一生態系的束縛，真正實現跨品牌、跨平台的智慧家庭整合體驗。</p>
+      <p>網路安全是智慧家庭普及過程中不可迴避的隱憂。每一個連接網路的智慧裝置，都可能成為駭客入侵家庭網路的潛在入口。安全研究人員已多次證明，設定薄弱密碼的智慧攝影機、未定期更新韌體的智慧路由器，都有可能被惡意人士利用，不僅威脅個人隱私，更可能被整合至殭屍網路用於發動大規模分散式阻斷服務攻擊。2016 年發生的 Mirai 殭屍網路攻擊事件，正是由數十萬台被感染的物聯網裝置所發動，導致美國東岸大量知名網站陷入癱瘓。消費者在享受智慧家庭便利性的同時，必須養成定期更新裝置韌體、使用強密碼與啟用雙重驗證的資安習慣。</p>
+      <p>個人隱私的邊界問題，是智慧家庭時代最敏感的社會倫理議題之一。當家中每個角落都部署著麥克風、攝影機與各類感測器，誰擁有這些數據的所有權？製造商能否將這些數據用於商業目的？政府是否可在特定情況下要求廠商提供用戶的居家活動記錄？這些問題目前在多數國家仍缺乏明確的法律規範。智慧音箱裝置長期處於「聆聽喚醒詞」的狀態，引發外界對裝置是否在無意間錄製私人對話的廣泛疑慮。消費者在享受智慧家庭服務的同時，需要對所接受的隱私政策條款有清晰的認識，並在便利性與隱私保護之間做出有意識的選擇。</p>
+      <p>邊緣運算（Edge Computing）的興起，正在為智慧家庭的運算架構帶來新一波革命。傳統智慧家庭裝置將大量數據傳送至雲端進行處理，不僅對網路頻寬造成壓力，也帶來可觀的延遲與隱私風險。邊緣運算讓裝置能夠在本地端完成大部分的數據處理與決策，僅將必要的摘要資訊上傳至雲端。智慧門鈴的人臉辨識、安全攝影機的入侵偵測、智慧音箱的語音辨識，都正在逐步遷移至本地端的邊緣晶片上執行。這不僅大幅降低了響應延遲，讓裝置在網路斷線的情況下仍能維持基本功能，也減少了個人數據被上傳至雲端的風險，朝向更私密、更可靠的智慧家庭體驗邁進。</p>
+      <p>智慧家庭的未來，將遠不止於現有裝置的功能疊加，而是朝向真正具備情境理解與預測能力的智慧空間演進。透過整合生成式 AI 與大型語言模型，未來的智慧家庭系統將能夠理解居住者複雜的語意需求，而非僅能執行預設的語音指令。當居住者說「今天有點累，想放鬆一下」，系統能夠根據歷史偏好自動調暗燈光、播放喜愛的音樂類型、將浴缸水溫調至舒適設定，並在手機上推薦當晚的電影清單。這種深度個人化的居家體驗，需要跨裝置、跨平台的數據整合與強大的 AI 推論能力共同支撐。隨著硬體成本持續下降、AI 能力持續提升，這樣的智慧家庭圖景或許在不遠的未來便能走進每一個普通家庭，成為現代生活的日常基礎建設。</p>
+    </div>
+  </div>
+
+  <div class="scenario-card s2">
+    <div class="sc-header">
+      <div class="sc-num">②</div>
+      <div class="sc-info">
+        <div class="sc-title">文字強化：粗體加深 ＋ 高對比主題</div>
+        <div class="sc-sub">開啟粗體加深與高對比（建議 Nightsky），懸停段落約 2 秒觸發 L1，不點摘要</div>
+        <div class="feat-row"><span class="feat-on cyan">✓ 粗體加深</span><span class="feat-on cyan">✓ 高對比主題</span><span class="feat-off">✕ AI 摘要（不點擊）</span></div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk-t3s2">00:00</div>
+      <button class="tbtn start" id="btn-t3s2-start" onclick="startT(3,2)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t3s2-stop"  onclick="stopT(3,2)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t3s2-reset" onclick="resetT(3,2)" disabled>↺</button>
+      <div class="sc-result" id="res-t3s2"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">區塊鏈技術如何重塑數位信任與金融交易</div>
+      <p>區塊鏈技術自比特幣白皮書於 2008 年問世以來，已從一個純粹的密碼學實驗演化為足以撼動多個產業根基的革命性技術。其核心創新在於以去中心化的方式解決了數位世界長期存在的信任問題：如何在沒有中介機構的情況下，確保兩個互不信任的陌生人之間的交易能夠安全、透明地完成？傳統金融系統依賴銀行、清算機構等中央化機構作為信任背書，而區塊鏈以密碼學雜湊函數與共識機制取代了這些中介角色，讓每一筆交易記錄以不可竄改的形式永久封存於分散式帳本之上，供所有網路節點共同驗證與維護。</p>
+      <p>區塊鏈的技術架構建立在幾個核心要素之上。每個「區塊」包含一批交易記錄、時間戳記，以及指向前一個區塊的密碼學雜湊值，形成環環相扣的鏈狀結構。若有人試圖竄改任何一個歷史區塊，該區塊的雜湊值便會改變，導致其後所有區塊的雜湊值連鎖失效，使竄改行為立即被網路中的其他節點識破。工作量證明（Proof of Work）與權益證明（Proof of Stake）是目前最主流的兩種共識機制，前者依靠算力競爭維護帳本安全，後者則以持有代幣的數量與時間決定驗證權重，在能源效率與去中心化程度之間各有取捨。</p>
+      <p>智能合約（Smart Contract）是以太坊區塊鏈引入的重要創新，將區塊鏈的應用場景從單純的價值轉移大幅擴展至複雜的商業邏輯自動化執行。智能合約是部署在區塊鏈上的自執行程式碼，當預設的觸發條件滿足時，合約條款便自動執行，無需任何第三方介入或人工審核。保險公司可以將理賠邏輯寫入智能合約，當航班延誤的數據被確認寫入區塊鏈，理賠款項便自動匯入被保險人帳戶，整個流程在幾分鐘內完成，省去傳統理賠流程中的大量人工審核時間與行政成本。供應鏈管理、不動產交易、版權授權等領域，都已出現以智能合約簡化流程、降低交易成本的成功應用案例。</p>
+      <p>去中心化金融（Decentralized Finance，DeFi）是區塊鏈技術在金融領域最具顛覆性的應用實踐。DeFi 協議以智能合約為基礎，在無需銀行或交易所等傳統金融中介的情況下，提供借貸、交換、流動性挖礦等金融服務。任何人只要擁有一個加密貨幣錢包，不需要開立銀行帳戶、不需要通過身份驗證，便可即時存取這些金融服務。這對於全球數以十億計的金融服務弱勢族群而言，代表著前所未有的金融包容性機會。然而，DeFi 協議程式碼漏洞導致的資產被盜、智能合約審計品質良莠不齊，以及缺乏投資者保護機制等問題，也使 DeFi 市場充斥著極高的技術風險與投機行為。</p>
+      <p>非同質化代幣（NFT）在 2021 年掀起的全球熱潮，將區塊鏈帶入了主流大眾的視野，也引發了各界對數位所有權概念的深度思考。NFT 利用區塊鏈的唯一性驗證機制，為數位圖片、音樂、影片等本質上可無限複製的數位內容賦予了可驗證的稀缺性與所有權證明。藝術家得以繞過傳統畫廊與拍賣行的中介角色，直接與全球藏家進行交易，並透過智能合約設定二級市場轉售的版稅分成，讓創作者在作品持續流通的過程中持續獲益。然而，NFT 市場的過度投機與大量粗糙作品充斥市場等問題，使這波熱潮在 2022 年後大幅降溫，市場正在回歸尋找更具實質應用價值的使用情境。</p>
+      <p>在傳統金融機構的跨境支付領域，區塊鏈技術展現出顯著的效率提升潛力。目前，一筆國際電匯往往需要耗費 2 至 5 個工作天，並須支付高達匯款金額 5% 至 10% 的手續費，這對仰賴跨國匯款養家的移工族群而言是沉重的負擔。基於區塊鏈的跨境支付方案能夠在幾分鐘甚至幾秒內完成跨國資金轉移，手續費大幅壓縮至不到 1%。Ripple 的 XRP 網路與 Circle 發行的 USDC 穩定幣，已在特定市場的跨境支付場景中取得實質落地進展。各國央行也紛紛啟動中央銀行數位貨幣（CBDC）的研究與試驗計畫，探索如何以國家信用背書的數位貨幣提升支付系統的效率。</p>
+      <p>供應鏈溯源是企業級區塊鏈應用中最具說服力的成功案例之一。全球供應鏈涉及眾多參與方，包括原料供應商、製造商、物流業者、批發商與零售商，各方的系統往往相互割裂，難以實現數據的即時共享與驗證。當食品安全事故發生時，傳統追蹤方式往往需要花費數天甚至數週才能確認污染源頭；而部署區塊鏈溯源系統的沃爾瑪，能夠在 2.2 秒內追溯芒果從農場到貨架的完整路徑。奢侈品牌利用區塊鏈為每件產品建立不可竄改的數位護照，有效打擊假冒仿冒品的流通，保障消費者購買正品的權益。</p>
+      <p>儘管區塊鏈展現出廣泛的應用前景，其技術局限性也是企業在評估導入時必須正視的現實。可擴展性三難困境，即安全性、去中心化與效能三者難以同時達到最優，始終是公鏈面臨的核心挑戰。比特幣網路每秒僅能處理約 7 筆交易，以太坊約為 15 至 30 筆，與 Visa 每秒處理逾 2 萬筆的能力相去甚遠。Layer 2 擴展方案正在積極嘗試突破這一瓶頸，但整體技術成熟度與用戶友善度仍有待提升。對於多數企業應用場景而言，私有鏈或聯盟鏈往往比公有鏈更具實用性，但這也意味著一定程度上放棄了去中心化的核心價值主張。</p>
+      <p>監管不確定性是全球區塊鏈與加密貨幣生態系面臨的最大外部風險。各國政府對加密貨幣的監管立場差異懸殊：薩爾瓦多將比特幣列為法定貨幣，中國則全面禁止加密貨幣交易；美國 SEC 持續強化對加密貨幣交易所的監管執法，歐盟則推出 MiCA 法規嘗試建立統一的市場框架。監管政策的快速變化，使企業在評估區塊鏈技術的長期投資時面臨相當的不確定性風險。然而，清晰的監管框架一旦成形，反而有助於區塊鏈應用的合規落地與主流機構的大規模採用，因此監管的明朗化長遠而言對產業發展是有利的。</p>
+      <p>展望區塊鏈技術的未來發展軌跡，跨鏈互操作性與 Web3 生態系的構建將成為下一個十年的核心主題。目前，不同區塊鏈網路之間的資產與數據流動仍高度受限，形成一個個資訊孤島。跨鏈橋接協議的發展，將讓價值與數據能夠在不同鏈之間自由流通，形成真正互聯互通的去中心化網路生態。Web3 願景描繪的未來，是一個使用者擁有自身數據所有權、數位身份不受平台控制、創作者經濟直接連接受眾的嶄新網路世界。可以確定的是，區塊鏈所代表的去中心化信任革命，已在金融、供應鏈、數位身份等領域埋下了改寫遊戲規則的種子，其深遠影響將在未來數十年持續發酵。</p>
+    </div>
+  </div>
+
+  <div class="scenario-card s3">
+    <div class="sc-header">
+      <div class="sc-num">③</div>
+      <div class="sc-info">
+        <div class="sc-title">完整功能：粗體 ＋ 高對比 ＋ AI 摘要</div>
+        <div class="sc-sub">懸停觸發強化效果，出現「點擊摘要」後點擊查看 AI 重點，確認理解後繼續</div>
+        <div class="feat-row"><span class="feat-on green">✓ 粗體加深</span><span class="feat-on green">✓ 高對比主題</span><span class="feat-on green">✓ AI 摘要（點擊閱讀）</span></div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk-t3s3">00:00</div>
+      <button class="tbtn start" id="btn-t3s3-start" onclick="startT(3,3)">▶ 開始</button>
+      <button class="tbtn stop"  id="btn-t3s3-stop"  onclick="stopT(3,3)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="btn-t3s3-reset" onclick="resetT(3,3)" disabled>↺</button>
+      <div class="sc-result" id="res-t3s3"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">量子運算如何挑戰現有的密碼學與資訊安全</div>
+      <p>量子運算代表著人類運算能力的一次根本性躍升，其底層原理奠基於量子力學中量子疊加（Superposition）與量子糾纏（Entanglement）等反直覺的物理現象之上。傳統電腦以「位元」（Bit）作為基本運算單位，每個位元非 0 即 1；量子電腦則以「量子位元」（Qubit）運作，一個量子位元可同時處於 0 與 1 的疊加態，直至被測量時才坍縮為確定值。這項特性讓量子電腦在處理某類特定問題時，能夠以指數級增長的速度超越傳統電腦的運算極限，為藥物分子模擬、最佳化問題求解，以及密碼學分析帶來革命性的可能性。</p>
+      <p>當今網際網路安全基礎設施的核心，仰賴著一個數學假設：某些特定的數學問題對傳統電腦而言極其困難。RSA 加密演算法的安全性建立在「對一個極大數字進行質數分解幾乎不可能在合理時間內完成」的基礎上；橢圓曲線密碼學的安全性則依賴橢圓曲線離散對數問題的計算複雜度。這些數學難題保護著我們的銀行交易、電子郵件通訊、HTTPS 網站憑證以及各種數位簽章機制。然而，1994 年數學家 Peter Shor 提出的演算法，從理論上證明了擁有足夠量子位元的量子電腦，能夠在多項式時間內破解 RSA 與橢圓曲線加密，這一發現猶如在現代密碼學大廈的地基埋下了一顆定時炸彈。</p>
+      <p>量子電腦對現有密碼學構成的威脅，並非遙遠未來的科幻場景，而是密碼學界與安全研究人員已在積極應對的現實挑戰。IBM、Google、微軟等科技巨頭，以及中國、歐盟等主要國家政府，均已投入數十億美元的資源研發量子電腦硬體。Google 在 2019 年宣布以 53 個量子位元的處理器完成傳統超級電腦需要一萬年才能解決的運算任務，清楚說明了量子運算已從純理論跨越至實驗室現實的重大里程碑。目前最大的量子處理器已突破千個量子位元，但要達到足以破解 RSA-2048 加密所需的密碼學相關量子電腦，估計仍需數年至十數年的技術突破。</p>
+      <p>「先收割，後解密」（Harvest Now, Decrypt Later）是量子威脅中最令安全專家憂慮的攻擊策略。即便目前具備破解加密能力的量子電腦尚未問世，國家級駭客組織已在大量蒐集當前無法破解的加密通訊資料，靜待量子電腦成熟後再行解密。對於涉及國家安全機密、長期機密合約或個人隱私的加密數據而言，這意味著現在傳輸的資料，在未來某個時間點仍有可能落入他人之手。這一威脅使後量子密碼學的研究緊迫性遠超過一般認知：即便量子電腦要十年後才能破解加密，但那些需要保密十年以上的資訊，現在就已面臨風險。</p>
+      <p>後量子密碼學（Post-Quantum Cryptography，PQC）是密碼學界應對量子威脅的主要技術路線，其目標是開發基於量子電腦同樣難以破解的數學問題之新型加密演算法。美國國家標準與技術研究院（NIST）歷經近十年的全球競賽與評選，於 2024 年正式標準化了首批後量子密碼演算法，包括基於格密碼學（Lattice-based Cryptography）的金鑰封裝機制，以及多種數位簽章演算法。這些演算法被設計為即使面對量子電腦的攻擊，也能維持足夠強度的安全性保障，是現代密碼基礎設施向後量子時代平滑過渡的關鍵基石。</p>
+      <p>密碼敏捷性（Crypto-Agility）是企業應對後量子轉型的關鍵設計原則。傳統上，許多系統將特定的加密演算法深度硬編碼至軟體與硬體之中，若需更換加密演算法，往往需要對系統進行大規模的底層改造。密碼敏捷性要求在系統架構設計之初，就將加密演算法的選擇與更換設計為可插拔的模組化元件，讓組織能夠在新的安全威脅出現時快速切換至更安全的演算法。對於擁有數十年歷史技術債的金融機構、政府機關與關鍵基礎設施運營商而言，建構具備密碼敏捷性的現代系統架構，是一項龐大而緊迫的技術挑戰。</p>
+      <p>量子金鑰分發（Quantum Key Distribution，QKD）是另一條截然不同的技術路線，它不依賴數學複雜度，而是直接利用量子力學定律確保通訊安全。QKD 利用單光子傳遞量子態的金鑰資訊，任何竊聽行為都必然改變光子的量子態，從而被通訊雙方偵測。理論上，QKD 提供的是物理學層級的絕對安全保障，即便未來的超級量子電腦也無法破解。中國已建成全球最長的量子通訊骨幹網路，日本、歐盟也積極推進量子通訊衛星計畫。然而，QKD 目前面臨傳輸距離受限、硬體成本高昂以及需要專用光纖基礎設施等實際落地挑戰，距離大規模商業部署仍有一定距離。</p>
+      <p>量子運算對區塊鏈與加密貨幣生態系同樣構成長期威脅。目前比特幣與以太坊等主要區塊鏈網路使用的橢圓曲線數位簽章演算法，在理論上可被具備足夠量子位元的量子電腦攻擊。如果量子電腦能夠在合理時間內破解這些簽章機制，攻擊者理論上可以偽造交易簽章，從任意地址轉移加密資產。區塊鏈社群已開始討論量子抵抗升級方案，但由於涉及協議層面的根本性變更，需要整個網路節點的廣泛共識，推動的難度與時程均存在相當的不確定性。後量子遷移計畫的啟動越早，完成的時間就越充裕。</p>
+      <p>各國政府正將後量子密碼學的標準化與轉型視為國家安全層級的優先任務。美國白宮發布國家安全備忘錄，要求聯邦政府機構制定後量子密碼遷移計畫，並將優先保護「高價值資產」與「關鍵系統」。歐盟的網路與資訊安全局也發布了後量子密碼實施路線圖，建議成員國開始盤點使用量子脆弱加密演算法的系統清單。對大型企業與關鍵基礎設施而言，現在啟動「量子準備度評估」，識別現有系統中使用量子脆弱演算法的環節並制定轉型時間表，已是刻不容緩的行動優先事項。</p>
+      <p>量子運算對密碼學的衝擊，從更宏觀的視角審視，代表著人類在資訊安全領域週期性「攻守易位」歷史中的又一次轉折點。每當新的運算能力突破既有的加密強度，密碼學界便發展出更強韌的新型演算法加以應對，資訊安全的防線在螺旋式上升中持續進化。後量子密碼學標準的確立，以及各行各業向後量子基礎設施的有序遷移，將是未來十年資訊安全領域最重大的工程挑戰之一。對於個人而言，理解量子威脅的本質與時間表，有助於在選擇數位服務與工具時做出更有意識的安全決策；對於組織而言，提前投資後量子安全的基礎建設，是確保在量子時代仍能維護數位資產安全的必要行動，也是對未來負責任的戰略抉擇。</p>
+    </div>
+  </div>
+</div><!-- /panel-3 -->
+
+</div><!-- /container -->
 
 <script>
-// State per scenario
-const state = {
-  1: {sec:0, interval:null, done:false},
-  2: {sec:0, interval:null, done:false},
-  3: {sec:0, interval:null, done:false},
-};
-const results = {1:null, 2:null, 3:null};
+let activeTab = 1;
 
-function pad(n){ return String(n).padStart(2,'0'); }
-function fmt(s){ return pad(Math.floor(s/60))+':'+pad(s%60); }
+// state[tab][scenario]
+const state = {};
+const results = {};
+for (let t = 1; t <= 3; t++) {
+  state[t] = {};
+  results[t] = {};
+  for (let s = 1; s <= 3; s++) {
+    state[t][s] = {sec: 0, interval: null, done: false};
+    results[t][s] = null;
+  }
+}
 
-function startT(n) {
-  const st = state[n];
+function pad(n) { return String(n).padStart(2, '0'); }
+function fmt(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === tab));
+  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i + 1 === tab));
+  refreshBar();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function refreshBar() {
+  for (let s = 1; s <= 3; s++) {
+    const r = results[activeTab][s];
+    document.getElementById('bar' + s).textContent = r !== null ? fmt(r) : '--:--';
+  }
+  updateDiffs();
+}
+
+function startT(t, s) {
+  const st = state[t][s];
   if (st.interval || st.done) return;
   st.interval = setInterval(() => {
     st.sec++;
-    document.getElementById('clk'+n).textContent = fmt(st.sec);
+    document.getElementById('clk-t' + t + 's' + s).textContent = fmt(st.sec);
+    if (t === activeTab) document.getElementById('bar' + s).textContent = fmt(st.sec);
   }, 1000);
-  document.getElementById('s'+n+'-start').disabled = true;
-  document.getElementById('s'+n+'-stop').disabled  = false;
+  document.getElementById('btn-t' + t + 's' + s + '-start').disabled = true;
+  document.getElementById('btn-t' + t + 's' + s + '-stop').disabled = false;
 }
 
-function stopT(n) {
-  const st = state[n];
+function stopT(t, s) {
+  const st = state[t][s];
   if (!st.interval) return;
   clearInterval(st.interval); st.interval = null; st.done = true;
-  results[n] = st.sec;
-
-  document.getElementById('s'+n+'-stop').disabled  = true;
-  document.getElementById('s'+n+'-reset').disabled = false;
-  document.getElementById('res'+n).textContent = '✓ 記錄：' + fmt(st.sec);
-  document.getElementById('res'+n).style.color = n===1?'#555':(n===2?'var(--accent)':'#059669');
-  document.getElementById('bar'+n).textContent = fmt(st.sec);
-
-  // Update diffs vs scenario 1
-  updateDiffs();
+  results[t][s] = st.sec;
+  document.getElementById('btn-t' + t + 's' + s + '-stop').disabled = true;
+  document.getElementById('btn-t' + t + 's' + s + '-reset').disabled = false;
+  const resEl = document.getElementById('res-t' + t + 's' + s);
+  resEl.textContent = '✓ 記錄：' + fmt(st.sec);
+  resEl.style.color = s === 1 ? '#555' : (s === 2 ? 'var(--accent)' : '#059669');
+  if (t === activeTab) {
+    document.getElementById('bar' + s).textContent = fmt(st.sec);
+    updateDiffs();
+  }
 }
 
-function resetT(n) {
-  const st = state[n];
+function resetT(t, s) {
+  const st = state[t][s];
   if (st.interval) { clearInterval(st.interval); st.interval = null; }
   st.sec = 0; st.done = false;
-  results[n] = null;
-  document.getElementById('clk'+n).textContent = '00:00';
-  document.getElementById('bar'+n).textContent  = '--:--';
-  document.getElementById('res'+n).textContent  = '';
-  document.getElementById('s'+n+'-start').disabled = false;
-  document.getElementById('s'+n+'-stop').disabled  = true;
-  document.getElementById('s'+n+'-reset').disabled = true;
-  document.getElementById('diff'+n).textContent = '';
-  updateDiffs();
+  results[t][s] = null;
+  document.getElementById('clk-t' + t + 's' + s).textContent = '00:00';
+  document.getElementById('res-t' + t + 's' + s).textContent = '';
+  document.getElementById('btn-t' + t + 's' + s + '-start').disabled = false;
+  document.getElementById('btn-t' + t + 's' + s + '-stop').disabled = true;
+  document.getElementById('btn-t' + t + 's' + s + '-reset').disabled = true;
+  if (t === activeTab) {
+    document.getElementById('bar' + s).textContent = '--:--';
+    document.getElementById('diff' + s).textContent = '';
+    updateDiffs();
+  }
 }
 
 function updateDiffs() {
-  const base = results[1];
-  [2, 3].forEach(n => {
-    const el = document.getElementById('diff'+n);
-    if (!base || !results[n]) { el.textContent = ''; return; }
-    const saved = base - results[n];
+  const base = results[activeTab][1];
+  [2, 3].forEach(s => {
+    const el = document.getElementById('diff' + s);
+    if (!base || !results[activeTab][s]) { el.textContent = ''; return; }
+    const saved = base - results[activeTab][s];
     if (saved > 0) {
-      const pct = Math.round(saved / base * 100);
-      el.textContent = '較①快 ' + fmt(saved) + '（' + pct + '%）';
+      el.textContent = '較①快 ' + fmt(saved) + '（' + Math.round(saved / base * 100) + '%）';
     } else if (saved < 0) {
       el.textContent = '較①慢 ' + fmt(-saved);
     } else {
