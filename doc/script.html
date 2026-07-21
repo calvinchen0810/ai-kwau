@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Kwau · 報告講稿</title>
+<style>
+:root{
+  --navy:#0d1f3c;--accent:#0077b6;--cyan:#00b4d8;
+  --green:#06d6a0;--gold:#c9922a;--red:#e74c3c;
+  --bg:#f8fafc;--card:#fff;--text:#1a1a2e;--muted:#64748b;
+  --border:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;}
+
+/* Header */
+.doc-header{background:var(--navy);color:#fff;padding:32px 48px 28px;border-bottom:3px solid var(--cyan);}
+.doc-header h1{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;}
+.doc-header h1 span{color:var(--cyan);}
+.doc-meta{display:flex;gap:24px;margin-top:12px;flex-wrap:wrap;}
+.doc-meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.65);}
+.doc-meta-item strong{color:rgba(255,255,255,.9);}
+
+/* Time budget bar */
+.time-bar{background:var(--navy);padding:0 48px 20px;display:flex;gap:3px;align-items:flex-end;}
+.tb-seg{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.tb-block{border-radius:3px;width:100%;}
+.tb-lbl{font-size:9px;color:rgba(255,255,255,.5);white-space:nowrap;text-align:center;}
+.tb-sec{font-size:9px;color:rgba(255,255,255,.35);text-align:center;}
+
+/* Content */
+.doc-body{max-width:900px;margin:0 auto;padding:36px 24px 60px;}
+
+/* Slide card */
+.slide-card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:24px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.slide-head{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--border);}
+.slide-num{font-size:11px;font-weight:700;color:#fff;background:var(--navy);border-radius:8px;padding:4px 10px;flex-shrink:0;letter-spacing:.5px;}
+.slide-title-txt{font-size:17px;font-weight:700;color:var(--navy);flex:1;}
+.slide-sub-txt{font-size:12px;color:var(--muted);font-weight:400;display:block;margin-top:1px;}
+.time-badge{font-size:12px;font-weight:700;color:#fff;padding:4px 12px;border-radius:20px;flex-shrink:0;white-space:nowrap;}
+.time-badge.t-normal{background:var(--accent);}
+.time-badge.t-long{background:var(--green);color:var(--navy);}
+.time-badge.t-short{background:var(--muted);}
+.time-badge.t-demo{background:var(--red);}
+
+.slide-body{padding:18px 24px 22px;display:grid;grid-template-columns:200px 1fr;gap:20px;}
+@media(max-width:640px){.slide-body{grid-template-columns:1fr;}}
+
+/* Key points */
+.kp-col{}
+.kp-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.kp-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.kp-list li{font-size:13px;color:var(--text);line-height:1.5;padding-left:14px;position:relative;}
+.kp-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:11px;top:2px;}
+.kp-list li.gold::before{color:var(--gold);}
+.kp-list li.green::before{color:var(--green);}
+.kp-list li.red::before{color:var(--red);}
+
+/* Script */
+.script-col{}
+.script-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.script-text{font-size:14.5px;color:var(--text);line-height:1.85;background:rgba(0,119,182,.03);border-left:3px solid var(--cyan);border-radius:0 8px 8px 0;padding:14px 16px;}
+.script-text p{margin-bottom:10px;}
+.script-text p:last-child{margin-bottom:0;}
+.script-text em{color:var(--muted);font-style:normal;font-size:13px;}
+.script-text strong{color:var(--accent);}
+.script-text .pause{display:inline-block;background:rgba(0,0,0,.06);border-radius:4px;padding:0 6px;font-size:11px;color:var(--muted);margin:0 3px;}
+.transition{margin-top:10px;padding:8px 14px;background:rgba(6,214,160,.07);border:1px solid rgba(6,214,160,.25);border-radius:8px;font-size:13px;color:var(--muted);}
+.transition::before{content:'→ 換頁：';font-weight:700;color:var(--green);}
+
+/* Special: demo card */
+.demo-card .slide-head{background:linear-gradient(135deg,#1a1a2e,#0d1f3c);}
+.demo-card .slide-title-txt{color:#fff;}
+.demo-card .slide-sub-txt{color:rgba(255,255,255,.55);}
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <h1>AI Kwau <span>愛看有</span> · 期末報告講稿</h1>
+  <div class="doc-meta">
+    <div class="doc-meta-item">🕐 <strong>總時間：</strong>10 分鐘</div>
+    <div class="doc-meta-item">🎬 <strong>Demo 影片：</strong>1 分鐘（已含入）</div>
+    <div class="doc-meta-item">🌐 <strong>語言：</strong>中文為主</div>
+    <div class="doc-meta-item">📊 <strong>投影片：</strong>13 張</div>
+  </div>
+</div>
+
+<div class="time-bar" title="時間分配視覺化">
+  <!-- S1 90s -->
+  <div class="tb-seg" style="flex:90;"><div class="tb-block" style="height:28px;background:var(--accent);"></div><div class="tb-lbl">S1</div><div class="tb-sec">90s</div></div>
+  <!-- S2 50s -->
+  <div class="tb-seg" style="flex:50;"><div class="tb-block" style="height:20px;background:#0096c7;"></div><div class="tb-lbl">S2</div><div class="tb-sec">50s</div></div>
+  <!-- S3 40s -->
+  <div class="tb-seg" style="flex:40;"><div class="tb-block" style="height:16px;background:#0096c7;"></div><div class="tb-lbl">S3</div><div class="tb-sec">40s</div></div>
+  <!-- S4 35s -->
+  <div class="tb-seg" style="flex:35;"><div class="tb-block" style="height:14px;background:#0096c7;"></div><div class="tb-lbl">S4</div><div class="tb-sec">35s</div></div>
+  <!-- S5 45s -->
+  <div class="tb-seg" style="flex:45;"><div class="tb-block" style="height:18px;background:#0096c7;"></div><div class="tb-lbl">S5</div><div class="tb-sec">45s</div></div>
+  <!-- S6 40s -->
+  <div class="tb-seg" style="flex:40;"><div class="tb-block" style="height:16px;background:#0096c7;"></div><div class="tb-lbl">S6</div><div class="tb-sec">40s</div></div>
+  <!-- S7 35s -->
+  <div class="tb-seg" style="flex:35;"><div class="tb-block" style="height:14px;background:var(--gold);"></div><div class="tb-lbl">S7</div><div class="tb-sec">35s</div></div>
+  <!-- S8 35s -->
+  <div class="tb-seg" style="flex:35;"><div class="tb-block" style="height:14px;background:#6b7280;"></div><div class="tb-lbl">S8</div><div class="tb-sec">35s</div></div>
+  <!-- S9 Demo 75s -->
+  <div class="tb-seg" style="flex:75;"><div class="tb-block" style="height:30px;background:var(--red);"></div><div class="tb-lbl">S9</div><div class="tb-sec">15+60s</div></div>
+  <!-- S10 40s -->
+  <div class="tb-seg" style="flex:40;"><div class="tb-block" style="height:16px;background:var(--green);"></div><div class="tb-lbl">S10</div><div class="tb-sec">40s</div></div>
+  <!-- S11 30s -->
+  <div class="tb-seg" style="flex:30;"><div class="tb-block" style="height:12px;background:var(--green);"></div><div class="tb-lbl">S11</div><div class="tb-sec">30s</div></div>
+  <!-- S12 35s -->
+  <div class="tb-seg" style="flex:35;"><div class="tb-block" style="height:14px;background:var(--green);"></div><div class="tb-lbl">S12</div><div class="tb-sec">35s</div></div>
+  <!-- S13 30s -->
+  <div class="tb-seg" style="flex:30;"><div class="tb-block" style="height:12px;background:#4f46e5;"></div><div class="tb-lbl">S13</div><div class="tb-sec">30s</div></div>
+</div>
+
+<div class="doc-body">
+
+<!-- ===== S1 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S1</div>
+    <div>
+      <div class="slide-title-txt">封面 · 開場</div>
+      <span class="slide-sub-txt">AI Kwau 愛看有 · Final Presentation</span>
+    </div>
+    <div class="time-badge t-long">90 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>從所有人都有過的經驗切入</li>
+        <li>不提「視力障礙」——先讓評審感受問題</li>
+        <li>數字：20%、59% 快速建立urgency</li>
+        <li>一句話說清楚 AI Kwau 是什麼</li>
+        <li>最後預告報告架構</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>你有沒有在陽光很強的地方用電腦，螢幕反光，整個看不清楚？或者很累的時候，盯著一篇文章，字開始有點模糊，讀到一半就關掉了？</p>
+        <p>那個瞬間，你跟視力困難的使用者，體驗是一樣的。</p>
+        <p>PC 使用者裡，有 <strong>20%</strong> 有長期視力需求。但其中 <strong>59%</strong> 從來沒有用過任何輔助工具——不是不需要，是現有的工具太麻煩、太礙事。</p>
+        <p>AI Kwau 是一個 Microsoft Edge 擴充功能。它裝好之後，會自動偵測你的視線停在哪個段落，把那段文字加粗加深，然後用本機 AI 整理成三個重點給你看。不用設定，不用手動操作，全部跑在你的電腦上，沒有雲端，沒有隱私問題。</p>
+        <p><em>（環顧評審）</em> 今天我會帶大家看問題背景、設計邏輯、架構、用戶旅程、Curb-Cut 效應，然後播一分鐘的 Demo 影片，最後分享我們的問卷結果。</p>
+        <div class="transition">切換到 S2</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S2 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S2</div>
+    <div>
+      <div class="slide-title-txt">Problem Statement · The 20%</div>
+      <span class="slide-sub-txt">1 · 問題陳述</span>
+    </div>
+    <div class="time-badge t-normal">50 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>59% 是核心衝擊數字，停頓一下</li>
+        <li>五個痛點不用每個都念，挑 2–3 個有畫面的</li>
+        <li class="gold">問卷 n=16 為我們自己的調查</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>我們先看問題有多大。</p>
+        <p>PC 使用者裡，20% 有長期視力相關需求——眼睛容易疲勞、文字太小、對比度不夠。但這群人裡，有 <strong>59%</strong> 從來沒有用過任何視覺輔助工具。<span class="pause">停頓</span></p>
+        <p>為什麼？我們做了問卷調查，n=16。最常見的問題是：文字太小、螢幕對比太低、眼睛長時間盯著螢幕很疲勞。這些不是一次性的不舒服，是每天都在發生的事。</p>
+        <p>現有的工具，不是要手動開，就是要買硬體，或者根本不夠智慧。<strong>這個缺口，就是 AI Kwau 想填的。</strong></p>
+        <div class="transition">切換到 S3（感知迴圈）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S3 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S3</div>
+    <div>
+      <div class="slide-title-txt">Active Perception Loop</div>
+      <span class="slide-sub-txt">2 · 提案解法 — Sense → Decide → Act 迴圈</span>
+    </div>
+    <div class="time-badge t-normal">40 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>三個節點要說清楚「誰做什麼」</li>
+        <li>Why browser? 69% 是支撐選擇的數據</li>
+        <li>不用深入每個 item，帶到感覺即可</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>AI Kwau 的核心是一個三階段的感知迴圈。</p>
+        <p><strong>Sense</strong>——偵測你的視線位置和眼球移動。<strong>Decide</strong>——判斷現在要強化哪個區域、盲點在哪裡。<strong>Act</strong>——對可見區域做文字強化和 AI 摘要，對盲點做視覺提醒。</p>
+        <p>為什麼選擇在瀏覽器裡做？因為問卷顯示，<strong>69%</strong> 以上的受測者在瀏覽器裡完成大部分閱讀，包括新聞、信件、購物和影片。這是最有價值的介入點。</p>
+        <div class="transition">切換到 S4（決策分叉）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S4 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S4</div>
+    <div>
+      <div class="slide-title-txt">AI Decision Fork</div>
+      <span class="slide-sub-txt">2 · 提案解法 — Visible vs Blind Areas</span>
+    </div>
+    <div class="time-badge t-short">35 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>左右兩條路徑要對比清楚</li>
+        <li>L1 加粗加深 → L2 文字放大是漸進式</li>
+        <li class="gold">Blind Area 是差異化重點</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>AI 會根據視線位置做出兩種不同的決策。</p>
+        <p>你正在看的區域，進入<strong>漸進式強化</strong>：先加粗加深文字（L1），如果你開啟了 L2，字體會同時放大。同時 AI 在背景準備段落摘要，準備好了會提示你點擊查看。</p>
+        <p>你沒看到的盲點區域，AI 反而會去那裡，提醒你有重要連結或按鈕被你忽略了。</p>
+        <p>這兩條路徑，同時在進行。</p>
+        <div class="transition">切換到 S5（架構）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S5 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S5</div>
+    <div>
+      <div class="slide-title-txt">On-Device AI Stack</div>
+      <span class="slide-sub-txt">2 · 提案解法 — 系統架構</span>
+    </div>
+    <div class="time-badge t-normal">45 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>Browser World vs OS World 兩個世界</li>
+        <li>Native Messaging 是橋樑，不用深入</li>
+        <li>GPU 0.85s 是 wow moment</li>
+        <li class="green">強調：全部在本機，沒有雲端</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>系統分成兩個世界。</p>
+        <p>左邊是 <strong>Browser World</strong>——Edge 擴充功能，包括視線追蹤、文字強化和 AI 摘要的控制邏輯，全部跑在瀏覽器裡。</p>
+        <p>右邊是 <strong>OS World</strong>——一個 Windows 原生程式，透過 Native Messaging 和瀏覽器溝通，負責執行 AI 推論。我們用的是 Qwen2.5-1.5B INT4 模型，透過 OpenVINO 跑在本機硬體上。</p>
+        <p>在 HP Panther Lake 上的實測結果：GPU <strong>0.85 秒</strong>、CPU 1.32 秒、NPU 1.62 秒。<strong>全部在你的電腦上，沒有任何資料離開裝置。</strong></p>
+        <div class="transition">切換到 S6（用戶旅程）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S6 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S6</div>
+    <div>
+      <div class="slide-title-txt">User Journey Map</div>
+      <span class="slide-sub-txt">3 · 用戶體驗流程</span>
+    </div>
+    <div class="time-badge t-normal">40 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>強調「沒有學習成本」</li>
+        <li>一次校準，之後完全自動</li>
+        <li class="green">點擊段落 → 看摘要是核心 UX</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>對使用者來說，體驗非常簡單。</p>
+        <p>HP 出貨就預裝好，開機就能用。第一次使用做一次 25 點眼球校準，大概 60 秒。之後，你正常瀏覽就好——視線在哪裡，AI 就跟到哪裡，完全在背景自動運作。</p>
+        <p>當你的視線在一個段落停留超過一秒半，文字會自動加粗。AI 摘要準備好之後，段落邊框會亮起來。你點一下，原文就換成三個重點——再點一下，原文回來。</p>
+        <p><strong>不需要改變任何閱讀習慣。</strong></p>
+        <div class="transition">切換到 S7（Curb-Cut）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S7 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S7</div>
+    <div>
+      <div class="slide-title-txt">Curb-Cut Effect</div>
+      <span class="slide-sub-txt">4 · 價值與影響力</span>
+    </div>
+    <div class="time-badge t-short">35 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>Curb-Cut 是電梯扶手的類比</li>
+        <li>設計給 20%，受益者是 80%</li>
+        <li class="gold">陽光、疲勞、忙碌——三個例子讓評審有畫面</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>有個設計概念叫 Curb-Cut Effect：為輪椅設計的路邊斜坡，最後每個人都在用——推嬰兒車的、拉行李箱的。</p>
+        <p>AI Kwau 也一樣。我們為 20% 的視力需求使用者設計，但受益的不只他們。強光反射讓你看不清楚螢幕、睡眠不足讓你讀不進去文字、趕時間只想快速抓重點——這些時候，你跟視力困難的使用者需要一樣的東西。</p>
+        <p><strong>設計給 20%，最終讓 80% 的人都受益。</strong></p>
+        <div class="transition">切換到 S8（競品分析）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S8 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S8</div>
+    <div>
+      <div class="slide-title-txt">Competition &amp; HP Differentiation</div>
+      <span class="slide-sub-txt">5 · 競品分析</span>
+    </div>
+    <div class="time-badge t-short">35 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>不用逐條念競品缺點</li>
+        <li>快速帶過，聚焦在 HP 的三個優勢</li>
+        <li class="green">AI Summary 是市場上沒有的功能</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>現有競品的問題很一致：Windows 內建的 Magnifier 和 Narrator 是手動的，沒有視線感知；雲端 AI 擴充功能有隱私疑慮，而且需要網路。</p>
+        <p>HP 的優勢在三個地方：<strong>內建攝影機</strong>，零硬體成本；<strong>本機 AI</strong>，隱私第一；以及 <strong>AI 段落摘要</strong>——這個功能，目前市場上沒有任何競品有。</p>
+        <p>這是 HP 獨有的組合。</p>
+        <div class="transition">切換到 S9（Demo 影片）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S9 ===== -->
+<div class="slide-card demo-card">
+  <div class="slide-head">
+    <div class="slide-num">S9</div>
+    <div>
+      <div class="slide-title-txt">Demo Video</div>
+      <span class="slide-sub-txt" style="color:rgba(255,255,255,.5);">6 · 功能原型展示 — 15 秒導言 + 60 秒影片</span>
+    </div>
+    <div class="time-badge t-demo">15s + 60s</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>切換前先說一句讓評審知道要看什麼</li>
+        <li>影片播完不需要補充，直接換頁</li>
+        <li class="red">確認影片靜音/有聲的設定</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿（導言 15 秒）</div>
+      <div class="script-text">
+        <p>接下來播一分鐘的 Demo 影片。</p>
+        <p>你會看到：<strong>滑鼠移到段落停留後，文字自動加粗；AI 摘要準備好，段落邊框亮起；點擊段落，原文換成三個重點。</strong>全程在 Microsoft Edge 上，跑在本機。</p>
+        <p><em>（播放影片，60 秒）</em></p>
+        <div class="transition">切換到 S10（驗證與迭代）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S10 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S10</div>
+    <div>
+      <div class="slide-title-txt">Validation &amp; Design Iteration</div>
+      <span class="slide-sub-txt">7 · 驗證與使用者測試</span>
+    </div>
+    <div class="time-badge t-normal">40 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>左邊是用戶說了什麼，右邊是我們做了什麼</li>
+        <li>不需要念每一條，挑 2–3 個有代表性的</li>
+        <li class="gold">展現「有在聽用戶聲音」的態度</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>這頁呈現的是用戶回饋和我們的迭代。</p>
+        <p>「浮動 badge 很干擾」→ 我們改成點擊段落才顯示摘要。「字型大小固定太死」→ 加了 1.0 到 3.0 倍的字體滑桿。「高亮後連結看不見」→ 每個主題都有對應的超連結重新上色。</p>
+        <p>這些調整，都是在第一輪測試後加進去的。</p>
+        <div class="transition">切換到 S11（未來規劃）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S11 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S11</div>
+    <div>
+      <div class="slide-title-txt">What Users Want Next</div>
+      <span class="slide-sub-txt">8 · 未來功能規劃</span>
+    </div>
+    <div class="time-badge t-short">30 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>快速帶過，不深入每個功能</li>
+        <li>重點是「Roadmap 來自真實用戶回饋」</li>
+        <li class="green">這頁的存在說明我們有下一步</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>這是未來規劃，都來自真實用戶的建議。</p>
+        <p>包括：整篇文章一鍵摘要、AI 串流輸出讓摘要即時出現、眼球追蹤準確度提升，以及把 AI Kwau 整合進 Windows 無障礙 API，讓它跳出瀏覽器，幫助整個作業系統層級的閱讀體驗。</p>
+        <div class="transition">切換到 S12（KPIs）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S12 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S12</div>
+    <div>
+      <div class="slide-title-txt">KPIs — How We Measure Success</div>
+      <span class="slide-sub-txt">9 · 成效指標</span>
+    </div>
+    <div class="time-badge t-normal">35 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>左邊：每個痛點都被解決了</li>
+        <li class="green">5.0/5 是最強數字，要停頓</li>
+        <li>盲點 3.0 誠實說，展現數據誠信</li>
+        <li class="gold">右側 4.7/5 採用意願是壓軸</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>我們用問卷驗證了每個痛點的解決效果。</p>
+        <p>文字放大、高對比主題——兩個都拿到 <strong>5.0 滿分</strong>。<span class="pause">停頓</span> 文字加粗 4.3、滑鼠指標強化 4.0，都達到我們設定的 4.0 目標門檻。</p>
+        <p>盲點提醒目前是 3.0，有進步空間——這也是 Roadmap 裡的第一優先項。</p>
+        <p>AI 摘要平均 4.3，更快掌握重點 4.3。最重要的是：<strong>4.7 / 5 的使用者願意繼續使用，4.7 / 5 願意推薦給身邊的人。</strong></p>
+        <div class="transition">切換到 S13（總結）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== S13 ===== -->
+<div class="slide-card">
+  <div class="slide-head">
+    <div class="slide-num">S13</div>
+    <div>
+      <div class="slide-title-txt">Summary · AI Kwau 愛看有</div>
+      <span class="slide-sub-txt">結語</span>
+    </div>
+    <div class="time-badge t-short">30 秒</div>
+  </div>
+  <div class="slide-body">
+    <div class="kp-col">
+      <div class="kp-label">重點提示</div>
+      <ul class="kp-list">
+        <li>呼應開場的共感鉤子</li>
+        <li>一句話總結 AI Kwau 的定位</li>
+        <li class="gold">結尾要有力，不要拖</li>
+      </ul>
+    </div>
+    <div class="script-col">
+      <div class="script-label">講稿</div>
+      <div class="script-text">
+        <p>回到最開始的問題——你有沒有過，螢幕看不清楚、文字讀不進去、不知道頁面上哪裡有重要的東西？</p>
+        <p>AI Kwau 就是為了這些時刻而存在的。</p>
+        <p>它用攝影機感知你、用本機 AI 輔助你、用 Edge 瀏覽器觸及你最常待的地方。<strong>零硬體成本，為 20% 設計，讓 80% 的人都受益。</strong></p>
+        <p><em>謝謝評審，我們開放提問。</em></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:40px;padding:20px 24px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:center;">
+  <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+    <strong style="color:var(--navy);">時間總計：</strong>
+    S1(90) + S2(50) + S3(40) + S4(35) + S5(45) + S6(40) + S7(35) + S8(35) + S9(75) + S10(40) + S11(30) + S12(35) + S13(30) = <strong style="color:var(--accent);">580 秒 ≈ 10 分鐘</strong>
+    <br>各頁時間僅供參考，依現場狀況彈性調整。Demo 影片固定 60 秒。
+  </div>
+</div>
+
+</div><!-- /doc-body -->
+</body>
+</html>
