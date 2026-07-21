@@ -3,278 +3,380 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Kwau 閱讀測試 — 使用前後對照</title>
+<title>AI Kwau 閱讀測試 — 三情境對照</title>
 <style>
   :root {
-    --navy: #0d1f3c;
-    --accent: #0077b6;
-    --cyan: #00b4d8;
-    --green: #06d6a0;
-    --gold: #f6ae2d;
-    --muted: #4a5568;
-    --bg: #f7f9fc;
+    --navy: #0d1f3c; --accent: #0077b6; --cyan: #00b4d8;
+    --green: #06d6a0; --gold: #f6ae2d; --goldd: #c9922a;
+    --muted: #4a5568; --bg: #f4f6fa;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Noto Serif TC', 'Georgia', '宋體', serif;
-    background: var(--bg);
-    color: #1a2b3c;
-    line-height: 1.9;
-  }
+  body { font-family: 'Noto Serif TC', 'Georgia', '宋體', serif; background: var(--bg); color: #1a2b3c; line-height: 1.9; }
 
-  /* ── Toolbar ───────────────────────────────────────────────── */
-  #toolbar {
+  /* ── Summary bar ─────────────────────────────────────────────── */
+  #summary-bar {
     position: sticky; top: 0; z-index: 100;
     background: var(--navy);
-    display: flex; align-items: center; gap: 16px;
-    padding: 10px 24px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    display: flex; align-items: center; gap: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,.35);
+    overflow: hidden;
   }
-  #toolbar h1 { font-size: 14px; font-weight: 700; color: var(--cyan); font-family: sans-serif; flex: 1; }
-  #timer-display {
-    font-family: 'Courier New', monospace; font-size: 22px; font-weight: 700;
-    color: var(--gold); min-width: 80px; text-align: center;
+  .sb-logo {
+    padding: 0 18px; font-family: sans-serif; font-size: 13px;
+    font-weight: 700; color: var(--cyan); white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,.08);
+    height: 48px; display: flex; align-items: center;
+  }
+  .sb-cell {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 4px 12px;
+    border-right: 1px solid rgba(255,255,255,.08);
+    min-width: 0;
+  }
+  .sb-cell:last-child { border-right: none; }
+  .sb-label {
+    font-family: sans-serif; font-size: 9px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px;
+  }
+  .sb-time {
+    font-family: 'Courier New', monospace; font-size: 20px; font-weight: 700;
     letter-spacing: 2px;
   }
-  .tbtn {
-    font-family: sans-serif; font-size: 12px; font-weight: 600;
-    padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer;
-    transition: all .2s;
+  .sb-diff {
+    font-family: sans-serif; font-size: 10px; font-weight: 600;
+    margin-top: 1px; height: 14px;
   }
-  #btn-start { background: var(--green); color: var(--navy); }
-  #btn-stop  { background: #e74c3c;  color: #fff; }
-  #btn-reset { background: rgba(255,255,255,.12); color: rgba(255,255,255,.7); }
-  #btn-stop, #btn-reset { display: none; }
-  .tbtn:hover { filter: brightness(1.1); }
+  .c1 .sb-label { color: #a0aec0; }
+  .c1 .sb-time  { color: #fff; }
+  .c2 .sb-label { color: var(--cyan); }
+  .c2 .sb-time  { color: var(--cyan); }
+  .c2 .sb-diff  { color: rgba(144,224,239,.7); }
+  .c3 .sb-label { color: var(--green); }
+  .c3 .sb-time  { color: var(--green); }
+  .c3 .sb-diff  { color: rgba(6,214,160,.7); }
 
-  /* ── Records ───────────────────────────────────────────────── */
-  #records-wrap {
-    background: rgba(0,180,216,.07); border-bottom: 1px solid rgba(0,180,216,.2);
-    padding: 8px 24px; display: flex; gap: 20px; align-items: center;
-    font-family: sans-serif; font-size: 12px; color: var(--muted);
-  }
-  #records-wrap span { font-weight: 700; color: var(--navy); }
-  .rec-item { display: flex; align-items: center; gap: 6px; }
-  .rec-dot  { width: 8px; height: 8px; border-radius: 50%; }
-  .rec-dot.before { background: #e74c3c; }
-  .rec-dot.after  { background: var(--green); }
+  /* ── Layout ──────────────────────────────────────────────────── */
+  .container { max-width: 800px; margin: 0 auto; padding: 36px 20px 80px; }
 
-  /* ── Main layout ───────────────────────────────────────────── */
-  .container { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
-
-  /* ── Article card ──────────────────────────────────────────── */
-  .article-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 40px 48px;
+  /* ── Scenario card ───────────────────────────────────────────── */
+  .scenario-card {
+    background: #fff; border-radius: 16px; overflow: hidden;
     margin-bottom: 48px;
     box-shadow: 0 2px 16px rgba(0,0,0,.07);
-    border-top: 4px solid var(--accent);
   }
-  .article-num {
-    font-family: sans-serif; font-size: 11px; font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--cyan); margin-bottom: 8px;
-  }
-  .article-title {
-    font-size: 24px; font-weight: 700; color: var(--navy);
-    line-height: 1.35; margin-bottom: 28px;
-    padding-bottom: 16px;
+
+  /* ── Scenario header ─────────────────────────────────────────── */
+  .sc-header {
+    padding: 18px 32px 16px;
+    display: flex; align-items: center; gap: 20px;
     border-bottom: 1px solid rgba(0,0,0,.07);
   }
-  .article-card p {
-    font-size: 17px; line-height: 2.0;
-    color: #2c3e50;
-    margin-bottom: 24px;
-    text-align: justify;
-    text-indent: 2em;
+  .sc-num {
+    font-family: sans-serif; font-size: 28px; font-weight: 800;
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
-  .article-card p:last-child { margin-bottom: 0; }
+  .sc-info { flex: 1; }
+  .sc-title { font-family: sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .sc-sub   { font-family: sans-serif; font-size: 12px; color: var(--muted); }
 
-  /* ── Word count ────────────────────────────────────────────── */
-  .wc-badge {
-    display: inline-block; font-family: sans-serif; font-size: 11px;
-    color: var(--muted); background: rgba(0,0,0,.05); border-radius: 20px;
-    padding: 3px 10px; margin-top: 20px;
+  /* feature badges */
+  .feat-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .feat-off {
+    font-family: sans-serif; font-size: 10px; font-weight: 600;
+    background: rgba(0,0,0,.06); color: #888;
+    border: 1px solid rgba(0,0,0,.1); border-radius: 20px;
+    padding: 2px 10px;
+  }
+  .feat-on {
+    font-family: sans-serif; font-size: 10px; font-weight: 700;
+    border-radius: 20px; padding: 2px 10px;
+  }
+  .feat-on.cyan  { background: rgba(0,180,216,.12); color: var(--accent); border: 1px solid rgba(0,180,216,.35); }
+  .feat-on.green { background: rgba(6,214,160,.12); color: #059669;       border: 1px solid rgba(6,214,160,.4); }
+
+  /* timer strip */
+  .sc-timer {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 32px; background: rgba(0,0,0,.025);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  .sc-clock {
+    font-family: 'Courier New', monospace; font-size: 26px; font-weight: 700;
+    letter-spacing: 3px; min-width: 80px;
+  }
+  .tbtn {
+    font-family: sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 16px; border-radius: 6px; border: none; cursor: pointer;
+    transition: all .15s;
+  }
+  .tbtn:disabled { opacity: .35; cursor: not-allowed; }
+  .tbtn.start { background: var(--green); color: var(--navy); }
+  .tbtn.stop  { background: #e74c3c; color: #fff; }
+  .tbtn.reset { background: rgba(0,0,0,.08); color: var(--muted); }
+  .tbtn:not(:disabled):hover { filter: brightness(1.08); }
+  .sc-result {
+    font-family: sans-serif; font-size: 12px; font-weight: 600;
+    margin-left: 4px;
   }
 
-  /* ── Timer overlay ─────────────────────────────────────────── */
-  #timer-running-banner {
-    display: none; position: fixed; bottom: 24px; right: 24px;
-    background: var(--navy); color: var(--gold);
-    font-family: 'Courier New', monospace; font-size: 28px; font-weight: 700;
-    padding: 12px 20px; border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,.4);
-    letter-spacing: 3px; z-index: 200;
+  /* ── Article body ────────────────────────────────────────────── */
+  .article-body { padding: 32px 36px 36px; }
+  .article-title {
+    font-size: 22px; font-weight: 700; color: var(--navy);
+    line-height: 1.4; margin-bottom: 24px;
+    padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,.07);
+    font-family: sans-serif;
   }
+  .article-body p {
+    font-size: 17px; line-height: 2.05; color: #2c3e50;
+    margin-bottom: 22px; text-align: justify; text-indent: 2em;
+  }
+  .article-body p:last-child { margin-bottom: 0; }
 
-  /* ── Instructions ──────────────────────────────────────────── */
-  .instructions {
-    font-family: sans-serif; font-size: 13px; color: var(--muted);
-    background: rgba(0,119,182,.05); border: 1px solid rgba(0,119,182,.18);
-    border-radius: 10px; padding: 16px 20px; margin-bottom: 36px;
-    line-height: 1.7;
+  /* scenario colour accents */
+  .s1 .sc-header { border-top: 4px solid #94a3b8; }
+  .s1 .sc-num    { background: rgba(0,0,0,.06); color: var(--muted); }
+  .s1 .sc-title  { color: var(--muted); }
+  .s1 .sc-clock  { color: #555; }
+
+  .s2 .sc-header { border-top: 4px solid var(--cyan); }
+  .s2 .sc-num    { background: rgba(0,180,216,.12); color: var(--accent); }
+  .s2 .sc-title  { color: var(--accent); }
+  .s2 .sc-clock  { color: var(--accent); }
+
+  .s3 .sc-header { border-top: 4px solid var(--green); }
+  .s3 .sc-num    { background: rgba(6,214,160,.12); color: #059669; }
+  .s3 .sc-title  { color: #059669; }
+  .s3 .sc-clock  { color: #059669; }
+
+  /* ── Intro banner ────────────────────────────────────────────── */
+  .intro {
+    font-family: sans-serif; font-size: 13px; line-height: 1.75;
+    color: var(--muted); background: #fff;
+    border: 1px solid rgba(0,119,182,.18); border-radius: 12px;
+    padding: 18px 22px; margin-bottom: 32px;
   }
-  .instructions strong { color: var(--accent); }
+  .intro strong { color: var(--accent); }
+  .intro ol { margin: 8px 0 0 20px; }
+  .intro li { margin-bottom: 4px; }
 </style>
 </head>
 <body>
 
-<!-- Toolbar -->
-<div id="toolbar">
-  <h1>AI Kwau 閱讀測試</h1>
-  <div id="timer-display">00:00</div>
-  <button class="tbtn" id="btn-start" onclick="startTimer()">▶ 開始計時</button>
-  <button class="tbtn" id="btn-stop"  onclick="stopTimer()">⏹ 結束記錄</button>
-  <button class="tbtn" id="btn-reset" onclick="resetTimer()">↺ 重置</button>
-</div>
-
-<!-- Records bar -->
-<div id="records-wrap">
-  <strong>閱讀紀錄：</strong>
-  <div class="rec-item"><div class="rec-dot before"></div><span id="rec-before">使用前：—</span></div>
-  <div class="rec-item"><div class="rec-dot after"></div><span id="rec-after">使用後：—</span></div>
-  <span id="rec-diff" style="margin-left:8px;color:var(--green);font-weight:700;"></span>
+<!-- Sticky summary bar -->
+<div id="summary-bar">
+  <div class="sb-logo">AI Kwau 閱讀測試</div>
+  <div class="sb-cell c1">
+    <div class="sb-label">① 無功能</div>
+    <div class="sb-time" id="bar1">--:--</div>
+    <div class="sb-diff" id="diff1"></div>
+  </div>
+  <div class="sb-cell c2">
+    <div class="sb-label">② 粗體 + 高對比</div>
+    <div class="sb-time" id="bar2">--:--</div>
+    <div class="sb-diff" id="diff2"></div>
+  </div>
+  <div class="sb-cell c3">
+    <div class="sb-label">③ + AI 摘要</div>
+    <div class="sb-time" id="bar3">--:--</div>
+    <div class="sb-diff" id="diff3"></div>
+  </div>
 </div>
 
 <div class="container">
 
-  <div class="instructions">
-    <strong>測試說明：</strong>
-    閱讀前按「開始計時」，讀完三篇文章後按「結束記錄」。<br>
-    第一次閱讀為「使用前」（不啟用 AI Kwau），第二次為「使用後」（啟用 AI Kwau 摘要功能，懸停段落 2 秒後點擊查看摘要）。
+  <div class="intro">
+    <strong>測試說明：</strong> 三篇文章各自獨立閱讀一次，每篇對應不同的 AI Kwau 設定。<br>
+    閱讀前按該文章的「▶ 開始」，確認理解內容後按「⏹ 完成」。上方工具列會即時顯示三組時間與差異。
+    <ol>
+      <li><strong>文章一</strong>：關閉所有 AI Kwau 功能（或不安裝），純粹閱讀</li>
+      <li><strong>文章二</strong>：僅開啟「粗體加深」＋「高對比主題」，懸停段落觸發即可</li>
+      <li><strong>文章三</strong>：同時開啟粗體、高對比，並點擊摘要查看 AI 重點整理</li>
+    </ol>
   </div>
 
-  <!-- ── Article 1 ─────────────────────────────────────────── -->
-  <div class="article-card">
-    <div class="article-num">文章一 · Article 1</div>
-    <div class="article-title">人工智慧如何重塑現代醫療照護</div>
+  <!-- ════════════════════════════════════════════════════════
+       Scenario 1 — No features
+  ════════════════════════════════════════════════════════ -->
+  <div class="scenario-card s1">
+    <div class="sc-header">
+      <div class="sc-num">①</div>
+      <div class="sc-info">
+        <div class="sc-title">控制組：不開啟任何功能</div>
+        <div class="sc-sub">請確認 AI Kwau 功能已全部關閉，或使用未安裝擴充功能的瀏覽器</div>
+        <div class="feat-row">
+          <span class="feat-off">✕ 粗體加深</span>
+          <span class="feat-off">✕ 高對比</span>
+          <span class="feat-off">✕ 字型放大</span>
+          <span class="feat-off">✕ AI 摘要</span>
+        </div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk1">00:00</div>
+      <button class="tbtn start" id="s1-start" onclick="startT(1)">▶ 開始</button>
+      <button class="tbtn stop"  id="s1-stop"  onclick="stopT(1)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="s1-reset" onclick="resetT(1)" disabled>↺</button>
+      <div class="sc-result" id="res1"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">人工智慧如何重塑現代醫療照護</div>
 
-    <p>隨著人工智慧技術的快速發展，醫療照護領域正在經歷一場前所未有的革命。傳統的診斷流程往往依賴醫師多年累積的臨床經驗，然而人工智慧系統透過分析龐大的醫療數據，能夠在數秒內識別出人類肉眼難以察覺的細微異常。以影像診斷為例，深度學習演算法在偵測早期肺癌、乳癌及眼底病變等疾病方面，已展現出媲美甚至超越資深放射科醫師的準確率。這不僅大幅縮短了患者等待診斷結果的時間，更為偏遠地區提供了接受高品質醫療評估的機會，讓醫療資源的分配不再受到地理位置的嚴重限制。</p>
+      <p>隨著人工智慧技術的快速發展，醫療照護領域正在經歷一場前所未有的革命。傳統的診斷流程往往依賴醫師多年累積的臨床經驗，然而人工智慧系統透過分析龐大的醫療數據，能夠在數秒內識別出人類肉眼難以察覺的細微異常。以影像診斷為例，深度學習演算法在偵測早期肺癌、乳癌及眼底病變等疾病方面，已展現出媲美甚至超越資深放射科醫師的準確率。這不僅大幅縮短了患者等待診斷結果的時間，更為偏遠地區提供了接受高品質醫療評估的機會，讓醫療資源的分配不再受到地理位置的嚴重限制。</p>
 
-    <p>在藥物研發領域，人工智慧的介入同樣帶來革命性的突破。一種新藥從實驗室研究到獲得監管機構核准，傳統上需要耗費超過十年的時間與數十億美元的資本投入。然而，透過機器學習模型對分子結構的預測與篩選，研究人員得以在極短的時間內從數百萬種化合物中鎖定最具潛力的候選分子。在COVID-19疫情期間，人工智慧技術的應用使疫苗研發周期大幅壓縮，印證了其在公共衛生緊急事件中所扮演的關鍵角色。製藥公司也逐漸將人工智慧整合至臨床試驗設計，以提升受試者招募效率與試驗成功率，進一步降低藥物開發的整體成本。</p>
+      <p>在藥物研發領域，人工智慧的介入同樣帶來革命性的突破。一種新藥從實驗室研究到獲得監管機構核准，傳統上需要耗費超過十年的時間與數十億美元的資本投入。然而，透過機器學習模型對分子結構的預測與篩選，研究人員得以在極短的時間內從數百萬種化合物中鎖定最具潛力的候選分子。在 COVID-19 疫情期間，人工智慧技術的應用使疫苗研發周期大幅壓縮，印證了其在公共衛生緊急事件中所扮演的關鍵角色。製藥公司也逐漸將人工智慧整合至臨床試驗設計，以提升受試者招募效率與試驗成功率，進一步降低藥物開發的整體成本。</p>
 
-    <p>個人化醫療是人工智慧在醫療領域另一項重要應用。每位患者的基因組成、生活習慣與環境暴露因子各異，傳統的標準化治療方案無法充分照顧個別差異。透過整合電子病歷、基因定序資料與穿戴式裝置的即時生理監測數據，人工智慧能夠為每位患者量身打造最適合的治療計畫。腫瘤學領域已開始利用人工智慧分析患者的腫瘤基因突變特徵，預測特定標靶藥物的治療反應，從而避免無效療程帶來的副作用與醫療資源浪費，讓患者在最短的時間內接受最有效的個人化治療方案。</p>
+      <p>個人化醫療是人工智慧在醫療領域另一項重要應用方向。每位患者的基因組成、生活習慣與環境暴露因子各異，傳統的標準化治療方案無法充分照顧個別差異。透過整合電子病歷、基因定序資料與穿戴式裝置的即時生理監測數據，人工智慧能夠為每位患者量身打造最適合的治療計畫。腫瘤學領域已開始利用人工智慧分析患者的腫瘤基因突變特徵，預測特定標靶藥物的治療反應，從而避免無效療程帶來的副作用與醫療資源浪費，讓患者在最短的時間內接受最有效的個人化治療方案。</p>
 
-    <p>儘管人工智慧在醫療領域展現出巨大潛力，相關的倫理議題與挑戰仍不容忽視。醫療數據的隱私保護、演算法決策的透明度，以及人工智慧輔助診斷的法律責任歸屬，都是亟待社會各界共同面對的課題。此外，若人工智慧系統的訓練數據存在偏差，可能導致特定族群在醫療照護上遭受不公平的對待。因此，如何確保人工智慧技術的應用符合醫療倫理原則，並在技術創新與人文關懷之間取得平衡，將是未來醫療體系面臨的核心挑戰。唯有建立完善的監管框架與跨領域合作機制，方能讓人工智慧真正成為全人類健康福祉的守護者。</p>
-
-    <div class="wc-badge">約 1,050 字</div>
+      <p>儘管人工智慧在醫療領域展現出巨大潛力，相關的倫理議題與挑戰仍不容忽視。醫療數據的隱私保護、演算法決策的透明度，以及人工智慧輔助診斷的法律責任歸屬，都是亟待社會各界共同面對的課題。此外，若人工智慧系統的訓練數據存在偏差，可能導致特定族群在醫療照護上遭受不公平的對待。因此，如何確保人工智慧技術的應用符合醫療倫理原則，並在技術創新與人文關懷之間取得平衡，將是未來醫療體系面臨的核心挑戰。唯有建立完善的監管框架與跨領域合作機制，方能讓人工智慧真正成為全人類健康福祉的守護者。</p>
+    </div>
   </div>
 
-  <!-- ── Article 2 ─────────────────────────────────────────── -->
-  <div class="article-card" style="border-top-color: var(--cyan);">
-    <div class="article-num" style="color: var(--accent);">文章二 · Article 2</div>
-    <div class="article-title">5G 技術如何推動智慧城市的實現</div>
+  <!-- ════════════════════════════════════════════════════════
+       Scenario 2 — Bold + High Contrast
+  ════════════════════════════════════════════════════════ -->
+  <div class="scenario-card s2">
+    <div class="sc-header">
+      <div class="sc-num">②</div>
+      <div class="sc-info">
+        <div class="sc-title">文字強化：粗體加深 ＋ 高對比主題</div>
+        <div class="sc-sub">開啟粗體加深與高對比（建議選 Nightsky），懸停段落約 2 秒觸發 L1 效果，不點開摘要</div>
+        <div class="feat-row">
+          <span class="feat-on cyan">✓ 粗體加深</span>
+          <span class="feat-on cyan">✓ 高對比主題</span>
+          <span class="feat-off">✕ AI 摘要（不點擊）</span>
+        </div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk2">00:00</div>
+      <button class="tbtn start" id="s2-start" onclick="startT(2)">▶ 開始</button>
+      <button class="tbtn stop"  id="s2-stop"  onclick="stopT(2)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="s2-reset" onclick="resetT(2)" disabled>↺</button>
+      <div class="sc-result" id="res2"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">5G 技術如何推動智慧城市的實現</div>
 
-    <p>第五代行動通訊技術（5G）的廣泛部署，正為智慧城市的建設奠定堅實的基礎設施基礎。與前一代技術相比，5G 具備超高速傳輸、極低延遲與大規模裝置連接等核心優勢，使城市中數以億計的感測器、攝影機與智慧裝置得以實現穩定的即時通訊。在交通管理領域，5G 網路支援車聯網技術的落地，讓車輛與交通號誌之間能夠進行毫秒級的資訊交換，有效減少路口事故的發生並優化車流疏導效率。路燈根據實際人流自動調節亮度、廢棄物收集車依據感測器數據規劃最佳路線，這些場景在 5G 時代正逐步從概念走向日常現實。</p>
+      <p>第五代行動通訊技術（5G）的廣泛部署，正為智慧城市的建設奠定堅實的基礎設施基礎。與前一代技術相比，5G 具備超高速傳輸、極低延遲與大規模裝置連接等核心優勢，使城市中數以億計的感測器、攝影機與智慧裝置得以實現穩定的即時通訊。在交通管理領域，5G 網路支援車聯網技術的落地，讓車輛與交通號誌之間能夠進行毫秒級的資訊交換，有效減少路口事故的發生並優化車流疏導效率。路燈根據實際人流自動調節亮度、廢棄物收集車依據感測器數據規劃最佳路線，這些場景在 5G 時代正逐步從概念走向日常現實。</p>
 
-    <p>在公共安全層面，5G 技術賦予城市管理者前所未有的監控與應變能力。高解析度監控攝影機透過 5G 網路將畫面即時傳輸至指揮中心，配合人臉辨識與行為分析演算法，執法人員能夠在人群中快速鎖定可疑人物或走失兒童。在緊急救援情境中，救護車可透過 5G 網路將患者的生命徵象資料即時傳送至醫院，使醫療團隊在患者抵達前便完成術前準備工作。無人機搭載 5G 模組執行災區搜救任務，不僅能夠深入人員難以到達的危險區域，更可同步傳輸高畫質空拍影像，為現場指揮人員提供更全面準確的態勢掌握。</p>
+      <p>在公共安全層面，5G 技術賦予城市管理者前所未有的監控與應變能力。高解析度監控攝影機透過 5G 網路將畫面即時傳輸至指揮中心，配合人臉辨識與行為分析演算法，執法人員能夠在人群中快速鎖定可疑人物或走失兒童。在緊急救援情境中，救護車可透過 5G 網路將患者的生命徵象資料即時傳送至醫院，使醫療團隊在患者抵達前便完成術前準備工作。無人機搭載 5G 模組執行災區搜救任務，不僅能夠深入人員難以到達的危險區域，更可同步傳輸高畫質空拍影像，為現場指揮人員提供更全面準確的態勢掌握。</p>
 
-    <p>能源管理是智慧城市發展的核心議題之一，5G 技術在此扮演著不可或缺的角色。傳統電網採用單向供電模式，難以因應再生能源供電不穩定的特性。透過 5G 連接的智慧電錶與分散式能源管理系統，電網營運商得以即時掌握各區域的用電負荷，動態調配電力資源，大幅提升能源使用效率。在建築層面，配備 5G 感測器的智慧大廈能夠即時監測室內溫度、濕度與人員分佈，自動調節空調與照明系統，達到顯著節能減碳的目標。部分城市已開始試驗以 5G 技術整合太陽能板、儲能設備與電動車充電樁，建構自給自足的社區微電網系統。</p>
+      <p>能源管理是智慧城市發展的核心議題之一，5G 技術在此扮演著不可或缺的角色。傳統電網採用單向供電模式，難以因應再生能源供電不穩定的特性。透過 5G 連接的智慧電錶與分散式能源管理系統，電網營運商得以即時掌握各區域的用電負荷，動態調配電力資源，大幅提升能源使用效率。在建築層面，配備 5G 感測器的智慧大廈能夠即時監測室內溫度、濕度與人員分佈，自動調節空調與照明系統，達到顯著節能減碳的目標。部分城市已開始試驗以 5G 技術整合太陽能板、儲能設備與電動車充電樁，建構自給自足的社區微電網系統。</p>
 
-    <p>然而，5G 智慧城市的建設並非毫無阻礙。龐大的基礎建設投資、涵蓋面廣的法規整合挑戰，以及公民對個人隱私遭受監控的疑慮，都是各城市政府必須審慎應對的問題。5G 基地台的密集布建需要取得大量私有土地使用授權，也引發部分居民對電磁波輻射健康影響的憂慮。此外，高度數位化的城市基礎設施也面臨日益嚴峻的網路安全威脅，一旦遭受惡意攻擊，可能造成交通癱瘓、電力中斷等嚴重後果。因此，在積極推動 5G 智慧城市建設的同時，如何保障資料安全、確保科技紅利為全體市民所共享，將是決定智慧城市能否真正實現其美好願景的關鍵因素。</p>
-
-    <div class="wc-badge">約 1,050 字</div>
+      <p>然而，5G 智慧城市的建設並非毫無阻礙。龐大的基礎建設投資、涵蓋面廣的法規整合挑戰，以及公民對個人隱私遭受監控的疑慮，都是各城市政府必須審慎應對的問題。5G 基地台的密集布建需要取得大量私有土地使用授權，也引發部分居民對電磁波輻射健康影響的憂慮。此外，高度數位化的城市基礎設施也面臨日益嚴峻的網路安全威脅，一旦遭受惡意攻擊，可能造成交通癱瘓、電力中斷等嚴重後果。因此，在積極推動 5G 智慧城市建設的同時，如何保障資料安全、確保科技紅利為全體市民所共享，將是決定智慧城市能否真正實現美好願景的關鍵因素。</p>
+    </div>
   </div>
 
-  <!-- ── Article 3 ─────────────────────────────────────────── -->
-  <div class="article-card" style="border-top-color: var(--green);">
-    <div class="article-num" style="color: var(--green);">文章三 · Article 3</div>
-    <div class="article-title">遠距工作如何重塑現代職場文化</div>
+  <!-- ════════════════════════════════════════════════════════
+       Scenario 3 — Full: Bold + Contrast + AI Summary
+  ════════════════════════════════════════════════════════ -->
+  <div class="scenario-card s3">
+    <div class="sc-header">
+      <div class="sc-num">③</div>
+      <div class="sc-info">
+        <div class="sc-title">完整功能：粗體 ＋ 高對比 ＋ AI 摘要</div>
+        <div class="sc-sub">懸停段落觸發強化效果，出現「點擊摘要」標籤後點擊查看 AI 重點，確認理解即可繼續</div>
+        <div class="feat-row">
+          <span class="feat-on green">✓ 粗體加深</span>
+          <span class="feat-on green">✓ 高對比主題</span>
+          <span class="feat-on green">✓ AI 摘要（點擊閱讀）</span>
+        </div>
+      </div>
+    </div>
+    <div class="sc-timer">
+      <div class="sc-clock" id="clk3">00:00</div>
+      <button class="tbtn start" id="s3-start" onclick="startT(3)">▶ 開始</button>
+      <button class="tbtn stop"  id="s3-stop"  onclick="stopT(3)"  disabled>⏹ 完成</button>
+      <button class="tbtn reset" id="s3-reset" onclick="resetT(3)" disabled>↺</button>
+      <div class="sc-result" id="res3"></div>
+    </div>
+    <div class="article-body">
+      <div class="article-title">遠距工作如何重塑現代職場文化</div>
 
-    <p>新冠疫情的爆發猶如一場巨大的社會實驗，迫使全球數以億計的工作者在一夕之間從辦公室轉換至家中工作。令許多企業主管感到意外的是，這場被動的轉型並未如預期般導致生產力崩潰，反而催生了一套全新的工作典範。隨著疫情趨於緩和，許多企業選擇維持彈性工作制度，員工得以自行決定工作地點與時間，打破了長期以來「坐辦公室才算工作」的傳統思維。調查數據顯示，能夠靈活選擇工作模式的員工，在工作滿意度與留任意願方面均顯著高於被要求全天候返回辦公室的同儕，這一趨勢促使企業領導者重新審視辦公室空間存在的真正意義。</p>
+      <p>新冠疫情的爆發猶如一場巨大的社會實驗，迫使全球數以億計的工作者在一夕之間從辦公室轉換至家中工作。令許多企業主管感到意外的是，這場被動的轉型並未如預期般導致生產力崩潰，反而催生了一套全新的工作典範。隨著疫情趨於緩和，許多企業選擇維持彈性工作制度，員工得以自行決定工作地點與時間，打破了長期以來「坐辦公室才算工作」的傳統思維。調查數據顯示，能夠靈活選擇工作模式的員工，在工作滿意度與留任意願方面均顯著高於被要求全天候返回辦公室的同儕，這一趨勢促使企業領導者重新審視辦公室空間存在的真正意義。</p>
 
-    <p>遠距工作的普及不僅改變了個人的工作體驗，更對都市地理格局產生了深遠的影響。當工作地點不再局限於公司所在的城市，許多工作者開始選擇離開高房價、高生活成本的大都市，遷往環境宜人的中小型城市甚至鄉村地區。部分國家與地區為吸引遠距工作者帶動地方經濟，紛紛推出「數位遊牧簽證」，讓外籍工作者得以合法長期居留。與此同時，傳統商辦大樓的空置率在多個主要城市持續攀升，迫使開發商與城市規劃者重新思考這些空間的再利用方式，共享辦公空間與混合用途開發因此成為極具潛力的新興解決方案。</p>
+      <p>遠距工作的普及不僅改變了個人的工作體驗，更對都市地理格局產生了深遠的影響。當工作地點不再局限於公司所在的城市，許多工作者開始選擇離開高房價、高生活成本的大都市，遷往環境宜人的中小型城市甚至鄉村地區。部分國家與地區為吸引遠距工作者帶動地方經濟，紛紛推出「數位遊牧簽證」，讓外籍工作者得以合法長期居留。與此同時，傳統商辦大樓的空置率在多個主要城市持續攀升，迫使開發商與城市規劃者重新思考這些空間的再利用方式，共享辦公空間與混合用途開發因此成為極具潛力的新興解決方案。</p>
 
-    <p>然而，遠距工作並非適合所有人的萬靈丹，其背後潛藏的挑戰同樣不容小覷。家庭環境中的噪音干擾、缺乏與同事面對面互動的孤立感，以及工作與生活邊界模糊導致的過勞問題，是許多遠距工作者共同面臨的困境。對於職場新鮮人而言，少了辦公室中非正式的知識傳承機會，技能提升的速度可能相對緩慢，職涯發展也因此受到一定程度的影響。此外，遠距工作對穩定網路連線與數位設備的高度依賴，也凸顯了數位落差問題的嚴重性，並非所有工作者都擁有足以支援高效遠距工作的理想居家環境與完善設備條件。</p>
+      <p>然而，遠距工作並非適合所有人的萬靈丹，其背後潛藏的挑戰同樣不容小覷。家庭環境中的噪音干擾、缺乏與同事面對面互動的孤立感，以及工作與生活邊界模糊導致的過勞問題，是許多遠距工作者共同面臨的困境。對於職場新鮮人而言，少了辦公室中非正式的知識傳承機會，技能提升的速度可能相對緩慢，職涯發展也因此受到一定程度的影響。此外，遠距工作對穩定網路連線與數位設備的高度依賴，也凸顯了數位落差問題的嚴重性，並非所有工作者都擁有足以支援高效遠距工作的理想居家環境與完善設備條件。</p>
 
-    <p>面對遠距工作帶來的機遇與挑戰，企業與個人都需要建立新的技能組合與工作思維。對於企業而言，如何透過數位工具維繫團隊凝聚力、建立跨時區的溝通協作文化，以及公平評估遠距員工的工作績效，成為人力資源管理的全新課題。許多企業開始投資同步與非同步溝通工具，並重新設計績效考核制度，從單純計算出勤時數轉向以成果導向評估員工貢獻。對於個人而言，自律能力、非同步溝通技巧與數位工具的熟練運用，正逐漸成為職場競爭力的核心要素。遠距工作的全面興起，或許將引領我們進入一個以成果為本、以信任為基礎的嶄新工作文明。</p>
-
-    <div class="wc-badge">約 1,050 字</div>
+      <p>面對遠距工作帶來的機遇與挑戰，企業與個人都需要建立新的技能組合與工作思維。對於企業而言，如何透過數位工具維繫團隊凝聚力、建立跨時區的溝通協作文化，以及公平評估遠距員工的工作績效，成為人力資源管理的全新課題。許多企業開始投資同步與非同步溝通工具，並重新設計績效考核制度，從單純計算出勤時數轉向以成果導向評估員工貢獻。對於個人而言，自律能力、非同步溝通技巧與數位工具的熟練運用，正逐漸成為職場競爭力的核心要素。遠距工作的全面興起，或許將引領我們進入一個以成果為本、以信任為基礎的嶄新工作文明。</p>
+    </div>
   </div>
 
 </div>
 
-<!-- Floating timer -->
-<div id="timer-running-banner">00:00</div>
-
 <script>
-let timerInterval = null;
-let seconds = 0;
-let phase = 0; // 0=none, 1=before, 2=after
-let timeBefore = null, timeAfter = null;
+// State per scenario
+const state = {
+  1: {sec:0, interval:null, done:false},
+  2: {sec:0, interval:null, done:false},
+  3: {sec:0, interval:null, done:false},
+};
+const results = {1:null, 2:null, 3:null};
 
-function pad(n) { return String(n).padStart(2, '0'); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function fmt(s){ return pad(Math.floor(s/60))+':'+pad(s%60); }
 
-function formatTime(s) {
-  const m = Math.floor(s / 60);
-  return pad(m) + ':' + pad(s % 60);
+function startT(n) {
+  const st = state[n];
+  if (st.interval || st.done) return;
+  st.interval = setInterval(() => {
+    st.sec++;
+    document.getElementById('clk'+n).textContent = fmt(st.sec);
+  }, 1000);
+  document.getElementById('s'+n+'-start').disabled = true;
+  document.getElementById('s'+n+'-stop').disabled  = false;
 }
 
-function tick() {
-  seconds++;
-  const t = formatTime(seconds);
-  document.getElementById('timer-display').textContent = t;
-  document.getElementById('timer-running-banner').textContent = t;
+function stopT(n) {
+  const st = state[n];
+  if (!st.interval) return;
+  clearInterval(st.interval); st.interval = null; st.done = true;
+  results[n] = st.sec;
+
+  document.getElementById('s'+n+'-stop').disabled  = true;
+  document.getElementById('s'+n+'-reset').disabled = false;
+  document.getElementById('res'+n).textContent = '✓ 記錄：' + fmt(st.sec);
+  document.getElementById('res'+n).style.color = n===1?'#555':(n===2?'var(--accent)':'#059669');
+  document.getElementById('bar'+n).textContent = fmt(st.sec);
+
+  // Update diffs vs scenario 1
+  updateDiffs();
 }
 
-function startTimer() {
-  if (timerInterval) return;
-  timerInterval = setInterval(tick, 1000);
-  document.getElementById('btn-start').style.display = 'none';
-  document.getElementById('btn-stop').style.display = '';
-  document.getElementById('timer-running-banner').style.display = 'block';
+function resetT(n) {
+  const st = state[n];
+  if (st.interval) { clearInterval(st.interval); st.interval = null; }
+  st.sec = 0; st.done = false;
+  results[n] = null;
+  document.getElementById('clk'+n).textContent = '00:00';
+  document.getElementById('bar'+n).textContent  = '--:--';
+  document.getElementById('res'+n).textContent  = '';
+  document.getElementById('s'+n+'-start').disabled = false;
+  document.getElementById('s'+n+'-stop').disabled  = true;
+  document.getElementById('s'+n+'-reset').disabled = true;
+  document.getElementById('diff'+n).textContent = '';
+  updateDiffs();
 }
 
-function stopTimer() {
-  if (!timerInterval) return;
-  clearInterval(timerInterval);
-  timerInterval = null;
-  document.getElementById('btn-stop').style.display = 'none';
-  document.getElementById('btn-reset').style.display = '';
-  document.getElementById('timer-running-banner').style.display = 'none';
-
-  const elapsed = seconds;
-  const label = formatTime(elapsed);
-
-  if (phase === 0) {
-    // First stop = before
-    timeBefore = elapsed;
-    phase = 1;
-    document.getElementById('rec-before').textContent = '使用前：' + label;
-    document.getElementById('btn-start').textContent = '▶ 開始 (使用後)';
-  } else if (phase === 1) {
-    // Second stop = after
-    timeAfter = elapsed;
-    phase = 2;
-    document.getElementById('rec-after').textContent = '使用後：' + label;
-    if (timeBefore && timeAfter) {
-      const diff = timeBefore - timeAfter;
-      if (diff > 0) {
-        const pct = Math.round(diff / timeBefore * 100);
-        document.getElementById('rec-diff').textContent =
-          '節省 ' + formatTime(diff) + '（快了 ' + pct + '%）';
-      } else {
-        document.getElementById('rec-diff').textContent = '時間相近';
-      }
+function updateDiffs() {
+  const base = results[1];
+  [2, 3].forEach(n => {
+    const el = document.getElementById('diff'+n);
+    if (!base || !results[n]) { el.textContent = ''; return; }
+    const saved = base - results[n];
+    if (saved > 0) {
+      const pct = Math.round(saved / base * 100);
+      el.textContent = '較①快 ' + fmt(saved) + '（' + pct + '%）';
+    } else if (saved < 0) {
+      el.textContent = '較①慢 ' + fmt(-saved);
+    } else {
+      el.textContent = '與①相同';
     }
-  }
-  seconds = 0;
-  document.getElementById('timer-display').textContent = '00:00';
-}
-
-function resetTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  seconds = 0; phase = 0; timeBefore = null; timeAfter = null;
-  document.getElementById('timer-display').textContent = '00:00';
-  document.getElementById('timer-running-banner').style.display = 'none';
-  document.getElementById('btn-start').style.display = '';
-  document.getElementById('btn-start').textContent = '▶ 開始計時';
-  document.getElementById('btn-stop').style.display = 'none';
-  document.getElementById('btn-reset').style.display = 'none';
-  document.getElementById('rec-before').textContent = '使用前：—';
-  document.getElementById('rec-after').textContent = '使用後：—';
-  document.getElementById('rec-diff').textContent = '';
+  });
 }
 </script>
 </body>
