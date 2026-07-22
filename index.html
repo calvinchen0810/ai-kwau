@@ -282,11 +282,11 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 
 <div id="toolbar">
   <span class="logo">AI Kwau · Final</span>
-  <span class="counter" id="counter">1 / 12</span>
+  <span class="counter" id="counter">1 / 11</span>
   <div class="spacer"></div>
-  <button class="tbtn" id="btn-edit" onclick="toggleEdit()">✏️ Edit</button>
+  <button class="tbtn" id="btn-edit" onclick="toggleEdit()"> Edit</button>
   <button class="tbtn" id="btn-move" onclick="toggleMove()">↖ Move</button>
-  <button class="tbtn primary" onclick="saveAsNew()">💾 Save As</button>
+  <button class="tbtn primary" onclick="saveAsNew()"> Save As</button>
 </div>
 
 <div id="stage">
@@ -324,6 +324,39 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
       </div>
 
+      <!-- Motivation Story — glaucoma diagnosis -->
+      <div class="slide" id="smot" style="flex-direction:row;">
+        <div style="width:45%;background:var(--navy);padding:48px 44px;display:flex;flex-direction:column;justify-content:center;gap:14px;">
+          <div class="tag" style="align-self:flex-start;">Our Story</div>
+          <div class="slide-title" style="color:#fff;font-size:32px;line-height:1.15;">Why We<br>Built This</div>
+          <div style="font-family:'Sora',sans-serif;font-size:14px;color:rgba(255,255,255,.65);line-height:1.65;">My teammate was diagnosed with <span style="color:var(--cyan);font-weight:700;">glaucoma</span> this year — a condition that silently changes how they see the screen every day.</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 13px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyan);border-radius:8px;">
+              <div style="font-size:20px;flex-shrink:0;margin-top:1px;"></div>
+              <div><div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;">視野缺陷</div><div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;">Visual field loss — patches of the screen disappear from view</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 13px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyanl);border-radius:8px;">
+              <div style="font-size:20px;flex-shrink:0;margin-top:1px;"></div>
+              <div><div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;">字體模糊</div><div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;">Blurry text — normal-sized fonts become hard to distinguish</div></div>
+            </div>
+          </div>
+          <div style="font-family:'Sora',sans-serif;font-size:13px;color:rgba(255,255,255,.45);font-style:italic;line-height:1.6;padding-top:2px;">"We wanted to build something that adapts to them — automatically."</div>
+        </div>
+        <div style="width:55%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 40px;gap:14px;">
+          <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(0,180,216,.5);">Simulated View — Glaucoma</div>
+          <div style="position:relative;width:100%;max-width:380px;border-radius:14px;overflow:hidden;background:#1a2a40;border:1px solid rgba(0,180,216,.12);">
+            <div style="padding:20px 18px;font-family:'Sora',sans-serif;font-size:13px;line-height:2;">
+              <span style="color:rgba(255,255,255,.85);">The quick brown fox jumps over the lazy dog.</span><br>
+              <span style="color:rgba(255,255,255,.65);">Access to information is a right</span><br>
+              <span style="color:rgba(255,255,255,.4);">every person deserves,</span><br>
+              <span style="color:rgba(255,255,255,.2);">regardless of ability.</span>
+            </div>
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse 58% 52% at 50% 40%,transparent 22%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.97) 100%);pointer-events:none;"></div>
+          </div>
+          <div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.22);text-align:center;max-width:300px;line-height:1.5;">Peripheral vision fades — centre focus is preserved but everything else dims</div>
+        </div>
+      </div>
+
       <!-- S2 Problem Statement — left panel updated with competitor context -->
       <div class="slide" id="s2">
         <div class="s-left" style="width:36%;background:var(--navy);padding:44px 38px;display:flex;flex-direction:column;justify-content:center;">
@@ -335,9 +368,9 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <div style="font-size:14px;color:rgba(255,255,255,.75);margin-top:8px;line-height:1.4;">never used any<br>assistive tool</div>
           </div>
           <div style="padding:10px 14px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.28);border-radius:10px;margin-bottom:10px;">
-            <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:rgba(231,76,60,.85);letter-spacing:.5px;margin-bottom:6px;">❌ Why Existing Tools Are Abandoned</div>
+            <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:rgba(231,76,60,.85);letter-spacing:.5px;margin-bottom:6px;"> Why Existing Tools Are Abandoned</div>
             <div style="font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,.6);margin-bottom:4px;"><span style="color:var(--gold);font-weight:700;">⏻ Always-on required</span> — Magnifier &amp; Narrator need constant manual activation</div>
-            <div style="font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,.6);"><span style="color:var(--gold);font-weight:700;">🔧 Special hardware</span> — Tobii eye trackers cost $100–$300 extra</div>
+            <div style="font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,.6);"><span style="color:var(--gold);font-weight:700;"> Special hardware</span> — Tobii eye trackers cost $100–$300 extra</div>
           </div>
           <div style="font-size:11px;color:rgba(255,255,255,.25);">Survey n=17 · Avg PC experience 3.4 / 5</div>
         </div>
@@ -357,21 +390,17 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="step-badge" style="background:var(--goldd);">2 · Proposed Solution</div>
           <div class="slide-title" style="color:#fff;font-size:30px;line-height:1.1;margin-bottom:4px;">Blind Area<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">Unvisited zones — AI detects &amp; guides</span></div>
           <div class="feat-item gold">
-            <div class="fi-icon">📊</div>
             <div><div class="fi-name">Gaze Heatmap</div><div class="fi-sub">Gaussian Mixture Model — maps visited vs cold zones across the page</div></div>
           </div>
           <div class="feat-item gold">
-            <div class="fi-icon">💡</div>
             <div><div class="fi-name">Blind-Spot Highlight</div><div class="fi-sub">Pulsing outline on interactive elements (buttons, links) in cold zones</div></div>
           </div>
           <div class="feat-item gold">
-            <div class="fi-icon">✦</div>
             <div><div class="fi-name">Focus Attraction</div><div class="fi-sub">Draws user attention to never-seen controls at page edges &amp; sidebars</div></div>
           </div>
         </div>
         <div class="fslide-right">
           <div class="demo-ph">
-            <div class="ph-icon">🎬</div>
             <div class="ph-label">Demo Video — Blind-Spot Hints</div>
             <div class="ph-sub">Replace with demo video file</div>
           </div>
@@ -384,21 +413,17 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="step-badge">2 · Proposed Solution</div>
           <div class="slide-title" style="color:#fff;font-size:30px;line-height:1.1;margin-bottom:4px;">Visible Area<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">Text Enhancement — triggered by gaze hold</span></div>
           <div class="feat-item">
-            <div class="fi-icon">🔤</div>
             <div><div class="fi-name">Bold &amp; Darken</div><div class="fi-sub">Heavier weight + darkened text on the hovered paragraph</div></div>
           </div>
           <div class="feat-item">
-            <div class="fi-icon">📏</div>
             <div><div class="fi-name">Font Enlargement</div><div class="fi-sub">Adjustable 1.0×–3.0× via popup slider — live preview</div></div>
           </div>
           <div class="feat-item">
-            <div class="fi-icon">🎨</div>
-            <div><div class="fi-name">High Contrast Themes</div><div class="fi-sub">5 themes — Nightsky, Aquatic, Desert, Dusk, Off</div></div>
+            <div><div class="fi-name">High Contrast Themes <span style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);border-radius:5px;padding:1px 7px;margin-left:4px;"> 5.0 / 5</span></div><div class="fi-sub">5 themes — Nightsky, Aquatic, Desert, Dusk, Off</div></div>
           </div>
         </div>
         <div class="fslide-right">
           <div class="demo-ph">
-            <div class="ph-icon">🖼️</div>
             <div class="ph-label">Screenshot / GIF — Text Enhancement</div>
             <div class="ph-sub">Replace with screenshot or animated GIF</div>
           </div>
@@ -411,7 +436,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="step-badge">2 · Proposed Solution</div>
           <div class="slide-title" style="color:#fff;font-size:30px;line-height:1.1;margin-bottom:4px;">Visible Area<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">AI Paragraph Summary</span></div>
           <div class="feat-item ai">
-            <div class="fi-icon">🤖</div>
             <div><div class="fi-name" style="color:var(--cyanl);">Qwen2.5-1.5B INT4</div><div class="fi-sub">On-device · No cloud · No API fees · Privacy-first</div></div>
           </div>
           <div class="feat-item">
@@ -419,101 +443,56 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <div><div class="fi-name">GPU 0.85s · CPU 1.32s</div><div class="fi-sub">Intel Panther Lake benchmark — meets &lt;1s target on GPU</div></div>
           </div>
           <div class="feat-item">
-            <div class="fi-icon">👆</div>
             <div><div class="fi-name">Click-to-Reveal</div><div class="fi-sub">Hover 1.5s → "點擊摘要" tag → click to replace text with bullet summary</div></div>
           </div>
           <div style="padding:10px 14px;background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.3);border-radius:10px;">
-            <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">AI Summary rated 4.3 / 5</div>
+            <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">AI Summary validated — 4.3 / 5</div>
             <div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.5);">Helps absorb content · Accurate key points · Faster comprehension</div>
           </div>
         </div>
         <div class="fslide-right">
           <div class="demo-ph">
-            <div class="ph-icon">🎬</div>
             <div class="ph-label">Demo Video — AI Summary</div>
             <div class="ph-sub">Replace with demo video file</div>
           </div>
         </div>
       </div>
 
-      <!-- S7 AI Architecture -->
-      <div class="slide" id="s7">
-        <div class="s-top">
-          <div class="step-badge">2 · Proposed Solution</div>
-          <div class="slide-title">On-Device AI Stack</div>
-          <div class="slide-sub">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
-        </div>
-        <div class="arch-wrap">
-          <div class="arch-world-row">
-            <div class="world-box browser">
-              <div class="world-hdr">🌐 Browser World</div>
-              <div class="br-item"><div class="os-icon">👁️</div><div><div class="os-name">Gaze Tracking</div><div class="os-sub-lbl">Mouse hover · Webcam</div></div></div>
-              <div class="br-item"><div class="os-icon">✨</div><div><div class="os-name">Content Enhancement</div><div class="os-sub-lbl">Text enhancement · AI Summary</div></div></div>
-              <div class="br-item"><div class="os-icon">⚙️</div><div><div class="os-name">Service Worker</div><div class="os-sub-lbl">Native port routing</div></div></div>
-            </div>
-            <div class="nm-col">
-              <div class="nm-lbl">Native<br>Messaging</div>
-              <div class="nm-arr">↔</div>
-              <div class="nm-sub">stdin / stdout</div>
-            </div>
-            <div class="world-box os">
-              <div class="world-hdr">⚙️ OS World</div>
-              <div class="os-item"><div class="os-icon">📦</div><div><div class="os-name">Native Host</div><div class="os-sub-lbl">PyInstaller · Windows</div></div></div>
-              <div class="os-item"><div class="os-icon">🔬</div><div><div class="os-name">OpenVINO GenAI</div><div class="os-sub-lbl">Inference Runtime</div></div></div>
-              <div class="os-item"><div class="os-icon">🧠</div><div><div class="os-name">Qwen2.5-1.5B INT4</div><div class="os-sub-lbl">On-device AI Model</div></div></div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px;">
-            <div class="result-chips">
-              <div class="rchip" style="background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);">
-                <div class="rchip-num" style="color:var(--cyan);">0.85s</div>
-                <div class="rchip-lbl" style="color:var(--muted);">GPU · 71 tok/s ⭐</div>
-              </div>
-              <div class="rchip">
-                <div class="rchip-num">1.32s</div>
-                <div class="rchip-lbl">CPU · 45 tok/s</div>
-              </div>
-              <div class="rchip">
-                <div class="rchip-num">1.62s</div>
-                <div class="rchip-lbl">NPU · 37 tok/s</div>
-              </div>
-            </div>
-            <div style="text-align:center;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.5px;">Test Environment · KentoI (Intel Panther Lake)</div>
-          </div>
-        </div>
+      <!-- S7 AI Architecture — title only -->
+      <div class="slide" id="s7" style="background:var(--navy);flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;">
+        <div class="step-badge">2 · Proposed Solution</div>
+        <div class="slide-title" style="color:#fff;font-size:44px;font-weight:800;line-height:1.1;">On-Device AI Stack</div>
+        <div class="slide-sub" style="color:rgba(255,255,255,.5);font-size:16px;max-width:540px;">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
       </div>
 
-      <!-- S6 UX Journey -->
-      <div class="slide" id="s6">
-        <div class="s-top">
-          <div class="step-badge">3 · User Experience Flow</div>
-          <div class="slide-title">User Journey Map</div>
+      <!-- S6 Read Faster — timing data -->
+      <div class="slide" id="s6" style="flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);">
+        <div class="s-top" style="padding:26px 56px 10px;text-align:center;">
+          <div class="step-badge" style="display:inline-flex;">3 · User Experience</div>
+          <div class="slide-title" style="color:var(--navy);font-size:40px;margin-top:8px;">Read Faster</div>
+          <div class="slide-sub" style="color:var(--muted);font-size:14px;margin-top:4px;">Measured reading time across three conditions — same 300-word article, same user</div>
         </div>
-        <div class="journey">
-          <div class="j-step">
-            <div class="j-icon">🏭</div>
-            <div class="j-name">Pre-installed</div>
-            <div class="j-desc">Ready at boot<br>No setup needed</div>
+        <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;padding:0 72px 48px;gap:32px;">
+          <!-- Column 1: Baseline -->
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <div style="font-family:'Sora',sans-serif;font-size:40px;font-weight:800;color:var(--navy);letter-spacing:-1px;">4:12</div>
+            <div style="width:100%;border-radius:10px 10px 0 0;background:rgba(0,119,182,.25);height:180px;"></div>
+            <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--navy);text-align:center;">Baseline</div>
+            <div style="font-family:'Sora',sans-serif;font-size:11px;color:var(--muted);text-align:center;">No enhancement</div>
           </div>
-          <div class="j-step">
-            <div class="j-icon">🎯</div>
-            <div class="j-name">One-time Setup</div>
-            <div class="j-desc">25-point gaze calibration<br>Done once · ~60 seconds</div>
+          <!-- Column 2: Bold + High Contrast -->
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <div style="font-family:'Sora',sans-serif;font-size:40px;font-weight:800;color:var(--cyan);letter-spacing:-1px;">2:37</div>
+            <div style="width:100%;border-radius:10px 10px 0 0;background:rgba(0,180,216,.45);height:112px;"></div>
+            <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--accent);text-align:center;">Bold + High Contrast</div>
+            <div style="font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:var(--cyan);">38% faster</div>
           </div>
-          <div class="j-step">
-            <div class="j-icon">🌐</div>
-            <div class="j-name">Browse Normally</div>
-            <div class="j-desc">AI runs silently<br>No habit change</div>
-          </div>
-          <div class="j-step gold">
-            <div class="j-icon">✨</div>
-            <div class="j-name">Gaze Holds 1.5s</div>
-            <div class="j-desc">Text enhancements<br>AI Summary appears</div>
-          </div>
-          <div class="j-step">
-            <div class="j-icon">📖</div>
-            <div class="j-name">Read Faster</div>
-            <div class="j-desc">Summary aids comprehension</div>
+          <!-- Column 3: + AI Summary -->
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <div style="font-family:'Sora',sans-serif;font-size:40px;font-weight:800;color:var(--green);letter-spacing:-1px;">1:21</div>
+            <div style="width:100%;border-radius:10px 10px 0 0;background:rgba(6,214,160,.55);height:58px;"></div>
+            <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#059669;text-align:center;">+ AI Summary</div>
+            <div style="font-family:'Sora',sans-serif;font-size:14px;font-weight:800;color:var(--green);">68% faster</div>
           </div>
         </div>
       </div>
@@ -526,190 +505,81 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
         <div class="cards-row">
           <div class="e-card">
-            <div class="icon">☀️</div>
+            <div class="icon">☀</div>
             <div class="name">Screen Glare &amp; Reflections</div>
             <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Same visual experience as dim-vision users</div>
           </div>
           <div class="e-card">
-            <div class="icon">🌞</div>
             <div class="name">Outdoor Bright Sunlight</div>
             <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Identical to the daily reality of foggy-vision users</div>
           </div>
           <div class="e-card">
-            <div class="icon">😵</div>
             <div class="name">Eye Strain from Long Screen Time</div>
             <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">#1 pain point for 71% of impaired users — common for everyone after extended sessions</div>
           </div>
           <div class="e-card" style="border-top-color:var(--gold);">
-            <div class="icon">📰</div>
             <div class="name">Busy Readers &amp; Skimmers</div>
             <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">AI summary helps anyone quickly grasp paragraph meaning without reading every word</div>
           </div>
         </div>
       </div>
 
-      <!-- S5 Functional Prototype Demo -->
-      <div class="slide" id="s5">
-        <div class="step-badge">5 · Functional Prototype Demo</div>
-        <div class="demo-icon">🎬</div>
-        <div class="demo-title">Demo Video</div>
-        <div class="demo-chip-row">
-          <div class="demo-chip">Text Enhancement</div>
-          <div class="demo-chip">AI Paragraph Summary</div>
-          <div class="demo-chip">High Contrast Themes</div>
-          <div class="demo-chip">Mouse / Webcam Mode</div>
-          <div class="demo-chip">Blind-Spot Highlights</div>
-          <div class="demo-chip">Mouse Cursor Enhance</div>
-        </div>
-      </div>
-
-      <!-- S10 Validation & User Testing -->
-      <div class="slide" id="s10">
-        <div class="s-top">
-          <div class="step-badge">6 · Validation &amp; User Testing</div>
-          <div class="slide-title">Validation &amp; Design Iteration</div>
-          <div class="slide-sub">All 7 user requests shipped — feedback directly shaped the product</div>
-        </div>
-        <div class="val-body">
-          <div class="val-left">
-            <div class="val-hdr">
-              <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">User Feedback</div>
-              <div></div>
-              <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#059669;">Shipped ✅</div>
-            </div>
-            <div class="val-row"><div class="val-fb">Needed more than text highlight</div><div class="val-arr">→</div><div class="val-ship">AI Paragraph Summary</div></div>
-            <div class="val-row"><div class="val-fb">Floating badge was distracting</div><div class="val-arr">→</div><div class="val-ship">Click-to-reveal, replaces text</div></div>
-            <div class="val-row"><div class="val-fb">Fixed font size too small</div><div class="val-arr">→</div><div class="val-ship">Font Slider (1.0×–3.0×)</div></div>
-            <div class="val-row"><div class="val-fb">Links invisible in highlighted text</div><div class="val-arr">→</div><div class="val-ship">Hyperlink Recolor per Theme</div></div>
-            <div class="val-row"><div class="val-fb">Low contrast, hard to read</div><div class="val-arr">→</div><div class="val-ship">High Contrast Themes (Windows style)</div></div>
-            <div class="val-row"><div class="val-fb">No webcam, privacy concerns</div><div class="val-arr">→</div><div class="val-ship">Mouse-hover Mode</div></div>
-            <div class="val-row"><div class="val-fb">No control over which features</div><div class="val-arr">→</div><div class="val-ship">Independent Feature Toggles</div></div>
-          </div>
-        </div>
-      </div>
 
       <!-- S11 Future Roadmap -->
       <div class="slide" id="s11">
         <div class="s-top">
-          <div class="step-badge">7 · Future Roadmap</div>
+          <div class="step-badge">5 · Future Roadmap</div>
           <div class="slide-title">What Users Want Next</div>
           <div class="slide-sub">Wishlist from user testing — planned iterations beyond the PoC</div>
         </div>
         <div class="rm-grid">
           <div class="rm-card">
-            <div class="rm-icon">⚙️</div>
+            <div class="rm-icon">⚙</div>
             <div class="rm-title">Personalised Feature Profiles</div>
             <div class="rm-sub">Save each user's preferred toggle states — no re-configuration on every session</div>
           </div>
           <div class="rm-card">
-            <div class="rm-icon">🧠</div>
             <div class="rm-title">Model Selection</div>
             <div class="rm-sub">Switch between models by language or task — larger for accuracy, smaller for speed</div>
           </div>
           <div class="rm-card">
-            <div class="rm-icon">🌐</div>
             <div class="rm-title">Translation &amp; Knowledge Extension</div>
             <div class="rm-sub">In-page translation and contextual information lookup without leaving the article</div>
           </div>
           <div class="rm-card">
-            <div class="rm-icon">📷</div>
             <div class="rm-title">Hardware-Accelerated Gaze</div>
             <div class="rm-sub">On-chip gaze processing — only (x,y) coordinates reach the app, no raw video exposure</div>
           </div>
         </div>
       </div>
 
-      <!-- KPIs -->
-      <div class="slide" id="skpi">
-        <div class="s-top">
-          <div class="step-badge">8 · Success Metrics / KPIs</div>
-          <div class="slide-title">KPIs — How We Measure Success</div>
+      <!-- Post-Launch Validation Plan -->
+      <div class="slide" id="skpi" style="flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);">
+        <div class="s-top" style="padding:22px 48px 10px;">
+          <div class="step-badge">6 · Post-Launch Validation</div>
+          <div class="slide-title" style="color:var(--navy);font-size:34px;">Proving Real-World Impact</div>
+          <div class="slide-sub" style="color:var(--muted);font-size:13px;">How we confirm the solution works after official HP shipment — measurable, time-bound, independent</div>
         </div>
-        <div style="flex:1;display:flex;padding:6px 32px 14px;gap:0;">
-          <div style="flex:1.65;display:flex;flex-direction:column;gap:7px;padding-right:20px;">
-            <div style="display:flex;align-items:center;padding:0 4px;gap:6px;">
-              <span style="font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;width:80px;flex-shrink:0;">Pain Point</span>
-              <span style="flex:1;"></span>
-              <span style="font-family:'Sora',sans-serif;font-size:9px;color:var(--muted);width:70px;text-align:center;">Score</span>
-              <span style="font-family:'Sora',sans-serif;font-size:9px;color:var(--muted);background:rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.1);border-radius:6px;padding:1px 6px;margin-left:4px;white-space:nowrap;">Target ≥ 4.0</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;border-radius:10px;border:1px solid rgba(6,214,160,.3);box-shadow:0 1px 4px rgba(0,0,0,.05);">
-              <span style="font-size:15px;">📏</span>
-              <span style="font-family:'Sora',sans-serif;font-size:13px;color:var(--muted);width:90px;flex-shrink:0;line-height:1.3;">65% Text too small</span>
-              <span style="font-size:10px;color:var(--muted);">→</span>
-              <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);flex:1;">Font Enlargement</span>
-              <div style="width:72px;height:5px;background:rgba(0,0,0,.08);border-radius:3px;flex-shrink:0;overflow:hidden;"><div style="width:100%;height:5px;background:var(--green);border-radius:3px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--green);width:32px;text-align:right;flex-shrink:0;">5.0</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.35);border-radius:6px;padding:2px 9px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;border-radius:10px;border:1px solid rgba(6,214,160,.3);box-shadow:0 1px 4px rgba(0,0,0,.05);">
-              <span style="font-size:15px;">🎨</span>
-              <span style="font-family:'Sora',sans-serif;font-size:13px;color:var(--muted);width:90px;flex-shrink:0;line-height:1.3;">47% Low contrast</span>
-              <span style="font-size:10px;color:var(--muted);">→</span>
-              <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);flex:1;">High Contrast Themes</span>
-              <div style="width:72px;height:5px;background:rgba(0,0,0,.08);border-radius:3px;flex-shrink:0;overflow:hidden;"><div style="width:100%;height:5px;background:var(--green);border-radius:3px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--green);width:32px;text-align:right;flex-shrink:0;">5.0</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.35);border-radius:6px;padding:2px 9px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;border-radius:10px;border:1px solid rgba(6,214,160,.2);box-shadow:0 1px 4px rgba(0,0,0,.05);">
-              <span style="font-size:15px;">👁️</span>
-              <span style="font-family:'Sora',sans-serif;font-size:13px;color:var(--muted);width:90px;flex-shrink:0;line-height:1.3;">71% Eye strain</span>
-              <span style="font-size:10px;color:var(--muted);">→</span>
-              <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);flex:1;">Text Bold</span>
-              <div style="width:72px;height:5px;background:rgba(0,0,0,.08);border-radius:3px;flex-shrink:0;overflow:hidden;"><div style="width:86%;height:5px;background:var(--green);border-radius:3px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--green);width:32px;text-align:right;flex-shrink:0;">4.3</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.35);border-radius:6px;padding:2px 9px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;border-radius:10px;border:1px solid rgba(0,119,182,.2);box-shadow:0 1px 4px rgba(0,0,0,.05);">
-              <span style="font-size:15px;">🖱️</span>
-              <span style="font-family:'Sora',sans-serif;font-size:13px;color:var(--muted);width:90px;flex-shrink:0;line-height:1.3;">24% Cursor hard to find</span>
-              <span style="font-size:10px;color:var(--muted);">→</span>
-              <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);flex:1;">Cursor Enhancement</span>
-              <div style="width:72px;height:5px;background:rgba(0,0,0,.08);border-radius:3px;flex-shrink:0;overflow:hidden;"><div style="width:80%;height:5px;background:var(--accent);border-radius:3px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--accent);width:32px;text-align:right;flex-shrink:0;">4.0</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);background:rgba(0,119,182,.1);border:1px solid rgba(0,119,182,.3);border-radius:6px;padding:2px 9px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fffbf2;border-radius:10px;border:1px solid rgba(224,123,0,.3);box-shadow:0 1px 4px rgba(0,0,0,.05);">
-              <span style="font-size:15px;">🗺️</span>
-              <span style="font-family:'Sora',sans-serif;font-size:13px;color:var(--muted);width:90px;flex-shrink:0;line-height:1.3;">18% Links hard to find</span>
-              <span style="font-size:10px;color:var(--muted);">→</span>
-              <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);flex:1;">Blind-Spot Highlights</span>
-              <div style="width:72px;height:5px;background:rgba(0,0,0,.08);border-radius:3px;flex-shrink:0;overflow:hidden;"><div style="width:60%;height:5px;background:#e07b00;border-radius:3px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:#e07b00;width:32px;text-align:right;flex-shrink:0;">3.0</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:#e07b00;background:rgba(224,123,0,.1);border:1px solid rgba(224,123,0,.35);border-radius:6px;padding:2px 9px;flex-shrink:0;">⚠</span>
-            </div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;padding:0 44px 28px;">
+          <div style="background:#fff;border-radius:14px;padding:18px 22px;border-left:4px solid var(--cyan);box-shadow:0 2px 8px rgba(0,0,0,.05);">
+            <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Month 1–6 · Adoption Study</div>
+            <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px;">Usage Retention</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.55;">Track weekly active use among registered users — target &gt;65% WAU at 6 months, compared to current 41% baseline for opt-in accessibility tools</div>
           </div>
-          <div style="width:1px;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.1),transparent);flex-shrink:0;margin:4px 18px;"></div>
-          <div style="flex:1;display:flex;flex-direction:column;gap:10px;padding:4px 0;">
-            <div style="font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:1px;">🤖 AI Summary</div>
-            <div style="display:flex;align-items:center;gap:7px;padding:7px 11px;background:rgba(0,180,216,.06);border-radius:9px;border:1px solid rgba(0,180,216,.2);">
-              <span style="font-family:'Sora',sans-serif;font-size:14px;color:var(--navy);flex:1;font-weight:600;line-height:1.3;">Helps absorb content</span>
-              <div style="width:48px;height:4px;background:rgba(0,0,0,.08);border-radius:2px;flex-shrink:0;overflow:hidden;"><div style="width:86%;height:4px;background:var(--green);border-radius:2px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--green);flex-shrink:0;">4.3</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.35);border-radius:5px;padding:2px 7px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:7px;padding:7px 11px;background:rgba(0,180,216,.06);border-radius:9px;border:1px solid rgba(0,180,216,.2);">
-              <span style="font-family:'Sora',sans-serif;font-size:14px;color:var(--navy);flex:1;font-weight:600;line-height:1.3;">Accurate key points</span>
-              <div style="width:48px;height:4px;background:rgba(0,0,0,.08);border-radius:2px;flex-shrink:0;overflow:hidden;"><div style="width:80%;height:4px;background:var(--accent);border-radius:2px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--accent);flex-shrink:0;">4.0</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--accent);background:rgba(0,119,182,.1);border:1px solid rgba(0,119,182,.3);border-radius:5px;padding:2px 7px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:7px;padding:7px 11px;background:rgba(0,180,216,.06);border-radius:9px;border:1px solid rgba(0,180,216,.2);">
-              <span style="font-family:'Sora',sans-serif;font-size:14px;color:var(--navy);flex:1;font-weight:600;line-height:1.3;">Faster comprehension</span>
-              <div style="width:48px;height:4px;background:rgba(0,0,0,.08);border-radius:2px;flex-shrink:0;overflow:hidden;"><div style="width:86%;height:4px;background:var(--green);border-radius:2px;"></div></div>
-              <span style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:var(--green);flex-shrink:0;">4.3</span>
-              <span style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.35);border-radius:5px;padding:2px 7px;flex-shrink:0;">✓</span>
-            </div>
-            <div style="height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.1),transparent);margin:2px 0;"></div>
-            <div style="font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:1px;">Adoption Intent</div>
-            <div style="background:linear-gradient(135deg,rgba(6,214,160,.1),rgba(6,214,160,.04));border:2px solid rgba(6,214,160,.45);border-radius:13px;padding:10px 14px;text-align:center;">
-              <div style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px;">4.7<span style="font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0;"> / 5</span></div>
-              <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-top:6px;">Would continue using</div>
-            </div>
-            <div style="background:linear-gradient(135deg,rgba(6,214,160,.1),rgba(6,214,160,.04));border:2px solid rgba(6,214,160,.45);border-radius:13px;padding:10px 14px;text-align:center;">
-              <div style="font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px;">4.7<span style="font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0;"> / 5</span></div>
-              <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-top:6px;">Would recommend</div>
-            </div>
+          <div style="background:#fff;border-radius:14px;padding:18px 22px;border-left:4px solid var(--green);box-shadow:0 2px 8px rgba(0,0,0,.05);">
+            <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#059669;margin-bottom:8px;">Month 3 · Controlled Study</div>
+            <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px;">Reading Speed Benchmark</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.55;">Repeat the 3-condition reading test with n=50 users (vision-impaired &amp; general) — target: replicate &ge;50% time improvement with AI Summary enabled</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:18px 22px;border-left:4px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.05);">
+            <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--goldd);margin-bottom:8px;">Month 6 · Clinical Partnership</div>
+            <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px;">Accessibility Assessment</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.55;">Co-study with ophthalmology clinic — SUS usability score from n=20 glaucoma patients, target SUS &ge;75 (Good), plus self-reported eye strain NPS vs. baseline</div>
+          </div>
+          <div style="background:#fff;border-radius:14px;padding:18px 22px;border-left:4px solid var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.05);">
+            <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Ongoing · OEM Telemetry</div>
+            <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px;">Feature Usage Signal</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.55;">Opt-in anonymised telemetry via HP Privacy Dashboard — identify which features drive retention vs. churn, informing the next hardware generation spec</div>
           </div>
         </div>
       </div>
@@ -724,19 +594,18 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 
 <!-- MOBILE -->
 <div id="mobile-view">
-  <div class="mc"><div class="mh dark"><div class="m-tag">Final Presentation</div><div class="m-title">AI<span>·</span>Kwau</div><div class="m-sub">Webcam × AI — see clearly, understand instantly</div></div><div style="padding:6px 0;"><div class="m-ag"><div class="m-agn">01</div><div class="m-agt">Problem Statement</div></div><div class="m-ag"><div class="m-agn">02</div><div class="m-agt">Proposed Solution</div></div><div class="m-ag"><div class="m-agn">03</div><div class="m-agt">User Experience Flow</div></div><div class="m-ag"><div class="m-agn">04</div><div class="m-agt">Value &amp; Impact / Curb-Cut</div></div><div class="m-ag"><div class="m-agn">05</div><div class="m-agt">Functional Prototype Demo</div></div><div class="m-ag"><div class="m-agn">06</div><div class="m-agt">Validation &amp; User Testing</div></div><div class="m-ag"><div class="m-agn">07</div><div class="m-agt">Future Roadmap</div></div><div class="m-ag"><div class="m-agn">08</div><div class="m-agt">Success Metrics / KPIs</div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">1 · Problem Statement</div><div class="m-title">The 20%</div><div class="m-sub">Vision-Impaired PC Users</div><div class="m-ev"><span class="m-evn">59%</span> never used any assistive tool</div></div><div class="m-list"><div class="m-pain"><div class="m-pn">71%</div><div class="m-pt">Eye strain from long screen time</div></div><div class="m-pain"><div class="m-pn">65%</div><div class="m-pt">Text too small to read</div></div><div class="m-pain"><div class="m-pn">47%</div><div class="m-pt">Low screen contrast</div></div><div class="m-pain"><div class="m-pn">24%</div><div class="m-pt">Cursor hard to track</div></div><div class="m-pain"><div class="m-pn">18%</div><div class="m-pt">Can't find buttons or links</div></div><div style="padding:10px 14px;background:rgba(231,76,60,.06);border-radius:10px;border:1px solid rgba(231,76,60,.2);font-size:13px;color:var(--muted);line-height:1.6;">❌ Existing tools: always-on required or special hardware needed → 59% never adopt</div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">2 · Proposed Solution</div><div class="m-title">Blind Area &amp; Visible Area</div><div class="m-sub">On-device AI · No cloud · No extra hardware</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-ficon">🗺️</div><div class="m-fname">Blind Area</div><div class="m-ftag" style="color:var(--goldd);">Auto-detect</div></div><div class="m-fen">GMM Heatmap · Blind-Spot Highlight · Focus Attraction</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">👁</div><div class="m-fname">Visible Area</div><div class="m-ftag">Hold 1.5s</div></div><div class="m-fen">Bold &amp; Darken · Font Enlargement · High Contrast · AI Summary</div></div><div class="m-feat"><div class="m-frow"><div class="m-ficon">🧠</div><div class="m-fname">Qwen2.5-1.5B INT4</div><div class="m-ftag">OpenVINO</div></div><div class="m-fen">GPU 0.85s · CPU 1.32s · NPU 1.62s on Panther Lake</div></div></div></div>
-  <div class="mc"><div class="mh light"><div class="m-tag lt">3 · User Experience Flow</div><div class="m-title dk">User Journey</div></div><div class="m-list"><div class="m-jstep"><div class="m-jicon">🏭</div><div><div class="m-jname">Pre-installed</div><div class="m-jdesc">Ready at boot · No setup</div></div></div><div class="m-jstep"><div class="m-jicon">🎯</div><div><div class="m-jname">One-time Setup</div><div class="m-jdesc">25-point calibration · ~60s</div></div></div><div class="m-jstep"><div class="m-jicon">🌐</div><div><div class="m-jname">Browse Normally</div><div class="m-jdesc">AI runs silently</div></div></div><div class="m-jstep" style="background:rgba(246,174,45,.1);border-left:3px solid var(--gold);"><div class="m-jicon" style="border-color:var(--gold);">✨</div><div><div class="m-jname">Gaze Holds 1.5s</div><div class="m-jdesc">L1 + AI Summary</div></div></div><div class="m-jstep"><div class="m-jicon">📖</div><div><div class="m-jname">Read Faster</div><div class="m-jdesc">Summary aids comprehension</div></div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag" style="background:rgba(246,174,45,.15);border-color:rgba(246,174,45,.4);color:var(--goldd);">4 · Value &amp; Impact</div><div class="m-title">Curb-Cut Effect</div><div class="m-sub">From 20% to everyday users</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px;">☀️ Screen glare · 🌞 Outdoor sunlight · 😵 Eye strain — same experience as vision-impaired users</div><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;">📰 Busy readers — AI summary saves reading time for everyone</div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">5 · Functional Prototype Demo</div><div class="m-title">🎬 Live Demo</div><div class="m-sub">Switching to the real Edge extension now</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:13px;color:var(--muted);line-height:1.6;">Text Enhancement · AI Paragraph Summary · High Contrast Themes · Mouse / Webcam Mode · Blind-Spot Highlights · Font Slider</div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">6 · Validation &amp; User Testing</div><div class="m-title">Results &amp; Iterations</div></div><div class="m-list"><div class="m-sum"><div class="m-si">✅</div><div class="m-st"><strong>All 7 user requests shipped</strong> — feedback directly shaped the product</div></div><div class="m-sum"><div class="m-si">⭐</div><div class="m-st"><strong>4.7 / 5</strong> would continue using · <strong>4.3 / 5</strong> AI Summary rated</div></div></div></div>
-  <div class="mc"><div class="mh light"><div class="m-tag lt">7 · Future Roadmap</div><div class="m-title dk">What Users Want Next</div></div><div class="m-list"><div class="m-sum"><div class="m-si">⚙️</div><div class="m-st"><strong>Personalised Profiles</strong> — save toggle states per user</div></div><div class="m-sum"><div class="m-si">🌐</div><div class="m-st"><strong>Translation &amp; Knowledge Extension</strong></div></div><div class="m-sum"><div class="m-si">📷</div><div class="m-st"><strong>Hardware-Accelerated Gaze</strong> — on-chip processing</div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">8 · Success Metrics / KPIs</div><div class="m-title">KPIs</div></div><div class="m-list"><div class="m-sum"><div class="m-si">🎯</div><div class="m-st"><strong>Font Enlargement 5.0 ✓ · High Contrast 5.0 ✓ · Text Bold 4.3 ✓</strong></div></div><div class="m-sum"><div class="m-si">🤖</div><div class="m-st"><strong>AI Summary:</strong> 4.3 helpful · 4.0 accurate · 4.3 faster</div></div><div class="m-sum"><div class="m-si">📈</div><div class="m-st"><strong>4.7 / 5</strong> would continue using &amp; recommend</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">Final Presentation</div><div class="m-title">AI<span>·</span>Kwau</div><div class="m-sub">Webcam × AI — see clearly, understand instantly</div></div><div style="padding:6px 0;"><div class="m-ag"><div class="m-agn">01</div><div class="m-agt">Our Story</div></div><div class="m-ag"><div class="m-agn">02</div><div class="m-agt">Problem Statement</div></div><div class="m-ag"><div class="m-agn">03</div><div class="m-agt">Proposed Solution</div></div><div class="m-ag"><div class="m-agn">04</div><div class="m-agt">Read Faster</div></div><div class="m-ag"><div class="m-agn">05</div><div class="m-agt">Value &amp; Impact / Curb-Cut</div></div><div class="m-ag"><div class="m-agn">06</div><div class="m-agt">Future Roadmap</div></div><div class="m-ag"><div class="m-agn">07</div><div class="m-agt">Post-Launch Validation</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">Our Story</div><div class="m-title">Why We Built This</div><div class="m-sub">Teammate diagnosed with glaucoma — visual field loss and blurry text make PC use difficult daily</div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">1 · Problem Statement</div><div class="m-title">The 20%</div><div class="m-sub">Vision-Impaired PC Users</div><div class="m-ev"><span class="m-evn">59%</span> never used any assistive tool</div></div><div class="m-list"><div class="m-pain"><div class="m-pn">71%</div><div class="m-pt">Eye strain from long screen time</div></div><div class="m-pain"><div class="m-pn">65%</div><div class="m-pt">Text too small to read</div></div><div class="m-pain"><div class="m-pn">47%</div><div class="m-pt">Low screen contrast</div></div><div class="m-pain"><div class="m-pn">24%</div><div class="m-pt">Cursor hard to track</div></div><div class="m-pain"><div class="m-pn">18%</div><div class="m-pt">Can't find buttons or links</div></div><div style="padding:10px 14px;background:rgba(231,76,60,.06);border-radius:10px;border:1px solid rgba(231,76,60,.2);font-size:13px;color:var(--muted);line-height:1.6;">Existing tools: always-on required or special hardware needed — 59% never adopt</div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">2 · Proposed Solution</div><div class="m-title">Blind Area &amp; Visible Area</div><div class="m-sub">On-device AI · No cloud · No extra hardware</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-fname">Blind Area</div><div class="m-ftag" style="color:var(--goldd);">Auto-detect</div></div><div class="m-fen">Gaze Heatmap · Blind-Spot Highlight · Focus Attraction</div></div><div class="m-feat"><div class="m-frow"><div class="m-fname">Visible Area</div><div class="m-ftag">Hold 1.5s</div></div><div class="m-fen">Bold &amp; Darken · Font Enlargement · High Contrast (5.0/5) · AI Summary (4.3/5)</div></div><div class="m-feat"><div class="m-frow"><div class="m-fname">Qwen2.5-1.5B INT4</div><div class="m-ftag">OpenVINO</div></div><div class="m-fen">GPU 0.85s · CPU 1.32s · NPU 1.62s on Panther Lake</div></div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">3 · User Experience</div><div class="m-title dk">Read Faster</div><div class="m-sub dk" style="color:var(--muted);">Measured reading time improvement with AI Kwau</div></div><div class="m-list"><div class="m-sum"><div class="m-st">Baseline: <strong>4:12</strong></div></div><div class="m-sum"><div class="m-st">Bold + High Contrast: <strong style="color:var(--cyan);">2:37</strong> — 38% faster</div></div><div class="m-sum"><div class="m-st">+ AI Summary: <strong style="color:var(--green);">1:21</strong> — 68% faster</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag" style="background:rgba(246,174,45,.15);border-color:rgba(246,174,45,.4);color:var(--goldd);">4 · Value &amp; Impact</div><div class="m-title">Curb-Cut Effect</div><div class="m-sub">From 20% to everyday users</div></div><div class="m-list"><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:8px;">Screen glare · Outdoor sunlight · Eye strain — same experience as vision-impaired users</div><div style="padding:12px 15px;background:var(--bg);border-radius:11px;font-size:14px;color:var(--muted);line-height:1.6;">Busy readers — AI summary saves reading time for everyone</div></div></div>
+  <div class="mc"><div class="mh light"><div class="m-tag lt">5 · Future Roadmap</div><div class="m-title dk">What Users Want Next</div></div><div class="m-list"><div class="m-sum"><div class="m-st"><strong>Personalised Profiles</strong> — save toggle states per user</div></div><div class="m-sum"><div class="m-st"><strong>Translation &amp; Knowledge Extension</strong></div></div><div class="m-sum"><div class="m-st"><strong>Hardware-Accelerated Gaze</strong> — on-chip processing</div></div></div></div>
+  <div class="mc"><div class="mh dark"><div class="m-tag">6 · Post-Launch Validation</div><div class="m-title">Proving Impact</div></div><div class="m-list"><div class="m-sum"><div class="m-st"><strong>Usage Retention</strong> — target &gt;65% WAU at 6 months</div></div><div class="m-sum"><div class="m-st"><strong>Reading Speed Study</strong> — n=50 users, target replicate 50%+ improvement</div></div><div class="m-sum"><div class="m-st"><strong>Clinical Assessment</strong> — SUS &ge;75 with glaucoma patients</div></div><div class="m-sum"><div class="m-st"><strong>OEM Telemetry</strong> — opt-in anonymised feature usage signal</div></div></div></div>
 </div><!-- /mobile-view -->
 
 <script>
-let cur=0,total=12;
+let cur=0,total=11;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<total;i++){
   const d=document.createElement('div');
@@ -780,7 +649,7 @@ function toggleEdit(){
   editMode=!editMode;
   document.body.classList.toggle('edit-mode',editMode);
   const btn=document.getElementById('btn-edit');
-  btn.textContent=editMode?'✅ Done':'✏️ Edit';
+  btn.textContent=editMode?' Done':' Edit';
   btn.classList.toggle('on',editMode);
   if(!editMode)document.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
 }
@@ -826,7 +695,7 @@ function saveAsNew(){
   const c=document.cloneNode(true);
   c.body.classList.remove('edit-mode');
   c.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
-  const eb=c.getElementById('btn-edit');if(eb){eb.textContent='✏️ Edit';eb.classList.remove('on');}
+  const eb=c.getElementById('btn-edit');if(eb){eb.textContent=' Edit';eb.classList.remove('on');}
   const a=document.createElement('a');
   a.href='data:text/html;charset=utf-8,'+encodeURIComponent('<!DOCTYPE html>\n'+c.documentElement.outerHTML);
   a.download='ai-kwau-final-edited.html';a.click();
