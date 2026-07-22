@@ -50,9 +50,9 @@
     '<div id="__ap_start" style="display:flex;flex-direction:column;align-items:center;' +
     'justify-content:center;padding:20px 10px;gap:10px;">' +
     '<button id="__ap_btn" style="padding:8px 18px;font-size:13px;background:#0088ff;' +
-    'color:#fff;border:none;border-radius:6px;cursor:pointer;">開啟相機</button>' +
+    'color:#fff;border:none;border-radius:6px;cursor:pointer;">Start Camera</button>' +
     '<p style="font-size:11px;color:#888;margin:0;text-align:center;">' +
-    'AI Kwau 眼球追蹤<br>點擊以授權相機存取</p></div>' +
+    'AI Kwau Eye Tracking<br>Click to grant camera access</p></div>' +
     '<div id="__ap_vidwrap" style="display:none;position:relative;width:240px;height:200px;">' +
     '<video id="__ap_video" autoplay playsinline style="display:none;"></video>' +
     '<canvas id="__ap_display" width="240" height="200" ' +
@@ -64,17 +64,17 @@
     'style="display:none;border-top:1px solid #1e1e2e;"></canvas>' +
     '<button id="__ap_verify" style="display:none;width:100%;padding:5px 0;' +
     'background:#0d2040;border:none;border-top:1px solid #1e3060;' +
-    'color:#4af;font-size:11px;cursor:pointer;">驗證模式</button>' +
+    'color:#4af;font-size:11px;cursor:pointer;">Verify Mode</button>' +
     `<div id="__ap_hm_wrap" style="display:none;border-top:1px solid #1e1e2e;">` +
-    '<div style="padding:3px 6px 0;font-size:9px;color:#556;letter-spacing:0.5px;">視線熱圖</div>' +
+    '<div style="padding:3px 6px 0;font-size:9px;color:#556;letter-spacing:0.5px;">Gaze Heatmap</div>' +
     `<canvas id="__ap_heatmap" width="${HM_MAP_W}" height="${HM_MAP_H}" style="display:block;"></canvas>` +
     '<div id="__ap_hm_stats" style="padding:2px 6px 4px;font-size:9px;color:#667;text-align:right;"></div>' +
     '<button id="__ap_hm_clear" style="width:100%;padding:5px 0;' +
     'background:#2a0d0d;border:none;border-top:1px solid #3a1515;' +
-    'color:#f88;font-size:11px;cursor:pointer;">清除熱圖</button>' +
+    'color:#f88;font-size:11px;cursor:pointer;">Clear Heatmap</button>' +
     '</div>' +
     '<div id="__ap_status" style="padding:3px 6px;background:rgba(0,0,0,0.75);' +
-    'font-size:11px;color:#aaa;text-align:center;border-radius:0 0 8px 8px;">正在啟動相機...</div>';
+    'font-size:11px;color:#aaa;text-align:center;border-radius:0 0 8px 8px;">Starting camera...</div>';
   document.body.appendChild(panel);
 
   // ── Panel visibility toggle (from popup) ──────────────────────────────────
@@ -88,8 +88,8 @@
     // Refresh status bar immediately so the new threshold is reflected
     const n = calPoints.length;
     statusEl.textContent = n < minCal
-      ? `校準中 (${n}/${minCal} 點)`
-      : `追蹤中 (${n} 校準點)`;
+      ? `Calibrating (${n}/${minCal} pts)`
+      : `Tracking (${n} pts)`;
   });
 
   // ── Drag to reposition ────────────────────────────────────────────────────
@@ -339,7 +339,7 @@
     ctx.font = '9px system-ui'; ctx.fillStyle = '#555'; ctx.textAlign = 'left';
     const rmse = computeRMSE();
     ctx.fillText(
-      `${calPoints.length} 校準點` + (rmse != null ? `  誤差 ${rmse.toFixed(0)}px` : ''),
+      `${calPoints.length} pts` + (rmse != null ? `  err ${rmse.toFixed(0)}px` : ''),
       4, H - 4
     );
     if (lastGazeScreen) {
@@ -361,10 +361,10 @@
       hmCtx, HM_MAP_W, HM_MAP_H,
       HM_MAP_W / AIKWAU_HEATMAP_RENDER.HM_W, HM_MAP_H / AIKWAU_HEATMAP_RENDER.HM_H,
       data?.cells ?? null,
-      { noDataText: '尚無視線資料', showColdMarkers: true }
+      { noDataText: 'No gaze data yet', showColdMarkers: true }
     );
     const total = data?.totalPoints ?? result.total;
-    hmStatsEl.textContent = result.hasData ? `${total} 視線點` : '';
+    hmStatsEl.textContent = result.hasData ? `${total} pts` : '';
   }
 
   document.addEventListener('aikwau:heatmapData', (e) => renderMiniHeatmap(e.detail));
@@ -404,8 +404,8 @@
     drawMinimap();
     const n = calPoints.length;
     statusEl.textContent = n < minCal
-      ? `校準中 (${n}/${minCal} 點)`
-      : `追蹤中 (${n} 校準點)`;
+      ? `Calibrating (${n}/${minCal} pts)`
+      : `Tracking (${n} pts)`;
     if (polyCoeffs) {
       document.dispatchEvent(new CustomEvent('aikwau:saveCalibration', {
         detail: { calPoints: calPoints.slice(), polyCoeffs, minCal },
@@ -422,7 +422,7 @@
     if (verifyOverlay) { verifyOverlay.close(); }
     verifyBtn.style.display = 'none';
     drawMinimap();
-    statusEl.textContent = '校準已重置';
+    statusEl.textContent = 'Calibration reset';
     console.log('[aikwau/webcam] Calibration reset');
   });
 
@@ -455,7 +455,7 @@
       'padding:5px 14px;background:rgba(0,0,0,0.75);' +
       'color:#adf;font-size:12px;font-family:system-ui;border-radius:6px;' +
       'border:1px solid #2244aa;white-space:nowrap;';
-    hud.textContent = '驗證模式：注視黃圈，觀察藍圈是否對齊';
+    hud.textContent = 'Verify Mode: look at the yellow dots, check if the blue ring lines up';
     document.body.appendChild(hud);
 
     function draw(vx, vy) {
@@ -497,7 +497,7 @@
       vctx.fillText(`${dist}px`, vx, vy - 22);
 
       // Update HUD with current error
-      hud.textContent = `驗證模式：最近校準點偏差 ${dist}px`;
+      hud.textContent = `Verify Mode: nearest point off by ${dist}px`;
       hud.style.color = colour;
     }
 
@@ -506,11 +506,11 @@
     const closeAll = () => {
       vc.remove(); hud.remove();
       verifyOverlay = null;
-      verifyBtn.textContent = '驗證模式';
+      verifyBtn.textContent = 'Verify Mode';
       verifyBtn.style.color = '#4af';
     };
 
-    verifyBtn.textContent = '✕ 結束驗證';
+    verifyBtn.textContent = '✕ End Verify';
     verifyBtn.style.color = '#f88';
     verifyOverlay = { draw, close: closeAll };
   }
@@ -598,10 +598,10 @@
         displayCtx.fillRect(0, 80, 240, 40);
         displayCtx.fillStyle = '#f88'; displayCtx.font = '13px system-ui';
         displayCtx.textAlign = 'center';
-        displayCtx.fillText('未偵測到臉部', 120, 105);
+        displayCtx.fillText('No face detected', 120, 105);
         displayCtx.textAlign = 'left';
-        irisInfoEl.textContent = '— 未偵測到臉部 —';
-        if (!calPoints.length) statusEl.textContent = '未偵測到臉部';
+        irisInfoEl.textContent = '— No face detected —';
+        if (!calPoints.length) statusEl.textContent = 'No face detected';
         if (faceWasHere) { faceWasHere = false; document.dispatchEvent(new CustomEvent('aikwau:gazeblur')); }
         return;
       }
@@ -631,8 +631,8 @@
 
       const n = calPoints.length;
       statusEl.textContent = n < minCal
-        ? `校準中 (${n}/${minCal} 點)`
-        : `追蹤中 (${n} 校準點)  頭偏 yaw=${(pose.yaw*100).toFixed(0)}`;
+        ? `Calibrating (${n}/${minCal} pts)`
+        : `Tracking (${n} pts)  head yaw=${(pose.yaw*100).toFixed(0)}`;
 
       if (!polyCoeffs) return;
 
@@ -675,10 +675,10 @@
     hmWrap.style.display = 'block';
     renderMiniHeatmap(null);
     document.dispatchEvent(new CustomEvent('aikwau:requestHeatmap'));
-    statusEl.textContent = '正在載入 MediaPipe...';
+    statusEl.textContent = 'Loading MediaPipe...';
 
     const fm = initFaceMesh();
-    statusEl.textContent = '正在請求相機權限...';
+    statusEl.textContent = 'Requesting camera permission...';
     const stream = await navigator.mediaDevices.getUserMedia({
       video: { width: 640, height: 480, facingMode: 'user' },
     });
@@ -695,11 +695,11 @@
       savedCal.calPoints.forEach(p => calPoints.push(p));
       polyCoeffs = savedCal.polyCoeffs;
       if (savedCal.minCal) minCal = savedCal.minCal;
-      statusEl.textContent = `追蹤中（已載入 ${calPoints.length} 校準點）`;
+      statusEl.textContent = `Tracking (loaded ${calPoints.length} pts)`;
       verifyBtn.style.display = 'block';
       drawMinimap();
     } else {
-      statusEl.textContent = `校準中 (0/${minCal} 點)`;
+      statusEl.textContent = `Calibrating (0/${minCal} pts)`;
     }
 
     setInterval(async () => {
@@ -709,7 +709,7 @@
       catch (e) {
         if (!sendErrShown) {
           sendErrShown = true;
-          statusEl.textContent = `FaceMesh 錯誤: ${e.message}`;
+          statusEl.textContent = `FaceMesh error: ${e.message}`;
           console.error('[aikwau/webcam] fm.send error:', e);
         }
       } finally { processing = false; }
@@ -727,8 +727,8 @@
     console.error('[aikwau/webcam] startWebcam error:', detail);
     const s = panel.querySelector('#__ap_start');
     s.style.display = 'flex';
-    s.innerHTML = `<p style="color:#f66;padding:12px;text-align:center;font-size:12px">錯誤:<br>${detail}</p>`;
-    statusEl.textContent = `錯誤: ${err.name}`;
+    s.innerHTML = `<p style="color:#f66;padding:12px;text-align:center;font-size:12px">Error:<br>${detail}</p>`;
+    statusEl.textContent = `Error: ${err.name}`;
     document.dispatchEvent(new CustomEvent('aikwau:gazeerror', { detail: { message: detail } }));
   });
 })();
