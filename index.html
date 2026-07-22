@@ -294,8 +294,28 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
     <div id="slide-wrapper">
       <div class="scaler" id="scaler">
 
+      <!-- Glaucoma Vision Simulation — slide 1 -->
+      <div class="slide active" id="smot" style="overflow:hidden;position:relative;background:#0b1520;">
+        <!-- Simulated webpage text fills the entire slide -->
+        <div style="position:absolute;inset:0;padding:36px 52px;font-family:'Georgia',serif;color:rgba(255,255,255,.8);overflow:hidden;">
+          <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;">Technology &amp; Health</div>
+          <div style="font-family:'Sora',sans-serif;font-size:21px;font-weight:800;color:rgba(255,255,255,.9);line-height:1.25;margin-bottom:16px;">Intel Panther Lake Brings On-Device AI to Accessibility Tools</div>
+          <div style="font-size:14px;line-height:1.85;margin-bottom:12px;">The Panther Lake architecture delivers over 100 TOPS of NPU compute, enabling new categories of on-device AI applications that run entirely without network access. Engineers at leading PC manufacturers are already developing software that leverages this capability to provide real-time assistance.</div>
+          <div style="font-size:14px;line-height:1.85;margin-bottom:12px;">Accessibility tools that once required specialised hardware costing hundreds of dollars can now run natively on the integrated processor, removing cost barriers for the estimated 285 million people worldwide living with some form of visual impairment. For users managing conditions such as glaucoma or macular degeneration, the ability to enhance text clarity in real-time represents a significant shift.</div>
+          <div style="font-size:14px;line-height:1.85;">The platform's inference engine supports quantised language models as compact as 1.5 billion parameters, small enough to fit entirely within system memory while delivering sub-second summarisation latency. Early benchmarks show GPU-accelerated inference completing in 0.85 seconds — well within the threshold for a seamless reading experience that does not interrupt natural browsing behaviour.</div>
+        </div>
+        <!-- Strong radial vignette: tight clear centre, near-black periphery -->
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 34% 36% at 50% 44%,transparent 0%,rgba(0,0,0,.68) 48%,rgba(0,0,0,.97) 100%);pointer-events:none;"></div>
+        <!-- Scotoma patch — upper-left -->
+        <div style="position:absolute;top:11%;left:6%;width:180px;height:100px;background:rgba(0,0,0,.92);border-radius:50%;filter:blur(14px);pointer-events:none;"></div>
+        <!-- Scotoma patch — lower-right -->
+        <div style="position:absolute;bottom:14%;right:8%;width:150px;height:85px;background:rgba(0,0,0,.9);border-radius:50%;filter:blur(12px);pointer-events:none;"></div>
+        <!-- Caption -->
+        <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'Sora',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.18);white-space:nowrap;">Simulated View — Glaucoma</div>
+      </div>
+
       <!-- S1 Cover -->
-      <div class="slide active" id="s1">
+      <div class="slide" id="s1">
         <div class="s-left">
           <div class="tag">Final Presentation</div>
           <div class="brand">AI<span>·</span>Kwau<span style="position:absolute;left:100%;bottom:65%;font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:var(--cyanl);opacity:.8;letter-spacing:2px;white-space:nowrap;line-height:1;">愛看有</span></div>
@@ -321,39 +341,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
             <path d="M20 180L20 166M20 180L34 180" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
             <path d="M180 180L166 180M180 180L180 166" stroke="rgba(0,180,216,.5)" stroke-width="2" fill="none"/>
           </svg>
-        </div>
-      </div>
-
-      <!-- Motivation Story — glaucoma diagnosis -->
-      <div class="slide" id="smot" style="flex-direction:row;">
-        <div style="width:45%;background:var(--navy);padding:48px 44px;display:flex;flex-direction:column;justify-content:center;gap:14px;">
-          <div class="tag" style="align-self:flex-start;">Our Story</div>
-          <div class="slide-title" style="color:#fff;font-size:32px;line-height:1.15;">Why We<br>Built This</div>
-          <div style="font-family:'Sora',sans-serif;font-size:14px;color:rgba(255,255,255,.65);line-height:1.65;">My teammate was diagnosed with <span style="color:var(--cyan);font-weight:700;">glaucoma</span> this year — a condition that silently changes how they see the screen every day.</div>
-          <div style="display:flex;flex-direction:column;gap:9px;">
-            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 13px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyan);border-radius:8px;">
-              <div style="font-size:20px;flex-shrink:0;margin-top:1px;"></div>
-              <div><div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;">視野缺陷</div><div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;">Visual field loss — patches of the screen disappear from view</div></div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 13px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyanl);border-radius:8px;">
-              <div style="font-size:20px;flex-shrink:0;margin-top:1px;"></div>
-              <div><div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.2;">字體模糊</div><div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;">Blurry text — normal-sized fonts become hard to distinguish</div></div>
-            </div>
-          </div>
-          <div style="font-family:'Sora',sans-serif;font-size:13px;color:rgba(255,255,255,.45);font-style:italic;line-height:1.6;padding-top:2px;">"We wanted to build something that adapts to them — automatically."</div>
-        </div>
-        <div style="width:55%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 40px;gap:14px;">
-          <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(0,180,216,.5);">Simulated View — Glaucoma</div>
-          <div style="position:relative;width:100%;max-width:380px;border-radius:14px;overflow:hidden;background:#1a2a40;border:1px solid rgba(0,180,216,.12);">
-            <div style="padding:20px 18px;font-family:'Sora',sans-serif;font-size:13px;line-height:2;">
-              <span style="color:rgba(255,255,255,.85);">The quick brown fox jumps over the lazy dog.</span><br>
-              <span style="color:rgba(255,255,255,.65);">Access to information is a right</span><br>
-              <span style="color:rgba(255,255,255,.4);">every person deserves,</span><br>
-              <span style="color:rgba(255,255,255,.2);">regardless of ability.</span>
-            </div>
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse 58% 52% at 50% 40%,transparent 22%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.97) 100%);pointer-events:none;"></div>
-          </div>
-          <div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.22);text-align:center;max-width:300px;line-height:1.5;">Peripheral vision fades — centre focus is preserved but everything else dims</div>
         </div>
       </div>
 
@@ -595,7 +582,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 <!-- MOBILE -->
 <div id="mobile-view">
   <div class="mc"><div class="mh dark"><div class="m-tag">Final Presentation</div><div class="m-title">AI<span>·</span>Kwau</div><div class="m-sub">Webcam × AI — see clearly, understand instantly</div></div><div style="padding:6px 0;"><div class="m-ag"><div class="m-agn">01</div><div class="m-agt">Our Story</div></div><div class="m-ag"><div class="m-agn">02</div><div class="m-agt">Problem Statement</div></div><div class="m-ag"><div class="m-agn">03</div><div class="m-agt">Proposed Solution</div></div><div class="m-ag"><div class="m-agn">04</div><div class="m-agt">Read Faster</div></div><div class="m-ag"><div class="m-agn">05</div><div class="m-agt">Value &amp; Impact / Curb-Cut</div></div><div class="m-ag"><div class="m-agn">06</div><div class="m-agt">Future Roadmap</div></div><div class="m-ag"><div class="m-agn">07</div><div class="m-agt">Post-Launch Validation</div></div></div></div>
-  <div class="mc"><div class="mh dark"><div class="m-tag">Our Story</div><div class="m-title">Why We Built This</div><div class="m-sub">Teammate diagnosed with glaucoma — visual field loss and blurry text make PC use difficult daily</div></div></div>
+  <div class="mc"><div class="mh dark" style="background:#0b1520;position:relative;overflow:hidden;min-height:120px;"><div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 50%,transparent 0%,rgba(0,0,0,.85) 100%);pointer-events:none;"></div><div style="position:relative;z-index:1;"><div class="m-tag">Simulated View — Glaucoma</div><div class="m-title">Why We Built This</div><div class="m-sub">Teammate diagnosed with glaucoma — visual field loss and blurry text make PC use difficult daily</div></div></div></div>
   <div class="mc"><div class="mh dark"><div class="m-tag">1 · Problem Statement</div><div class="m-title">The 20%</div><div class="m-sub">Vision-Impaired PC Users</div><div class="m-ev"><span class="m-evn">59%</span> never used any assistive tool</div></div><div class="m-list"><div class="m-pain"><div class="m-pn">71%</div><div class="m-pt">Eye strain from long screen time</div></div><div class="m-pain"><div class="m-pn">65%</div><div class="m-pt">Text too small to read</div></div><div class="m-pain"><div class="m-pn">47%</div><div class="m-pt">Low screen contrast</div></div><div class="m-pain"><div class="m-pn">24%</div><div class="m-pt">Cursor hard to track</div></div><div class="m-pain"><div class="m-pn">18%</div><div class="m-pt">Can't find buttons or links</div></div><div style="padding:10px 14px;background:rgba(231,76,60,.06);border-radius:10px;border:1px solid rgba(231,76,60,.2);font-size:13px;color:var(--muted);line-height:1.6;">Existing tools: always-on required or special hardware needed — 59% never adopt</div></div></div>
   <div class="mc"><div class="mh dark"><div class="m-tag">2 · Proposed Solution</div><div class="m-title">Blind Area &amp; Visible Area</div><div class="m-sub">On-device AI · No cloud · No extra hardware</div></div><div class="m-list"><div class="m-feat"><div class="m-frow"><div class="m-fname">Blind Area</div><div class="m-ftag" style="color:var(--goldd);">Auto-detect</div></div><div class="m-fen">Gaze Heatmap · Blind-Spot Highlight · Focus Attraction</div></div><div class="m-feat"><div class="m-frow"><div class="m-fname">Visible Area</div><div class="m-ftag">Hold 1.5s</div></div><div class="m-fen">Bold &amp; Darken · Font Enlargement · High Contrast (5.0/5) · AI Summary (4.3/5)</div></div><div class="m-feat"><div class="m-frow"><div class="m-fname">Qwen2.5-1.5B INT4</div><div class="m-ftag">OpenVINO</div></div><div class="m-fen">GPU 0.85s · CPU 1.32s · NPU 1.62s on Panther Lake</div></div></div></div>
   <div class="mc"><div class="mh light"><div class="m-tag lt">3 · User Experience</div><div class="m-title dk">Read Faster</div><div class="m-sub dk" style="color:var(--muted);">Measured reading time improvement with AI Kwau</div></div><div class="m-list"><div class="m-sum"><div class="m-st">Baseline: <strong>4:12</strong></div></div><div class="m-sum"><div class="m-st">Bold + High Contrast: <strong style="color:var(--cyan);">2:37</strong> — 38% faster</div></div><div class="m-sum"><div class="m-st">+ AI Summary: <strong style="color:var(--green);">1:21</strong> — 68% faster</div></div></div></div>
