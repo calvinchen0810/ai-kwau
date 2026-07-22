@@ -153,12 +153,25 @@ window.__aikwauContentLoaded = true;
     const alreadyHighlighted = new Set(highlightTargets.map(h => h.el));
     const found = [];
 
-    for (const el of document.querySelectorAll(INTERACTIVE_SEL)) {
+    for (const rawEl of document.querySelectorAll(INTERACTIVE_SEL)) {
+      let el = rawEl;
+      let rect = el.getBoundingClientRect();
+      if (isVisuallyHidden(el) || rect.width === 0 || rect.height === 0) {
+        // Common "checkbox/radio hack" fake-button pattern (e.g. Wikipedia's
+        // table-of-contents toggle): the real form control matching
+        // INTERACTIVE_SEL is invisible and a <label for="..."> renders the
+        // visible fake button the user actually sees — redirect there instead
+        // of dropping the candidate.
+        const lbl = visibleLabelFor(el);
+        if (!lbl) continue;
+        el = lbl;
+        rect = el.getBoundingClientRect();
+        if (isVisuallyHidden(el) || rect.width === 0 || rect.height === 0) continue;
+      }
       if (alreadyHighlighted.has(el)) continue;
       if (el.id?.startsWith('__aikwau') || el.id?.startsWith('__ap')) continue;
       if (el.closest('[id^="__aikwau"]') || el.closest('[id^="__ap"]')) continue;
-      const rect = el.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) continue;
+      if (isL1Emphasized(el)) continue;
       if (rect.bottom <= 0 || rect.top >= vh || rect.right <= 0 || rect.left >= vw) continue;
 
       const cx = rect.left + rect.width  / 2;
@@ -279,6 +292,51 @@ window.__aikwauContentLoaded = true;
       hintEl.remove();
     }
     highlightTargets = [];
+  }
+
+  // True if el (or an ancestor) already carries L1 text emphasis. Blind-spot
+  // highlighting is skipped/withdrawn for these elements — L1 emphasis persists
+  // once gaze-triggered, so a link inside it shouldn't also carry the separate
+  // blind-spot outline + hint (the two signals stacked look like visual noise).
+  function isL1Emphasized(el) {
+    return !!el.closest('.aikwau-bold, .aikwau-contrast');
+  }
+
+  // True if el is genuinely invisible to the user — display:none, visibility:hidden,
+  // or opacity:0, whether set on el itself or an ancestor (e.g. a closed mobile-nav
+  // panel). getBoundingClientRect()'s width/height===0 check only catches display:none;
+  // visibility/opacity-hidden elements still occupy layout space with a non-zero rect,
+  // so without this they'd still get flagged as blind-spot targets a user can't see.
+  // checkVisibility() is Chromium 105+ (Edge, our only target); the getComputedStyle
+  // fallback only sees el's own style, not an ancestor's.
+  function isVisuallyHidden(el) {
+    if (typeof el.checkVisibility === 'function') {
+      return !el.checkVisibility({ opacityProperty: true, visibilityProperty: true });
+    }
+    const cs = getComputedStyle(el);
+    return cs.visibility === 'hidden' || cs.opacity === '0';
+  }
+
+  // Returns the <label for="el.id">, if any — the visible half of the
+  // "checkbox/radio hack" fake-button pattern where el itself (an <input>
+  // matching INTERACTIVE_SEL) is the invisible/zero-size real control.
+  function visibleLabelFor(el) {
+    return el.id ? document.querySelector(`label[for="${CSS.escape(el.id)}"]`) : null;
+  }
+
+  // Withdraw blind-spot highlight/hint for any tracked target now inside (or
+  // equal to) root. Called right after L1 emphasis is applied to root, since
+  // L1 never gets removed on its own — without this, a target flagged before
+  // its paragraph was gazed would keep the highlight indefinitely.
+  function removeHighlightsWithin(root) {
+    highlightTargets = highlightTargets.filter(({ el, hintEl }) => {
+      if (root === el || root.contains(el)) {
+        el.classList.remove('aikwau-highlight');
+        hintEl.remove();
+        return false;
+      }
+      return true;
+    });
   }
 
   // Display-only toggle: scanBlindButtons()/updateHighlights() keep tracking
@@ -803,6 +861,22 @@ window.__aikwauContentLoaded = true;
     });
   }
 
+  // Renders each bullet ("• ..." line) as its own .aikwau-summary-line div, so
+  // CSS hanging-indent (content.css) can align a wrapped bullet's second line
+  // after "• " independently per bullet — a single text node with \n can only
+  // hang its very first line (text-indent applies once per block). Uses
+  // textContent per line, never innerHTML, so model-generated text is never
+  // parsed as markup.
+  function renderSummaryLines(el, summary) {
+    el.textContent = '';
+    summary.split('\n').forEach(line => {
+      const div = document.createElement('div');
+      div.className = 'aikwau-summary-line';
+      div.textContent = line;
+      el.appendChild(div);
+    });
+  }
+
   // Install a persistent click handler on el that toggles between original/summary.
   // The handler stays until SPA navigation (_clearOnNavigate) removes it.
   function markSummaryReady(el, summary) {
@@ -822,7 +896,7 @@ window.__aikwauContentLoaded = true;
       e.stopPropagation();
       if (!entry.shown) {
         entry.origText = el.textContent;
-        el.textContent = summary;
+        renderSummaryLines(el, summary);
         el.classList.remove('aikwau-summary-ready');
         el.classList.add('aikwau-summary-shown');
         entry.labelEl.textContent = t('clickRestore');
@@ -880,6 +954,7 @@ window.__aikwauContentLoaded = true;
 
     if (boldEnabled) el.classList.add('aikwau-bold');
     if (contrastEnabled) el.classList.add('aikwau-contrast');
+    if (boldEnabled || contrastEnabled) removeHighlightsWithin(el);
 
     if (l2Enabled) {
       if (!el.dataset.aikwauBase) {
