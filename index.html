@@ -349,21 +349,13 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       </div>
 
       <!-- S2 Problem Statement — left panel updated with competitor context -->
+      <!-- S3 Problem — Five Daily Pain Points -->
       <div class="slide" id="s2">
         <div class="s-left" style="width:36%;background:var(--navy);padding:44px 38px;display:flex;flex-direction:column;justify-content:center;">
           <div class="step-badge">1 · Problem Statement</div>
           <div class="slide-title" style="color:#fff;line-height:1.05;margin-bottom:4px;">The 20%</div>
           <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:400;color:rgba(255,255,255,.55);margin-bottom:16px;">Vision-Impaired PC Users</div>
-          <div style="background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);border-radius:14px;padding:16px 22px;margin-bottom:12px;">
-            <div style="font-family:'Sora',sans-serif;font-size:56px;font-weight:800;color:var(--cyan);line-height:1;">59%</div>
-            <div style="font-size:14px;color:rgba(255,255,255,.75);margin-top:8px;line-height:1.4;">never adopted an assistive tool</div>
-          </div>
-          <div style="padding:10px 14px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.28);border-radius:10px;margin-bottom:10px;">
-            <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:rgba(231,76,60,.85);letter-spacing:.5px;margin-bottom:6px;">Why Existing Tools Are Abandoned</div>
-            <div style="font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,.6);margin-bottom:4px;"><span style="color:var(--gold);font-weight:700;">⏻ Always-on required</span> — Magnifier &amp; Narrator need constant manual activation</div>
-            <div style="font-family:'Sora',sans-serif;font-size:12px;color:rgba(255,255,255,.6);"><span style="color:var(--gold);font-weight:700;"> Special hardware</span> — Tobii eye trackers cost $100–$300 extra</div>
-          </div>
-          <div style="font-size:11px;color:rgba(255,255,255,.25);">Survey n=17 · Avg PC experience 3.4 / 5</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.25);margin-top:auto;">Survey n=17 · Avg PC experience 3.4 / 5</div>
         </div>
         <div class="s-right" style="width:64%;padding:32px 40px;display:flex;flex-direction:column;justify-content:center;gap:11px;">
           <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:2px;">Five Daily Pain Points</div>
@@ -372,6 +364,20 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="pain-item"><div class="pain-num">47%</div><div class="pain-title">Low screen contrast</div></div>
           <div class="pain-item"><div class="pain-num">24%</div><div class="pain-title">Cursor hard to track and locate</div></div>
           <div class="pain-item"><div class="pain-num">18%</div><div class="pain-title">Can't find buttons or links</div></div>
+        </div>
+      </div>
+
+      <!-- S4 Problem — 59% stat + Why Abandoned -->
+      <div class="slide" id="s2b" style="background:var(--navy);flex-direction:column;align-items:center;justify-content:center;gap:28px;">
+        <div class="step-badge">1 · Problem Statement</div>
+        <div style="background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);border-radius:20px;padding:32px 56px;text-align:center;">
+          <div style="font-family:'Sora',sans-serif;font-size:96px;font-weight:800;color:var(--cyan);line-height:1;letter-spacing:-4px;">59%</div>
+          <div style="font-family:'Sora',sans-serif;font-size:20px;color:rgba(255,255,255,.8);margin-top:12px;">never adopted an assistive tool</div>
+        </div>
+        <div style="padding:20px 32px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:14px;max-width:560px;width:100%;">
+          <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:rgba(231,76,60,.9);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">Why Existing Tools Are Abandoned</div>
+          <div style="font-family:'Sora',sans-serif;font-size:15px;color:rgba(255,255,255,.75);margin-bottom:10px;line-height:1.5;"><span style="color:var(--gold);font-weight:700;">Always-on required</span> — Magnifier &amp; Narrator need constant manual activation</div>
+          <div style="font-family:'Sora',sans-serif;font-size:15px;color:rgba(255,255,255,.75);line-height:1.5;"><span style="color:var(--gold);font-weight:700;">Special hardware</span> — Tobii eye trackers cost $100–$300 extra</div>
         </div>
       </div>
 
@@ -603,7 +609,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 </div><!-- /mobile-view -->
 
 <script>
-let cur=0,total=10;
+let cur=0,total=11;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<total;i++){
   const d=document.createElement('div');
