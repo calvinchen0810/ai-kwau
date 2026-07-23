@@ -99,6 +99,10 @@ body{font-family:'Sora',sans-serif;background:#0a1628;}
   #s6{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
   #s6 .s-top{padding:22px 48px 8px;}
   #s6 .journey{flex:1;display:flex;align-items:center;padding:0 28px 20px;gap:0;}
+  /* Journey Map */
+  #sjmap{flex-direction:column;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);}
+  #sjmap .s-top{padding:22px 48px 8px;}
+  #sjmap .journey{flex:1;display:flex;align-items:center;padding:0 28px 20px;gap:0;}
   .j-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 4px;}
   .j-step:not(:last-child)::after{content:'→';position:absolute;right:-12px;top:20px;font-size:20px;color:var(--cyan);font-family:'Sora',sans-serif;z-index:2;}
   .j-icon{width:68px;height:68px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px;border:3px solid var(--cyan);flex-shrink:0;}
@@ -439,11 +443,86 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
       </div>
 
-      <!-- S7 AI Architecture — title only -->
-      <div class="slide" id="s7" style="background:var(--navy);flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;">
-        <div class="step-badge">2 · Proposed Solution</div>
-        <div class="slide-title" style="color:#fff;font-size:44px;font-weight:800;line-height:1.1;">On-Device AI Stack</div>
-        <div class="slide-sub" style="color:rgba(255,255,255,.5);font-size:16px;max-width:540px;">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
+      <!-- S7 AI Architecture -->
+      <div class="slide" id="s7">
+        <div class="s-top">
+          <div class="step-badge">2 · Proposed Solution</div>
+          <div class="slide-title">On-Device AI Stack</div>
+          <div class="slide-sub">All inference runs locally — no API, no cloud, no data leaves the laptop</div>
+        </div>
+        <div class="arch-wrap">
+          <div class="arch-world-row">
+            <div class="world-box browser">
+              <div class="world-hdr">Browser World</div>
+              <div class="br-item"><div><div class="os-name">Gaze Tracking</div><div class="os-sub-lbl">Mouse hover · Webcam</div></div></div>
+              <div class="br-item"><div><div class="os-name">Content Enhancement</div><div class="os-sub-lbl">Text enhancement · AI Summary</div></div></div>
+              <div class="br-item"><div><div class="os-name">Service Worker</div><div class="os-sub-lbl">Native port routing</div></div></div>
+            </div>
+            <div class="nm-col">
+              <div class="nm-lbl">Native<br>Messaging</div>
+              <div class="nm-arr">↔</div>
+              <div class="nm-sub">stdin / stdout</div>
+            </div>
+            <div class="world-box os">
+              <div class="world-hdr">OS World</div>
+              <div class="os-item"><div><div class="os-name">Native Host</div><div class="os-sub-lbl">PyInstaller · Windows</div></div></div>
+              <div class="os-item"><div><div class="os-name">OpenVINO GenAI</div><div class="os-sub-lbl">Inference Runtime</div></div></div>
+              <div class="os-item"><div><div class="os-name">Qwen2.5-1.5B INT4</div><div class="os-sub-lbl">On-device AI Model</div></div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div class="result-chips">
+              <div class="rchip" style="background:rgba(0,180,216,.12);border:1px solid rgba(0,180,216,.3);">
+                <div class="rchip-num" style="color:var(--cyan);">0.85s</div>
+                <div class="rchip-lbl" style="color:var(--muted);">GPU · 71 tok/s</div>
+              </div>
+              <div class="rchip" style="background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.1);">
+                <div class="rchip-num" style="color:var(--navy);">1.32s</div>
+                <div class="rchip-lbl" style="color:var(--muted);">CPU · 45 tok/s</div>
+              </div>
+              <div class="rchip" style="background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.1);">
+                <div class="rchip-num" style="color:var(--navy);">1.62s</div>
+                <div class="rchip-lbl" style="color:var(--muted);">NPU · 37 tok/s</div>
+              </div>
+            </div>
+            <div style="text-align:center;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.5px;">Test Environment · KentoI (Intel Panther Lake)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Journey Map -->
+      <div class="slide" id="sjmap">
+        <div class="s-top">
+          <div class="step-badge">3 · User Experience Flow</div>
+          <div class="slide-title" style="font-size:30px;">User Journey Map</div>
+        </div>
+        <div class="journey">
+          <div class="j-step">
+            <div class="j-icon"></div>
+            <div class="j-name">Pre-installed</div>
+            <div class="j-desc">Ready at boot<br>No setup needed</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon"></div>
+            <div class="j-name">One-time Setup</div>
+            <div class="j-desc">25-point gaze calibration<br>Done once · ~60 seconds</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon"></div>
+            <div class="j-name">Browse Normally</div>
+            <div class="j-desc">AI runs silently<br>No habit change</div>
+          </div>
+          <div class="j-step gold">
+            <div class="j-icon"></div>
+            <div class="j-name">Gaze Holds 1.5s</div>
+            <div class="j-desc">Text enhancements<br>AI Summary appears</div>
+          </div>
+          <div class="j-step">
+            <div class="j-icon"></div>
+            <div class="j-name">Read Faster</div>
+            <div class="j-desc">Summary aids comprehension</div>
+          </div>
+        </div>
       </div>
 
       <!-- S6 Read Faster — timing data -->
@@ -513,25 +592,6 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="slide-title">What Users Want Next</div>
           <div class="slide-sub">Wishlist from user testing — planned iterations beyond the PoC</div>
         </div>
-        <div class="rm-grid">
-          <div class="rm-card">
-            <div class="rm-icon">⚙</div>
-            <div class="rm-title">Personalised Feature Profiles</div>
-            <div class="rm-sub">Save each user's preferred toggle states — no re-configuration on every session</div>
-          </div>
-          <div class="rm-card">
-            <div class="rm-title">Model Selection</div>
-            <div class="rm-sub">Switch between models by language or task — larger for accuracy, smaller for speed</div>
-          </div>
-          <div class="rm-card">
-            <div class="rm-title">Translation &amp; Knowledge Extension</div>
-            <div class="rm-sub">In-page translation and contextual information lookup without leaving the article</div>
-          </div>
-          <div class="rm-card">
-            <div class="rm-title">Hardware-Accelerated Gaze</div>
-            <div class="rm-sub">On-chip gaze processing — only (x,y) coordinates reach the app, no raw video exposure</div>
-          </div>
-        </div>
       </div>
 
       <!-- Post-Launch Validation Plan -->
@@ -586,7 +646,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 </div><!-- /mobile-view -->
 
 <script>
-let cur=0,total=11;
+let cur=0,total=12;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<total;i++){
   const d=document.createElement('div');
