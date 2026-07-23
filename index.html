@@ -370,14 +370,14 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
       <!-- S4 Problem — 59% stat + Why Abandoned -->
       <div class="slide" id="s2b" style="background:var(--navy);flex-direction:column;align-items:center;justify-content:center;gap:28px;">
         <div class="step-badge">1 · Problem Statement</div>
-        <div style="background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);border-radius:20px;padding:32px 56px;text-align:center;">
+        <div style="text-align:center;">
           <div style="font-family:'Sora',sans-serif;font-size:96px;font-weight:800;color:var(--cyan);line-height:1;letter-spacing:-4px;">59%</div>
           <div style="font-family:'Sora',sans-serif;font-size:20px;color:rgba(255,255,255,.8);margin-top:12px;">never adopted an assistive tool</div>
         </div>
         <div style="padding:20px 32px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);border-radius:14px;max-width:560px;width:100%;">
           <div style="font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:rgba(231,76,60,.9);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">Why Existing Tools Are Abandoned</div>
-          <div style="font-family:'Sora',sans-serif;font-size:15px;color:rgba(255,255,255,.75);margin-bottom:10px;line-height:1.5;"><span style="color:var(--gold);font-weight:700;">Always-on required</span> — Magnifier &amp; Narrator need constant manual activation</div>
-          <div style="font-family:'Sora',sans-serif;font-size:15px;color:rgba(255,255,255,.75);line-height:1.5;"><span style="color:var(--gold);font-weight:700;">Special hardware</span> — Tobii eye trackers cost $100–$300 extra</div>
+          <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:10px;">Always-on required</div>
+          <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--gold);">Special hardware</div>
         </div>
       </div>
 
@@ -387,7 +387,10 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="step-badge" style="background:var(--goldd);">2 · Proposed Solution</div>
           <div class="slide-title" style="color:#fff;font-size:30px;line-height:1.1;margin-bottom:4px;">Blind Area<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">Unvisited zones — AI detects &amp; guides</span></div>
           <div class="feat-item gold">
-            <div><div class="fi-name">Gaze Heatmap</div><div class="fi-sub">Gaussian Mixture Model — maps visited vs cold zones across the page</div></div>
+            <div><div class="fi-name">Gaze Heatmap</div></div>
+          </div>
+          <div class="feat-item gold">
+            <div><div class="fi-name">Blind Spot Detection</div></div>
           </div>
         </div>
         <div class="fslide-right">
@@ -404,13 +407,13 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
           <div class="step-badge">2 · Proposed Solution</div>
           <div class="slide-title" style="color:#fff;font-size:30px;line-height:1.1;margin-bottom:4px;">Visible Area<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">Text Enhancement — triggered by gaze hold</span></div>
           <div class="feat-item">
-            <div><div class="fi-name">Bold &amp; Darken</div><div class="fi-sub">Heavier weight + darkened text on the hovered paragraph</div></div>
+            <div><div class="fi-name">Bold &amp; Darken</div></div>
           </div>
           <div class="feat-item">
-            <div><div class="fi-name">Font Enlargement</div><div class="fi-sub">Adjustable 1.0×–3.0× via popup slider — live preview</div></div>
+            <div><div class="fi-name">Font Enlargement</div></div>
           </div>
           <div class="feat-item">
-            <div><div class="fi-name">High Contrast Themes <span style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);border-radius:5px;padding:1px 7px;margin-left:4px;"> 5.0 / 5</span></div><div class="fi-sub">5 themes — Nightsky, Aquatic, Desert, Dusk, Off</div></div>
+            <div><div class="fi-name">High Contrast Themes <span style="font-size:10px;font-weight:700;color:var(--green);background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);border-radius:5px;padding:1px 7px;margin-left:4px;"> 5.0 / 5</span></div></div>
           </div>
         </div>
         <div class="fslide-right">
@@ -426,19 +429,8 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         <div class="fslide-left">
           <div class="step-badge">2 · Proposed Solution</div>
           <div class="slide-title" style="color:#fff;font-size:30px;line-height:1.1;margin-bottom:4px;">Visible Area<span style="font-family:'Sora',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.45);display:block;margin-top:4px;">AI Paragraph Summary</span></div>
-          <div class="feat-item ai">
-            <div><div class="fi-name" style="color:var(--cyanl);">Qwen2.5-1.5B INT4</div><div class="fi-sub">On-device · No cloud · No API fees · Privacy-first</div></div>
-          </div>
           <div class="feat-item">
-            <div class="fi-icon">⚡</div>
-            <div><div class="fi-name">GPU 0.85s · CPU 1.32s</div><div class="fi-sub">Intel Panther Lake benchmark — meets &lt;1s target on GPU</div></div>
-          </div>
-          <div class="feat-item">
-            <div><div class="fi-name">Click-to-Reveal</div><div class="fi-sub">Hover 1.5s → "點擊摘要" tag → click to replace text with bullet summary</div></div>
-          </div>
-          <div style="padding:10px 14px;background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.3);border-radius:10px;">
-            <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">AI Summary validated — 4.3 / 5</div>
-            <div style="font-family:'Sora',sans-serif;font-size:11px;color:rgba(255,255,255,.5);">Helps absorb content · Accurate key points · Faster comprehension</div>
+            <div><div class="fi-name">Click-to-Reveal</div></div>
           </div>
         </div>
         <div class="fslide-right">
@@ -571,21 +563,16 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
         <div class="cards-row">
           <div class="e-card">
-            <div class="icon">☀</div>
             <div class="name">Screen Glare &amp; Reflections</div>
-            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Same visual experience as dim-vision users</div>
           </div>
           <div class="e-card">
             <div class="name">Outdoor Bright Sunlight</div>
-            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">Identical to the daily reality of foggy-vision users</div>
           </div>
           <div class="e-card">
             <div class="name">Eye Strain from Long Screen Time</div>
-            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">#1 pain point for 71% of impaired users — common for everyone after extended sessions</div>
           </div>
           <div class="e-card" style="border-top-color:var(--gold);">
             <div class="name">Busy Readers &amp; Skimmers</div>
-            <div style="font-size:15px;color:var(--muted);line-height:1.5;margin-top:6px;">AI summary helps anyone quickly grasp paragraph meaning without reading every word</div>
           </div>
         </div>
       </div>
