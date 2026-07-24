@@ -444,6 +444,50 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
         </div>
       </div>
 
+      <!-- Active Perception Loop -->
+      <div class="slide" id="sloop" style="background:var(--navy);overflow:hidden;">
+        <svg style="position:absolute;inset:0;width:960px;height:540px;" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="sloop-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="rgba(0,180,216,.55)"/>
+            </marker>
+          </defs>
+          <!-- Sense → Decide -->
+          <path d="M 258 353 C 275 278 372 233 413 217" fill="none" stroke="rgba(0,180,216,.38)" stroke-width="1.8" marker-end="url(#sloop-arr)"/>
+          <!-- Decide → Act -->
+          <path d="M 547 217 C 590 233 688 278 702 353" fill="none" stroke="rgba(0,180,216,.38)" stroke-width="1.8" marker-end="url(#sloop-arr)"/>
+          <!-- Act → Sense -->
+          <path d="M 752 443 C 680 497 308 497 208 443" fill="none" stroke="rgba(0,180,216,.38)" stroke-width="1.8" marker-end="url(#sloop-arr)"/>
+          <!-- Centre loop indicator -->
+          <circle cx="480" cy="320" r="26" fill="none" stroke="rgba(0,180,216,.16)" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="480" y="328" text-anchor="middle" font-size="22" fill="rgba(0,180,216,.32)" font-family="sans-serif">⟳</text>
+        </svg>
+
+        <!-- Header -->
+        <div style="position:absolute;top:28px;left:52px;">
+          <div class="step-badge">Extension Architecture</div>
+          <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-top:7px;">Active Perception Loop</div>
+        </div>
+
+        <!-- DECIDE node (top centre) -->
+        <div style="position:absolute;top:135px;left:385px;width:190px;padding:14px 18px;background:rgba(246,174,45,.07);border:1.5px solid rgba(246,174,45,.45);border-radius:13px;">
+          <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Decide</div>
+          <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,.88);">Focus Hold</div>
+        </div>
+
+        <!-- SENSE node (bottom left) -->
+        <div style="position:absolute;top:355px;left:105px;width:190px;padding:14px 18px;background:rgba(0,180,216,.07);border:1.5px solid rgba(0,180,216,.45);border-radius:13px;">
+          <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;">Sense</div>
+          <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:500;color:rgba(255,255,255,.8);line-height:1.65;">Gaze Position<br>Heatmap</div>
+        </div>
+
+        <!-- ACT node (bottom right) -->
+        <div style="position:absolute;top:355px;left:665px;width:190px;padding:14px 18px;background:rgba(6,214,160,.07);border:1.5px solid rgba(6,214,160,.45);border-radius:13px;">
+          <div style="font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">Act</div>
+          <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:500;color:rgba(255,255,255,.8);line-height:1.65;">Enhance Text<br>Blind Spot Alert</div>
+        </div>
+      </div>
+
       <!-- S7 AI Architecture -->
       <div class="slide" id="s7">
         <div class="s-top">
@@ -599,7 +643,7 @@ body.move-mode #scaler *:active{cursor:grabbing!important;}
 </div><!-- /mobile-view -->
 
 <script>
-let cur=0,total=11;
+let cur=0,total=12;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<total;i++){
   const d=document.createElement('div');
