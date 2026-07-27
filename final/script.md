@@ -43,6 +43,8 @@
 > "'Kwau' — Taiwanese for see and understand.
 > That's the whole answer in two words.
 >
+> I'm Calvin — with Ava, Thomas, and Yorke.
+>
 > See clearly. Understand instantly."
 
 ---
