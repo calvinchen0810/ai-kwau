@@ -194,41 +194,12 @@
 
 ---
 
-## SLIDE 21 — Roadmap `[7:50–8:30]`
+## SLIDE 21 — Measure. Learn. Evolve. `[7:50–8:10]`
 
-> "Where do we go from here?
->
-> Immediate: native messaging host registration
-> and end-to-end browser testing on Panther Lake hardware.
->
-> Next: streaming inference for word-by-word summaries —
-> so the user sees results as the model thinks,
-> not after it finishes.
->
-> Phase 2: Windows Accessibility API integration —
-> moving AI-Kwau beyond the browser
-> into the full desktop experience.
->
-> The architecture is already designed for this.
-> Panther Lake's NPU gives us the headroom to scale."
-
----
-
-## SLIDE 21 — Closing `[9:20–10:00]`
-
-> "We came into this project because one of us lives with this every day.
->
-> We're leaving it with a working prototype —
-> on-device, no cloud dependency, no special hardware —
-> and results that speak for themselves."
-
-*(pause — measured, deliberate)*
-
-> "Most people get to choose when to look through a narrow lens.
-> We built AI-Kwau for the millions who don't get that choice —
-> and for the one teammate who does."
-
-*(final beat)*
+> "We don't stop here.
+> Personalized profiles. Model selection. Translation.
+> And hardware-accelerated gaze — on the roadmap.
+> See clearly. Understand instantly."
 
 > **"See clearly. Understand instantly."**
 
