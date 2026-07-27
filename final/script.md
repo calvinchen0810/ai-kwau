@@ -166,25 +166,13 @@
 
 ---
 
-## SLIDE 18 — Reading Time Results `[6:55–7:45]`
+## SLIDE 18 — Reading Time Results `[6:35–7:05]`
 
-> "Does it actually help? We measured it.
->
-> Same 1,000-word article. Same user. Three conditions.
->
-> Baseline — no assistance: 4 minutes 12 seconds.
->
-> With Bold and High Contrast: 2 minutes 37 seconds.
-> That's 38% faster.
->
-> With AI Summary: 1 minute 21 seconds.
-> That's 68% faster.
->
-> This isn't a marginal gain.
-> This is reading a Wikipedia article in the time it used to take
-> to read the first two paragraphs.
->
-> And it runs on hardware that already ships in the laptop."
+> "Three similar 1,000-word articles. Same user.
+> Baseline: four twelve.
+> Bold + High Contrast: two thirty-seven. 38% faster.
+> AI Summary: one twenty-one. 68% faster.
+> For Thomas, that's not a percentage — that's his reading back."
 
 ---
 
