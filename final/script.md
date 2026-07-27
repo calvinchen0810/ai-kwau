@@ -120,21 +120,15 @@
 
 ---
 
-## SLIDE 13 — Section Header: Reading Enhancements `[4:05–4:12]`
+## SLIDE 13 — Eye Tracking Activation + Demo `[4:10–5:10]`
 
-> "AI-Kwau — in action."
+> "Start camera. AI-Kwau is watching."
 
----
+*(play video)*
 
-## SLIDE 14 — Eye Tracking Calibration `[4:12–4:45]`
-
-> "First, calibration. Nine points, about 15 seconds.
->
-> The webcam maps where your eyes land on screen.
-> Once complete, the system tracks gaze to within roughly 50 pixels —
-> precise enough for paragraph-level targeting.
->
-> This is the only setup the user ever does."
+> "Two seconds on a paragraph — text enhances automatically.
+> Summary ready — click the tag.
+> Three bullet points. Under a second. Click again to go back."
 
 ---
 
