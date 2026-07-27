@@ -157,9 +157,12 @@
 
 ---
 
-## SLIDE 17 — Transition `[6:50–6:55]`
+## SLIDE 17 — User Journey `[6:15–6:35]`
 
-*(advance — brief pause)*
+> "Pre-installed. One-time setup.
+> Then just browse normally.
+> Gaze holds for 1.5 seconds — text enhances automatically.
+> AI summary loads. Read faster."
 
 ---
 
