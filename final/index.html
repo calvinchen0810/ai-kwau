@@ -18,16 +18,16 @@
 
 /* ── Tokens ─────────────────────────────────────────────────── */
 :root {
-  --navy:      #09111e;
-  --navy-mid:  #111c2e;
-  --navy-card: #141f33;
-  --navy-rim:  #1e2f49;
-  --cyan:      #00d4e8;
-  --cyan-dim:  #008fa0;
-  --gold:      #e8b84b;
-  --white:     #f0f4fa;
-  --muted:     #7189a8;
-  --stage:     #4a6280;
+  --navy:      #f5f7fa;
+  --navy-mid:  #e8ecf2;
+  --navy-card: #edf0f6;
+  --navy-rim:  #c8d0dc;
+  --cyan:      #0099aa;
+  --cyan-dim:  #007888;
+  --gold:      #b87a10;
+  --white:     #1a2235;
+  --muted:     #5a6880;
+  --stage:     #7a90a8;
   --serif:     Georgia, 'Times New Roman', serif;
   --sans:      'Sora', system-ui, sans-serif;
 }
@@ -202,7 +202,7 @@ main {
   font-weight: 700;
   font-size: 0.62rem;
   letter-spacing: 0.08em;
-  color: var(--navy);
+  color: #f0f4fa;
   background: var(--cyan);
   border-radius: 999px;
   padding: 0.15rem 0.65rem;
@@ -356,15 +356,18 @@ main {
 }
 
 /* ── Dark/light theme awareness ──────────────────────────────── */
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --navy:      #f5f7fa;
-    --navy-mid:  #e8ecf2;
-    --navy-card: #edf0f6;
-    --navy-rim:  #c8d0dc;
-    --white:     #1a2235;
-    --muted:     #5a6880;
-    --stage:     #7a90a8;
+    --navy:      #09111e;
+    --navy-mid:  #111c2e;
+    --navy-card: #141f33;
+    --navy-rim:  #1e2f49;
+    --cyan:      #00d4e8;
+    --cyan-dim:  #008fa0;
+    --gold:      #e8b84b;
+    --white:     #f0f4fa;
+    --muted:     #7189a8;
+    --stage:     #4a6280;
   }
   body { background: var(--navy); }
 }
@@ -373,6 +376,9 @@ main {
   --navy-mid:  #e8ecf2;
   --navy-card: #edf0f6;
   --navy-rim:  #c8d0dc;
+  --cyan:      #0099aa;
+  --cyan-dim:  #007888;
+  --gold:      #b87a10;
   --white:     #1a2235;
   --muted:     #5a6880;
   --stage:     #7a90a8;
@@ -382,6 +388,9 @@ main {
   --navy-mid:  #111c2e;
   --navy-card: #141f33;
   --navy-rim:  #1e2f49;
+  --cyan:      #00d4e8;
+  --cyan-dim:  #008fa0;
+  --gold:      #e8b84b;
   --white:     #f0f4fa;
   --muted:     #7189a8;
   --stage:     #4a6280;
