@@ -70,13 +70,11 @@
 
 ---
 
-## SLIDE 8 — PC-Centric Usage `[2:20–2:35]`
+## SLIDE 8 — Market Opportunity `[2:20–2:35]`
 
-> "And this happens on the device people use most.
-> Reading, research, video calls — it all lives on the PC.
->
-> The gap between what users need
-> and what today's tools deliver is real — and it's wide."
+> "That's the opportunity — 2 million users, no tool that works where they spend their day.
+> AI-Kwau fills it.
+> Simple. Intuitive. Accessible."
 
 ---
 
