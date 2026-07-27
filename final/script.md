@@ -62,16 +62,11 @@
 
 ---
 
-## SLIDE 7 — Abandoned Tools `[2:00–2:20]`
+## SLIDE 7 — Browser-Centric PC Usage `[2:05–2:20]`
 
-> "Existing tools exist — high contrast mode, screen magnifiers, Tobii eye trackers.
-> But they all share one problem: users abandon them.
->
-> High contrast and magnifiers need to be manually activated,
-> and they break page layouts.
-> Tobii requires external hardware most people don't own.
->
-> The tools create more friction than they remove."
+> "70% of PC time happens in a browser.
+> News, email, video, calls — all of it.
+> That's where the problem lives. And that's where AI-Kwau works."
 
 ---
 
@@ -303,7 +298,7 @@
 | 4 | AI-Kwau Cover | 0:55 | 20s |
 | 5 | Prevalence Data | 1:15 | 25s |
 | 6 | Pain Points Chart | 1:40 | 20s |
-| 7 | Abandoned Tools | 2:00 | 20s |
+| 7 | Browser-Centric PC Usage | 2:05 | 15s |
 | 8 | PC-Centric | 2:20 | 15s |
 | 9 | Solution Concept | 2:35 | 20s |
 | 10 | Perception Loop | 2:55 | 30s |
