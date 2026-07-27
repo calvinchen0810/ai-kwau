@@ -103,14 +103,9 @@
 
 ---
 
-## SLIDE 11 — User Journey `[3:25–3:50]`
+## SLIDE 11 — Text Enhancement + AI Summary `[3:15–3:20]`
 
-> "The user journey is designed to be frictionless.
->
-> Font Slider for immediate size control.
-> High Contrast Themes — five options, live-applied with no page reload.
-> Mouse-hover Mode for users who aren't ready for eye tracking.
-> And then AI-Kwau's full gaze intelligence on top.
+> "Starting with the first two — Text Enhancement and AI Summary."
 >
 > Each layer adds value independently.
 > Together, they adapt to how each individual user reads."
