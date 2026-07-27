@@ -136,11 +136,20 @@
 
 > "Next — Blind-Area Notify."
 
-*(brief pause — advance slide)*
+---
+
+## SLIDE 15 — Blind-Area Notify Demo `[5:15–5:45]`
+
+*(play video)*
+
+> "The user is reading — focused on the first paragraph.
+> A menu button just outside their gaze goes unnoticed.
+> AI-Kwau detects it's in a blind zone and highlights it with a pulse.
+> The user sees it. Clicks. Menu opens."
 
 ---
 
-## SLIDE 16 — Gaze Heatmap Verification `[6:05–6:50]`
+## SLIDE 16 — Gaze Heatmap Verification `[5:45–6:15]`
 
 > "This is the gaze heatmap in real time.
 >
