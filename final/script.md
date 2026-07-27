@@ -185,7 +185,16 @@
 
 ---
 
-## SLIDE 20 — Roadmap `[8:40–9:20]`
+## SLIDE 20 — KPIs `[7:30–7:50]`
+
+> "Three metrics to measure success.
+> Active Users — how many people are reading with AI-Kwau.
+> Adoption Rate — are they sticking with it.
+> Feature Usage — which capabilities matter most."
+
+---
+
+## SLIDE 21 — Roadmap `[7:50–8:30]`
 
 > "Where do we go from here?
 >
