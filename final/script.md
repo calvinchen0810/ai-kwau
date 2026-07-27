@@ -176,25 +176,12 @@
 
 ---
 
-## SLIDE 19 — Curb-Cut Effect `[7:45–8:40]`
+## SLIDE 19 — Curb-Cut Effect `[7:05–7:30]`
 
-> "Here's where this becomes a platform opportunity, not just an accessibility feature.
+> "Screen glare. Outdoor sunlight. Eye strain after long hours. Busy readers who skim.
+> These are everyday situations for every PC user.
 >
-> The Curb-Cut Effect — a principle from urban design.
-> When cities built ramps for wheelchair users,
-> cyclists, parents with strollers, and delivery workers all benefited.
->
-> AI-Kwau is the same story.
->
-> Screen glare on a sunny afternoon.
-> Eye strain after four hours of back-to-back meetings.
-> Skimming a 40-page report under a deadline.
->
-> These are everyday situations for every PC user —
-> not just the 20% with diagnosed vision impairment.
->
-> We designed for the edge case.
-> We built something every user will want."
+> We built this for Thomas. But it works for everyone."
 
 ---
 
