@@ -112,14 +112,11 @@
 
 ---
 
-## SLIDE 12 — Capabilities Overview `[3:50–4:05]`
+## SLIDE 12 — One-time Gaze Calibration `[3:45–4:10]`
 
-> "Three core capabilities:
-> Mode Switcher — seamlessly toggle between mouse and webcam tracking.
-> AI Summary — on-demand paragraph comprehension, one click.
-> Blind-Area Notify — proactive alerts for content the user hasn't seen.
->
-> Let's see them work."
+> "This happens once.
+> 25 dots — look, click.
+> 30 seconds later, AI-Kwau knows where your eyes are."
 
 ---
 
