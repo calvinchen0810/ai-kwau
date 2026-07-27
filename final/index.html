@@ -46,7 +46,7 @@ body {
 
 /* ── Header ──────────────────────────────────────────────────── */
 .page-header {
-  background: linear-gradient(135deg, #0b1726 0%, #0e1f38 60%, #091424 100%);
+  background: linear-gradient(135deg, #e8ecf2 0%, #eef1f6 60%, #e4e9f0 100%);
   border-bottom: 1px solid var(--navy-rim);
   padding: 3rem 2rem 2.5rem;
   text-align: center;
@@ -89,7 +89,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(9,17,30,0.92);
+  background: rgba(245,247,250,0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--navy-rim);
   padding: 0.6rem 1.5rem;
@@ -154,7 +154,7 @@ main {
   overflow: hidden;
   border: 1px solid var(--navy-rim);
   background: var(--navy-mid);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
 }
 
 .slide-thumb {
@@ -169,8 +169,8 @@ main {
   font-family: var(--sans);
   font-weight: 800;
   font-size: 0.65rem;
-  color: rgba(255,255,255,0.55);
-  background: rgba(0,0,0,0.55);
+  color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.4);
   padding: 0.15rem 0.5rem;
   letter-spacing: 0.05em;
 }
@@ -216,7 +216,7 @@ main {
   font-family: var(--serif);
   font-size: 1rem;
   line-height: 1.75;
-  color: rgba(240,244,250,0.9);
+  color: var(--white);
   margin-bottom: 0.8rem;
   position: relative;
   padding-left: 0.1rem;
@@ -313,7 +313,7 @@ main {
 }
 
 .dn-note {
-  color: rgba(240,244,250,0.75);
+  color: color-mix(in srgb, var(--white) 80%, transparent);
   line-height: 1.6;
 }
 
@@ -338,7 +338,7 @@ main {
 }
 .timing-table td {
   padding: 0.45rem 0.75rem 0.45rem 0;
-  color: rgba(240,244,250,0.8);
+  color: color-mix(in srgb, var(--white) 85%, transparent);
   border-bottom: 1px solid rgba(30,47,73,0.5);
   vertical-align: top;
 }
@@ -369,7 +369,11 @@ main {
     --muted:     #7189a8;
     --stage:     #4a6280;
   }
+
   body { background: var(--navy); }
+  .page-header { background: linear-gradient(135deg, #0b1726 0%, #0e1f38 60%, #091424 100%); }
+  .nav-strip { background: rgba(9,17,30,0.92); }
+  .slide-thumb-wrap { box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 }
 :root[data-theme="light"] {
   --navy:      #f5f7fa;
@@ -394,6 +398,12 @@ main {
   --white:     #f0f4fa;
   --muted:     #7189a8;
   --stage:     #4a6280;
+}
+:root[data-theme="dark"] .page-header {
+  background: linear-gradient(135deg, #0b1726 0%, #0e1f38 60%, #091424 100%);
+}
+:root[data-theme="dark"] .nav-strip {
+  background: rgba(9,17,30,0.92);
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
