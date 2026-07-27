@@ -51,15 +51,9 @@
 
 ## SLIDE 5 — Glaucoma Prevalence Data `[1:15–1:40]`
 
-> "Glaucoma is not a rare condition.
-> 52.5 million people worldwide live with it as of 2024,
-> growing at 5% annually.
->
-> And it's not just aging — 25% of patients are under 50.
-> In Taiwan alone, over 122,000 people under 50
-> are navigating screens with compromised vision.
->
-> This is a young, growing, and largely underserved market."
+> "In Taiwan, 525,000 people live with glaucoma.
+> One in four is under 50.
+> That's 122,000 people navigating screens with compromised vision — every day."
 
 ---
 
