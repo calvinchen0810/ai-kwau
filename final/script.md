@@ -72,8 +72,8 @@
 
 ## SLIDE 8 — Market Opportunity `[2:20–2:35]`
 
-> "That's the opportunity — 2 million users, no tool that works where they spend their day.
-> AI-Kwau fills it.
+> "That's the opportunity —
+> build for the browser, where users already are.
 > Simple. Intuitive. Accessible."
 
 ---
