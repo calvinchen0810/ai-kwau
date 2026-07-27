@@ -1,44 +1,35 @@
 # AI-Kwau — Final Presentation Script
-**Duration:** 10 minutes · **Language:** English · **Presenter:** Solo
+**Duration:** ~8 minutes · **Language:** English · **Presenter:** Solo (Calvin)
 
 ---
 
-## SLIDE 1 — Tunnel Vision `[0:00–0:15]`
+## SLIDE 1 — Opening `[0:00–0:20]`
 
-*(aerial photo, dark vignette fills the frame — let it sit for 3 seconds before speaking)*
-
-> "Ever looked through binoculars?
-> That small circle of clarity.
-> Everything else — just black.
->
-> For most of us, it's a choice.
-> We pick it up. We put it down."
+> "Every morning, our teammate Thomas sits down to read — just like you did this morning.
+> Same device. Same article.
+> But his experience is completely different."
 
 ---
 
-## SLIDE 2 — Article (normal reading) `[0:15–0:28]`
+## SLIDE 2 — Glaucoma Simulation `[0:20–0:40]`
 
-> "One of our team members doesn't get that choice.
->
-> He has glaucoma in one eye.
-> And when he sits down to read — this is his screen."
+*(pause — let the image land)*
 
----
-
-## SLIDE 3 — Glaucoma Simulation `[0:28–0:55]`
-
-*(advance to glaucoma overlay — pause 2 seconds)*
-
-> "This simulation wasn't made by a designer.
-> It was drawn from his own experience."
-
-*(pause 2 seconds — let the image land)*
-
-> "That's why we built AI-Kwau."
+> "This simulation was drawn from his own experience.
+> That's why we built AI-Kwau."
 
 ---
 
-## SLIDE 4 — Low Vision in Taiwan `[0:55–1:15]`
+## SLIDE 3 — AI-Kwau Cover `[0:40–1:00]`
+
+> "'Kwau' — Taiwanese for see and understand.
+> That's the whole answer in two words.
+> See clearly. Understand instantly.
+> I'm Calvin — with Ava, Thomas, and Yorke."
+
+---
+
+## SLIDE 4 — Low Vision in Taiwan `[1:00–1:20]`
 
 > "According to Taiwan's Ministry of Health and Welfare —
 > about 2 million people in Taiwan have low vision. That's 8% of the population.
@@ -46,7 +37,7 @@
 
 ---
 
-## SLIDE 5 — Top 5 Pain Points `[1:15–1:40]`
+## SLIDE 5 — Top 5 Pain Points `[1:20–1:45]`
 
 > "We surveyed Facebook groups for vision-impaired users.
 > Eye strain. Small text. Low contrast. Lost cursor. Hidden links.
@@ -54,7 +45,7 @@
 
 ---
 
-## SLIDE 6 — 60% Never Used Assistive Tools `[1:40–2:00]`
+## SLIDE 6 — 60% Never Used Assistive Tools `[1:45–2:05]`
 
 > "60% of vision-impaired PC users have never used assistive tools.
 > Not high contrast. Not screen magnifiers.
@@ -78,7 +69,7 @@
 
 ---
 
-## SLIDE 9 — User Feedback Leads to AI-Kwau `[2:40–3:00]`
+## SLIDE 9 — User Feedback Leads to AI-Kwau `[2:35–2:55]`
 
 > "Users said text wasn't clear enough.
 > Font slider. High contrast.
@@ -89,30 +80,21 @@
 
 ---
 
-## SLIDE 10 — Four Capabilities Overview `[3:00–3:15]`
+## SLIDE 10 — Four Capabilities Overview `[2:55–3:10]`
 
 > "Four capabilities. One clearer web.
 > Text Enhancement. AI Summary. Blind-Area Notify. Mode Switcher.
 > Let's see them in action."
->
-> **Act** — we enhance text in the reading area,
-> or surface a notification for overlooked content.
->
-> This loop runs continuously, invisibly, entirely on-device —
-> powered by the NPU in Intel Panther Lake."
 
 ---
 
-## SLIDE 11 — Text Enhancement + AI Summary `[3:15–3:20]`
+## SLIDE 11 — Text Enhancement + AI Summary Section Intro `[3:10–3:15]`
 
 > "Starting with the first two — Text Enhancement and AI Summary."
->
-> Each layer adds value independently.
-> Together, they adapt to how each individual user reads."
 
 ---
 
-## SLIDE 12 — One-time Gaze Calibration `[3:45–4:10]`
+## SLIDE 12 — One-time Gaze Calibration `[3:15–3:40]`
 
 > "This happens once.
 > 25 dots — look, click.
@@ -120,7 +102,7 @@
 
 ---
 
-## SLIDE 13 — Eye Tracking Activation + Demo `[4:10–5:10]`
+## SLIDE 13 — Eye Tracking Activation + Demo `[3:40–4:40]`
 
 > "Start camera. AI-Kwau is watching."
 
@@ -132,13 +114,13 @@
 
 ---
 
-## SLIDE 14 — Blind-Area Notify Section Intro `[5:10–5:15]`
+## SLIDE 14 — Blind-Area Notify Section Intro `[4:40–4:45]`
 
 > "Next — Blind-Area Notify."
 
 ---
 
-## SLIDE 15 — Blind-Area Notify Demo `[5:15–5:45]`
+## SLIDE 15 — Blind-Area Notify Demo `[4:45–5:15]`
 
 *(play video)*
 
@@ -149,7 +131,7 @@
 
 ---
 
-## SLIDE 16 — Gaze Heatmap `[5:45–6:15]`
+## SLIDE 16 — Gaze Heatmap `[5:15–5:45]`
 
 > "This is the gaze heatmap — it builds in real time as the user reads.
 > Warm colors mark where their eyes actually went. Cold zones are areas they never saw.
@@ -157,7 +139,7 @@
 
 ---
 
-## SLIDE 17 — User Journey `[6:15–6:35]`
+## SLIDE 17 — User Journey `[5:45–6:05]`
 
 > "Pre-installed. One-time setup.
 > Then just browse normally.
@@ -166,7 +148,7 @@
 
 ---
 
-## SLIDE 18 — Reading Time Results `[6:35–7:05]`
+## SLIDE 18 — Reading Time Results `[6:05–6:35]`
 
 > "Three similar 1,000-word articles. Same user.
 > Baseline: four twelve.
@@ -176,7 +158,7 @@
 
 ---
 
-## SLIDE 19 — Curb-Cut Effect `[7:05–7:30]`
+## SLIDE 19 — Curb-Cut Effect `[6:35–7:00]`
 
 > "Screen glare. Outdoor sunlight. Eye strain after long hours. Busy readers who skim.
 > These are everyday situations for every PC user.
@@ -185,7 +167,7 @@
 
 ---
 
-## SLIDE 20 — KPIs `[7:30–7:50]`
+## SLIDE 20 — KPIs `[7:00–7:20]`
 
 > "Three metrics to measure success.
 > Active Users — how many people are reading with AI-Kwau.
@@ -194,63 +176,61 @@
 
 ---
 
-## SLIDE 21 — Measure. Learn. Evolve. `[7:50–8:10]`
+## SLIDE 21 — Measure. Learn. Evolve. `[7:20–7:40]`
 
 > "We don't stop here.
 > Personalized profiles. Model selection. Translation.
 > And hardware-accelerated gaze — on the roadmap.
 > See clearly. Understand instantly."
 
-> **"See clearly. Understand instantly."**
-
 ---
 
 ## Timing Summary
 
-| Slide | Topic | Time | Duration |
-|-------|-------|------|----------|
-| 1 | Tunnel Vision | 0:00 | 15s |
-| 2 | Article (normal) | 0:15 | 13s |
-| 3 | Glaucoma Simulation | 0:28 | 27s |
-| 4 | AI-Kwau Cover | 0:55 | 20s |
-| 5 | Prevalence Data | 1:15 | 25s |
-| 6 | Pain Points Chart | 1:40 | 20s |
+| Slide | Topic | Start | Duration |
+|-------|-------|-------|----------|
+| 1 | Opening | 0:00 | 20s |
+| 2 | Glaucoma Simulation | 0:20 | 20s |
+| 3 | AI-Kwau Cover + Team | 0:40 | 20s |
+| 4 | Low Vision in Taiwan | 1:00 | 20s |
+| 5 | Top 5 Pain Points | 1:20 | 25s |
+| 6 | 60% Never Used Tools | 1:45 | 20s |
 | 7 | Browser-Centric PC Usage | 2:05 | 15s |
-| 8 | PC-Centric | 2:20 | 15s |
-| 9 | Solution Concept | 2:35 | 20s |
-| 10 | Perception Loop | 2:55 | 30s |
-| 11 | User Journey | 3:25 | 25s |
-| 12 | Capabilities | 3:50 | 15s |
-| 13 | Section Header | 4:05 | 7s |
-| 14 | Eye Calibration | 4:12 | 33s |
-| 14 | Demo Videos 1 + 2 | 4:45 | 75s |
-| 15 | Transition | 6:00 | 5s |
-| 16 | Gaze Heatmap | 6:05 | 45s |
-| 17 | Transition | 6:50 | 5s |
-| 18 | Reading Results | 6:55 | 50s |
-| 19 | Curb-Cut Effect | 7:45 | 55s |
-| 20 | Roadmap | 8:40 | 40s |
-| 21 | Closing | 9:20 | 40s |
-| **Total** | | | **~10:00** |
+| 8 | Market Opportunity | 2:20 | 15s |
+| 9 | User Feedback → AI-Kwau | 2:35 | 20s |
+| 10 | Four Capabilities Overview | 2:55 | 15s |
+| 11 | Section Intro (Text Enhancement + AI Summary) | 3:10 | 5s |
+| 12 | One-time Gaze Calibration | 3:15 | 25s |
+| 13 | Eye Tracking + Demo | 3:40 | 60s |
+| 14 | Section Intro (Blind-Area Notify) | 4:40 | 5s |
+| 15 | Blind-Area Notify Demo | 4:45 | 30s |
+| 16 | Gaze Heatmap | 5:15 | 30s |
+| 17 | User Journey | 5:45 | 20s |
+| 18 | Reading Time Results | 6:05 | 30s |
+| 19 | Curb-Cut Effect | 6:35 | 25s |
+| 20 | KPIs | 7:00 | 20s |
+| 21 | Measure. Learn. Evolve. | 7:20 | 20s |
+| **Total** | | | **~7:40** |
 
 ---
 
 ## Key Numbers to Memorise
 
-- **52.5M** — global glaucoma patients (2024)
-- **25%** — under 50 years old
-- **71%** — vision-impaired PC users report eye strain
+- **2 million** — low vision population in Taiwan (衛福部)
+- **8%** — of Taiwan population has low vision
+- **21%** — are under 50 years old
+- **60%** — vision-impaired PC users never used assistive tools
+- **70%** — of PC time is browser-based
 - **38%** faster with Bold + High Contrast
 - **68%** faster with AI Summary
-- **< 1 second** — on-device inference latency (GPU: 0.85s)
-- **1,000 words** — article length used in the test
+- **< 1 second** — on-device AI summary latency
 
 ---
 
 ## Delivery Notes
 
-- **Slide 1–3:** Slow down deliberately. Silence before speaking on S1 lands harder than rushing in.
-- **Slide 10 (Perception Loop):** Say "Sense, Decide, Act" with slight emphasis — it's the technical architecture in three words.
-- **Slide 15 (Demo):** Don't narrate over the video while it plays. Let it run, then explain.
-- **Slide 19 (Results):** Pause after each number. "4:12… 2:37… 1:21." The drops speak for themselves.
-- **Slide 22 (Closing):** Drop pace to about 60% for the final three lines. Make every word count.
+- **S1–S2:** Slow down. Let the Thomas story land before speaking.
+- **S13 (Demo):** Don't narrate over the video while it plays. Let it run, then explain.
+- **S15 (Demo):** Same — let the video play first.
+- **S18 (Results):** Pause after each time. "Four twelve… two thirty-seven… one twenty-one." The drops speak for themselves.
+- **S21 (Closing):** Drop pace for the final line. "See clearly. Understand instantly." — make every word count.
