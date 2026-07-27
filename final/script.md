@@ -7,9 +7,9 @@
 
 *(aerial photo, dark vignette fills the frame — let it sit for 3 seconds before speaking)*
 
-> "Have you ever looked through a pair of binoculars —
-> that small, perfect circle of clarity,
-> with everything outside it fading into darkness?
+> "Ever looked through binoculars?
+> That small circle of clarity.
+> Everything else — just black.
 >
 > For most of us, it's a choice.
 > We pick it up. We put it down."
