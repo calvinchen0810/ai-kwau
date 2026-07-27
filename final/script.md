@@ -132,7 +132,9 @@
 
 ---
 
-## SLIDE 14 — Transition `[5:10–5:15]`
+## SLIDE 14 — Blind-Area Notify Section Intro `[5:10–5:15]`
+
+> "Next — Blind-Area Notify."
 
 *(brief pause — advance slide)*
 
