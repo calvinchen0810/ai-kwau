@@ -46,11 +46,11 @@
 
 ---
 
-## SLIDE 5 — Glaucoma Prevalence Data `[1:15–1:40]`
+## SLIDE 5 — Top 5 Pain Points `[1:15–1:40]`
 
-> "In Taiwan, 525,000 people live with glaucoma.
-> One in four is under 50.
-> That's 122,000 people navigating screens with compromised vision — every day."
+> "We surveyed Facebook groups for vision-impaired users.
+> Eye strain. Small text. Low contrast. Lost cursor. Hidden links.
+> Five problems. Every single day."
 
 ---
 
