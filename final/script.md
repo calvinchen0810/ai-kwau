@@ -54,15 +54,11 @@
 
 ---
 
-## SLIDE 6 — Top 5 Pain Points (PC Users) `[1:40–2:00]`
+## SLIDE 6 — 60% Never Used Assistive Tools `[1:40–2:00]`
 
-> "When vision-impaired users try to work on a PC,
-> the data is stark:
-> 71% report chronic eye strain.
-> 65% struggle with small text.
-> 47% can't read low-contrast content.
->
-> These aren't edge cases — they are daily friction, every session."
+> "60% of vision-impaired PC users have never used assistive tools.
+> Not high contrast. Not screen magnifiers.
+> The tools exist — but people aren't using them."
 
 ---
 
