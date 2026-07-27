@@ -89,15 +89,11 @@
 
 ---
 
-## SLIDE 10 — Active Perception Loop `[2:55–3:25]`
+## SLIDE 10 — Four Capabilities Overview `[3:00–3:15]`
 
-> "Under the hood, this runs as a three-stage perception loop.
->
-> **Sense** — we capture gaze position and build a live heatmap
-> of where the user has and hasn't looked.
->
-> **Decide** — we detect a Focus Hold on a paragraph,
-> or identify cold zones — areas the user has missed entirely.
+> "Four capabilities. One clearer web.
+> Text Enhancement. AI Summary. Blind-Area Notify. Mode Switcher.
+> Let's see them in action."
 >
 > **Act** — we enhance text in the reading area,
 > or surface a notification for overlooked content.
