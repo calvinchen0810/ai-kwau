@@ -102,14 +102,15 @@ window.__aikwauContentLoaded = true;
   window.addEventListener('resize', repositionAllSummaryLabels, { passive: true });
 
   // ── Blind-area button scanner ─────────────────────────────────────────────
+  // DEMO SCOPE (temporary, 2026-07-27): hyperlink text ('a[href]', '[role="link"]')
+  // is excluded from blind-spot reminders for demo video recording — buttons only.
+  // Re-add those two selectors to restore link reminders.
   const INTERACTIVE_SEL = [
     'button:not([disabled])',
-    'a[href]',
     'input:not([type="hidden"]):not([disabled])',
     'select:not([disabled])',
     'textarea:not([disabled])',
     '[role="button"]',
-    '[role="link"]',
   ].join(', ');
 
   const MIN_HM_POINTS  = 50;  // need this many gaze samples before scanning
@@ -643,7 +644,7 @@ window.__aikwauContentLoaded = true;
   function showCalibrationUI(numPoints) {
     numPoints = numPoints === 9 ? 9 : 25;
     if (loadingOverlay) { loadingOverlay.remove(); loadingOverlay = null; }
-    document.dispatchEvent(new CustomEvent('aikwau:calstart'));
+    document.dispatchEvent(new CustomEvent('aikwau:calstart', { detail: { numPoints } }));
 
     const POINTS = numPoints === 9
       ? [[10,10],[50,10],[90,10],
@@ -704,6 +705,12 @@ window.__aikwauContentLoaded = true;
     });
 
     function activate(idx) {
+      const active = dots[idx];
+      if (active) {
+        document.dispatchEvent(new CustomEvent('aikwau:calpointactive', {
+          detail: { xPct: active.xPct, yPct: active.yPct, idx },
+        }));
+      }
       dots.forEach(({ el, label }, i) => {
         if (i === idx) {
           Object.assign(el.style, {

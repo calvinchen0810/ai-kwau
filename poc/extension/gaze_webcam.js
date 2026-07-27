@@ -42,7 +42,8 @@
   panel.style.cssText =
     'position:fixed;right:16px;bottom:16px;z-index:2147483647;' +
     'width:242px;background:#111;border-radius:8px;' +
-    'box-shadow:0 2px 16px rgba(0,0,0,0.5);font-family:system-ui,sans-serif;overflow:hidden';
+    'box-shadow:0 2px 16px rgba(0,0,0,0.5);font-family:system-ui,sans-serif;overflow:hidden;' +
+    'transition:left 0.2s ease,top 0.2s ease,right 0.2s ease,bottom 0.2s ease';
   panel.innerHTML =
     '<div id="__ap_drag" style="padding:5px 8px;background:#1a1a2e;cursor:grab;' +
     'user-select:none;font-size:10px;color:#445;text-align:center;letter-spacing:1px;">' +
@@ -99,6 +100,7 @@
   dragHandle.addEventListener('mousedown', e => {
     dragging = true;
     dragHandle.style.cursor = 'grabbing';
+    panel.style.transition = 'none'; // avoid rubber-banding while the user is actively dragging
     // Convert right/bottom anchor to left/top on first drag
     if (!panel.style.left) {
       const r = panel.getBoundingClientRect();
@@ -124,6 +126,7 @@
     if (!dragging) return;
     dragging = false;
     dragHandle.style.cursor = 'grab';
+    panel.style.transition = 'left 0.2s ease,top 0.2s ease,right 0.2s ease,bottom 0.2s ease';
   });
 
   const video      = panel.querySelector('#__ap_video');
@@ -374,15 +377,55 @@
   });
 
   // ── Calibration overlay events ────────────────────────────────────────────
-  document.addEventListener('aikwau:calstart', () => {
-    panel.style.display = 'none';
-    console.log('[aikwau/webcam] Panel hidden for calibration');
+  // Panel stays visible during calibration (so its live feedback is still
+  // useful). It never jumps left/right — it only nudges straight up once,
+  // from the 25-point dot #20 onward (the point right behind its default
+  // corner would otherwise be covered), and stays up for the rest of the run.
+  let calSavedPos   = null;
+  let calNumPoints  = null;
+  let calMovedUp    = false;
+
+  document.addEventListener('aikwau:calstart', (e) => {
+    calNumPoints = e.detail?.numPoints ?? null;
+    calMovedUp = false;
+    calSavedPos = {
+      left: panel.style.left, top: panel.style.top,
+      right: panel.style.right, bottom: panel.style.bottom,
+    };
+    if (calNumPoints === 25) hmWrap.style.display = 'none'; // heatmap/clear button hidden during 25-pt calibration
+    console.log('[aikwau/webcam] Calibration started — panel will auto-avoid point 20 onward');
   });
+
+  document.addEventListener('aikwau:calpointactive', (e) => {
+    if (panel.style.display === 'none' || !calSavedPos) return; // user has the panel closed — nothing to move
+    if (calNumPoints === 25 && e.detail.idx === 19) calMovedUp = true;
+    if (calMovedUp) {
+      panel.style.left   = calSavedPos.left;
+      panel.style.right  = calSavedPos.right;
+      panel.style.top    = '16px';
+      panel.style.bottom = '';
+    } else {
+      panel.style.left   = calSavedPos.left;
+      panel.style.right  = calSavedPos.right;
+      panel.style.top    = calSavedPos.top;
+      panel.style.bottom = calSavedPos.bottom;
+    }
+  });
+
   document.addEventListener('aikwau:calend', () => {
-    panel.style.display = '';
+    if (calSavedPos) {
+      panel.style.left   = calSavedPos.left;
+      panel.style.top    = calSavedPos.top;
+      panel.style.right  = calSavedPos.right;
+      panel.style.bottom = calSavedPos.bottom;
+      calSavedPos = null;
+    }
+    if (calNumPoints === 25) hmWrap.style.display = 'block';
+    calNumPoints = null;
+    calMovedUp = false;
     verifyBtn.style.display = 'block';
     drawMinimap();
-    console.log('[aikwau/webcam] Panel restored; polyCoeffs ready:', !!polyCoeffs);
+    console.log('[aikwau/webcam] Calibration ended — panel restored to its original position; polyCoeffs ready:', !!polyCoeffs);
   });
 
   // ── Calibration bridge (isolated → MAIN world) ────────────────────────────
