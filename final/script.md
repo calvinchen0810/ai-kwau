@@ -38,14 +38,11 @@
 
 ---
 
-## SLIDE 4 — AI-Kwau Cover `[0:55–1:15]`
+## SLIDE 4 — Low Vision in Taiwan `[0:55–1:15]`
 
-> "'Kwau' — Taiwanese for see and understand.
-> That's the whole answer in two words.
->
-> I'm Calvin — with Ava, Thomas, and Yorke.
->
-> See clearly. Understand instantly."
+> "According to Taiwan's Ministry of Health and Welfare —
+> about 2 million people in Taiwan have low vision. That's 8% of the population.
+> And 21% of them are under 50."
 
 ---
 
