@@ -149,19 +149,11 @@
 
 ---
 
-## SLIDE 16 — Gaze Heatmap Verification `[5:45–6:15]`
+## SLIDE 16 — Gaze Heatmap `[5:45–6:15]`
 
-> "This is the gaze heatmap in real time.
->
-> Warm colors show where the user spent the most attention.
-> Cold zones — these dark areas — are content they haven't physically seen.
->
-> AI-Kwau detects interactive elements sitting inside those cold zones
-> and highlights them with a subtle pulse —
-> bringing missed content back into the user's awareness,
-> without interrupting their reading flow.
->
-> It's not just assistive. It's perceptive."
+> "This is the gaze heatmap — it builds in real time as the user reads.
+> Warm colors mark where their eyes actually went. Cold zones are areas they never saw.
+> AI-Kwau finds interactive elements in cold zones and highlights them."
 
 ---
 
