@@ -78,15 +78,14 @@
 
 ---
 
-## SLIDE 9 — Solution Concept `[2:35–2:55]`
+## SLIDE 9 — User Feedback Leads to AI-Kwau `[2:40–3:00]`
 
-> "AI-Kwau closes that gap with one core idea:
-> track where the user is looking,
-> understand what they need,
-> and act — automatically.
->
-> No buttons. No menus.
-> The user just reads."
+> "Users said text wasn't clear enough.
+> Font slider. High contrast.
+> Then we asked: what if there were fewer words?
+> AI summary.
+> And for meetings: mouse-hover mode.
+> Four features. All from user feedback."
 
 ---
 
