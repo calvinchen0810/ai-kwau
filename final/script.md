@@ -132,36 +132,13 @@
 
 ---
 
-## SLIDE 15 — Text Enhancement + AI Summary Demo `[4:45–6:00]`
-
-*(play Video 1 — 15 seconds: L1 text enhancement)*
-
-> "What you just saw:
-> the user hovered over a paragraph for two seconds.
-> AI-Kwau automatically bolded and darkened the text — that's L1 enhancement.
-> No click, no shortcut.
-> The paragraph they're reading becomes easier to read, instantly."
-
-*(play Video 2 — 15 seconds: AI Summary click-to-reveal)*
-
-> "When the AI summary is ready,
-> a small tag appears at the top-right corner of the paragraph.
-> One click — the full paragraph is replaced by three key bullet points,
-> generated on-device by our language model in under a second.
->
-> Click again — the original text is restored, exactly as it was.
->
-> No cloud. No latency. No data leaving the device."
-
----
-
-## SLIDE 16 — Transition `[6:00–6:05]`
+## SLIDE 14 — Transition `[5:10–5:15]`
 
 *(brief pause — advance slide)*
 
 ---
 
-## SLIDE 17 — Gaze Heatmap Verification `[6:05–6:50]`
+## SLIDE 16 — Gaze Heatmap Verification `[6:05–6:50]`
 
 > "This is the gaze heatmap in real time.
 >
@@ -177,13 +154,13 @@
 
 ---
 
-## SLIDE 18 — Transition `[6:50–6:55]`
+## SLIDE 17 — Transition `[6:50–6:55]`
 
 *(advance — brief pause)*
 
 ---
 
-## SLIDE 19 — Reading Time Results `[6:55–7:45]`
+## SLIDE 18 — Reading Time Results `[6:55–7:45]`
 
 > "Does it actually help? We measured it.
 >
@@ -205,7 +182,7 @@
 
 ---
 
-## SLIDE 20 — Curb-Cut Effect `[7:45–8:40]`
+## SLIDE 19 — Curb-Cut Effect `[7:45–8:40]`
 
 > "Here's where this becomes a platform opportunity, not just an accessibility feature.
 >
@@ -227,7 +204,7 @@
 
 ---
 
-## SLIDE 21 — Roadmap `[8:40–9:20]`
+## SLIDE 20 — Roadmap `[8:40–9:20]`
 
 > "Where do we go from here?
 >
@@ -247,7 +224,7 @@
 
 ---
 
-## SLIDE 22 — Closing `[9:20–10:00]`
+## SLIDE 21 — Closing `[9:20–10:00]`
 
 > "We came into this project because one of us lives with this every day.
 >
@@ -285,14 +262,14 @@
 | 12 | Capabilities | 3:50 | 15s |
 | 13 | Section Header | 4:05 | 7s |
 | 14 | Eye Calibration | 4:12 | 33s |
-| 15 | Demo Videos 1 + 2 | 4:45 | 75s |
-| 16 | Transition | 6:00 | 5s |
-| 17 | Gaze Heatmap | 6:05 | 45s |
-| 18 | Transition | 6:50 | 5s |
-| 19 | Reading Results | 6:55 | 50s |
-| 20 | Curb-Cut Effect | 7:45 | 55s |
-| 21 | Roadmap | 8:40 | 40s |
-| 22 | Closing | 9:20 | 40s |
+| 14 | Demo Videos 1 + 2 | 4:45 | 75s |
+| 15 | Transition | 6:00 | 5s |
+| 16 | Gaze Heatmap | 6:05 | 45s |
+| 17 | Transition | 6:50 | 5s |
+| 18 | Reading Results | 6:55 | 50s |
+| 19 | Curb-Cut Effect | 7:45 | 55s |
+| 20 | Roadmap | 8:40 | 40s |
+| 21 | Closing | 9:20 | 40s |
 | **Total** | | | **~10:00** |
 
 ---
