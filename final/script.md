@@ -40,11 +40,10 @@
 
 ## SLIDE 4 — AI-Kwau Cover `[0:55–1:15]`
 
-> "AI-Kwau — 愛看有 — a browser extension built for Intel Panther Lake.
+> "'Kwau' — Taiwanese for see and understand.
+> That's the whole answer in two words.
 >
-> It watches where you look, enhances what you're reading,
-> and summarizes what matters —
-> automatically, on-device, with zero setup."
+> See clearly. Understand instantly."
 
 ---
 
