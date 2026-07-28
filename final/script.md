@@ -25,7 +25,8 @@
 > "'Kwau' — Taiwanese for see and understand.
 > That's the whole answer in two words.
 > See clearly. Understand instantly.
-> I'm Calvin — with Ava, Thomas, and Yorke."
+> I'm Calvin — with Ava, Thomas, and Yorke.
+> Thomas isn't alone."
 
 ---
 
@@ -65,7 +66,8 @@
 
 > "That's the opportunity —
 > build for the browser, where users already are.
-> Simple. Intuitive. Accessible."
+> Simple. Intuitive. Accessible.
+> We didn't design this from a whiteboard."
 
 ---
 
@@ -135,7 +137,8 @@
 
 > "This is the gaze heatmap — it builds in real time as the user reads.
 > Warm colors mark where their eyes actually went. Cold zones are areas they never saw.
-> AI-Kwau finds interactive elements in cold zones and highlights them."
+> AI-Kwau finds interactive elements in cold zones and highlights them.
+> That's the system. Here's the experience."
 
 ---
 
@@ -155,6 +158,8 @@
 > Bold + High Contrast: two thirty-seven. 38% faster.
 > AI Summary: one twenty-one. 68% faster.
 > For Thomas, that's not a percentage — that's his reading back."
+
+*(pause)*
 
 ---
 
