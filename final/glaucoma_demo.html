@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Kwau Demo — Glaucoma View</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden; /* keep at screen height for screenshotting */
+  }
+
+  /* ── Glaucoma peripheral blur (backdrop-filter masked to edges) ──────── */
+  .gl-blur {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    backdrop-filter: blur(14px) brightness(1.18);
+    -webkit-backdrop-filter: blur(14px) brightness(1.18);
+    /* mask: transparent at center, black at edges = blur only appears at edges */
+    -webkit-mask-image: radial-gradient(
+      ellipse 54% 48% at 40% 36%,
+      transparent 0%,
+      transparent 32%,
+      rgba(0,0,0,0.25) 50%,
+      rgba(0,0,0,0.70) 68%,
+      black 84%
+    );
+    mask-image: radial-gradient(
+      ellipse 54% 48% at 40% 36%,
+      transparent 0%,
+      transparent 32%,
+      rgba(0,0,0,0.25) 50%,
+      rgba(0,0,0,0.70) 68%,
+      black 84%
+    );
+  }
+
+  /* ── White peripheral washout (over the blur layer) ─────────────────── */
+  .gl-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 201;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 54% 48% at 40% 36%,
+      transparent 0%,
+      transparent 38%,
+      rgba(232,232,232,0.38) 56%,
+      rgba(238,238,238,0.72) 74%,
+      rgba(244,244,244,0.91) 88%,
+      rgba(246,246,246,0.97) 100%
+    );
+  }
+
+  /* ── Bottom label (matching slide_02 style) ──────────────────────────── */
+  .gl-label {
+    position: fixed;
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: #999;
+    z-index: 202;
+    pointer-events: none;
+  }
+
+  /* ── Article layout ──────────────────────────────────────────────────── */
+  .article {
+    padding: 52px 70px 80px;
+  }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.26;
+    margin-bottom: 28px;
+  }
+
+  /* ── AI-Kwau summary boxes (nightsky theme: aikwau-summary-shown) ─────── */
+  .aikwau-box {
+    position: relative;
+    background: #06090f;
+    border: 2.5px solid #00aaee;
+    border-radius: 4px;
+    box-shadow: 0 0 14px rgba(0,170,238,0.55), inset 0 0 8px rgba(0,120,200,0.08);
+    padding: 20px 24px 20px 28px;
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+
+  .aikwau-box p {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.55;
+    color: #ffffff;
+    margin-bottom: 0;
+  }
+
+  .aikwau-box p + p {
+    margin-top: 6px;
+  }
+
+  /* "Click to restore" button */
+  .restore-btn {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    background: #0088cc;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 0 3px 0 8px;
+    letter-spacing: 0.01em;
+    cursor: default;
+  }
+</style>
+</head>
+<body>
+
+<!-- Glaucoma effect layers -->
+<div class="gl-blur"></div>
+<div class="gl-vignette"></div>
+<div class="gl-label">Simulated View — Glaucoma</div>
+
+<!-- Article with AI-Kwau summaries applied -->
+<article class="article">
+
+  <h1>Intel Panther Lake Brings On-Device AI to Accessibility Tools</h1>
+
+  <div class="aikwau-box">
+    <div class="restore-btn">Click to restore</div>
+    <p>• The Panther Lake architecture supports high-performance computing for neural processing units.</p>
+    <p>• It enables applications running entirely on-device without requiring network connectivity.</p>
+  </div>
+
+  <div class="aikwau-box">
+    <div class="restore-btn">Click to restore</div>
+    <p>• Accessibility tools have become more affordable and accessible.</p>
+    <p>• Enhanced clarity of text is possible for those with vision impairments.</p>
+    <p>• This advancement benefits millions globally who live with visual disabilities.</p>
+  </div>
+
+  <div class="aikwau-box">
+    <div class="restore-btn">Click to restore</div>
+    <p>• The platform's inference engine can support very compact language models with only 1.5 billion parameters.</p>
+    <p>• These models fit entirely into system memory and deliver fast sub-second summarization latency.</p>
+  </div>
+
+</article>
+
+</body>
+</html>
